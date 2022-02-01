@@ -10,6 +10,7 @@ graf ansible_host=graf.kg.lan
 qbt ansible_host=qbt.kg.lan
 cert ansible_host=cert.kg.lan
 helios64 ansible_host=helios64.kg.lan
+pve ansible_host=pve.kg.lan
 
 
 

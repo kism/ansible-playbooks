@@ -1,4 +1,32 @@
 ---
+
+#- name: Create Proxmox LXC Container
+#  hosts: proxmox
+#  become: yes
+#  tasks:
+#  - name: Create a new container
+#    community.general.proxmox:
+#      vmid: 100
+#      node: pve
+#      api_user: root@pam
+#      api_token_id : ansible 
+#      api_token_secret : 475b8a8f-9b98-476a-8bde-61e88d72818e
+#      api_host: pve.kg.lan
+#      password: 123456
+#      hostname: podc
+#      ostemplate: local:vztmpl/centos-8-default_20191016_amd64.tar.xz'
+      
+
+#  - name: Start container
+#    community.general.proxmox:
+#      vmid: 100
+#      api_user: root@pam
+#      api_password: 1q2w3e
+#      api_host: node1
+#      state: started
+
+
+
 - name: Podcast Archiver
   hosts: podc
   become: yes
