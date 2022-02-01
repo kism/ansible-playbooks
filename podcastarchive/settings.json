@@ -1,0 +1,10 @@
+
+{
+    "podcasturl": "https://feed.articlesofinterest.club",
+    "podcastnewname": "Articles of Interest [Backup]",
+    "podcastnameoneword": "aoi",
+    "podcastdescription": "Articles of Interest [Backup]",
+    "inetpath": "http://10.42.0.2/",
+    "webroot": "/usr/share/nginx/html/",
+    "contactemail": "root@localhost"
+}

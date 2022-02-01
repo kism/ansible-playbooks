@@ -1,0 +1,22 @@
+---
+- name: Update all my DNF based linux hosts
+  hosts: dnfbased
+  become: yes
+  tasks:
+    - name: Update DNF Cache
+      dnf:
+        update_cache: yes
+        state: latest
+    - name: Upgrade packages
+      dnf:
+        update_only: yes
+        state: latest
+
+
+- name: Update all my apt based linux hosts
+  hosts: aptbased
+  become: yes
+  tasks:
+    - name: Update APT
+      apt:
+        upgrade: full

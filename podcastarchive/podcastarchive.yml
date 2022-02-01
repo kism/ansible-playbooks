@@ -1,0 +1,60 @@
+---
+- name: Podcast Archiver
+  hosts: podc
+  become: yes
+  tasks:
+    - name: Update DNF Cache
+      dnf:
+        update_cache: yes
+        state: latest
+    - name: Upgrade packages
+      dnf:
+        update_only: yes
+        state: latest
+    - name: Enable epel
+      dnf:
+        name: epel-release
+        state: latest
+    - name: Install Packages
+      dnf:
+        name:
+          - nginx
+          - python3
+          - python3-pip
+          - htop
+          - tmux
+          - vim
+        state: latest
+    - name: Nginx enabled and running
+      service:
+        name: nginx
+        enabled: true
+        state: started
+    - name: copy podcast archive script
+      copy:
+        src: ~/src/podcastarchive/podcastarchive.py
+        dest: /root/
+    - name: copy podcast archive settings.json
+      copy:
+        src: settings.json
+        dest: /root/
+    - name: copy webroot
+      copy:
+        src: webroot/
+        dest: /usr/share/nginx/html
+    - name: copy nginx.conf
+      copy:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+    - name: Restart service httpd, in all cases
+      service:
+        name: nginx
+        state: restarted
+    - name: Install latest version of python package 'requests'
+      pip:
+        name: requests
+    - name: Run a script with arguments (using 'cmd' parameter)
+      script:
+        chdir: /root
+        cmd: ~/src/podcastarchive/podcastarchive.py
+        executable: python3
