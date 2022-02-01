@@ -65,14 +65,16 @@
         zone: public
         service:  http
         permanent: true
+        immediate: true
         state: enabled
     - name: Name Let Nginx 443 through firewalld
       firewalld:
         zone: public
         service:  https
         permanent: true
+        immediate: true
         state: enabled
-            
+
     - name: Nginx enabled and running
       service:
         name: nginx
