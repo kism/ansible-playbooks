@@ -1,5 +1,4 @@
 ---
-
 #- name: Create Proxmox LXC Container
 #  hosts: proxmox
 #  become: yes
@@ -9,13 +8,12 @@
 #      vmid: 100
 #      node: pve
 #      api_user: root@pam
-#      api_token_id : ansible 
+#      api_token_id : ansible
 #      api_token_secret : 475b8a8f-9b98-476a-8bde-61e88d72818e
 #      api_host: pve.kg.lan
 #      password: 123456
 #      hostname: podc
 #      ostemplate: local:vztmpl/centos-8-default_20191016_amd64.tar.xz'
-      
 
 #  - name: Start container
 #    community.general.proxmox:
@@ -25,8 +23,6 @@
 #      api_host: node1
 #      state: started
 
-
-
 - name: Podcast Archiver
   hosts: podc
   become: yes
@@ -35,14 +31,17 @@
       dnf:
         update_cache: yes
         state: latest
+
     - name: Upgrade packages
       dnf:
         update_only: yes
         state: latest
+
     - name: Enable epel
       dnf:
         name: epel-release
         state: latest
+
     - name: Install Packages
       dnf:
         name:
@@ -52,35 +51,63 @@
           - htop
           - tmux
           - vim
+          - firewalld
         state: latest
+
+    - name: Nginx enabled and running
+      service:
+        name: firewalld
+        enabled: true
+        state: started
+
+    - name: Name Let Nginx 80 through firewalld
+      firewalld:
+        zone: public
+        service:  http
+        permanent: true
+        state: enabled
+    - name: Name Let Nginx 443 through firewalld
+      firewalld:
+        zone: public
+        service:  https
+        permanent: true
+        state: enabled
+            
     - name: Nginx enabled and running
       service:
         name: nginx
         enabled: true
         state: started
+
     - name: copy podcast archive script
       copy:
         src: ~/src/podcastarchive/podcastarchive.py
         dest: /root/
+
     - name: copy podcast archive settings.json
       copy:
         src: settings.json
         dest: /root/
+
     - name: copy webroot
       copy:
         src: webroot/
         dest: /usr/share/nginx/html
+
     - name: copy nginx.conf
       copy:
         src: nginx.conf
         dest: /etc/nginx/nginx.conf
+
     - name: Restart service httpd, in all cases
       service:
         name: nginx
         state: restarted
+
     - name: Install latest version of python package 'requests'
       pip:
         name: requests
+
     - name: Run a script with arguments (using 'cmd' parameter)
       script:
         chdir: /root
