@@ -27,10 +27,10 @@
   hosts: podc
   become: yes
   tasks:
-    - name: Update DNF Cache
-      dnf:
-        update_cache: yes
-        state: latest
+#    - name: Update DNF Cache
+#      dnf:
+#        update_cache: yes
+#        state: latest
 
     - name: Upgrade packages
       dnf:
@@ -83,7 +83,7 @@
 
     - name: copy podcast archive script
       copy:
-        src: ~/src/podcastarchive/podcastarchive.py
+        src: ~/src/archivepodcast/archivepodcast.py
         dest: /root/
 
     - name: copy podcast archive settings.json
@@ -113,5 +113,5 @@
     - name: Run a script with arguments (using 'cmd' parameter)
       script:
         chdir: /root
-        cmd: ~/src/podcastarchive/podcastarchive.py
+        cmd: ~/src/archivepodcast/archivepodcast.py
         executable: python3
