@@ -88,7 +88,7 @@
 
     - name: copy podcast archive settings.json
       copy:
-        src: settings.json
+        src: ~/src/archivepodcast/settings.json
         dest: /root/
 
     - name: copy webroot
