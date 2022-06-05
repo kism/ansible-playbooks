@@ -1,0 +1,7 @@
+---
+- name: Unconditionally shut down the machine with all defaults
+  hosts: baremetal
+  become: yes
+  tasks:
+  - name: Unconditionally reboot the machine with all defaults
+    reboot:

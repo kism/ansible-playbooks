@@ -1,0 +1,45 @@
+---
+all:
+  vars:
+    ansible_user: root
+  hosts:
+    ent:
+      ansible_host: ent.kg.lan
+    pve:
+      ansible_host: pve.kg.lan
+    ifdb:
+      ansible_host: ifdb.kg.lan
+    qbt:
+      ansible_host: qbt.kg.lan
+    cert:
+      ansible_host: cert.kg.lan
+    helios64:
+      ansible_host: helios64.kg.lan
+
+aptbased:
+  hosts:
+    pve:
+    qbt:
+    helios64:
+    cert:
+
+dnfbased:
+  hosts:
+    ifdb:
+
+alpinebased:
+  hosts:
+    ent:
+
+vms:
+  hosts:
+    qbt:
+    ifdb:
+    ent:
+
+baremetal:
+  hosts:
+    helios64:
+    pve:
+    cert:
+
