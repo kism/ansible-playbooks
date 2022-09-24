@@ -13,7 +13,6 @@
           ansible.builtin.user:
             name: kism
             shell: /bin/bash
-            groups: sudo
             append: yes
 
         - name: Set authorized keys taken from url using lookup
