@@ -27,9 +27,9 @@
             name: kgadmins
             state: present
 
-        - name: adding existing user '{{ kism }}' to group sudo
+        - name: adding existing user kism to group sudo
           ansible.builtin.user:
-            name: '{{ kism }}'
+            name: kism
             groups: kgadmins
             append: yes
 
