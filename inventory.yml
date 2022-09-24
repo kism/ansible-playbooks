@@ -47,3 +47,7 @@ baremetal:
     cert:
     mogulmoves.rodeo:
 
+utchosts:
+  hosts:
+    cert:
+
