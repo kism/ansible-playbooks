@@ -62,7 +62,7 @@ baremetal:
     helios64:
     pve:
     cert:
-    mogulmoves.rodeo:
+    mogulmoves:
 
 utchosts:
   hosts:
