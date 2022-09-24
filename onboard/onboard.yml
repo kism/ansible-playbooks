@@ -33,7 +33,7 @@
             groups: sudo, wheel
             append: yes
 
-      when: ansible_user == 'amsible_svc'
+      when: ansible_user == 'ansible_svc'
 
 
     - name: On hosts without sudo, just add keys
