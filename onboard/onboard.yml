@@ -50,8 +50,7 @@
 
 
     - name: Set timezone to Perth
-      when:
-        - hostvars['vars'].timezone == awst
+      when: vars['timezone'] == 'awst'
       community.general.timezone:
         name: Australia/Perth
 
