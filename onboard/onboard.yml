@@ -4,6 +4,8 @@
 
 - name: Set Timezone To Perth
   hosts: all
+  collections:
+    - community.general
   tasks:
     - name: On hosts with sudo add kism user
       block:
