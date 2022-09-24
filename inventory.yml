@@ -3,9 +3,9 @@ all:
   hosts:
     ent:
       ansible_host: ent.kg.lan
+      ansible_user: root
       vars:
         timezone: awst
-        ansible_user: root
     pve:
       ansible_host: pve.kg.lan
       vars:
@@ -18,9 +18,9 @@ all:
       ansible_user: ansible_svc
     qbt:
       ansible_host: qbt.kg.lan
+      ansible_user: ansible_svc
       vars:
         timezone: awst
-        ansible_user: ansible_svc
     cert:
       ansible_host: cert.kg.lan
       vars:
@@ -28,14 +28,15 @@ all:
         ansible_user: ansible_svc
     helios64:
       ansible_host: helios64.kg.lan
+      ansible_user: ansible_svc
       vars:
         timezone: awst
-        ansible_user: ansible_svc
     mogulmoves:
       ansible_host: mogulmoves.rodeo
+      ansible_user: ansible_svc
       vars:
         timezone: awst
-        ansible_user: ansible_svc
+
 
 
 aptbased:
