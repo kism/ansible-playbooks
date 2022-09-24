@@ -1,0 +1,93 @@
+---
+
+# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
+
+- name: Set Timezone To Perth
+  hosts: all
+  tasks:
+    - name: On hosts with sudo add kism user
+      block:
+        - name: Add the user 'kism' with a bash shell, appending the group 'admins' and 'developers' to the user's groups
+          ansible.builtin.user:
+            name: kism
+            shell: /bin/bash
+            groups: sudo
+            append: yes
+
+        - name: Set authorized keys taken from url using lookup
+          hosts: all
+          ansible.posix.authorized_key:
+            user: kism
+            state: present
+            key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
+
+        - name: Ensure group "kgadmins" exists
+          ansible.builtin.group:
+            name: kgadmins
+            state: present
+
+        - name: adding existing user '{{ kism }}' to group sudo
+          user:
+            name: '{{ kism }}'
+            groups: sudo, wheel
+            append: yes
+
+      when: ansible_user == 'amsible_svc'
+
+
+    - name: On hosts without sudo, just add keys
+      block:
+        - name: Set authorized keys taken from url using lookup
+          hosts: all
+          ansible.posix.authorized_key:
+            user: root
+            state: present
+            key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
+
+      when: ansible_user == 'root'
+
+
+    - name: Set timezone to Perth
+      when:
+        - timezone == awst
+      community.general.timezone:
+        name: Australia/Perth
+
+
+    - name: Set timezone to UTC
+      when:
+        - timezone == utc
+      community.general.timezone:
+        name: Etc/UTC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # - name: Disable root Login
+  #   lineinfile:
+  #         dest: /etc/ssh/sshd_config
+  #         regexp: '^PermitRootLogin'
+  #         line: "PermitRootLogin no"
+  #         state: present
+  #         backup: yes
+  #   become: yes
+  #   notify:
+  #     - restart ssh
+
+  # handlers:
+  # - name: restart ssh
+  #   systemctl:
+  #     name: sshd
+  #     state: restarted
