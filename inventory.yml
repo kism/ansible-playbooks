@@ -4,13 +4,11 @@ all:
     ent:
       ansible_host: ent.kg.lan
       ansible_user: root
-      vars:
-        timezone: awst
+      timezone: awst
     pve:
       ansible_host: pve.kg.lan
       ansible_user: root
-      vars:
-        timezone: zzzz
+      timezone: zzzz
     ifdb:
       ansible_host: ifdb.kg.lan
       ansible_user: ansible_svc
