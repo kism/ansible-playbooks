@@ -28,6 +28,7 @@ aptbased:
 dnfbased:
   hosts:
     ifdb:
+    mogulmoves:
 
 alpinebased:
   hosts:
@@ -44,4 +45,5 @@ baremetal:
     helios64:
     pve:
     cert:
+    mogulmoves.rodeo:
 
