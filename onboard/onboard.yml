@@ -57,7 +57,7 @@
 
     - name: Set timezone to UTC
       when:
-        - timezone == utc
+        - timezone == 'utc'
       community.general.timezone:
         name: Etc/UTC
 
