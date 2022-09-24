@@ -5,18 +5,35 @@ all:
   hosts:
     ent:
       ansible_host: ent.kg.lan
+      vars:
+        timezone: awst
+        ansible_user: root
     pve:
       ansible_host: pve.kg.lan
+      vars:
+        timezone: awst
+        ansible_user: root
     ifdb:
       ansible_host: ifdb.kg.lan
+      vars:
+        timezone: awst
     qbt:
       ansible_host: qbt.kg.lan
+      vars:
+        timezone: awst
     cert:
       ansible_host: cert.kg.lan
+      vars:
+        timezone: utc
     helios64:
       ansible_host: helios64.kg.lan
+      vars:
+        timezone: awst
     mogulmoves:
       ansible_host: mogulmoves.rodeo
+      vars:
+        timezone: awst
+
 
 aptbased:
   hosts:
