@@ -8,14 +8,14 @@ all:
         timezone: awst
     pve:
       ansible_host: pve.kg.lan
+      ansible_user: root
       vars:
         timezone: awst
-        ansible_user: root
     ifdb:
       ansible_host: ifdb.kg.lan
-      vars:
-      timezone: awst
       ansible_user: ansible_svc
+      vars:
+        timezone: awst
     qbt:
       ansible_host: qbt.kg.lan
       ansible_user: ansible_svc
@@ -23,9 +23,10 @@ all:
         timezone: awst
     cert:
       ansible_host: cert.kg.lan
+      ansible_user: ansible_svc
       vars:
         timezone: utc
-        ansible_user: ansible_svc
+
     helios64:
       ansible_host: helios64.kg.lan
       ansible_user: ansible_svc
