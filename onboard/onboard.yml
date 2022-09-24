@@ -47,9 +47,11 @@
       when: ansible_user == 'root'
 
 
+
+
     - name: Set timezone to Perth
       when:
-        - timezone == awst
+        - vars['timezone'] == awst
       community.general.timezone:
         name: Australia/Perth
 

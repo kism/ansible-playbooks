@@ -69,7 +69,3 @@ baremetal:
     cert:
     mogulmoves:
 
-utchosts:
-  hosts:
-    cert:
-
