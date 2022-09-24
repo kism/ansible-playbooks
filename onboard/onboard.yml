@@ -33,9 +33,9 @@
             groups: kgadmins
             append: yes
 
-        - name: This command will change the working directory to somedir/
+        - name: This command will ensure that kgadmins are able to sudo
           ansible.builtin.shell:
-            cmd: 'echo "ansible_svc ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible_svc'
+            cmd: 'echo "kgadmins ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible_svc'
 
 
 
