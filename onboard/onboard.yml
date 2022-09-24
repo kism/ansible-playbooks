@@ -1,5 +1,4 @@
 ---
-
 # curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
 
 - name: Set Timezone To Perth
@@ -35,14 +34,9 @@
 
         - name: This command will ensure that kgadmins are able to sudo
           ansible.builtin.shell:
-            cmd: 'echo "kgadmins ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible_svc'
-
-
-
-
+            cmd: 'echo "kgadmins ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/kgadmins'
 
       when: ansible_user == 'ansible_svc'
-
 
     - name: On hosts without sudo, just add keys
       block:
@@ -54,35 +48,16 @@
 
       when: ansible_user == 'root'
 
-
-
-
     - name: Set timezone to Perth
       when: timezone == 'awst'
       community.general.timezone:
         name: Australia/Perth
-
 
     - name: Set timezone to UTC
       when:
         - timezone == 'utc'
       community.general.timezone:
         name: Etc/UTC
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   # - name: Disable root Login
   #   lineinfile:
