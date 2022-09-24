@@ -1,8 +1,0 @@
----
-- name: Set Timezone To Perth
-  hosts: all
-  #become: yes
-  tasks:
-  - name: Set timezone to Perth
-    community.general.timezone:
-      name: Australia/Perth
