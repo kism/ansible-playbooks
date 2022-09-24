@@ -4,6 +4,7 @@
 
 - name: Set Timezone To Perth
   hosts: all
+  become: yes
   collections:
     - community.general
   tasks:
