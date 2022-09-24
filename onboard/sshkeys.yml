@@ -1,6 +1,6 @@
 ---
 
-# curl https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
+# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
 
 
  tasks:
