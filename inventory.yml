@@ -8,7 +8,7 @@ all:
     pve:
       ansible_host: pve.kg.lan
       ansible_user: root
-      timezone: zzzz
+      timezone: awst
     ifdb:
       ansible_host: ifdb.kg.lan
       ansible_user: ansible_svc
