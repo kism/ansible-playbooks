@@ -30,8 +30,16 @@
         - name: adding existing user '{{ kism }}' to group sudo
           ansible.builtin.user:
             name: '{{ kism }}'
-            groups: sudo, wheel
+            groups: kgadmins
             append: yes
+
+        - name: This command will change the working directory to somedir/
+          ansible.builtin.shell:
+            cmd: 'echo "ansible_svc ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible_svc'
+
+
+
+
 
       when: ansible_user == 'ansible_svc'
 
