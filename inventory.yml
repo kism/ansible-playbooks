@@ -12,29 +12,24 @@ all:
     ifdb:
       ansible_host: ifdb.kg.lan
       ansible_user: ansible_svc
-      vars:
-        timezone: awst
+      timezone: awst
     qbt:
       ansible_host: qbt.kg.lan
       ansible_user: ansible_svc
-      vars:
-        timezone: awst
+      timezone: awst
     cert:
       ansible_host: cert.kg.lan
       ansible_user: ansible_svc
-      vars:
-        timezone: utc
+      timezone: utc
 
     helios64:
       ansible_host: helios64.kg.lan
       ansible_user: ansible_svc
-      vars:
-        timezone: awst
+      timezone: awst
     mogulmoves:
       ansible_host: mogulmoves.rodeo
       ansible_user: ansible_svc
-      vars:
-        timezone: awst
+      timezone: awst
 
 
 
