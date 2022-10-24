@@ -3,6 +3,7 @@ account="ansible_svc"
 
 id -u $account &>/dev/null || useradd $account
 usermod -a -G wheel $account &>/dev/null || usermod -a -G sudo $account
+chage -I -1 -m 0 -M 99999 -E -1 $account
 mkdir -p /home/$account/.ssh
 echo "$account ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$account
 echo $publickey > /home/$account/.ssh/authorized_keys
