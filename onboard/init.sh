@@ -1,9 +1,11 @@
 publickey="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKCzVh8CktGh+5LlZJfeBj/VcRzGO6zjrW2p2dM+X4PA ansible_svc"
-id -u ansible_svc &>/dev/null || useradd ansible_svc
-usermod -a -G wheel ansible_svc &>/dev/null || usermod -a -G sudo ansible_svc
-mkdir -p /home/ansible_svc/.ssh
-echo "ansible_svc ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible_svc
-echo $publickey > /home/ansible_svc/.ssh/authorized_keys
-chown -R ansible_svc:ansible_svc /home/ansible_svc
-chmod 700 /home/ansible_svc/.ssh
-chmod 600 /home/ansible_svc/.ssh/authorized_keys
+account="ansible_svc"
+
+id -u $account &>/dev/null || useradd $account
+usermod -a -G wheel $account &>/dev/null || usermod -a -G sudo $account
+mkdir -p /home/$account/.ssh
+echo "$account ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$account
+echo $publickey > /home/$account/.ssh/authorized_keys
+chown -R $account:$account /home/$account
+chmod 700 /home/$account/.ssh
+chmod 600 /home/$account/.ssh/authorized_keys
