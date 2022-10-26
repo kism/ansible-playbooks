@@ -9,7 +9,7 @@
   tasks:
     - name: On hosts with sudo add kism user
       block:
-        - name: Add the user 'kism' with a bash shell, appending the group 'admins' and 'developers' to the user's groups
+        - name: Add the user 'kism' with a bash shell
           ansible.builtin.user:
             name: kism
             shell: /bin/bash
@@ -36,6 +36,12 @@
           ansible.builtin.shell:
             cmd: 'echo "kgadmins ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/kgadmins'
 
+        - name: This command will ensure that bash is setup correctly
+          become: yes
+          become_user: kism
+          ansible.builtin.shell:
+            cmd: 'wget -O - https://github.com/kism/dotfiles-simple/archive/master.tar.gz | tar xz ; yes | mv dotfiles-simple-master/.* ~ > /dev/null 2> /dev/null ; rm -rf dotfiles-simple-master; . ~/.bashrc'
+
       when: ansible_user == 'ansible_svc'
 
     - name: On hosts without sudo, just add keys
@@ -47,6 +53,13 @@
             key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
 
       when: ansible_user == 'root'
+
+    - name: This command will ensure that bash is setup correctly
+      become: yes
+      become_user: root
+      ansible.builtin.shell:
+        cmd: 'wget -O - https://github.com/kism/dotfiles-simple/archive/master.tar.gz | tar xz ; yes | mv dotfiles-simple-master/.* ~ > /dev/null 2> /dev/null ; rm -rf dotfiles-simple-master; . ~/.bashrc'
+
 
     - name: Set timezone to Perth
       when: timezone == 'awst'
