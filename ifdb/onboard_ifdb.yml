@@ -22,6 +22,7 @@
       - firewalld
       state: latest
 
+  # firewalld
   - name: firewall enabled and running
     service:
       name: firewalld
@@ -37,5 +38,25 @@
   - name: Allow influxdb
     ansible.posix.firewalld:
       port: 8086/tcp
+      zone: public
       permanent: yes
       state: enabled
+
+  - name: Allow influxdb
+    ansible.posix.firewalld:
+      service: ssh
+      zone: public
+      permanent: yes
+      state: enabled
+
+  - name: Remove cockpit
+    ansible.posix.firewalld:
+      service: cockpit
+      zone: public
+      permanent: yes
+      state: disabled
+
+  - name: Restart service cron on centos, in all cases, also issue daemon-reload to pick up config changes
+    ansible.builtin.systemd:
+      state: restarted
+      name: firewalld
