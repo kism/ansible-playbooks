@@ -1,11 +1,12 @@
 publickey="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKCzVh8CktGh+5LlZJfeBj/VcRzGO6zjrW2p2dM+X4PA ansible_svc"
 account="ansible_svc"
+group="kgadmins"
 
 id -u $account &>/dev/null || useradd $account
-usermod -a -G wheel $account &>/dev/null || usermod -a -G sudo $account
+groupadd kgadmins
 chage -I -1 -m 0 -M 99999 -E -1 $account
 mkdir -p /home/$account/.ssh
-echo "$account ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$account
+echo "%$group ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$group
 echo $publickey > /home/$account/.ssh/authorized_keys
 chown -R $account:$account /home/$account
 chmod 700 /home/$account/.ssh
