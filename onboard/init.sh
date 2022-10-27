@@ -6,7 +6,8 @@ account="ansible_svc"
 group="kgadmins"
 
 id -u $account &>/dev/null || useradd $account
-groupadd kgadmins
+groupadd $group
+usermod -a -G $group $account
 chage -I -1 -m 0 -M 99999 -E -1 $account
 mkdir -p /home/$account/.ssh
 echo "%$group ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$group
