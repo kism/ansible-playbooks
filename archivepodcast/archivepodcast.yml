@@ -54,7 +54,7 @@
           - firewalld
         state: latest
 
-    - name: Nginx enabled and running
+    - name: firewall enabled and running
       service:
         name: firewalld
         enabled: true
@@ -67,6 +67,7 @@
         permanent: true
         immediate: true
         state: enabled
+
     - name: Name Let Nginx 443 through firewalld
       firewalld:
         zone: public

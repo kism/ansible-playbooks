@@ -10,7 +10,7 @@ all:
       ansible_user: root
       timezone: awst
     ifdb:
-      ansible_host: ifdb.kg.lan
+      ansible_host: 10.42.0.8
       ansible_user: ansible_svc
       timezone: awst
     qbt:

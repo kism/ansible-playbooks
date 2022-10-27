@@ -1,7 +1,7 @@
 ---
 # curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
 
-- name: Set Timezone To Perth
+- name: Basic setup for KiSM's servers
   hosts: all
   become: yes
   collections:
@@ -72,19 +72,78 @@
       community.general.timezone:
         name: Etc/UTC
 
-  # - name: Disable root Login
-  #   lineinfile:
-  #         dest: /etc/ssh/sshd_config
-  #         regexp: '^PermitRootLogin'
-  #         line: "PermitRootLogin no"
-  #         state: present
-  #         backup: yes
-  #   become: yes
-  #   notify:
-  #     - restart ssh
+    - name: Disable root Login
+      lineinfile:
+            dest: /etc/ssh/sshd_config
+            regexp: '^PermitRootLogin'
+            line: "PermitRootLogin no"
+            state: present
+            backup: yes
+      become: yes
+      #notify:
+        #- restart ssh
+
+    # Install Packages
+- name: Update all my DNF based linux hosts
+  hosts: dnfbased
+  become: yes
+  tasks:
+    - name: Update DNF Cache
+      dnf:
+        update_cache: yes
+        state: latest
+    - name: Enable epel
+      ansible.builtin.dnf:
+        name: epel-release
+        state: latest
+
+    - name: Update DNF Cache
+      dnf:
+        update_cache: yes
+        state: latest
+
+    - name: Upgrade packages
+      dnf:
+        update_only: yes
+        state: latest
+
+    - name: Install the latest version of
+      ansible.builtin.dnf:
+        name:
+        - htop
+        - iotop
+        - nload
+        - neofetch
+        - vim
+        - git
+        - tmux
+        state: latest
+
+
+- name: Update all my apt based linux hosts
+  hosts: aptbased
+  become: yes
+  tasks:
+    - name: Update APT
+      ansible.builtin.apt:
+        upgrade: full
+
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        install_recommends: no
+        pkg:
+        - htop
+        - iotop
+        - nload
+        - neofetch
+        - vim
+        - git
+        - tmux
 
   # handlers:
-  # - name: restart ssh
-  #   systemctl:
-  #     name: sshd
-  #     state: restarted
+  #   - name: restart ssh
+  #     systemctl:
+  #       name: sshd
+  #       state: restarted
+
+

@@ -1,0 +1,41 @@
+---
+# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
+
+- name: Basic setup for influxdb
+  hosts: all
+  become: yes
+  collections:
+    - community.general
+  tasks:
+  - name: Copy file with owner and permission, using symbolic representation
+    ansible.builtin.copy:
+      src: influxdb.repo
+      dest: /etc/yum.repos.d/influxdb.repo
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+
+  - name: Install the latest version of
+    ansible.builtin.dnf:
+      name:
+      - influxdb2
+      - firewalld
+      state: latest
+
+  - name: firewall enabled and running
+    service:
+      name: firewalld
+      enabled: true
+      state: started
+
+  - name: firewall enabled and running
+    service:
+      name: influxdb
+      enabled: true
+      state: started
+
+  - name: Allow influxdb
+    ansible.posix.firewalld:
+      port: 8086/tcp
+      permanent: yes
+      state: enabled
