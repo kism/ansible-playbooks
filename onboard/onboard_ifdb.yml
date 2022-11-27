@@ -1,25 +1,25 @@
 ---
 - name: Basic setup for influxdb
   hosts: all
-  become: yes
+  become: true
   collections:
     - community.general
   tasks:
     - name: Copy file with owner and permission, using symbolic representation
       ansible.builtin.copy:
-        src: influxdb.repo
+        src: repos_dnf/influxdb.repo
         dest: /etc/yum.repos.d/influxdb.repo
         owner: root
         group: root
-        mode: u=rw,g=r,o=r
+        mode: "644"
 
     - name: Install the latest version of
       ansible.builtin.dnf:
         name: influxdb2
-        state: latest
+        state: present
 
-    - name: start and enable influxdb service
-      service:
+    - name: Start and enable influxdb service
+      ansible.builtin.service:
         name: influxdb
         enabled: true
         state: started
@@ -36,7 +36,7 @@
       ansible.posix.firewalld:
         service: influxdb
         zone: public
-        permanent: yes
+        permanent: true
         state: enabled
       notify:
         - Restart firewalld
