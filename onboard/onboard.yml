@@ -101,11 +101,15 @@
       ansible.builtin.dnf:
         name: epel-release
         state: present
+      register: epel
 
-    - name: Update DNF Cache
+    - name: Update DNF Cache w/epel enabled
       ansible.builtin.dnf:
         update_cache: true
         state: present
+      when: epel.changed
+      tags:
+        - skip_ansible_lint
 
     - name: Upgrade packages
       ansible.builtin.dnf:
@@ -186,6 +190,14 @@
         name: firewalld
         enabled: true
         state: started
+
+    - name: Copy wireguard firewalld config
+      ansible.builtin.copy:
+        src: firewalld/
+        dest: /etc/firewalld/services
+        owner: root
+        group: root
+        mode: "0644"
 
   handlers:
     - name: Restart firewalld

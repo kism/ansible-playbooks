@@ -12,14 +12,6 @@
           - wireguard-tools
         state: present
 
-    - name: Copy wireguard firewalld config
-      ansible.builtin.copy:
-        src: firewalld/wireguard.xml
-        dest: /etc/firewalld/services/wireguard.xml
-        owner: root
-        group: root
-        mode: u+rw,g-wx,o-wx
-
     - name: Allow wireguard through firewalld
       ansible.posix.firewalld:
         service: wireguard

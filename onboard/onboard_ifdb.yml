@@ -13,7 +13,7 @@
         group: root
         mode: "644"
 
-    - name: Install the latest version of
+    - name: Install the latest version of influxdb
       ansible.builtin.dnf:
         name: influxdb2
         state: present
@@ -23,14 +23,6 @@
         name: influxdb
         enabled: true
         state: started
-
-    - name: Copy wireguard firewalld config
-      ansible.builtin.copy:
-        src: firewalld/influxdb.xml
-        dest: /etc/firewalld/services/influxdb.xml
-        owner: root
-        group: root
-        mode: u+rw,g-wx,o-wx
 
     - name: Allow influxdb through firewalld
       ansible.posix.firewalld:
