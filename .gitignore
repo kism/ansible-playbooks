@@ -1,2 +1,3 @@
 *.json
 archivepodcast/settings.json
+onboard/cron/duckdns/ducktoken
