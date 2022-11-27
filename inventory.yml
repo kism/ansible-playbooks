@@ -24,8 +24,6 @@ all:
       ansible_host: mogulmoves.rodeo
       timezone: awst
 
-
-
 aptbased:
   hosts:
     pve:
@@ -51,4 +49,3 @@ baremetal:
     pve:
     cert:
     mogulmoves:
-
