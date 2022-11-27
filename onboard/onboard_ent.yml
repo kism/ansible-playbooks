@@ -1,80 +1,107 @@
 ---
-# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
-
 - name: Basic setup for ent jumpbox
   hosts: all
   become: yes
   collections:
     - community.general
   tasks:
-  - name: Install the latest version of firewalld
-    ansible.builtin.dnf:
-      name:
-      - firewalld
-      state: latest
+    - name: Install the latest version of firewalld
+      ansible.builtin.dnf:
+        name:
+          - firewalld
+        state: latest
 
-  # firewalld
-  - name: firewall enabled and running
-    service:
-      name: firewalld
-      enabled: true
-      state: started
+    # firewalld
+    - name: firewall enabled and running
+      service:
+        name: firewalld
+        enabled: true
+        state: started
+      notify:
+        - Restart firewalld
 
-  - name: Allow ssh
-    ansible.posix.firewalld:
-      service: ssh
-      zone: public
-      permanent: yes
-      state: enabled
+    - name: Allow ssh
+      ansible.posix.firewalld:
+        service: ssh
+        zone: public
+        permanent: yes
+        state: enabled
+      notify:
+        - Restart firewalld
 
-  - name: Remove cockpit firewall rule
-    ansible.posix.firewalld:
-      service: cockpit
-      zone: public
-      permanent: yes
-      state: disabled
+    - name: Remove cockpit firewall rule
+      ansible.posix.firewalld:
+        service: cockpit
+        zone: public
+        permanent: yes
+        state: disabled
+      notify:
+        - Restart firewalld
 
-  - name: Restart service cron on centos, in all cases, also issue daemon-reload to pick up config changes
-    ansible.builtin.systemd:
-      state: restarted
-      name: firewalld
+    # Wireguard
+    - name: Install the latest version of wireguard
+      ansible.builtin.dnf:
+        name:
+          - wireguard-tools
+        state: latest
 
-# Wireguard
-  - name: Install the latest version of wireguard
-    ansible.builtin.dnf:
-      name:
-      - wireguard-tools
-      state: latest
+    - name: Copy wireguard firewalld config
+      ansible.builtin.copy:
+        src: firewalld/wireguard.xml
+        dest: /etc/firewalld/services/wireguard.xml
+        owner: root
+        group: root
+        mode: u+rw,g-wx,o-wx
 
-  - name: Copy wireguard firewalld config
-    ansible.builtin.copy:
-      src: firewalld/wireguard.xml
-      dest: /etc/firewalld/services/wireguard.xml
-      owner: root
-      group: root
-      mode: u+rw,g-wx,o-wx
+    - name: Allow ssh
+      ansible.posix.firewalld:
+        service: wireguard
+        zone: public
+        permanent: yes
+        state: enabled
+      notify:
+        - Restart firewalld
 
-  - name: Allow ssh
-    ansible.posix.firewalld:
-      service: wireguard
-      zone: public
-      permanent: yes
-      state: enabled
+    # MOTD, bash config
+    - name: Copy motd file
+      ansible.builtin.copy:
+        src: motd/ent.txt
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: u+rw,g-wx,o-wx
 
+    - name: Copy bash config
+      ansible.builtin.copy:
+        src: dotfiles/ent.bashrc
+        dest: /root/.bashrc
+        owner: root
+        group: root
+        mode: u+rw,g-wrx,o-wrx
 
-# MOTD, bash config
-  - name: Copy wireguard firewalld config
-    ansible.builtin.copy:
-      src: motd/ent.txt
-      dest: /etc/motd
-      owner: root
-      group: root
-      mode: u+rw,g-wx,o-wx
+    # Duckdns
+    - name: Create a /opt/duckdns if it does not exist
+      ansible.builtin.file:
+        path: /opt/duckdns/
+        state: directory
+        mode: "0755"
 
-  - name: Copy wireguard firewalld config
-    ansible.builtin.copy:
-      src: dotfiles/ent.bashrc
-      dest: /root/.bashrc
-      owner: root
-      group: root
-      mode: u+rw,g-wrx,o-wrx
+    - name: Touch the ducktoken file, set permissions
+      ansible.builtin.file:
+        path: /opt/duckdns/ducktoken
+        state: touch
+        mode: "0600"
+
+    - name: Copy duck cron job
+      ansible.builtin.copy:
+        src: cron/duckdns/duck.sh
+        dest: /opt/duckdns/duck.sh
+        owner: root
+        group: root
+        mode: "0644"
+
+  handlers:
+    - name: Restart firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: restarted
