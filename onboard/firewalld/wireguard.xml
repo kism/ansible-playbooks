@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Wireguard</short>
+  <description>Wireguard VPN Protocol</description>
+  <port protocol="tcp" port="51820"/>
+</service>

@@ -26,11 +26,10 @@
             name: kgadmins
             state: present
 
-        - name: adding existing user kism to group sudo
+        - name: adding existing user kism to group kgadmins
           ansible.builtin.user:
             name: kism
             groups: kgadmins
-            append: yes
 
         - name: This command will ensure that kgadmins are able to sudo
           ansible.builtin.shell:
@@ -40,26 +39,13 @@
           become: yes
           become_user: kism
           ansible.builtin.shell:
-            cmd: 'curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash'
-
-      when: ansible_user == 'ansible_svc'
-
-    - name: On hosts without sudo, just add keys
-      block:
-        - name: Set authorized keys taken from url using lookup
-          ansible.posix.authorized_key:
-            user: root
-            state: present
-            key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
-
-      when: ansible_user == 'root'
+            cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
 
     - name: This command will ensure that bash is setup correctly
       become: yes
       become_user: root
       ansible.builtin.shell:
-        cmd: 'curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash'
-
+        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
 
     - name: Set timezone to Perth
       when: timezone == 'awst'
@@ -74,14 +60,14 @@
 
     - name: Disable root Login
       lineinfile:
-            dest: /etc/ssh/sshd_config
-            regexp: '^PermitRootLogin'
-            line: "PermitRootLogin no"
-            state: present
-            backup: yes
+        dest: /etc/ssh/sshd_config
+        regexp: "^PermitRootLogin"
+        line: "PermitRootLogin no"
+        state: present
+        backup: yes
       become: yes
       #notify:
-        #- restart ssh
+      #- restart ssh
 
     # Install Packages
 - name: Update all my DNF based linux hosts
@@ -92,6 +78,7 @@
       dnf:
         update_cache: yes
         state: latest
+
     - name: Enable epel
       ansible.builtin.dnf:
         name: epel-release
@@ -107,18 +94,23 @@
         update_only: yes
         state: latest
 
+    - name: Remove Cockpit
+      ansible.builtin.dnf:
+        name:
+          - cockpit
+        state: absent
+
     - name: Install the latest version of
       ansible.builtin.dnf:
         name:
-        - htop
-        - iotop
-        - nload
-        - neofetch
-        - vim
-        - git
-        - tmux
+          - htop
+          - iotop
+          - nload
+          - neofetch
+          - vim
+          - git
+          - tmux
         state: latest
-
 
 - name: Update all my apt based linux hosts
   hosts: aptbased
@@ -132,18 +124,16 @@
       ansible.builtin.apt:
         install_recommends: no
         pkg:
-        - htop
-        - iotop
-        - nload
-        - neofetch
-        - vim
-        - git
-        - tmux
+          - htop
+          - iotop
+          - nload
+          - neofetch
+          - vim
+          - git
+          - tmux
 
   # handlers:
   #   - name: restart ssh
   #     systemctl:
   #       name: sshd
   #       state: restarted
-
-
