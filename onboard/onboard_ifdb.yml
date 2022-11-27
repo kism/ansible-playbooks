@@ -5,65 +5,65 @@
   collections:
     - community.general
   tasks:
-  - name: Copy file with owner and permission, using symbolic representation
-    ansible.builtin.copy:
-      src: influxdb.repo
-      dest: /etc/yum.repos.d/influxdb.repo
-      owner: root
-      group: root
-      mode: u=rw,g=r,o=r
+    - name: Copy file with owner and permission, using symbolic representation
+      ansible.builtin.copy:
+        src: influxdb.repo
+        dest: /etc/yum.repos.d/influxdb.repo
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
 
-  - name: Install the latest version of
-    ansible.builtin.dnf:
-      name:
-      - influxdb2
-      - firewalld
-      state: latest
+    - name: Install the latest version of
+      ansible.builtin.dnf:
+        name:
+          - influxdb2
+          - firewalld
+        state: latest
 
-  # firewalld
-  - name: firewall enabled and running
-    service:
-      name: firewalld
-      enabled: true
-      state: started
+    # firewalld
+    - name: firewall enabled and running
+      service:
+        name: firewalld
+        enabled: true
+        state: started
 
-  - name: start and enable influxdb service
-    service:
-      name: influxdb
-      enabled: true
-      state: started
+    - name: start and enable influxdb service
+      service:
+        name: influxdb
+        enabled: true
+        state: started
 
-  - name: Allow influxdb
-    ansible.posix.firewalld:
-      port: 8086/tcp
-      zone: public
-      permanent: yes
-      state: enabled
-    notify:
-      - Restart firewalld
+    - name: Allow influxdb
+      ansible.posix.firewalld:
+        port: 8086/tcp
+        zone: public
+        permanent: yes
+        state: enabled
+      notify:
+        - Restart firewalld
 
-  - name: Allow ssh
-    ansible.posix.firewalld:
-      service: ssh
-      zone: public
-      permanent: yes
-      state: enabled
-    notify:
-      - Restart firewalld
+    - name: Allow ssh
+      ansible.posix.firewalld:
+        service: ssh
+        zone: public
+        permanent: yes
+        state: enabled
+      notify:
+        - Restart firewalld
 
-  - name: Remove cockpit from firewall config
-    ansible.posix.firewalld:
-      service: cockpit
-      zone: public
-      permanent: yes
-      state: disabled
-    notify:
-      - Restart firewalld
+    - name: Remove cockpit from firewall config
+      ansible.posix.firewalld:
+        service: cockpit
+        zone: public
+        permanent: yes
+        state: disabled
+      notify:
+        - Restart firewalld
 
-  - name: Restart service cron on centos, in all cases, also issue daemon-reload to pick up config changes
-    ansible.builtin.systemd:
-      state: restarted
-      name: firewalld
+    - name: Restart service cron on centos, in all cases, also issue daemon-reload to pick up config changes
+      ansible.builtin.systemd:
+        state: restarted
+        name: firewalld
 
   handlers:
     - name: Restart firewalld
