@@ -73,6 +73,8 @@
         path: /opt/duckdns/ducktoken
         state: touch
         mode: "0600"
+      changed_when: false # TODO, fix lmao
+
 
     - name: Copy duck cron job
       ansible.builtin.copy:
@@ -94,8 +96,8 @@
         name: firewalld
         state: restarted
 
-- name: Basic setup for ent jumpbox
-  hosts: localhost
+- name: Reminders
+  hosts: all
   tasks:
     # REMEMBER
     - name: Reminder
