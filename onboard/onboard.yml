@@ -38,7 +38,7 @@
         dest: /etc/sudoers.d/kgadmins
         owner: root
         group: root
-        mode: "644"
+        mode: "0644"
 
     - name: Ensure that bash is setup correctly for kism
       become: true
@@ -133,6 +133,7 @@
           - git
           - tmux
           - cronie
+          - file
         state: present
 
 - name: Update all my apt based linux hosts
@@ -154,6 +155,8 @@
           - vim
           - git
           - tmux
+          - file
+        state: present
 
 # _____________________________________________________________________________
 # Standard Firewall Rules
