@@ -1,47 +1,48 @@
 ---
+# Basic setup for KiSM's servers, onboarding script
 # curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
 
-- name: Basic setup for KiSM's servers
+# _____________________________________________________________________________
+- name: User Setup
   hosts: all
   become: yes
   collections:
     - community.general
   tasks:
-    - name: On hosts with sudo add kism user
-      block:
-        - name: Add the user 'kism' with a bash shell
-          ansible.builtin.user:
-            name: kism
-            shell: /bin/bash
-            append: yes
+    # User Management
+    - name: Add the user 'kism' with a bash shell
+      ansible.builtin.user:
+        name: kism
+        shell: /bin/bash
+        append: yes
 
-        - name: Set authorized keys taken from url using lookup
-          ansible.posix.authorized_key:
-            user: kism
-            state: present
-            key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
+    - name: Set authorized keys taken from url using lookup
+      ansible.posix.authorized_key:
+        user: kism
+        state: present
+        key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
 
-        - name: Ensure group "kgadmins" exists
-          ansible.builtin.group:
-            name: kgadmins
-            state: present
+    - name: Ensure group "kgadmins" exists
+      ansible.builtin.group:
+        name: kgadmins
+        state: present
 
-        - name: adding existing user kism to group kgadmins
-          ansible.builtin.user:
-            name: kism
-            groups: kgadmins
+    - name: adding existing user kism to group kgadmins
+      ansible.builtin.user:
+        name: kism
+        groups: kgadmins
 
-        - name: This command will ensure that kgadmins are able to sudo
-          ansible.builtin.shell:
-            cmd: 'echo "%kgadmins ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/kgadmins'
+    - name: This command will ensure that kgadmins are able to sudo
+      ansible.builtin.shell:
+        cmd: 'echo "%kgadmins ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/kgadmins'
 
-        - name: This command will ensure that bash is setup correctly
-          become: yes
-          become_user: kism
-          ansible.builtin.shell:
-            cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
+    - name: ensure that bash is setup correctly for kism
+      become: yes
+      become_user: kism
+      ansible.builtin.shell:
+        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
 
-    - name: This command will ensure that bash is setup correctly
+    - name: ensure that bash is setup correctly for root
       become: yes
       become_user: root
       ansible.builtin.shell:
@@ -60,16 +61,21 @@
 
     - name: Disable root Login
       lineinfile:
-        dest: /etc/ssh/sshd_config
-        regexp: "^PermitRootLogin"
+        path: /etc/ssh/sshd_config
+        regexp: "^.?PermitRootLogin"
         line: "PermitRootLogin no"
         state: present
-        backup: yes
-      become: yes
-      #notify:
-      #- restart ssh
+      notify:
+        - restart ssh
 
-    # Install Packages
+  handlers:
+    - name: restart ssh
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
+
+# _____________________________________________________________________________
+# Install Packages
 - name: Update all my DNF based linux hosts
   hosts: dnfbased
   become: yes
@@ -100,7 +106,7 @@
           - cockpit
         state: absent
 
-    - name: Install the latest version of
+    - name: Install useful apps
       ansible.builtin.dnf:
         name:
           - htop
@@ -131,9 +137,3 @@
           - vim
           - git
           - tmux
-
-  # handlers:
-  #   - name: restart ssh
-  #     systemctl:
-  #       name: sshd
-  #       state: restarted

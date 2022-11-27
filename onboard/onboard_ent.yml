@@ -74,9 +74,9 @@
     - name: Copy bash config
       ansible.builtin.copy:
         src: dotfiles/ent.bashrc
-        dest: /root/.bashrc
-        owner: root
-        group: root
+        dest: /home/kism/.bashrc
+        owner: kism
+        group: kism
         mode: u+rw,g-wrx,o-wrx
 
     # Duckdns
