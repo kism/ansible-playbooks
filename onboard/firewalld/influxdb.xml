@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>InfluxDB</short>
+  <description>InfluxDB open-source time series database </description>
+  <port protocol="tcp" port="8086"/>
+</service>

@@ -15,17 +15,8 @@
 
     - name: Install the latest version of
       ansible.builtin.dnf:
-        name:
-          - influxdb2
-          - firewalld
+        name: influxdb2
         state: latest
-
-    # firewalld
-    - name: firewall enabled and running
-      service:
-        name: firewalld
-        enabled: true
-        state: started
 
     - name: start and enable influxdb service
       service:
@@ -33,37 +24,22 @@
         enabled: true
         state: started
 
-    - name: Allow influxdb
+    - name: Copy wireguard firewalld config
+      ansible.builtin.copy:
+        src: firewalld/influxdb.xml
+        dest: /etc/firewalld/services/influxdb.xml
+        owner: root
+        group: root
+        mode: u+rw,g-wx,o-wx
+
+    - name: Allow influxdb through firewalld
       ansible.posix.firewalld:
-        port: 8086/tcp
+        service: influxdb
         zone: public
         permanent: yes
         state: enabled
       notify:
         - Restart firewalld
-
-    - name: Allow ssh
-      ansible.posix.firewalld:
-        service: ssh
-        zone: public
-        permanent: yes
-        state: enabled
-      notify:
-        - Restart firewalld
-
-    - name: Remove cockpit from firewall config
-      ansible.posix.firewalld:
-        service: cockpit
-        zone: public
-        permanent: yes
-        state: disabled
-      notify:
-        - Restart firewalld
-
-    - name: Restart service cron on centos, in all cases, also issue daemon-reload to pick up config changes
-      ansible.builtin.systemd:
-        state: restarted
-        name: firewalld
 
   handlers:
     - name: Restart firewalld
