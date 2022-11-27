@@ -75,7 +75,6 @@
         mode: "0600"
       changed_when: false # TODO, fix lmao
 
-
     - name: Copy duck cron job
       ansible.builtin.copy:
         src: cron/duckdns/duck.sh
