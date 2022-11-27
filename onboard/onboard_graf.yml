@@ -1,32 +1,37 @@
 ---
-- name: Basic setup for InfluxDB
+- name: Basic setup for Grafana
   hosts: all
   become: true
   collections:
     - community.general
   tasks:
-    - name: Copy file with owner and permission, using symbolic representation
+    - name: Copy repo file to yum.repos.d
       ansible.builtin.copy:
-        src: repos_dnf/influxdb.repo
-        dest: /etc/yum.repos.d/influxdb.repo
+        src: repos_dnf/grafana.repo
+        dest: /etc/yum.repos.d/grafana.repo
         owner: root
         group: root
-        mode: "644"
+        mode: "0644"
 
-    - name: Install the latest version of InfluxDB
+    # - name: Import Grafana GPG key
+    #   ansible.builtin.rpm_key:
+    #     state: present
+    #     key: https://rpm.grafana.com/gpg.key
+
+    - name: Install the latest version of Grafana
       ansible.builtin.dnf:
-        name: influxdb2
+        name: grafana
         state: present
 
-    - name: Start and enable InfluxDB service
+    - name: Start and enable Grafana service
       ansible.builtin.service:
-        name: influxdb
+        name: grafana-server
         enabled: true
         state: started
 
-    - name: Allow influxdb through firewalld
+    - name: Allow Grafana through firewalld
       ansible.posix.firewalld:
-        service: influxdb
+        service: grafana
         zone: public
         permanent: true
         state: enabled
