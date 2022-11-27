@@ -2,5 +2,5 @@
 <service>
   <short>Grafana</short>
   <description>Grafana is a multi-platform open source analytics and interactive visualization web application</description>
-  <port protocol="tcp" port="3000"/>
+  <port protocol="tcp" port="3000" />
 </service>

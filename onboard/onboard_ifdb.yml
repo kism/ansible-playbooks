@@ -13,6 +13,11 @@
         group: root
         mode: "644"
 
+    - name: Import InfluxDB GPG key
+      ansible.builtin.rpm_key:
+        state: present
+        key: https://repos.influxdata.com/influxdb.key
+
     - name: Install the latest version of InfluxDB
       ansible.builtin.dnf:
         name: influxdb2
