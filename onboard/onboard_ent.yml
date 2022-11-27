@@ -1,7 +1,7 @@
 ---
 - name: Basic setup for ent jumpbox
   hosts: all
-  become: yes
+  become: true
   collections:
     - community.general
   tasks:
@@ -10,7 +10,7 @@
       ansible.builtin.dnf:
         name:
           - wireguard-tools
-        state: latest
+        state: present
 
     - name: Copy wireguard firewalld config
       ansible.builtin.copy:
@@ -24,10 +24,25 @@
       ansible.posix.firewalld:
         service: wireguard
         zone: public
-        permanent: yes
+        permanent: true
         state: enabled
       notify:
         - Restart firewalld
+
+    - name: Set duckdns cron job
+      ansible.builtin.cron:
+        name: "Turn off wireguard at 4am"
+        minute: "0"
+        hour: "4"
+        job: "/usr/bin/wg-quick down wg0"
+
+    - name: Copy script to bring up wireguard
+      ansible.builtin.copy:
+        src: scripts_adhoc/wgup.sh
+        dest: /home/kism/wgup.sh
+        owner: kism
+        group: kism
+        mode: "0740"
 
     # MOTD, bash config
     - name: Copy motd file
@@ -65,10 +80,29 @@
         dest: /opt/duckdns/duck.sh
         owner: root
         group: root
-        mode: "0644"
+        mode: "0744"
+
+    - name: Set duckdns cron job
+      ansible.builtin.cron:
+        name: "Update duckdns"
+        minute: "0"
+        job: "/opt/duckdns/duck.sh"
 
   handlers:
     - name: Restart firewalld
       ansible.builtin.service:
         name: firewalld
         state: restarted
+
+- name: Basic setup for ent jumpbox
+  hosts: localhost
+  tasks:
+    # REMEMBER
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Remember to enter the token in /opt/duckdns/ducktoken
+
+    # REMEMBER
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Remember to copy the wireguard config to cat /etc/wireguard/wg0.conf
