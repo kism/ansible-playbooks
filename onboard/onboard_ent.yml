@@ -98,4 +98,4 @@
     # REMEMBER
     - name: Reminder
       ansible.builtin.debug:
-        msg: Remember to copy the wireguard config to cat /etc/wireguard/wg0.conf
+        msg: Remember to copy the wireguard config to /etc/wireguard/wg0.conf
