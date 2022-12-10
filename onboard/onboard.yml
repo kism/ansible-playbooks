@@ -78,10 +78,10 @@
         line: "PermitRootLogin no"
         state: present
       notify:
-        - restart ssh
+        - Restart sshd
 
   handlers:
-    - name: Restart ssh
+    - name: Restart sshd
       ansible.builtin.service:
         name: sshd
         state: restarted

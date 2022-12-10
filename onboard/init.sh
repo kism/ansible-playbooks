@@ -1,6 +1,6 @@
 # curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
-packages="curl tar sudo"
-dnf --setopt=install_weak_deps=False --best install -y $packages || apk add $packages || apt-get --no-install-recommends -y $packages || pacman -S --noconfirm $packages || pkg install $packages
+packages="curl tar sudo acl"
+dnf --setopt=install_weak_deps=False --best install -y $packages || apk add $packages || apt-get --no-install-recommends -y install $packages || pacman -S --noconfirm $packages || pkg install $packages
 
 publickeys="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKCzVh8CktGh+5LlZJfeBj/VcRzGO6zjrW2p2dM+X4PA ansible_svc\nssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIDLGih8ZZL9fwTCiKKmlyrHJXVQvKENZQMf2+/G8z65 root@DPSHUB"
 account="ansible_svc"
