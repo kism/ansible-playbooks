@@ -1,0 +1,35 @@
+---
+- name: Basic setup for helios64 nas
+  hosts: helios64
+  become: true
+  collections:
+    - community.general
+  tasks:
+    # Wireguard
+    - name: Install the latest version of samba
+      ansible.builtin.dnf:
+        name:
+          - samba
+        state: present
+
+    - name: Copy script to bring up wireguard
+      ansible.builtin.copy:
+        src: onboard/configs/smb/helios64_smb.conf
+        dest: /etc/samba/smb.conf
+        owner: root
+        group: root
+        mode: "0744"
+
+  handlers:
+    - name: Restart smbd
+      ansible.builtin.service:
+        name: smbd
+        state: restarted
+
+- name: Reminders
+  hosts: all
+  tasks:
+    # REMEMBER
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Add samba users manually
