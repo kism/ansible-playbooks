@@ -52,31 +52,3 @@ baremetal:
     cert:
     mogulmoves:
 
-# Roles
-grafana:
-  hosts:
-    graf:
-
-influxdb:
-  hosts:
-    ifdb:
-
-jumphost:
-  hosts:
-    ent:
-
-qbittorrent:
-  hosts:
-    qbt:
-
-armbiannas:
-  hosts:
-    helios64:
-
-smallstepca:
-  hosts:
-    cert:
-
-proxmox:
-  hosts:
-    pve:
