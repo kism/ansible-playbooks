@@ -1,6 +1,6 @@
 ---
 - name: Basic setup for ent jumpbox
-  hosts: all
+  hosts: ent
   become: true
   collections:
     - community.general
@@ -43,7 +43,7 @@
         dest: /etc/motd
         owner: root
         group: root
-        mode: u+rw,g-wx,o-wx
+        mode: "0644"
 
     - name: Copy bash config
       ansible.builtin.copy:
