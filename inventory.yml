@@ -23,6 +23,9 @@ all:
     mogulmoves:
       ansible_host: mogulmoves.rodeo
       timezone: awst
+    kierangeeau:
+      ansible_host: kierangee.au
+      timezone: awst  
 
 aptbased:
   hosts:
