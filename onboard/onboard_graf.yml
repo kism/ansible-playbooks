@@ -1,6 +1,6 @@
 ---
 - name: Basic setup for Grafana
-  hosts: all
+  hosts: graf
   become: true
   collections:
     - community.general
@@ -42,4 +42,48 @@
     - name: Restart firewalld
       ansible.builtin.service:
         name: firewalld
+        state: restarted
+
+- name: Basic setup for Nginx for Grafana
+  hosts: graf
+  become: true
+  collections:
+    - community.general
+  tasks:
+    - name: Install the latest version of Grafana
+      ansible.builtin.dnf:
+        name:
+          - nginx
+          - certbot
+        state: present
+
+    - name: Copy repo file to yum.repos.d
+      ansible.builtin.copy:
+        src: configs/nginx/nginx-grafana.conf
+        dest: /etc/nginx/conf.d/nginx-grafana.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart nginx
+
+    - name: Copy duck cron job
+      ansible.builtin.copy:
+        src: cron/duckdns/renewcerts.sh
+        dest: /opt/scripts/renewcerts.sh
+        owner: root
+        group: root
+        mode: "0744"
+
+    - name: Set certbot script cron job
+      ansible.builtin.cron:
+        name: "Renew SSL Certificate with ACME protocol"
+        minute: "0"
+        hour: "0,12"
+        job: "/bin/bash /opt/scripts/renewcerts.sh"
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
         state: restarted

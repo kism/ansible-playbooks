@@ -1,6 +1,6 @@
 ---
 - name: Basic setup for InfluxDB
-  hosts: all
+  hosts: ifdb
   become: true
   collections:
     - community.general
@@ -37,6 +37,26 @@
         state: enabled
       notify:
         - Restart firewalld
+
+    - name: Copy repo file to yum.repos.d
+      ansible.builtin.copy:
+        src: scripts_adhoc/influxping.py
+        dest: /opt/scripts/influxping.py
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Set ping scan (ping) cron job
+      ansible.builtin.cron:
+        name: "Ping scan (ping) > InfluxDB"
+        minute: "*/5"
+        job: "cd /opt/scripts && /opt/scripts/influxping.py ping"
+
+    - name: Set ping scan (scan) cron job
+      ansible.builtin.cron:
+        name: "Ping scan (ping) > InfluxDB"
+        minute: "58"
+        job: "cd /opt/scripts && /opt/scripts/influxping.py scan"
 
   handlers:
     - name: Restart firewalld
