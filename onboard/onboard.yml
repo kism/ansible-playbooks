@@ -80,6 +80,15 @@
       notify:
         - Restart sshd
 
+
+    - name: Copy the kgadmins sudoers rule
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /etc/pki/tls/certs/kglan_root.cer
+        owner: root
+        group: root
+        mode: "0444"
+
   handlers:
     - name: Restart sshd
       ansible.builtin.service:
