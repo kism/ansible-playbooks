@@ -16,7 +16,6 @@ all:
     cert:
       ansible_host: cert.kg.lan
       timezone: utc
-
     helios64:
       ansible_host: helios64.kg.lan
       timezone: awst
@@ -25,7 +24,7 @@ all:
       timezone: awst
     kierangeeau:
       ansible_host: kierangee.au
-      timezone: awst  
+      timezone: awst
 
 aptbased:
   hosts:
@@ -52,3 +51,32 @@ baremetal:
     pve:
     cert:
     mogulmoves:
+
+# Roles
+grafana:
+  hosts:
+    graf:
+
+influxdb:
+  hosts:
+    ifdb:
+
+jumphost:
+  hosts:
+    ent:
+
+qbittorrent:
+  hosts:
+    qbt:
+
+armbiannas:
+  hosts:
+    helios64:
+
+smallstepca:
+  hosts:
+    cert:
+
+proxmox:
+  hosts:
+    pve:
