@@ -88,11 +88,11 @@
         - /opt/factorio/saves
         - /opt/factorio/mods
 
-    - name: Download and unarchive factorio headless
-      ansible.builtin.unarchive:
-        src: https://www.factorio.com/get-download/1.1.72/headless/linux64
-        dest: /opt/
-        remote_src: true
+    # - name: Download and unarchive factorio headless
+    #   ansible.builtin.unarchive:
+    #     src: https://www.factorio.com/get-download/1.1.72/headless/linux64
+    #     dest: /opt/
+    #     remote_src: true
 
     - name: Recursively change ownership of a directory
       ansible.builtin.file:
@@ -113,4 +113,4 @@
   tasks:
     - name: Reminder
       ansible.builtin.debug:
-        msg: Remember to copy over a save, find the paths defined in /etc/systemd/system/factorio.service
+        msg: Remember to copy over a save and config, find the paths defined in /etc/systemd/system/factorio.service
