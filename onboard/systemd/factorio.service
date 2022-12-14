@@ -1,0 +1,14 @@
+[Unit]
+Description=Factorio Server
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/opt/factorio/bin/x64/factorio --start-server /opt/factorio/saves/main.zip --server-settings /opt/factorio/data/server-settings.json
+User=factorio
+Group=factorio
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

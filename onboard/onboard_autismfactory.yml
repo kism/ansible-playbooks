@@ -9,8 +9,7 @@
   collections:
     - community.general
   tasks:
-
-    - name: Assume this is being run on a laptop
+    - name: Assume this is being run on a laptop, disable sleep, hibernate etc
       ansible.builtin.systemd:
         name: "{{ item }}"
         enabled: false
@@ -20,6 +19,20 @@
         - suspend.target
         - hibernate.target
         - hybrid-sleep.target
+
+    - name: Copy Factorio service
+      ansible.builtin.copy:
+        src: systemd/factorio.service
+        dest: /etc/systemd/system/factorio.service
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Enable factorio service, don't start it yet
+      ansible.builtin.systemd:
+        name: factorio
+        enabled: true
+        masked: false
 
     - name: Allow factorio through firewalld
       ansible.posix.firewalld:
@@ -56,11 +69,15 @@
         groups: kgadmins,factorio
       loop: "{{ users }}"
 
-    - name: Create factorio directory
+    - name: Create factorio directories
       ansible.builtin.file:
-        path: /opt/factorio
+        path:
         state: directory
         mode: "0770"
+      loop:
+        - /opt/factorio
+        - /opt/factorio/saves
+        - /opt/factorio/mods
 
     - name: Download and unarchive factorio headless
       ansible.builtin.unarchive:
