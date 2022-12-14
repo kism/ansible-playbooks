@@ -224,3 +224,29 @@
       ansible.builtin.service:
         name: firewalld
         state: restarted
+
+
+
+# _____________________________________________________________________________
+# Setup telegraf on dnf based hosts
+- name: Setup influxd on dnf based hosts
+  hosts: dnfbased
+  become: true
+  tasks:
+    - name: Copy file with owner and permission, using symbolic representation
+      ansible.builtin.copy:
+        src: repos_dnf/influxdb.repo
+        dest: /etc/yum.repos.d/influxdb.repo
+        owner: root
+        group: root
+        mode: "644"
+
+    - name: Import InfluxDB GPG key
+      ansible.builtin.rpm_key:
+        state: present
+        key: https://repos.influxdata.com/influxdb.key
+
+    - name: Install the latest version of InfluxDB
+      ansible.builtin.dnf:
+        name: telegraf
+        state: present
