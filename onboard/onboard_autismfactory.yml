@@ -19,10 +19,21 @@
         - suspend.target
         - hibernate.target
         - hybrid-sleep.target
+      notify:
+        - Restart systemd-logind
+
+    - name: Set logind sleep settings, assuming laptop is plugged in
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/logind.conf
+        regexp: "^.?HandleLidSwitchExternalPower"
+        line: "HandleLidSwitchExternalPower=ignore"
+        state: present
+      notify:
+        - Restart systemd-logind
 
     - name: Copy Factorio service
       ansible.builtin.copy:
-        src: systemd/factorio.service
+        src: systemd/system/factorio.service
         dest: /etc/systemd/system/factorio.service
         owner: root
         group: root
@@ -106,6 +117,11 @@
     - name: Restart firewalld
       ansible.builtin.service:
         name: firewalld
+        state: restarted
+
+    - name: Restart systemd-logind
+      ansible.builtin.service:
+        name: systemd-logind
         state: restarted
 
 - name: Reminders
