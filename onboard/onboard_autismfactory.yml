@@ -9,6 +9,18 @@
   collections:
     - community.general
   tasks:
+
+    - name: Assume this is being run on a laptop
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        enabled: false
+        masked: true
+      loop:
+        - sleep.target
+        - suspend.target
+        - hibernate.target
+        - hybrid-sleep.target
+
     - name: Allow factorio through firewalld
       ansible.posix.firewalld:
         service: factorio
