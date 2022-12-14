@@ -1,0 +1,71 @@
+---
+- name: Basic setup for factorio server
+  hosts: autismfactory
+  become: true
+  vars:
+    users:
+      - kism
+      - skibisky
+  collections:
+    - community.general
+  tasks:
+    - name: Allow factorio through firewalld
+      ansible.posix.firewalld:
+        service: factorio
+        zone: public
+        permanent: true
+        state: enabled
+      notify:
+        - Restart firewalld
+
+    - name: Add the user 'factorio' without a shell
+      ansible.builtin.user:
+        name: factorio
+        shell: /bin/false
+        append: true
+
+    - name: Add friends linux accounts
+      ansible.builtin.user:
+        name: "{{ item }}"
+        shell: /bin/bash
+        append: true
+      loop: "{{ users }}"
+
+    - name: Set authorized keys taken from url using lookup
+      ansible.posix.authorized_key:
+        user: "{{ item }}"
+        state: present
+        key: "{{ lookup('url', 'https://github.com/' + '{{ item }}' + '.keys', split_lines=False) }}"
+      loop: "{{ users }}"
+
+    - name: Add users to admins and factorio group
+      ansible.builtin.user:
+        name: "{{ item }}"
+        groups: kgadmins,factorio
+      loop: "{{ users }}"
+
+    - name: Create factorio directory
+      ansible.builtin.file:
+        path: /opt/factorio
+        state: directory
+        mode: "0770"
+
+    - name: Download and unarchive factorio headless
+      ansible.builtin.unarchive:
+        src: https://www.factorio.com/get-download/1.1.72/headless/linux64
+        dest: /opt/
+        remote_src: true
+
+    - name: Recursively change ownership of a directory
+      ansible.builtin.file:
+        path: /opt/factorio
+        state: directory
+        recurse: true
+        owner: factorio
+        group: factorio
+
+  handlers:
+    - name: Restart firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: restarted

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Factorio</short>
+  <description>Factorio is a construction and management simulation game developed by the Czech studio Wube Software</description>
+  <port protocol="udp" port="34197" />
+</service>

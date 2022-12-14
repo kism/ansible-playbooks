@@ -143,6 +143,8 @@
           - tmux
           - cronie
           - file
+          - tree
+          - wget
         state: present
 
 - name: Update all my apt based linux hosts
@@ -165,6 +167,8 @@
           - git
           - tmux
           - file
+          - tree
+          - wget
         state: present
 
 # _____________________________________________________________________________

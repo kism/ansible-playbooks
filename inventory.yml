@@ -25,6 +25,9 @@ all:
     kierangeeau:
       ansible_host: kierangee.au
       timezone: awst
+    autismfactory:
+      ansible_host: autismfactory.ira.mil.ie
+      timezone: awst
 
 aptbased:
   hosts:
@@ -38,6 +41,7 @@ dnfbased:
     ifdb:
     mogulmoves:
     ent:
+    autismfactory:
 
 vms:
   hosts:
@@ -51,4 +55,4 @@ baremetal:
     pve:
     cert:
     mogulmoves:
-
+    autismfactory:
