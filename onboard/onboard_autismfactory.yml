@@ -67,6 +67,7 @@
       ansible.builtin.user:
         name: "{{ item }}"
         groups: factorio
+        append: true
       loop: "{{ users }}"
 
     - name: Copy the factorio sudoers rule
@@ -79,7 +80,7 @@
 
     - name: Create factorio directories
       ansible.builtin.file:
-        path:
+        path: "{{ item }}"
         state: directory
         mode: "0770"
       loop:
@@ -106,3 +107,10 @@
       ansible.builtin.service:
         name: firewalld
         state: restarted
+
+- name: Reminders
+  hosts: all
+  tasks:
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Remember to copy over a save, find the paths defined in /etc/systemd/system/factorio.service
