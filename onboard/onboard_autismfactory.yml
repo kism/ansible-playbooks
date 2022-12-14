@@ -63,11 +63,19 @@
         key: "{{ lookup('url', 'https://github.com/' + '{{ item }}' + '.keys', split_lines=False) }}"
       loop: "{{ users }}"
 
-    - name: Add users to admins and factorio group
+    - name: Add users to factorio group
       ansible.builtin.user:
         name: "{{ item }}"
-        groups: kgadmins,factorio
+        groups: factorio
       loop: "{{ users }}"
+
+    - name: Copy the factorio sudoers rule
+      ansible.builtin.copy:
+        src: configs/sudoers/factorio
+        dest: /etc/sudoers.d/factorio
+        owner: root
+        group: root
+        mode: "0644"
 
     - name: Create factorio directories
       ansible.builtin.file:

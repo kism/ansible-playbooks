@@ -1,0 +1,8 @@
+%factorio ALL= NOPASSWD: /usr/bin/systemctl restart factorio.service
+%factorio ALL= NOPASSWD: /usr/bin/systemctl stop factorio.service
+%factorio ALL= NOPASSWD: /usr/bin/systemctl start factorio.service
+%factorio ALL= NOPASSWD: /usr/bin/systemctl status factorio.service
+%factorio ALL= NOPASSWD: /usr/bin/systemctl restart factorio
+%factorio ALL= NOPASSWD: /usr/bin/systemctl stop factorio
+%factorio ALL= NOPASSWD: /usr/bin/systemctl start factorio
+%factorio ALL= NOPASSWD: /usr/bin/systemctl status factorio
