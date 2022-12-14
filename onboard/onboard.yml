@@ -80,6 +80,10 @@
       notify:
         - Restart sshd
 
+    - name: Remove 01-PermitRootLogin just incase, looking at you redhat
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d/01-permitrootlogin.conf
+        state: absent
 
     - name: Copy the kgadmins sudoers rule
       ansible.builtin.copy:
