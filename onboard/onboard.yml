@@ -1,5 +1,5 @@
 ---
-# Basic setup for KiSM's servers, onboarding script
+# Basic setup for KiSM's servers, init script to make this script work:
 # curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
 
 # _____________________________________________________________________________
