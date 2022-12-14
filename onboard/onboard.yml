@@ -38,7 +38,7 @@
         dest: /etc/sudoers.d/kgadmins
         owner: root
         group: root
-        mode: "0644"
+        mode: "0660"
 
     - name: Ensure that bash is setup correctly for kism
       become: true

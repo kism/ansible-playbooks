@@ -76,7 +76,7 @@
         dest: /etc/sudoers.d/factorio
         owner: root
         group: root
-        mode: "0644"
+        mode: "0660"
 
     - name: Create factorio directories
       ansible.builtin.file:
