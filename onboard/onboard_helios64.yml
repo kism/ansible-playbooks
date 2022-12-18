@@ -1,4 +1,5 @@
 ---
+# _____________________________________________________________________________
 - name: Basic setup for helios64 nas
   hosts: helios64
   become: true
@@ -26,6 +27,7 @@
         name: smbd
         state: restarted
 
+# _____________________________________________________________________________
 - name: Reminders
   hosts: helios64
   tasks:

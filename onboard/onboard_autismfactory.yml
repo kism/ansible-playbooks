@@ -1,4 +1,5 @@
 ---
+# _____________________________________________________________________________
 - name: Basic setup for factorio server
   hosts: autismfactory
   become: true
@@ -125,6 +126,7 @@
         name: systemd-logind
         state: restarted
 
+# _____________________________________________________________________________
 - name: Reminders
   hosts: autismfactory
   tasks:

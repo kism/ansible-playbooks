@@ -1,4 +1,5 @@
 ---
+# _____________________________________________________________________________
 - name: Basic setup for ent jumpbox
   hosts: ent
   become: true
@@ -87,7 +88,7 @@
       ansible.builtin.systemd:
         name: firewalld
         state: restarted
-
+# _____________________________________________________________________________
 - name: Reminders
   hosts: ent
   tasks:
