@@ -68,9 +68,9 @@
       notify:
         - Restart nginx
 
-    - name: Copy duck cron job
+    - name: Copy renewcerts cron job
       ansible.builtin.copy:
-        src: cron/duckdns/renewcerts.sh
+        src: scrips_cron/renewcerts.sh
         dest: /opt/scripts/renewcerts.sh
         owner: root
         group: root

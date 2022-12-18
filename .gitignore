@@ -2,5 +2,3 @@
 *.asc
 secrets.yml
 archivepodcast/settings.json
-onboard/cron/duckdns/ducktoken
-ducktoken

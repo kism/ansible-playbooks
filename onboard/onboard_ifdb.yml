@@ -55,7 +55,7 @@
 
     - name: Copy repo file to yum.repos.d
       ansible.builtin.copy:
-        src: scripts_adhoc/influxping.py
+        src: scripts_cron/influxping.py
         dest: /opt/scripts/influxping.py
         owner: root
         group: root

@@ -62,11 +62,11 @@
 
     - name: Copy duck cron job
       ansible.builtin.copy:
-        src: cron/duckdns/duck.sh
+        src: scripts_cron/duck.sh
         dest: /opt/duckdns/duck.sh
         owner: root
         group: root
-        mode: "0744"
+        mode: "0774"
 
     - name: Set duckdns cron job
       ansible.builtin.cron:
