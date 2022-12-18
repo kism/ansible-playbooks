@@ -281,7 +281,7 @@
       ansible.builtin.lineinfile:
         path: /etc/telegraf/telegraf.d/common_influxdb.conf
         regexp: ".*password"
-        line: 'password = "{{ secret_influxdb }}"'
+        line: 'password = "{{ secret_influxdb_telegraf_password }}"'
         state: present
       notify:
         - Restart telegraf
