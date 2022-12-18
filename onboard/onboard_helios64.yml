@@ -6,7 +6,7 @@
     - community.general
   tasks:
     # Wireguard
-    - name: Install the latest version of samba
+    - name: Install samba
       ansible.builtin.dnf:
         name:
           - samba

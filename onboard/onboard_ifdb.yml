@@ -18,7 +18,7 @@
         state: present
         key: https://repos.influxdata.com/influxdb.key
 
-    - name: Install the latest version of InfluxDB
+    - name: Install InfluxDB
       ansible.builtin.dnf:
         name: influxdb2
         state: present

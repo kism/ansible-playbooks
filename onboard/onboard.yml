@@ -196,7 +196,7 @@
   hosts: dnfbased
   become: true
   tasks:
-    - name: Install the latest version of firewalld
+    - name: Install firewalld
       ansible.builtin.dnf:
         name:
           - firewalld
@@ -259,16 +259,39 @@
         state: present
         key: https://repos.influxdata.com/influxdb.key
 
-    - name: Install the latest version of telegraf
+    - name: Install telegraf
       ansible.builtin.dnf:
         name: telegraf
         state: present
+
+    - name: Copy common telegraf config
+      ansible.builtin.copy:
+        src: configs/telegraf/common_influxdb.conf
+        dest: /etc/telegraf/telegraf.d/common_influxdb.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+    - name: Disable root Login
+      ansible.builtin.lineinfile:
+        path: /etc/telegraf/telegraf.d/common_influxdb.conf
+        regexp: ".*password"
+        line: "password = \"{{ secret_influxdb }}\""
+        state: present
+      notify:
+        - Restart telegraf
 
     - name: Start and enable telegraf service
       ansible.builtin.service:
         name: telegraf
         enabled: true
-        state: started
-      ignore_errors: true
-      tags:
-        - skip_ansible_lint
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.service:
+        name: telegraf
+        state: restarted

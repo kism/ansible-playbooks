@@ -107,7 +107,7 @@
         name: nginx
         state: restarted
 
-    - name: Install latest version of python package 'requests'
+    - name: Install python package 'requests'
       pip:
         name: requests
 

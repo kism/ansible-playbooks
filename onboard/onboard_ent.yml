@@ -6,7 +6,7 @@
     - community.general
   tasks:
     # Wireguard
-    - name: Install the latest version of wireguard
+    - name: Install wireguard
       ansible.builtin.dnf:
         name:
           - wireguard-tools

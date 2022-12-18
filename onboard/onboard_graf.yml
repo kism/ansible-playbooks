@@ -18,7 +18,7 @@
     #     state: present
     #     key: https://rpm.grafana.com/gpg.key
 
-    - name: Install the latest version of Grafana
+    - name: Install Grafana
       ansible.builtin.dnf:
         name: grafana
         state: present
@@ -50,7 +50,7 @@
   collections:
     - community.general
   tasks:
-    - name: Install the latest version of Grafana
+    - name: Install Grafana
       ansible.builtin.dnf:
         name:
           - nginx
