@@ -103,3 +103,23 @@
         name: influxdb
         state: restarted
 
+# _____________________________________________________________________________
+# Setup letsencrypt and setup cron job
+- name: Setup letsencrypt and setup cron job
+  hosts: dnfbased
+  become: true
+  tasks:
+    - name: Initial certbot config
+      become: true
+      ansible.builtin.shell:
+        cmd: "certbot certonly --agree-tos --email={{secret_email}} -v -n --standalone -d kism.duckdns.org"
+      register: command_output
+      tags:
+        - skip_ansible_lint
+
+    - name: Set certbot cron job
+      ansible.builtin.cron:
+        name: "Turn off wireguard at 4am"
+        minute: "0"
+        hour: "4"
+        job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/archive/kism.duckdns.org'
