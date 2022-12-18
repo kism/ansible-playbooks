@@ -80,12 +80,20 @@
       notify:
         - Restart sshd
 
+    - name: Copy the kgadmins sudoers rule
+      ansible.builtin.copy:
+        src: configs/sshd/99-sshnopasswordauth.conf
+        dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
+        owner: root
+        group: root
+        mode: "0600"
+
     - name: Remove 01-PermitRootLogin just incase, looking at you redhat
       ansible.builtin.file:
         path: /etc/ssh/sshd_config.d/01-permitrootlogin.conf
         state: absent
 
-    - name: Copy the kgadmins sudoers rule
+    - name: Copy the kgadmins root ca certificate rule
       ansible.builtin.copy:
         src: certs/kglan_root.cer
         dest: /etc/pki/tls/certs/kglan_root.cer
@@ -149,7 +157,13 @@
           - file
           - tree
           - wget
+          - tar
         state: present
+
+    - name: Remove anaconda-ks.cfg
+      ansible.builtin.file:
+        path: /root/anaconda-ks.cfg
+        state: absent
 
 - name: Update all my apt based linux hosts
   hosts: aptbased
@@ -173,6 +187,7 @@
           - file
           - tree
           - wget
+          - tar
         state: present
 
 # _____________________________________________________________________________
@@ -225,8 +240,6 @@
         name: firewalld
         state: restarted
 
-
-
 # _____________________________________________________________________________
 # Setup telegraf on dnf based hosts
 - name: Setup influxd on dnf based hosts
@@ -246,7 +259,16 @@
         state: present
         key: https://repos.influxdata.com/influxdb.key
 
-    - name: Install the latest version of InfluxDB
+    - name: Install the latest version of telegraf
       ansible.builtin.dnf:
         name: telegraf
         state: present
+
+    - name: Start and enable telegraf service
+      ansible.builtin.service:
+        name: telegraf
+        enabled: true
+        state: started
+      ignore_errors: true
+      tags:
+        - skip_ansible_lint
