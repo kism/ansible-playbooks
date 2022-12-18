@@ -89,7 +89,7 @@
         state: restarted
 
 - name: Reminders
-  hosts: all
+  hosts: ent
   tasks:
     # REMEMBER
     - name: Reminder

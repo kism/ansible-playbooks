@@ -27,7 +27,7 @@
         state: restarted
 
 - name: Reminders
-  hosts: all
+  hosts: helios64
   tasks:
     # REMEMBER
     - name: Reminder

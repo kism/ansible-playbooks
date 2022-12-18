@@ -125,7 +125,7 @@
         state: restarted
 
 - name: Reminders
-  hosts: all
+  hosts: autismfactory
   tasks:
     - name: Reminder
       ansible.builtin.debug:

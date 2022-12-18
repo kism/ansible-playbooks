@@ -105,7 +105,7 @@
 
 # _____________________________________________________________________________
 - name: Setup letsencrypt and setup cron job
-  hosts: dnfbased
+  hosts: ifdb
   become: true
   tasks:
     - name: Initial certbot config
@@ -122,3 +122,9 @@
         minute: "0"
         hour: "4"
         job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/archive/kism.duckdns.org'
+
+# _____________________________________________________________________________
+- name: Setup influxdb accounts and databases
+  hosts: ifdb
+  become: true
+  tasks:
