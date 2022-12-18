@@ -22,7 +22,7 @@
 
   handlers:
     - name: Restart smbd
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: smbd
         state: restarted
 

@@ -5,6 +5,21 @@
   collections:
     - community.general
   tasks:
+    - name: Install certbot
+      ansible.builtin.dnf:
+        name:
+          - certbot
+        state: present
+
+    - name: Allow certbot standalone through firewalld
+      ansible.posix.firewalld:
+        service: http
+        zone: public
+        permanent: true
+        state: enabled
+      notify:
+        - Restart firewalld
+
     - name: Copy file with owner and permission, using symbolic representation
       ansible.builtin.copy:
         src: repos_dnf/influxdb.repo
@@ -24,7 +39,7 @@
         state: present
 
     - name: Start and enable InfluxDB service
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: influxdb
         enabled: true
         state: started
@@ -58,8 +73,33 @@
         minute: "58"
         job: "cd /opt/scripts && /opt/scripts/influxping.py scan"
 
+    - name: Copy common telegraf config
+      ansible.builtin.copy:
+        src: configs/influxdb/influxdb.conf
+        dest: /etc/influxdb/influxdb.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart influxdb
+
+    - name: Setup influxdb conf
+      ansible.builtin.lineinfile:
+        path: /etc/telegraf/telegraf.d/common_influxdb.conf
+        regexp: ".*password"
+        line: 'password = "{{ secret_influxdb_telegraf_password }}"'
+        state: present
+      notify:
+        - Restart telegraf
+
   handlers:
     - name: Restart firewalld
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: firewalld
         state: restarted
+
+    - name: Restart influxdb
+      ansible.builtin.systemd:
+        name: influxdb
+        state: restarted
+

@@ -115,12 +115,12 @@
 
   handlers:
     - name: Restart firewalld
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: firewalld
         state: restarted
 
     - name: Restart systemd-logind
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: systemd-logind
         state: restarted
 

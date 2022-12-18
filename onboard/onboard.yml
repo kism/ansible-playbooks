@@ -101,9 +101,14 @@
         group: root
         mode: "0444"
 
+    - name: Add my favorite /opt subdirectory
+      ansible.builtin.file:
+        path: /opt/scripts
+        state: directory
+
   handlers:
     - name: Restart sshd
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: sshd
         state: restarted
 
@@ -221,7 +226,7 @@
         - Restart firewalld
 
     - name: Firewall enabled and running
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: firewalld
         enabled: true
         state: started
@@ -236,7 +241,7 @@
 
   handlers:
     - name: Restart firewalld
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: firewalld
         state: restarted
 
@@ -274,7 +279,7 @@
       notify:
         - Restart telegraf
 
-    - name: Disable root Login
+    - name: Setup telegraf conf
       ansible.builtin.lineinfile:
         path: /etc/telegraf/telegraf.d/common_influxdb.conf
         regexp: ".*password"
@@ -284,7 +289,7 @@
         - Restart telegraf
 
     - name: Start and enable telegraf service
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: telegraf
         enabled: true
       notify:
@@ -292,6 +297,6 @@
 
   handlers:
     - name: Restart telegraf
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: telegraf
         state: restarted

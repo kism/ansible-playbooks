@@ -83,7 +83,7 @@
 
   handlers:
     - name: Restart firewalld
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: firewalld
         state: restarted
 

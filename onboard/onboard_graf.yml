@@ -24,7 +24,7 @@
         state: present
 
     - name: Start and enable Grafana service
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: grafana-server
         enabled: true
         state: started
@@ -40,17 +40,19 @@
 
   handlers:
     - name: Restart firewalld
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: firewalld
         state: restarted
 
+# _____________________________________________________________________________
+# Setup nginx and certbot on dnf based hosts
 - name: Basic setup for Nginx for Grafana
   hosts: graf
   become: true
   collections:
     - community.general
   tasks:
-    - name: Install Grafana
+    - name: Install nginx and Grafana
       ansible.builtin.dnf:
         name:
           - nginx
@@ -84,6 +86,6 @@
 
   handlers:
     - name: Restart nginx
-      ansible.builtin.service:
+      ansible.builtin.systemd:
         name: nginx
         state: restarted
