@@ -1,8 +1,16 @@
 ---
-- name: Basic setup for InfluxDB
+# _____________________________________________________________________________
+- name: Setup letsencrypt and setup cron job
   hosts: ifdb
   become: true
   tasks:
+    - name: Setup hosts
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: ".*kism.duckdns.org"
+        line: "127.0.0.1 kism.duckdns.org"
+        state: present
+
     - name: Install certbot
       ansible.builtin.dnf:
         name:
@@ -15,9 +23,39 @@
         zone: public
         permanent: true
         state: enabled
-      notify:
-        - Restart firewalld
 
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
+
+    - name: Initial certbot config
+      become: true
+      ansible.builtin.shell:
+        cmd: "certbot certonly --agree-tos --email={{secret_email}} -v -n --standalone -d kism.duckdns.org"
+      register: command_output
+      tags:
+        - skip_ansible_lint
+
+    - name: Set certbot cron job
+      ansible.builtin.cron:
+        name: "Try refresh Certificates"
+        minute: "0"
+        hour: "4"
+        job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/'
+
+    - name: Attempt to change ownership on /etc/letsencrypt/
+      ansible.builtin.file:
+        path: "/etc/letsencrypt/"
+        state: directory
+        recurse: yes
+        owner: "influxdb"
+        group: "influxdb"
+
+- name: Basic setup for InfluxDB
+  hosts: ifdb
+  become: true
+  tasks:
     - name: Copy file with owner and permission, using symbolic representation
       ansible.builtin.copy:
         src: repos_dnf/influxdb.repo
@@ -33,14 +71,10 @@
 
     - name: Install InfluxDB
       ansible.builtin.dnf:
-        name: influxdb
+        name:
+          - influxdb2
+          - influxdb2-cli
         state: present
-
-    - name: Start and enable InfluxDB service
-      ansible.builtin.systemd:
-        name: influxdb
-        enabled: true
-        state: started
 
     - name: Allow influxdb through firewalld
       ansible.posix.firewalld:
@@ -50,6 +84,22 @@
         state: enabled
       notify:
         - Restart firewalld
+
+    - name: Copy common influxdb startup script
+      ansible.builtin.copy:
+        src: configs/influxdb/influxd-systemd-start.sh
+        dest: /usr/lib/influxdb/scripts/influxd-systemd-start.sh
+        owner: root
+        group: root
+        mode: "0775"
+      notify:
+        - Restart influxdb
+
+    - name: Start and enable InfluxDB service
+      ansible.builtin.systemd:
+        name: influxdb
+        enabled: true
+        state: started
 
     - name: Copy repo file to yum.repos.d
       ansible.builtin.copy:
@@ -71,69 +121,32 @@
         minute: "58"
         job: "cd /opt/scripts && /opt/scripts/influxping.py scan"
 
-    - name: Copy common influxdb config
-      ansible.builtin.copy:
-        src: configs/influxdb/influxdb.conf
-        dest: /etc/influxdb/influxdb.conf
-        owner: influxdb
-        group: influxdb
-        mode: "600"
-      notify:
-        - Restart influxdb
-
-    - name: Setup influxdb conf
-      ansible.builtin.lineinfile:
-        path: /etc/telegraf/telegraf.d/common_influxdb.conf
-        regexp: ".*password"
-        line: 'password = "{{ secret_influxdb_telegraf_password }}"'
-        state: present
-      notify:
-        - Restart telegraf
-
   handlers:
-    - name: Restart firewalld
-      ansible.builtin.systemd:
-        name: firewalld
-        state: restarted
-
     - name: Restart influxdb
       ansible.builtin.systemd:
         name: influxdb
         state: restarted
 
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
+
 # _____________________________________________________________________________
-- name: Setup letsencrypt and setup cron job
-  hosts: ifdb
-  become: true
-  tasks:
-    - name: Initial certbot config
-      become: true
-      ansible.builtin.shell:
-        cmd: "certbot certonly --agree-tos --email={{secret_email}} -v -n --standalone -d kism.duckdns.org"
-      register: command_output
-      tags:
-        - skip_ansible_lint
-
-    - name: Set certbot cron job
-      ansible.builtin.cron:
-        name: "Turn off wireguard at 4am"
-        minute: "0"
-        hour: "4"
-        job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/'
-
-# _____________________________________________________________________________ TODO MAKE THIS MUCH NICER
 - name: Setup influxdb accounts and databases
   hosts: ifdb
   become: true
   tasks:
-    - name: Turn off auth for a second
-      ansible.builtin.lineinfile:
-        path: /etc/influxdb/influxdb.conf
-        regexp: "  auth-enabled"
-        line: "  auth-enabled = false"
-        state: present
-
     - name: Restart influxdb
       ansible.builtin.systemd:
         name: influxdb
         state: restarted
+
+    - name: Initial influxdb config
+      become: true
+      ansible.builtin.shell:
+        cmd: "influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o kg_lan -b bucket_main -host https://kism.duckdns.org:8086 -f"
+      register: command_output
+      failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
+      tags:
+        - skip_ansible_lint
