@@ -3,7 +3,7 @@
 # curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
 
 # _____________________________________________________________________________
-- name: User Setup
+- name: User and filesystem Setup
   hosts: all
   become: true
   collections:
@@ -105,6 +105,7 @@
       ansible.builtin.file:
         path: /opt/scripts
         state: directory
+        mode: "0770"
 
   handlers:
     - name: Restart sshd
@@ -113,8 +114,7 @@
         state: restarted
 
 # _____________________________________________________________________________
-# Install Packages
-- name: Update all my DNF based linux hosts
+- name: Update all packages on my DNF based linux hosts
   hosts: dnfbased
   become: true
   tasks:
@@ -196,8 +196,7 @@
         state: present
 
 # _____________________________________________________________________________
-# Standard Firewall Rules
-- name: Setup Firewalld on dnf based hosts
+- name: Setup basic Firewalld on dnf based hosts
   hosts: dnfbased
   become: true
   tasks:
@@ -246,8 +245,7 @@
         state: restarted
 
 # _____________________________________________________________________________
-# Setup telegraf on dnf based hosts
-- name: Setup influxd on dnf based hosts
+- name: Setup telegraf on dnf based hosts
   hosts: dnfbased
   become: true
   tasks:
@@ -283,7 +281,7 @@
       ansible.builtin.lineinfile:
         path: /etc/telegraf/telegraf.d/common_influxdb.conf
         regexp: ".*password"
-        line: "password = \"{{ secret_influxdb }}\""
+        line: 'password = "{{ secret_influxdb }}"'
         state: present
       notify:
         - Restart telegraf

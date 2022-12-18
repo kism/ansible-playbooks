@@ -104,7 +104,6 @@
         state: restarted
 
 # _____________________________________________________________________________
-# Setup letsencrypt and setup cron job
 - name: Setup letsencrypt and setup cron job
   hosts: dnfbased
   become: true

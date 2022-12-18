@@ -45,8 +45,7 @@
         state: restarted
 
 # _____________________________________________________________________________
-# Setup nginx and certbot on dnf based hosts
-- name: Basic setup for Nginx for Grafana
+- name: Setup for Nginx for Grafana
   hosts: graf
   become: true
   collections:
