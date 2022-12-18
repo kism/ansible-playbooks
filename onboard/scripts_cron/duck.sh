@@ -1,3 +1,4 @@
+sleep $(shuf -i 0-500 -n 1)
 ducktoken=$(cat /opt/duckdns/ducktoken)
 ipv4addr=$(curl -s ipv4.icanhazip.com)
 ipv6addr=$(curl -s ipv6.icanhazip.com)
