@@ -2,7 +2,7 @@
 all:
   hosts:
     ent:
-      ansible_host: 10.42.0.8
+      ansible_host: ent.kg.lan
       timezone: awst
     pve:
       ansible_host: pve.kg.lan
