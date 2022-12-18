@@ -43,6 +43,7 @@
       ansible.builtin.systemd:
         name: factorio
         enabled: true
+        state: stopped
         masked: false
 
     - name: Allow factorio through firewalld

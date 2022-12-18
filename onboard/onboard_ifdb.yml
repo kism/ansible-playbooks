@@ -2,8 +2,6 @@
 - name: Basic setup for InfluxDB
   hosts: ifdb
   become: true
-  collections:
-    - community.general
   tasks:
     - name: Install certbot
       ansible.builtin.dnf:
@@ -35,7 +33,7 @@
 
     - name: Install InfluxDB
       ansible.builtin.dnf:
-        name: influxdb2
+        name: influxdb
         state: present
 
     - name: Start and enable InfluxDB service
@@ -73,12 +71,12 @@
         minute: "58"
         job: "cd /opt/scripts && /opt/scripts/influxping.py scan"
 
-    - name: Copy common telegraf config
+    - name: Copy common influxdb config
       ansible.builtin.copy:
         src: configs/influxdb/influxdb.conf
         dest: /etc/influxdb/influxdb.conf
-        owner: telegraf
-        group: telegraf
+        owner: influxdb
+        group: influxdb
         mode: "600"
       notify:
         - Restart influxdb
@@ -121,10 +119,21 @@
         name: "Turn off wireguard at 4am"
         minute: "0"
         hour: "4"
-        job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/archive/kism.duckdns.org'
+        job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/'
 
-# _____________________________________________________________________________
+# _____________________________________________________________________________ TODO MAKE THIS MUCH NICER
 - name: Setup influxdb accounts and databases
   hosts: ifdb
   become: true
   tasks:
+    - name: Turn off auth for a second
+      ansible.builtin.lineinfile:
+        path: /etc/influxdb/influxdb.conf
+        regexp: "  auth-enabled"
+        line: "  auth-enabled = false"
+        state: present
+
+    - name: Restart influxdb
+      ansible.builtin.systemd:
+        name: influxdb
+        state: restarted
