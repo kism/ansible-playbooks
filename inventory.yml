@@ -10,6 +10,9 @@ all:
     ifdb:
       ansible_host: ifdb.kg.lan
       timezone: awst
+    graf:
+      ansible_host: graf.kg.lan
+      timezone: awst
     qbt:
       ansible_host: qbt.kg.lan
       timezone: awst
