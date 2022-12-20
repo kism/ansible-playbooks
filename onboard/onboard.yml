@@ -4,7 +4,7 @@
 
 # _____________________________________________________________________________
 - name: User and filesystem Setup
-  hosts: all
+  hosts: aptbased:dnfbased:pacmanbased
   become: true
   collections:
     - community.general
@@ -80,6 +80,12 @@
       notify:
         - Restart sshd
 
+    - name: Ensure that /etc/ssh/sshd_config.d exists
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d
+        state: directory
+        mode: "0755"
+
     - name: Copy the kgadmins sudoers rule
       ansible.builtin.copy:
         src: configs/sshd/99-sshnopasswordauth.conf
@@ -93,14 +99,6 @@
         path: /etc/ssh/sshd_config.d/01-permitrootlogin.conf
         state: absent
 
-    - name: Copy the kgadmins root ca certificate rule
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /etc/pki/tls/certs/kglan_root.cer
-        owner: root
-        group: root
-        mode: "0444"
-
     - name: Add my favorite /opt subdirectory
       ansible.builtin.file:
         path: /opt/scripts
@@ -112,6 +110,31 @@
       ansible.builtin.systemd:
         name: sshd
         state: restarted
+
+# _____________________________________________________________________________
+- name: Copy the kgadmins root ca certificate rule APT/DNF
+  hosts: dnfbased:aptbased
+  become: true
+  tasks:
+    - name: Copy the kgadmins root ca certificate rule
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /etc/pki/tls/certs/kglan_root.cer
+        owner: root
+        group: root
+        mode: "0444"
+
+- name: Copy the kgadmins root ca certificate rule PACMAN
+  hosts: pacmanbased
+  become: true
+  tasks:
+    - name: Copy the kgadmins root ca certificate rule
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /etc/ca-certificates/trust-source/anchors/kglan_root.cer
+        owner: root
+        group: root
+        mode: "0444"
 
 # _____________________________________________________________________________
 - name: Update all packages on my DNF based linux hosts
