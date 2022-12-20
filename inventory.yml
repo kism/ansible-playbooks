@@ -65,7 +65,8 @@ pacmanbased:
   kpbp:
 
 opkgbased:
-  openwrt:
+  hosts:
+    openwrt:
 
 vms:
   hosts:

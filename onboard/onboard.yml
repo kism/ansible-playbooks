@@ -114,7 +114,7 @@
 
 # _____________________________________________________________________________
 - name: Copy the kgadmins root ca certificate rule APT/DNF
-  hosts: dnfbased:aptbased
+  hosts: dnfbased:aptbased:!cert
   become: true
   tasks:
     - name: Copy the kgadmins root ca certificate rule

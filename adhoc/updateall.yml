@@ -1,4 +1,7 @@
 ---
+# Update all the servers, init script to make this script work:
+# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
+
 - name: Update all my DNF based linux hosts
   hosts: dnfbased
   become: true
@@ -6,7 +9,7 @@
     - name: Update DNF Cache
       ansible.builtin.dnf:
         update_cache: true
-        state: true
+        state: installed
     - name: Upgrade packages
       ansible.builtin.dnf:
         update_only: true
