@@ -73,6 +73,7 @@
       ansible.posix.authorized_key:
         user: "{{ item }}"
         state: present
+        exclusive: true
         key: "{{ lookup('url', 'https://github.com/' + '{{ item }}' + '.keys', split_lines=False) }}"
       loop: "{{ users }}"
 
