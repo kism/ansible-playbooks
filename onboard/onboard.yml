@@ -20,6 +20,7 @@
       ansible.posix.authorized_key:
         user: kism
         state: present
+        exclusive: true
         key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
 
     - name: Ensure group "kgadmins" exists
