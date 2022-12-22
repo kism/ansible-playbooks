@@ -310,6 +310,33 @@
         name: telegraf
         state: present
 
+# - name: Setup telegraf on apt based hosts
+#   hosts: aptbased
+#   become: true
+#   tasks:
+#     - name: "Download Telegraf apt key"
+#       apt_key:
+#         url: "https://repos.influxdata.com/influxdb.key"
+#         id: 2582E0C5
+#         state: present
+
+#     - name: "Debian | Add Telegraf repository"
+#       apt_repository:
+#         repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+#         filename: "telegraf"
+#         state: present
+
+#     - name: Install a list of packages
+#       ansible.builtin.apt:
+#         install_recommends: false
+#         pkg:
+#           - telegraf
+#         state: present
+
+- name: Setup telegraf hosts
+  hosts: dnfbased:aptbased
+  become: true
+  tasks:
     - name: Copy common telegraf config
       ansible.builtin.copy:
         src: configs/telegraf/common_influxdb.conf
