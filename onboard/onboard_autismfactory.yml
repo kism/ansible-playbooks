@@ -104,7 +104,7 @@
 
     - name: Download and unarchive factorio headless
       ansible.builtin.unarchive:
-        src: https://www.factorio.com/get-download/1.1.72/headless/linux64
+        src: https://www.factorio.com/get-download/1.1.74/headless/linux64
         dest: /opt/
         remote_src: true
 
@@ -125,6 +125,27 @@
     - name: Restart systemd-logind
       ansible.builtin.systemd:
         name: systemd-logind
+        state: restarted
+
+# _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: autismfactory
+  become: true
+  tasks:
+    - name: Copy common telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/autismfactory.conf
+        dest: /etc/telegraf/telegraf.d/autismfactory.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
         state: restarted
 
 # _____________________________________________________________________________

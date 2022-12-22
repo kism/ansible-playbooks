@@ -1,30 +1,51 @@
 ---
 # _____________________________________________________________________________
-- name: Basic setup for helios64 nas
+# - name: Basic setup for helios64 nas
+#   hosts: helios64
+#   become: true
+#   collections:
+#     - community.general
+#   tasks:
+#     # Wireguard
+#     - name: Install samba
+#       ansible.builtin.dnf:
+#         name:
+#           - samba
+#         state: present
+
+#     - name: Copy script to bring up wireguard
+#       ansible.builtin.copy:
+#         src: onboard/configs/smb/helios64_smb.conf
+#         dest: /etc/samba/smb.conf
+#         owner: root
+#         group: root
+#         mode: "0744"
+
+#   handlers:
+#     - name: Restart smbd
+#       ansible.builtin.systemd:
+#         name: smbd
+#         state: restarted
+
+# _____________________________________________________________________________
+- name: Setup telegraf
   hosts: helios64
   become: true
-  collections:
-    - community.general
   tasks:
-    # Wireguard
-    - name: Install samba
-      ansible.builtin.dnf:
-        name:
-          - samba
-        state: present
-
-    - name: Copy script to bring up wireguard
+    - name: Copy common telegraf configs
       ansible.builtin.copy:
-        src: onboard/configs/smb/helios64_smb.conf
-        dest: /etc/samba/smb.conf
-        owner: root
-        group: root
-        mode: "0744"
+        src: configs/telegraf/helios64.conf
+        dest: /etc/telegraf/telegraf.d/helios64.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
 
   handlers:
-    - name: Restart smbd
+    - name: Restart telegraf
       ansible.builtin.systemd:
-        name: smbd
+        name: telegraf
         state: restarted
 
 # _____________________________________________________________________________

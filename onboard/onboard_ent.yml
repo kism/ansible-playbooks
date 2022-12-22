@@ -88,6 +88,7 @@
       ansible.builtin.systemd:
         name: firewalld
         state: restarted
+
 # _____________________________________________________________________________
 - name: Reminders
   hosts: ent

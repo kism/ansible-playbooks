@@ -25,7 +25,7 @@ all:
     helios64:
       ansible_host: helios64.kg.lan
       timezone: awst
-    mogulmoves:
+    podc:
       ansible_host: podc.kg.lan
       timezone: awst
     kierangeeau:
@@ -55,7 +55,7 @@ aptbased:
 dnfbased:
   hosts:
     ifdb:
-    mogulmoves:
+    podc:
     ent:
     autismfactory:
 
@@ -79,5 +79,5 @@ baremetal:
     helios64:
     pve:
     cert:
-    mogulmoves:
+    podc:
     autismfactory:

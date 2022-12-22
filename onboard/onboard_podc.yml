@@ -1,0 +1,43 @@
+# _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: podc
+  become: true
+  tasks:
+    - name: Allow http and https
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        zone: public
+        permanent: true
+        state: enabled
+      loop:
+        - http
+        - https
+      notify:
+        - Restart firewalld
+
+  handlers:
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
+
+# _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: podc
+  become: true
+  tasks:
+    - name: Copy common telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/podc.conf
+        dest: /etc/telegraf/telegraf.d/podc.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted

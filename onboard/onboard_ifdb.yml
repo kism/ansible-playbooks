@@ -145,8 +145,31 @@
     - name: Initial influxdb config
       become: true
       ansible.builtin.shell:
-        cmd: "influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o kg_lan -b bucket_main -host https://kism.duckdns.org:8086 -f"
+        cmd: 'influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o "kg lan" -b "Telegraf Main" -host https://kism.duckdns.org:8086 -f'
       register: command_output
       failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
       tags:
         - skip_ansible_lint
+
+
+
+# _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: ifdb
+  become: true
+  tasks:
+    - name: Copy common telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/ifdb.conf
+        dest: /etc/telegraf/telegraf.d/ifdb.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
