@@ -166,10 +166,12 @@
         update_only: true
         state: present
 
-    - name: Remove Cockpit
+    - name: Remove packages that I want to avoid
       ansible.builtin.dnf:
         name:
           - cockpit
+          - cups
+          - xorg-x11-server-Xorg
         state: absent
 
     - name: Install useful apps
