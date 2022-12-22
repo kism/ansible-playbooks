@@ -26,7 +26,7 @@
   hosts: podc
   become: true
   tasks:
-    - name: Copy common telegraf configs
+    - name: Copy podc telegraf configs
       ansible.builtin.copy:
         src: configs/telegraf/podc.conf
         dest: /etc/telegraf/telegraf.d/podc.conf

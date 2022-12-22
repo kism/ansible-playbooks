@@ -32,7 +32,7 @@
   hosts: helios64
   become: true
   tasks:
-    - name: Copy common telegraf configs
+    - name: Copy helios64 telegraf configs
       ansible.builtin.copy:
         src: configs/telegraf/helios64.conf
         dest: /etc/telegraf/telegraf.d/helios64.conf

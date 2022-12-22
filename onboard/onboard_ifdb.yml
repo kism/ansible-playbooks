@@ -158,7 +158,7 @@
   hosts: ifdb
   become: true
   tasks:
-    - name: Copy common telegraf configs
+    - name: Copy ifdb telegraf configs
       ansible.builtin.copy:
         src: configs/telegraf/ifdb.conf
         dest: /etc/telegraf/telegraf.d/ifdb.conf
