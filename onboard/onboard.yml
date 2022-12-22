@@ -130,14 +130,26 @@
         group: root
         mode: "0444"
 
-- name: Copy the kgadmins root ca certificate rule PACMAN
-  hosts: debian:manjaro
+- name: Copy the kgadmins root ca certificate rule pacman
+  hosts: manjaro
   become: true
   tasks:
     - name: Copy the kgadmins root ca certificate rule
       ansible.builtin.copy:
         src: certs/kglan_root.cer
         dest: /etc/ca-certificates/trust-source/anchors/kglan_root.cer
+        owner: root
+        group: root
+        mode: "0444"
+
+- name: Copy the kgadmins root ca certificate rule pacman
+  hosts: debian
+  become: true
+  tasks:
+    - name: Copy the kgadmins root ca certificate rule
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /usr/local/share/ca-certificates/kglan_root.cer
         owner: root
         group: root
         mode: "0444"
