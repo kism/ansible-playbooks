@@ -45,6 +45,7 @@ all:
       ansible_host: kpbp.kg.lan
       timezone: awst
 
+# Package Managers
 aptbased:
   hosts:
     pve:
@@ -67,6 +68,33 @@ pacmanbased:
 opkgbased:
   hosts:
     openwrt:
+
+
+# Operating Systems
+oraclelinux:
+  hosts:
+    ifdb:
+    podc:
+    ent:
+    autismfactory:
+
+manjaro:
+  dpshub:
+  manjaro-x230t:
+  kpbp:
+
+debian:
+  hosts:
+    pve:
+    helios64:
+    cert:
+
+ubuntu:
+  hosts:
+    qbt:
+
+
+# Server Type
 
 vms:
   hosts:
