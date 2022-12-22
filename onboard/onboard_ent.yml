@@ -90,6 +90,27 @@
         state: restarted
 
 # _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: ent
+  become: true
+  tasks:
+    - name: Copy ifdb telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/ent.conf
+        dest: /etc/telegraf/telegraf.d/ent.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
+
+# _____________________________________________________________________________
 - name: Reminders
   hosts: ent
   tasks:

@@ -189,6 +189,8 @@
           - cockpit
           - cups
           - xorg-x11-server-Xorg
+          - libX11
+          - libwayland-client
         state: absent
 
     - name: Install useful apps
@@ -351,7 +353,7 @@
       ansible.builtin.lineinfile:
         path: /etc/telegraf/telegraf.d/common_influxdb.conf
         regexp: "token = "
-        line: 'token = "{{ secret_influxdb_telegraf_main }}"'
+        line: 'token = "{{ secret_influxdb_telegraf_write }}"'
         state: present
       notify:
         - Restart telegraf
