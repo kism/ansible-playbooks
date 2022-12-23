@@ -30,12 +30,16 @@
         enabled: true
         state: started
 
-    - name: Allow Grafana through firewalld
+    - name: Allow Grafana and nginx through firewalld
       ansible.posix.firewalld:
-        service: grafana
+        service: "{{ item }}"
         zone: public
         permanent: true
         state: enabled
+      loop:
+        - https
+        - http
+        - grafana
       notify:
         - Restart firewalld
 
@@ -52,26 +56,22 @@
   collections:
     - community.general
   tasks:
-    - name: Install nginx and Grafana
+    - name: Install nginx and certbot
       ansible.builtin.dnf:
         name:
           - nginx
           - certbot
+          - python3-certbot-nginx
         state: present
 
-    - name: Copy repo file to yum.repos.d
-      ansible.builtin.copy:
-        src: configs/nginx/nginx-grafana.conf
-        dest: /etc/nginx/conf.d/nginx-grafana.conf
-        owner: root
-        group: root
-        mode: "0644"
-      notify:
-        - Restart nginx
+    - name: Remove nginx grafana config for a sec
+      ansible.builtin.file:
+        path: /etc/nginx/conf.d/nginx-grafana.conf
+        state: absent
 
     - name: Copy renewcerts cron job
       ansible.builtin.copy:
-        src: scrips_cron/renewcerts.sh
+        src: scripts_cron/renewcerts.sh
         dest: /opt/scripts/renewcerts.sh
         owner: root
         group: root
@@ -83,6 +83,28 @@
         minute: "0"
         hour: "0,12"
         job: "/bin/bash /opt/scripts/renewcerts.sh"
+
+    - name: Grab a new cert
+      ansible.builtin.shell: "REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer certbot certonly --agree-tos --email=kg@localhost -v -n --nginx -d graf.kg.lan --server https://cert.kg.lan/acme/acme/directory"
+      tags:
+        - skip_ansible_lint
+
+    - name: Copy nginx-grafana.conf
+      ansible.builtin.copy:
+        src: configs/nginx/nginx-grafana.conf
+        dest: /etc/nginx/conf.d/nginx-grafana.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart nginx
+
+    - name: Kill nginx (I hate this, I think its something to do with certbot)
+      ansible.builtin.shell: "killall nginx"
+      notify:
+        - Restart nginx
+      tags:
+        - skip_ansible_lint
 
   handlers:
     - name: Restart nginx
