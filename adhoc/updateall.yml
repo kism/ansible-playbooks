@@ -10,10 +10,11 @@
       ansible.builtin.dnf:
         update_cache: true
         state: installed
+
     - name: Upgrade packages
       ansible.builtin.dnf:
-        update_only: true
-        state: present
+        name: "*"
+        state: latest
 
 
 - name: Update all my apt based linux hosts
