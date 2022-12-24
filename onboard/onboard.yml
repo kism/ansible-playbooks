@@ -39,13 +39,13 @@
         dest: /etc/sudoers.d/kgadmins
         owner: root
         group: root
-        mode: "0660"
+        mode: '0660'
 
     - name: Ensure that bash is setup correctly for kism
       become: true
       become_user: kism
       ansible.builtin.shell:
-        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
+        cmd: 'curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash'
       register: command_output
       changed_when: command_output.rc == 0
       tags:
@@ -55,7 +55,7 @@
       become: true
       become_user: root
       ansible.builtin.shell:
-        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
+        cmd: 'curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash'
       register: command_output
       changed_when: command_output.rc == 0
       tags:
@@ -75,17 +75,17 @@
     - name: Disable root Login
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
-        regexp: "^.?PermitRootLogin"
-        line: "PermitRootLogin no"
+        regexp: '^.?PermitRootLogin'
+        line: 'PermitRootLogin no'
         state: present
       notify:
-        - Restart sshd
+        - Reload sshd
 
     - name: Ensure that /etc/ssh/sshd_config.d exists
       ansible.builtin.file:
         path: /etc/ssh/sshd_config.d
         state: directory
-        mode: "0755"
+        mode: '0755'
 
     - name: Copy ssh config
       ansible.builtin.copy:
@@ -93,12 +93,16 @@
         dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
         owner: root
         group: root
-        mode: "0600"
+        mode: '0600'
+      notify:
+        - Reload sshd
 
     - name: Remove 01-PermitRootLogin just incase, looking at you redhat
       ansible.builtin.file:
         path: /etc/ssh/sshd_config.d/01-permitrootlogin.conf
         state: absent
+      notify:
+        - Reload sshd
 
     - name: Remove cockpit motd
       ansible.builtin.file:
@@ -109,13 +113,13 @@
       ansible.builtin.file:
         path: /opt/scripts
         state: directory
-        mode: "0770"
+        mode: '0770'
 
   handlers:
-    - name: Restart sshd
+    - name: Reload sshd
       ansible.builtin.systemd:
         name: sshd
-        state: restarted
+        state: reloaded
 
 # _____________________________________________________________________________
 - name: Copy the kgadmins root ca certificate rule APT/DNF
@@ -128,7 +132,7 @@
         dest: /etc/pki/tls/certs/kglan_root.cer
         owner: root
         group: root
-        mode: "0444"
+        mode: '0444'
 
 - name: Copy the kgadmins root ca certificate rule pacman
   hosts: manjaro
@@ -140,7 +144,7 @@
         dest: /etc/ca-certificates/trust-source/anchors/kglan_root.cer
         owner: root
         group: root
-        mode: "0444"
+        mode: '0444'
 
 - name: Copy the kgadmins root ca certificate rule pacman
   hosts: debian
@@ -152,7 +156,7 @@
         dest: /usr/local/share/ca-certificates/kglan_root.cer
         owner: root
         group: root
-        mode: "0444"
+        mode: '0444'
 
 # _____________________________________________________________________________
 - name: Update all packages on my DNF based linux hosts
@@ -281,7 +285,7 @@
         dest: /etc/firewalld/services
         owner: root
         group: root
-        mode: "0644"
+        mode: '0644'
 
   handlers:
     - name: Restart firewalld
@@ -300,7 +304,7 @@
         dest: /etc/yum.repos.d/influxdb.repo
         owner: root
         group: root
-        mode: "644"
+        mode: '644'
 
     - name: Import InfluxDB GPG key
       ansible.builtin.rpm_key:
@@ -345,14 +349,14 @@
         dest: /etc/telegraf/telegraf.d/common_influxdb.conf
         owner: telegraf
         group: telegraf
-        mode: "600"
+        mode: '600'
       notify:
         - Restart telegraf
 
     - name: Setup telegraf conf
       ansible.builtin.lineinfile:
         path: /etc/telegraf/telegraf.d/common_influxdb.conf
-        regexp: "token = "
+        regexp: 'token = '
         line: 'token = "{{ secret_influxdb_telegraf_write }}"'
         state: present
       notify:
