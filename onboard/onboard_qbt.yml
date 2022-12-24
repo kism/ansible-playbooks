@@ -1,0 +1,32 @@
+---
+# _____________________________________________________________________________
+- name: Basic setup for qbt torrent box
+  hosts: qbt
+  become: true
+  collections:
+    - community.general
+  tasks:
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Actually make this playbook
+
+  # _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: qbt
+  become: true
+  tasks:
+    - name: Copy podc telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/qbt.conf
+        dest: /etc/telegraf/telegraf.d/qbt.conf
+        owner: telegraf
+        group: telegraf
+        mode: '600'
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
