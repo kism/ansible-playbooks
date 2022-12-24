@@ -87,7 +87,7 @@
         state: directory
         mode: "0755"
 
-    - name: Copy the kgadmins sudoers rule
+    - name: Copy ssh config
       ansible.builtin.copy:
         src: configs/sshd/99-sshnopasswordauth.conf
         dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf

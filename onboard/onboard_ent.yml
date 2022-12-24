@@ -24,10 +24,10 @@
 
     - name: Set duckdns cron job
       ansible.builtin.cron:
-        name: "Turn off wireguard at 4am"
-        minute: "0"
-        hour: "4"
-        job: "/usr/bin/wg-quick down wg0"
+        name: 'Turn off wireguard at 4am'
+        minute: '0'
+        hour: '4'
+        job: '/usr/bin/wg-quick down wg0'
 
     - name: Copy script to bring up wireguard
       ansible.builtin.copy:
@@ -35,7 +35,7 @@
         dest: /home/kism/wgup.sh
         owner: kism
         group: kism
-        mode: "0740"
+        mode: '0740'
 
     # MOTD, bash config
     - name: Copy motd file
@@ -44,22 +44,22 @@
         dest: /etc/motd
         owner: root
         group: root
-        mode: "0644"
+        mode: '0644'
 
-    - name: Copy bash config
+    - name: Copy ent specific ssh config
       ansible.builtin.copy:
-        src: dotfiles/ent.bashrc
-        dest: /home/kism/.bashrc
-        owner: kism
-        group: kism
-        mode: u+rw,g-wrx,o-wrx
+        src: configs/sshd/ent_99-sshnopasswordauth.conf
+        dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
+        owner: root
+        group: root
+        mode: '0600'
 
     # Duckdns
     - name: Create a /opt/duckdns if it does not exist
       ansible.builtin.file:
         path: /opt/duckdns/
         state: directory
-        mode: "0755"
+        mode: '0755'
 
     - name: Copy duck cron job
       ansible.builtin.copy:
@@ -67,21 +67,21 @@
         dest: /opt/duckdns/duck.sh
         owner: root
         group: root
-        mode: "0774"
+        mode: '0774'
 
     - name: Set duckdns cron job
       ansible.builtin.cron:
-        name: "Update duckdns"
-        minute: "20"
-        job: "/opt/duckdns/duck.sh"
+        name: 'Update duckdns'
+        minute: '20'
+        job: '/opt/duckdns/duck.sh'
 
     - name: Create ducktoken file
       ansible.builtin.copy:
-        dest: "/opt/duckdns/ducktoken"
-        mode: "0600"
+        dest: '/opt/duckdns/ducktoken'
+        mode: '0600'
         owner: root
         group: root
-        content: "{{ secret_duckdns }}"
+        content: '{{ secret_duckdns }}'
 
   handlers:
     - name: Restart firewalld
@@ -100,7 +100,7 @@
         dest: /etc/telegraf/telegraf.d/ent.conf
         owner: telegraf
         group: telegraf
-        mode: "600"
+        mode: '600'
       notify:
         - Restart telegraf
 
@@ -109,6 +109,60 @@
       ansible.builtin.systemd:
         name: telegraf
         state: restarted
+
+# _____________________________________________________________________________
+- name: Setup zsh
+  hosts: ent
+  become: true
+  become_user: kism
+
+  tasks:
+    - name: Install zsh
+      ansible.builtin.dnf:
+        name:
+          - zsh
+        state: present
+      become: true
+      become_user: root
+
+    - name: Add my favorite /opt subdirectory
+      ansible.builtin.file:
+        path: ~/.antigen
+        state: directory
+        owner: kism
+        group: kism
+        mode: '0770'
+
+    - name: Download foo.conf
+      ansible.builtin.get_url:
+        url: https://git.io/antigen
+        dest: ~/.antigen/antigen.zsh
+        owner: kism
+        group: kism
+        mode: '0755'
+
+    - name: Copy bash config
+      ansible.builtin.copy:
+        src: dotfiles/ent.zshrc
+        dest: /home/kism/.zshrc
+        owner: kism
+        group: kism
+        mode: '0644'
+
+    - name: Initial certbot config
+      become: true
+      ansible.builtin.shell:
+        cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
+      register: command_output
+      tags:
+        - skip_ansible_lint
+
+    - name: Change my shell to zsh
+      become: yes
+      become_user: root
+      ansible.builtin.user:
+        name: 'kism'
+        shell: /bin/zsh
 
 # _____________________________________________________________________________
 - name: Reminders
