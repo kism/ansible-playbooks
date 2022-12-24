@@ -6,7 +6,6 @@
 #   collections:
 #     - community.general
 #   tasks:
-#     # Wireguard
 #     - name: Install samba
 #       ansible.builtin.dnf:
 #         name:
