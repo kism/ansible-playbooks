@@ -81,6 +81,12 @@
         state: directory
         mode: '0755'
 
+    - name: Enable crond
+      ansible.builtin.systemd:
+        name: crond
+        enabled: true
+        state: started
+
     - name: Copy duck cron job
       ansible.builtin.copy:
         src: scripts_cron/duck.sh

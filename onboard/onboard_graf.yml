@@ -77,6 +77,12 @@
         group: root
         mode: "0744"
 
+    - name: Enable crond
+      ansible.builtin.systemd:
+        name: crond
+        enabled: true
+        state: started
+
     - name: Set certbot script cron job
       ansible.builtin.cron:
         name: "Renew SSL Certificate with ACME protocol"

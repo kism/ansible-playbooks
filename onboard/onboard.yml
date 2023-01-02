@@ -32,6 +32,7 @@
       ansible.builtin.user:
         name: kism
         groups: kgadmins
+        append: true
 
     - name: Copy the kgadmins sudoers rule
       ansible.builtin.copy:
