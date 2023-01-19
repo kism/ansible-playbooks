@@ -73,6 +73,73 @@
       community.general.timezone:
         name: Etc/UTC
 
+    - name: Remove cockpit motd
+      ansible.builtin.file:
+        path: /etc/motd.d/cockpit
+        state: absent
+
+    - name: Add my favorite /opt subdirectory
+      ansible.builtin.file:
+        path: /opt/scripts
+        state: directory
+        mode: '0770'
+
+# _____________________________________________________________________________
+- name: Copy the kgadmins root ca certificate rule APT/DNF
+  hosts: oraclelinux:ubuntu
+  become: true
+  tasks:
+    - name: Copy the kgadmins root ca certificate rule
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /etc/pki/tls/certs/kglan_root.crt
+        owner: root
+        group: root
+        mode: '0444'
+
+    - name: Update CA Certs
+      become: true
+      become_user: kism
+      ansible.builtin.shell:
+        cmd: 'update-ca-certificates'
+      tags:
+        - skip_ansible_lint
+
+- name: Copy the kgadmins root ca certificate rule pacman
+  hosts: manjaro
+  become: true
+  tasks:
+    - name: Copy the kgadmins root ca certificate rule
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
+        owner: root
+        group: root
+        mode: '0444'
+
+- name: Copy the kgadmins root ca certificate rule debian
+  hosts: debian:proxmox
+  become: true
+  tasks:
+    - name: Copy the kgadmins root ca certificate rule
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /usr/local/share/ca-certificates/kglan_root.crt
+        owner: root
+        group: root
+        mode: '0444'
+
+    - name: Update CA Certs
+      ansible.builtin.shell:
+        cmd: 'update-ca-certificates'
+      tags:
+        - skip_ansible_lint
+
+# _____________________________________________________________________________
+- name: SSH settings, not for proxmox
+  hosts: debian:ubuntu:oraclelinux:manjaro # NOT PROXMOX
+  become: true
+  tasks:
     - name: Disable root Login
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
@@ -105,59 +172,11 @@
       notify:
         - Reload sshd
 
-    - name: Remove cockpit motd
-      ansible.builtin.file:
-        path: /etc/motd.d/cockpit
-        state: absent
-
-    - name: Add my favorite /opt subdirectory
-      ansible.builtin.file:
-        path: /opt/scripts
-        state: directory
-        mode: '0770'
-
   handlers:
     - name: Reload sshd
       ansible.builtin.systemd:
         name: sshd
         state: reloaded
-
-# _____________________________________________________________________________
-- name: Copy the kgadmins root ca certificate rule APT/DNF
-  hosts: oraclelinux:ubuntu
-  become: true
-  tasks:
-    - name: Copy the kgadmins root ca certificate rule
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /etc/pki/tls/certs/kglan_root.cer
-        owner: root
-        group: root
-        mode: '0444'
-
-- name: Copy the kgadmins root ca certificate rule pacman
-  hosts: manjaro
-  become: true
-  tasks:
-    - name: Copy the kgadmins root ca certificate rule
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /etc/ca-certificates/trust-source/anchors/kglan_root.cer
-        owner: root
-        group: root
-        mode: '0444'
-
-- name: Copy the kgadmins root ca certificate rule pacman
-  hosts: debian
-  become: true
-  tasks:
-    - name: Copy the kgadmins root ca certificate rule
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /usr/local/share/ca-certificates/kglan_root.cer
-        owner: root
-        group: root
-        mode: '0444'
 
 # _____________________________________________________________________________
 - name: Update all packages on my DNF based linux hosts
@@ -317,28 +336,28 @@
         name: telegraf
         state: present
 
-# - name: Setup telegraf on apt based hosts
-#   hosts: aptbased
-#   become: true
-#   tasks:
-#     - name: "Download Telegraf apt key"
-#       apt_key:
-#         url: "https://repos.influxdata.com/influxdb.key"
-#         id: 2582E0C5
-#         state: present
+- name: Setup telegraf on apt based hosts
+  hosts: aptbased
+  become: true
+  tasks:
+    - name: Telegraf apt key
+      ansible.builtin.apt_key:
+        url: 'https://repos.influxdata.com/influxdb.key'
+        id: 2582E0C5
+        state: present
 
-#     - name: "Debian | Add Telegraf repository"
-#       apt_repository:
-#         repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
-#         filename: "telegraf"
-#         state: present
+    - name: Add Telegraf repository
+      ansible.builtin.apt_repository:
+        repo: 'deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable'
+        filename: 'telegraf'
+        state: present
 
-#     - name: Install a list of packages
-#       ansible.builtin.apt:
-#         install_recommends: false
-#         pkg:
-#           - telegraf
-#         state: present
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg:
+          - telegraf
+        state: present
 
 - name: Setup telegraf hosts
   hosts: dnfbased:aptbased

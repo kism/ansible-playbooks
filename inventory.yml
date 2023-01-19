@@ -10,6 +10,9 @@ all:
     pve:
       ansible_host: pve.kg.lan
       timezone: awst
+    pvenas:
+      ansible_host: pvenas.kg.lan
+      timezone: awst
     ifdb:
       ansible_host: ifdb.kg.lan
       timezone: awst
@@ -49,6 +52,7 @@ all:
 aptbased:
   hosts:
     pve:
+    pvenas:
     qbt:
     helios64:
     cert:
@@ -87,7 +91,6 @@ manjaro:
 
 debian:
   hosts:
-    pve:
     helios64:
     cert:
 
@@ -97,17 +100,23 @@ ubuntu:
 
 
 # Server Type
-
 vms:
   hosts:
     qbt:
     ifdb:
+    graf:
     ent:
 
 baremetal:
   hosts:
     helios64:
     pve:
+    pvenas:
     cert:
     podc:
     autismfactory:
+
+proxmox:
+  hosts:
+    pve:
+    pvenas:
