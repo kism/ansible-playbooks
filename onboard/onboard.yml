@@ -6,6 +6,7 @@
 - name: User and filesystem Setup
   hosts: aptbased:dnfbased:pacmanbased
   become: true
+  gather_facts: false
   collections:
     - community.general
   tasks:
@@ -88,6 +89,7 @@
 - name: Copy the kgadmins root ca certificate rule APT/DNF
   hosts: oraclelinux:ubuntu
   become: true
+  gather_facts: false
   tasks:
     - name: Copy the kgadmins root ca certificate rule
       ansible.builtin.copy:
@@ -108,6 +110,7 @@
 - name: Copy the kgadmins root ca certificate rule pacman
   hosts: manjaro
   become: true
+  gather_facts: false
   tasks:
     - name: Copy the kgadmins root ca certificate rule
       ansible.builtin.copy:
@@ -139,6 +142,7 @@
 - name: SSH settings, not for proxmox
   hosts: debian:ubuntu:oraclelinux:manjaro # NOT PROXMOX
   become: true
+  gather_facts: false
   tasks:
     - name: Disable root Login
       ansible.builtin.lineinfile:
@@ -182,6 +186,7 @@
 - name: Update all packages on my DNF based linux hosts
   hosts: dnfbased
   become: true
+  gather_facts: false
   tasks:
     - name: Update DNF Cache
       ansible.builtin.dnf:
@@ -268,6 +273,7 @@
 - name: Setup basic Firewalld on dnf based hosts
   hosts: dnfbased
   become: true
+  gather_facts: false
   tasks:
     - name: Install firewalld
       ansible.builtin.dnf:
@@ -317,6 +323,7 @@
 - name: Setup telegraf on dnf based hosts
   hosts: dnfbased
   become: true
+  gather_facts: true
   tasks:
     - name: Copy file with owner and permission, using symbolic representation
       ansible.builtin.copy:
@@ -339,6 +346,7 @@
 - name: Setup telegraf on apt based hosts
   hosts: aptbased
   become: true
+  gather_facts: false
   tasks:
     - name: Telegraf apt key
       ansible.builtin.apt_key:
@@ -362,6 +370,7 @@
 - name: Setup telegraf hosts
   hosts: dnfbased:aptbased
   become: true
+  gather_facts: false
   tasks:
     - name: Copy common telegraf config
       ansible.builtin.copy:

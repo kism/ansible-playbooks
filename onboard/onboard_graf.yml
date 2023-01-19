@@ -3,6 +3,7 @@
 - name: Basic setup for Grafana
   hosts: graf
   become: true
+  gather_facts: false
   collections:
     - community.general
   tasks:
@@ -53,6 +54,7 @@
 - name: Setup for Nginx for Grafana
   hosts: graf
   become: true
+  gather_facts: false
   collections:
     - community.general
   tasks:

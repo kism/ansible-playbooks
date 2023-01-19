@@ -30,6 +30,7 @@
 - name: Setup telegraf
   hosts: helios64
   become: true
+  gather_facts: false
   tasks:
     - name: Copy helios64 telegraf configs
       ansible.builtin.copy:
@@ -50,6 +51,7 @@
 # _____________________________________________________________________________
 - name: Reminders
   hosts: helios64
+  gather_facts: false
   tasks:
     # REMEMBER
     - name: Reminder

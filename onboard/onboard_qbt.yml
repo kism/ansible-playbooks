@@ -2,6 +2,7 @@
 # _____________________________________________________________________________
 - name: Basic setup for qbt torrent box
   hosts: qbt
+  gather_facts: false
   become: true
   collections:
     - community.general
@@ -13,6 +14,7 @@
   # _____________________________________________________________________________
 - name: Setup telegraf
   hosts: qbt
+  gather_facts: false
   become: true
   tasks:
     - name: Copy podc telegraf configs

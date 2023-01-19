@@ -2,6 +2,7 @@
 - name: Setup telegraf
   hosts: podc
   become: true
+  gather_facts: false
   tasks:
     - name: Allow http and https
       ansible.posix.firewalld:
@@ -25,6 +26,7 @@
 - name: Setup telegraf
   hosts: podc
   become: true
+  gather_facts: false
   tasks:
     - name: Copy podc telegraf configs
       ansible.builtin.copy:

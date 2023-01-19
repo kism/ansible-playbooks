@@ -3,6 +3,7 @@
 - name: Basic setup for ent jumpbox
   hosts: ent
   become: true
+  gather_facts: false
   collections:
     - community.general
   tasks:
@@ -71,6 +72,7 @@
 - name: Duckdns Setup
   hosts: ent
   become: true
+  gather_facts: false
   collections:
     - community.general
   tasks:
@@ -113,6 +115,7 @@
 - name: Setup telegraf
   hosts: ent
   become: true
+  gather_facts: false
   tasks:
     - name: Copy ifdb telegraf configs
       ansible.builtin.copy:
@@ -134,6 +137,7 @@
 - name: Setup zsh
   hosts: ent
   become: true
+  gather_facts: false
   become_user: kism
 
   tasks:

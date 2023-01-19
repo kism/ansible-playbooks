@@ -2,6 +2,7 @@
 # _____________________________________________________________________________
 - name: Install required sensor packages for telegraf
   hosts: pve:pvenas
+  gather_facts: false
   become: true
   tasks:
     - name: Install packages
@@ -57,20 +58,9 @@
   become: true
   tasks:
     - name: Copy common telegraf config
-      when: ansible_hostname == 'pve'
-      ansible.builtin.copy:
-        src: configs/telegraf/pve.conf
-        dest: /etc/telegraf/telegraf.d/pve.conf
-        owner: telegraf
-        group: telegraf
-        mode: '600'
-      notify:
-        - Restart telegraf
-
-    - name: Copy common telegraf config
       when: ansible_hostname == 'pvenas'
       ansible.builtin.copy:
-        src: configs/telegraf/pvenas.conf
+        src: configs/telegraf/{{ ansible_hostname }}.conf
         dest: /etc/telegraf/telegraf.d/pvenas.conf
         owner: telegraf
         group: telegraf
