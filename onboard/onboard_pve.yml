@@ -1,5 +1,18 @@
 ---
 # _____________________________________________________________________________
+- name: Install required sensor packages for telegraf
+  hosts: pve:pvenas
+  become: true
+  tasks:
+    - name: Install packages
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg:
+          - nvme-cli
+          - lm-sensors
+        state: present
+
+# _____________________________________________________________________________
 - name: Setup acme and cron job
   hosts: pve:pvenas
   become: true
@@ -10,15 +23,21 @@
         pkg: certbot
         state: present
 
-    #certbot certonly --non-interactive --agree-tos --standalone --register-unsafely-without-email -v -d pve.kg.lan --server https://cert.kg.lan/acme/acme/directory
-    #certbot certonly --non-interactive --agree-tos --standalone --register-unsafely-without-email -v -d pvenas.kg.lan --server https://cert.kg.lan/acme/acme/directory
+    - name: Grab initial acme cert
+      when: ansible_hostname == 'pve' # There is no way I can convince myself that this is best practice, i'm sorry
+      become: true
+      ansible.builtin.shell:
+        cmd: 'certbot certonly --non-interactive --agree-tos --standalone --register-unsafely-without-email -v -d pve.kg.lan --server https://cert.kg.lan/acme/acme/directory'
+      tags:
+        - skip_ansible_lint
 
-    # - name: Grab initial acme cert
-    #   become: true
-    #   ansible.builtin.shell:
-    #     cmd: 'certbot certonly --non-interactive --agree-tos --standalone --register-unsafely-without-email -v -d {{ inventory_hostname }} --server https://cert.kg.lan/acme/acme/directory'
-    #   tags:
-    #     - skip_ansible_lint
+    - name: Grab initial acme cert
+      when: ansible_hostname == 'pvenas'
+      become: true
+      ansible.builtin.shell:
+        cmd: 'certbot certonly --non-interactive --agree-tos --standalone --register-unsafely-without-email -v -d pvenas.kg.lan --server https://cert.kg.lan/acme/acme/directory'
+      tags:
+        - skip_ansible_lint
 
     - name: Copy the cert post renewell script
       ansible.builtin.copy:
@@ -34,3 +53,36 @@
         minute: '0'
         hour: '0,12'
         job: '/usr/bin/certbot renew --quiet --post-hook /opt/scripts/pve_renewcerts.sh'
+
+# _____________________________________________________________________________
+- name: Setup influxdb
+  hosts: pve:pvenas
+  become: true
+  tasks:
+    - name: Copy common telegraf config
+      when: ansible_hostname == 'pve'
+      ansible.builtin.copy:
+        src: configs/telegraf/pve.conf
+        dest: /etc/telegraf/telegraf.d/pve.conf
+        owner: telegraf
+        group: telegraf
+        mode: '600'
+      notify:
+        - Restart telegraf
+
+    - name: Copy common telegraf config
+      when: ansible_hostname == 'pvenas'
+      ansible.builtin.copy:
+        src: configs/telegraf/pvenas.conf
+        dest: /etc/telegraf/telegraf.d/pvenas.conf
+        owner: telegraf
+        group: telegraf
+        mode: '600'
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
