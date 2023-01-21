@@ -14,6 +14,8 @@
     - name: Add the user 'kism' with a bash shell
       ansible.builtin.user:
         name: kism
+        uid: 1098
+        group: 1091
         shell: /bin/bash
         append: true
 

@@ -6,8 +6,10 @@ publickeys="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKCzVh8CktGh+5LlZJfeBj/VcRzGO6zj
 account="ansible_svc"
 group="kgadmins"
 
-id -u $account &>/dev/null || useradd $account
-groupadd $group
+# 1099 Ansible_SVC
+# 1098 KiSM
+id -u $account &>/dev/null || useradd --uid 1099 $account
+groupadd groupadd --gid 1090 $group
 usermod -a -G $group $account
 usermod -p '*' $account
 chage -I -1 -m 0 -M 99999 -E -1 $account

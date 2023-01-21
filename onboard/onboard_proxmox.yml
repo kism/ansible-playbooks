@@ -57,7 +57,7 @@
   hosts: pve:pvenas
   become: true
   tasks:
-    - name: Copy common telegraf config
+    - name: Copy specific telegraf config
       when: ansible_hostname == 'pvenas'
       ansible.builtin.copy:
         src: configs/telegraf/{{ ansible_hostname }}.conf
