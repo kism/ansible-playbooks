@@ -14,8 +14,8 @@
     - name: Add the user 'kism' with a bash shell
       ansible.builtin.user:
         name: kism
-        uid: 1098
-        group: 1091
+        uid: 1089
+        group: 1089
         shell: /bin/bash
         append: true
 
@@ -29,6 +29,7 @@
     - name: Ensure group "kgadmins" exists
       ansible.builtin.group:
         name: kgadmins
+        gid: 1099
         state: present
 
     - name: Adding existing user kism to group kgadmins
@@ -65,6 +66,47 @@
       tags:
         - skip_ansible_lint
 
+    # Misc non root users
+    - name: Add the user 'backup_svc' with a bash shell
+      ansible.builtin.user:
+        name: backup_svc
+        uid: 1087
+        group: 1087
+        shell: /bin/bash
+        append: true
+
+    - name: Add the user 'qbtuser' with a bash shell
+      ansible.builtin.user:
+        name: qbtuser
+        uid: 1086
+        group: 1086
+        shell: /bin/bash
+        append: true
+
+    - name: Add the user 'lanprivate' with a bash shell
+      ansible.builtin.user:
+        name: lanprivate
+        uid: 1085
+        group: 1085
+        shell: /usr/sbin/nologin
+        append: true
+
+    - name: Add the user 'lanuser' with a bash shell
+      ansible.builtin.user:
+        name: lanuser
+        uid: 1084
+        group: 1084
+        shell: /usr/sbin/nologin
+        append: true
+
+# _____________________________________________________________________________
+- name: Misc filsystem stuff for everything
+  hosts: aptbased:dnfbased:pacmanbased
+  become: true
+  gather_facts: false
+  collections:
+    - community.general
+  tasks:
     - name: Set timezone to Perth
       when: timezone == 'awst'
       community.general.timezone:
