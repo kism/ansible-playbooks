@@ -15,7 +15,7 @@
       ansible.builtin.user:
         name: kism
         uid: 1089
-        group: 1089
+        # gid: 1089
         shell: /bin/bash
         append: true
 
@@ -26,16 +26,42 @@
         exclusive: true
         key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
 
+    # Groups
     - name: Ensure group "kgadmins" exists
       ansible.builtin.group:
         name: kgadmins
         gid: 1099
         state: present
 
-    - name: Adding existing user kism to group kgadmins
+    - name: Ensure group "content_private" exists
+      ansible.builtin.group:
+        name: content_private
+        gid: 1098
+        state: present
+
+    - name: Ensure group "content_public" exists
+      ansible.builtin.group:
+        name: content_public
+        gid: 1097
+        state: present
+
+    - name: Adding existing user kism to groups
       ansible.builtin.user:
         name: kism
-        groups: kgadmins
+        groups: "kgadmins, content_private, content_public"
+        append: true
+
+    - name: Add lanprivate account to groups
+      ansible.builtin.user:
+        name: lanprivate
+        groups: "content_private, content_public"
+
+        append: true
+
+    - name: Add lanuser account to groups
+      ansible.builtin.user:
+        name: lanuser
+        groups: "content_public"
         append: true
 
     - name: Copy the kgadmins sudoers rule
@@ -71,7 +97,7 @@
       ansible.builtin.user:
         name: backup_svc
         uid: 1087
-        group: 1087
+        #gid: 1087
         shell: /bin/bash
         append: true
 
@@ -79,7 +105,7 @@
       ansible.builtin.user:
         name: qbtuser
         uid: 1086
-        group: 1086
+        #gid: 1086
         shell: /bin/bash
         append: true
 
@@ -87,7 +113,7 @@
       ansible.builtin.user:
         name: lanprivate
         uid: 1085
-        group: 1085
+        #gid: 1085
         shell: /usr/sbin/nologin
         append: true
 
@@ -95,7 +121,7 @@
       ansible.builtin.user:
         name: lanuser
         uid: 1084
-        group: 1084
+        #gid: 1084
         shell: /usr/sbin/nologin
         append: true
 
