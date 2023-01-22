@@ -1,6 +1,6 @@
-chown -R kism:content_private /srv/Amarant/Downloads
-chown -R kism:content_private /srv/Amarant/Temp
-chown -R svc_backup:backup    /srv/Amarant/backups
+chown -R kism:content_private  /srv/Amarant/Downloads
+chown -R kism:content_private  /srv/Amarant/Temp
+chown -R backup_svc:backup_svc /srv/Amarant/backups
 
 chown -R kism:content_public  /srv/Freya/Apps
 chown -R kism:content_public  /srv/Freya/Emulators
@@ -24,6 +24,7 @@ chown kism:content_public /srv/Amarant
 chown kism:content_public /srv/Freya
 chown kism:content_public /srv/Garnet
 chown kism:content_public /srv/Vivi
+chown kism:content_public /srv/Eiko
 
 chmod -R o-wrx,g+rX,u=+rwX /srv/Garnet
 chmod -R o-wrx,g+rX,u=+rwX /srv/Amarant

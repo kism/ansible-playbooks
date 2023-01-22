@@ -7,6 +7,14 @@
   collections:
     - ansible.posix
   tasks:
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg:
+          - hdparm
+          - smartmontools
+        state: present
+
     - name: Add directories for HDDs
       ansible.builtin.file:
         path: '{{ item }}'
@@ -35,6 +43,26 @@
         - Freya
         - Eiko
 
+    - name: Unarchive a file that needs to be downloaded (added in 2.0)
+      ansible.builtin.unarchive:
+        src: https://github.com/Seagate/openSeaChest/releases/download/v22.07/openSeaChest-refs-tags-v22.07-linux-x86_64.tar.xz
+        dest: /opt/
+        mode: '0755'
+        remote_src: true
+
+    - name: Grab openseachest binaries
+      ansible.builtin.shell:
+        cmd: 'mv /opt/openSeaChest-refs-tags-v22.07-linux-x86_64 /opt/openseachest'
+      tags:
+        - skip_ansible_lint
+
+    - name: Update CA Certs
+      ansible.builtin.shell:
+        cmd: 'cp -rs /opt/openseachest/man/* /usr/share/man'
+      tags:
+        - skip_ansible_lint
+
+    # Copy over scripts
     - name: Copy SMART check script
       ansible.builtin.copy:
         src: scripts_adhoc/pvenas_checksmart.sh
@@ -58,3 +86,26 @@
         owner: root
         group: root
         mode: '0700'
+
+    - name: Copy snapraid conf
+      ansible.builtin.copy:
+        src: configs/snapraid/snapraid.conf
+        dest: /etc/snapraid.conf
+        owner: root
+        group: root
+        mode: '644'
+
+    - name: Copy snapraid conf
+      ansible.builtin.copy:
+        src: scripts_cron/pvenas_snapraid_helper.sh
+        dest: /opt/scripts/snapraid_helper.sh
+        owner: root
+        group: root
+        mode: '700'
+
+    - name: Run snapraid script
+      ansible.builtin.cron:
+        name: 'Run snapraid script'
+        minute: '0'
+        hour: '23,09'
+        job: '/opt/scripts/snapraid_helper.sh'

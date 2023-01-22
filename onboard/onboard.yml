@@ -26,6 +26,39 @@
         exclusive: true
         key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
 
+    # Misc non root users
+    - name: Add the user 'backup_svc' with a bash shell
+      ansible.builtin.user:
+        name: backup_svc
+        uid: 1087
+        # gid: 1087
+        shell: /bin/bash
+        append: true
+
+    - name: Add the user 'qbtuser' with a bash shell
+      ansible.builtin.user:
+        name: qbtuser
+        uid: 1086
+        # gid: 1086
+        shell: /bin/bash
+        append: true
+
+    - name: Add the user 'lanprivate' with a bash shell
+      ansible.builtin.user:
+        name: lanprivate
+        uid: 1085
+        # gid: 1085
+        shell: /usr/sbin/nologin
+        append: true
+
+    - name: Add the user 'lanuser' with a bash shell
+      ansible.builtin.user:
+        name: lanuser
+        uid: 1084
+        # gid: 1084
+        shell: /usr/sbin/nologin
+        append: true
+
     # Groups
     - name: Ensure group "kgadmins" exists
       ansible.builtin.group:
@@ -48,20 +81,20 @@
     - name: Adding existing user kism to groups
       ansible.builtin.user:
         name: kism
-        groups: "kgadmins, content_private, content_public"
+        groups: 'kgadmins, content_private, content_public, backup_svc'
         append: true
 
     - name: Add lanprivate account to groups
       ansible.builtin.user:
         name: lanprivate
-        groups: "content_private, content_public"
+        groups: 'content_private, content_public'
 
         append: true
 
     - name: Add lanuser account to groups
       ansible.builtin.user:
         name: lanuser
-        groups: "content_public"
+        groups: 'content_public'
         append: true
 
     - name: Copy the kgadmins sudoers rule
@@ -91,39 +124,6 @@
       changed_when: command_output.rc == 0
       tags:
         - skip_ansible_lint
-
-    # Misc non root users
-    - name: Add the user 'backup_svc' with a bash shell
-      ansible.builtin.user:
-        name: backup_svc
-        uid: 1087
-        #gid: 1087
-        shell: /bin/bash
-        append: true
-
-    - name: Add the user 'qbtuser' with a bash shell
-      ansible.builtin.user:
-        name: qbtuser
-        uid: 1086
-        #gid: 1086
-        shell: /bin/bash
-        append: true
-
-    - name: Add the user 'lanprivate' with a bash shell
-      ansible.builtin.user:
-        name: lanprivate
-        uid: 1085
-        #gid: 1085
-        shell: /usr/sbin/nologin
-        append: true
-
-    - name: Add the user 'lanuser' with a bash shell
-      ansible.builtin.user:
-        name: lanuser
-        uid: 1084
-        #gid: 1084
-        shell: /usr/sbin/nologin
-        append: true
 
 # _____________________________________________________________________________
 - name: Misc filsystem stuff for everything
