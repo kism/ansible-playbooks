@@ -13,6 +13,7 @@
         pkg:
           - hdparm
           - smartmontools
+          - rsync
         state: present
 
     - name: Add directories for HDDs
@@ -43,24 +44,46 @@
         - Freya
         - Eiko
 
-    - name: Unarchive a file that needs to be downloaded (added in 2.0)
+    - name: Download openSeaChest
       ansible.builtin.unarchive:
         src: https://github.com/Seagate/openSeaChest/releases/download/v22.07/openSeaChest-refs-tags-v22.07-linux-x86_64.tar.xz
         dest: /opt/
         mode: '0755'
         remote_src: true
 
-    - name: Grab openseachest binaries
-      ansible.builtin.shell:
-        cmd: 'mv /opt/openSeaChest-refs-tags-v22.07-linux-x86_64 /opt/openseachest'
-      tags:
-        - skip_ansible_lint
+    - name: Copy downloaded directory to the openseachest direct
+      ansible.builtin.copy:
+        remote_src: true
+        src: /opt/openSeaChest-refs-tags-v22.07-linux-x86_64
+        dest: /opt/openseachest
+        owner: root
+        group: root
+        mode: '0755'
 
-    - name: Update CA Certs
-      ansible.builtin.shell:
-        cmd: 'cp -rs /opt/openseachest/man/* /usr/share/man'
-      tags:
-        - skip_ansible_lint
+    - name: Remove cockpit motd
+      ansible.builtin.file:
+        path: /opt/openSeaChest-refs-tags-v22.07-linux-x86_64
+        state: absent
+
+    - name: Create symbolic links for openSeaChest man pages
+      ansible.builtin.file:
+        src: '/opt/openseachest/man/man8/{{ item }}'
+        dest: '/usr/share/man/man8/{{ item }}'
+        owner: root
+        group: root
+        state: link
+      loop:
+        - openSeaChest.8
+        - openSeaChest_Configure.8
+        - openSeaChest_Firmware.8
+        - openSeaChest_GenericTests.8
+        - openSeaChest_Logs.8
+        - openSeaChest_SMART.8
+        - openSeaChest_Basics.8
+        - openSeaChest_Erase.8
+        - openSeaChest_Format.8
+        - openSeaChest_Info.8
+        - openSeaChest_PowerControl.8
 
     # Copy over scripts
     - name: Copy SMART check script
