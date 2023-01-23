@@ -1,0 +1,83 @@
+---
+- name: Basic setup for kismnas Samba
+  hosts: kismnas
+  become: true
+  tasks:
+    - name: Install samba
+      ansible.builtin.dnf:
+        name:
+          - samba
+        state: present
+
+    - name: Copy script to bring up wireguard
+      ansible.builtin.copy:
+        src: configs/smb/kismnas_smb.conf
+        dest: /etc/samba/smb.conf
+        owner: root
+        group: root
+        mode: '0744'
+
+    - name: Start and enable Grafana service
+      ansible.builtin.systemd:
+        name: smb
+        enabled: true
+        state: started
+
+    - name: Allow Grafana and nginx through firewalld
+      ansible.posix.firewalld:
+        service: samba
+        zone: public
+        permanent: true
+        state: enabled
+      notify:
+        - Restart firewalld
+
+  handlers:
+    - name: Restart smbd
+      ansible.builtin.systemd:
+        name: smb
+        state: restarted
+
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
+
+# _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: kismnas
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy helios64 telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/kismnas.conf
+        dest: /etc/telegraf/telegraf.d/kismnas.conf
+        owner: telegraf
+        group: telegraf
+        mode: '600'
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
+
+# _____________________________________________________________________________
+- name: Reminders
+  hosts: kismnas
+  gather_facts: false
+  tasks:
+    # REMEMBER
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Add samba users manually
+# smbpasswd -a kism
+
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Add mounts to pvenas vm___.conf and kismnas /etc/fstab
+# args: -fsdev local,security_model=passthrough,id=fsdev0,path=/srv/ -device virtio-9p-pci,id=fs0,fsdev=fsdev0,mount_tag=9pshare,bus=pci.0,addr=0x4
+# 9pshare /srv 9p trans=virtio,version=9p2000.L,nobootwait,rw,_netdev 0 0

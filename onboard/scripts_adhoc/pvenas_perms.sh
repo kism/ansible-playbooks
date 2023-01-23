@@ -24,7 +24,9 @@ chown kism:content_public /srv/Amarant
 chown kism:content_public /srv/Freya
 chown kism:content_public /srv/Garnet
 chown kism:content_public /srv/Vivi
-chown kism:content_public /srv/Eiko
+
+chown root:root /srv/Eiko
+chown root:root /srv/Zidane
 
 chmod -R o-wrx,g+rX,u=+rwX /srv/Garnet
 chmod -R o-wrx,g+rX,u=+rwX /srv/Amarant

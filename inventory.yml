@@ -25,8 +25,8 @@ all:
     cert:
       ansible_host: cert.kg.lan
       timezone: utc
-    helios64:
-      ansible_host: helios64.kg.lan
+    kismnas:
+      ansible_host: kismnas.kg.lan
       timezone: awst
     podc:
       ansible_host: podc.kg.lan
@@ -54,7 +54,6 @@ aptbased:
     pve:
     pvenas:
     qbt:
-    helios64:
     cert:
 
 dnfbased:
@@ -62,6 +61,7 @@ dnfbased:
     ifdb:
     graf:
     podc:
+    kismnas:
     ent:
     autismfactory:
 
@@ -74,7 +74,6 @@ opkgbased:
   hosts:
     openwrt:
 
-
 # Operating Systems
 oraclelinux:
   hosts:
@@ -82,6 +81,7 @@ oraclelinux:
     graf:
     podc:
     ent:
+    kismnas:
     autismfactory:
 
 manjaro:
@@ -91,13 +91,11 @@ manjaro:
 
 debian:
   hosts:
-    helios64:
     cert:
 
 ubuntu:
   hosts:
     qbt:
-
 
 # Server Type
 vms:
@@ -106,10 +104,10 @@ vms:
     ifdb:
     graf:
     ent:
+    kismnas:
 
 baremetal:
   hosts:
-    helios64:
     pve:
     pvenas:
     cert:

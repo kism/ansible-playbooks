@@ -88,7 +88,6 @@
       ansible.builtin.user:
         name: lanprivate
         groups: 'content_private, content_public'
-
         append: true
 
     - name: Add lanuser account to groups
@@ -157,11 +156,11 @@
 
 # _____________________________________________________________________________
 - name: Copy the kgadmins root ca certificate rule APT/DNF
-  hosts: oraclelinux:ubuntu
+  hosts: ubuntu
   become: true
   gather_facts: false
   tasks:
-    - name: Copy the kgadmins root ca certificate rule
+    - name: Copy the kgadmins root ca certificate rule Ubuntu
       ansible.builtin.copy:
         src: certs/kglan_root.cer
         dest: /etc/pki/tls/certs/kglan_root.crt
@@ -169,20 +168,39 @@
         group: root
         mode: '0444'
 
-    - name: Update CA Certs
+    - name: Update CA Certs Ubuntu
       become: true
-      become_user: kism
       ansible.builtin.shell:
         cmd: 'update-ca-certificates'
       tags:
         - skip_ansible_lint
 
-- name: Copy the kgadmins root ca certificate rule pacman
+- name: Copy the kgadmins root ca certificate rule Oracle Linux
+  hosts: oraclelinux
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy the kgadmins root ca certificate rule Oracle Linux
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
+        owner: root
+        group: root
+        mode: '0444'
+
+    - name: Update CA Certs Oracle Linux
+      become: true
+      ansible.builtin.shell:
+        cmd: 'update-ca-trust'
+      tags:
+        - skip_ansible_lint
+
+- name: Copy the kgadmins root ca certificate rule pacman Manjaro
   hosts: manjaro
   become: true
   gather_facts: false
   tasks:
-    - name: Copy the kgadmins root ca certificate rule
+    - name: Copy the kgadmins root ca certificate rule Manjaro
       ansible.builtin.copy:
         src: certs/kglan_root.cer
         dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
@@ -190,11 +208,11 @@
         group: root
         mode: '0444'
 
-- name: Copy the kgadmins root ca certificate rule debian
+- name: Copy the kgadmins root ca certificate rule Debian
   hosts: debian:proxmox
   become: true
   tasks:
-    - name: Copy the kgadmins root ca certificate rule
+    - name: Copy the kgadmins root ca certificate rule Debian
       ansible.builtin.copy:
         src: certs/kglan_root.cer
         dest: /usr/local/share/ca-certificates/kglan_root.crt
@@ -202,7 +220,7 @@
         group: root
         mode: '0444'
 
-    - name: Update CA Certs
+    - name: Update CA Certs Debian
       ansible.builtin.shell:
         cmd: 'update-ca-certificates'
       tags:
