@@ -19,8 +19,8 @@ group="kgadmins"
 # 1085 lanprivate
 # 1084 lanuser
 
-id -u $account &>/dev/null || useradd --uid 1088 --gid 1088 $account
-groupadd groupadd --gid 1099 $group
+id -u $account &>/dev/null || useradd --uid 1088 $account
+groupadd --gid 1099 $group
 usermod -a -G $group $account
 usermod -p '*' $account
 chage -I -1 -m 0 -M 99999 -E -1 $account

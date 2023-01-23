@@ -14,6 +14,7 @@
           - hdparm
           - smartmontools
           - rsync
+          - libatasmart-bin
         state: present
 
     - name: Add directories for HDDs
@@ -132,3 +133,8 @@
         minute: '0'
         hour: '23,09'
         job: '/opt/scripts/snapraid_helper.sh'
+
+    # Install hd-idle
+    - name: Install hd-idle
+      ansible.builtin.apt:
+        deb: https://github.com/adelolmo/hd-idle/releases/download/v1.18/hd-idle_1.18_amd64.deb
