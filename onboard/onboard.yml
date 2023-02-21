@@ -7,8 +7,8 @@
   hosts: aptbased:dnfbased:pacmanbased
   become: true
   gather_facts: false
-  collections:
-    - community.general
+  # collections:
+  #   - community.general
   tasks:
     # User Management
     - name: Add the user 'kism' with a bash shell
@@ -129,8 +129,8 @@
   hosts: aptbased:dnfbased:pacmanbased
   become: true
   gather_facts: false
-  collections:
-    - community.general
+  # collections:
+  #   - community.general
   tasks:
     - name: Set timezone to Perth
       when: timezone == 'awst'

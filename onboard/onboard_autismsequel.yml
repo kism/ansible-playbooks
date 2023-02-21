@@ -1,6 +1,6 @@
 # _____________________________________________________________________________
 - name: Setup telegraf
-  hosts: autismfactory:autismsequel
+  hosts: autismsequel
   become: true
   tasks:
     - name: Copy common telegraf configs
