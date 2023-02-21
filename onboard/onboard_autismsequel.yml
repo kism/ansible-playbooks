@@ -1,56 +1,15 @@
----
-# _____________________________________________________________________________
-- name: Basic setup for factorio server
-  hosts: autismfactory
-  become: true
-  vars:
-    users:
-      - kism
-      - skibisky
-  collections:
-    - community.general
-  tasks:
-    - name: Assume this is being run on a laptop, disable sleep, hibernate etc
-      ansible.builtin.systemd:
-        name: '{{ item }}'
-        enabled: false
-        masked: true
-      loop:
-        - sleep.target
-        - suspend.target
-        - hibernate.target
-        - hybrid-sleep.target
-      notify:
-        - Restart systemd-logind
-
-    - name: Set logind sleep settings, assuming laptop is plugged in
-      ansible.builtin.lineinfile:
-        path: /etc/systemd/logind.conf
-        regexp: '^.?HandleLidSwitchExternalPower'
-        line: 'HandleLidSwitchExternalPower=ignore'
-        state: present
-      notify:
-        - Restart systemd-logind
-
-
-  handlers:
-    - name: Restart systemd-logind
-      ansible.builtin.systemd:
-        name: systemd-logind
-        state: restarted
-
 # _____________________________________________________________________________
 - name: Setup telegraf
-  hosts: autismfactory
+  hosts: autismfactory:autismsequel
   become: true
   tasks:
     - name: Copy common telegraf configs
       ansible.builtin.copy:
-        src: configs/telegraf/autismfactory.conf
-        dest: /etc/telegraf/telegraf.d/autismfactory.conf
+        src: configs/telegraf/autismsequel.conf
+        dest: /etc/telegraf/telegraf.d/autismsequel.conf
         owner: telegraf
         group: telegraf
-        mode: '600'
+        mode: "600"
       notify:
         - Restart telegraf
 
@@ -59,7 +18,6 @@
       ansible.builtin.systemd:
         name: telegraf
         state: restarted
-
 # # _____________________________________________________________________________
 # - name: Duckdns Setup
 #   hosts: ent
@@ -102,6 +60,6 @@
 #         regexp: 'domain='
 #         line: 'domain=autismfactory"'
 #         state: present
-
-
+#       notify:
+#         - Restart telegraf
 

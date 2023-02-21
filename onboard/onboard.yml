@@ -438,8 +438,8 @@
   tasks:
     - name: Telegraf apt key
       ansible.builtin.apt_key:
-        url: 'https://repos.influxdata.com/influxdb.key'
-        id: 2582E0C5
+        url: 'https://repos.influxdata.com/influxdata-archive_compat.key'
+        id: 7DF8B07E
         state: present
 
     - name: Add Telegraf repository
@@ -460,6 +460,12 @@
   become: true
   gather_facts: false
   tasks:
+    - name: Remove old telegraf key
+      ansible.builtin.shell:
+        cmd: 'rpm --erase gpg-pubkey-2582e0c5-56099b04'
+      tags:
+        - skip_ansible_lint
+
     - name: Copy common telegraf config
       ansible.builtin.copy:
         src: configs/telegraf/common_influxdb.conf

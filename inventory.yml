@@ -41,6 +41,9 @@ all:
       ansible_host: localhost
       ansible_port: 2222
       timezone: awst
+    autismsequel:
+      ansible_host: autismsequel
+      timezone: awst
     manjaro-x230t:
       ansible_host: manjaro-x230t.kg.lan
       timezone: awst
@@ -64,6 +67,7 @@ dnfbased:
     kismnas:
     ent:
     autismfactory:
+    autismsequel:
 
 pacmanbased:
   dpshub:
@@ -83,6 +87,7 @@ oraclelinux:
     ent:
     kismnas:
     autismfactory:
+    autismsequel:
 
 manjaro:
   dpshub:
@@ -105,6 +110,7 @@ vms:
     graf:
     ent:
     kismnas:
+    autismsequel:
 
 baremetal:
   hosts:
@@ -118,3 +124,8 @@ proxmox:
   hosts:
     pve:
     pvenas:
+
+gameserver:
+  hosts:
+    autismfactory:
+    autismsequel:

@@ -54,6 +54,8 @@
 #
 #######################################################################
 
+export PATH="/usr/sbin:$PATH"
+
 ## USER DEFINED SETTINGS ##
 # address where the output of the jobs will be emailed to.
 # comment it out to disable email output
@@ -287,5 +289,14 @@ if [ $EMAIL_ADDRESS ]; then
 fi
 
 echo "[`date`] All jobs ended."
+
+
+
+hd-idle -t /dev/sda
+hd-idle -t /dev/sdb
+hd-idle -t /dev/sdc
+hd-idle -t /dev/sdd
+hd-idle -t /dev/sde
+hd-idle -t /dev/sdf
 
 exit 0;
