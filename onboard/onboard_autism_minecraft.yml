@@ -9,6 +9,8 @@
         dest: /etc/yum.repos.d/adoptium.repo
         owner: root
         group: root
+        mode: "0664"
+
 
     - name: Import Adoptium GPG key
       ansible.builtin.rpm_key:

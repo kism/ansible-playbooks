@@ -2,8 +2,6 @@
 - name: Basic setup for factorio server
   hosts: gameserver
   become: true
-  collections:
-    - community.general
   tasks:
     - name: Assume this is being run on a laptop, disable sleep, hibernate etc
       ansible.builtin.systemd:

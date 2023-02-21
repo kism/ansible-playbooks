@@ -7,8 +7,6 @@
     users:
       - kism
       - skibisky
-  collections:
-    - community.general
   tasks:
     - name: Assume this is being run on a laptop, disable sleep, hibernate etc
       ansible.builtin.systemd:
@@ -31,7 +29,6 @@
         state: present
       notify:
         - Restart systemd-logind
-
 
   handlers:
     - name: Restart systemd-logind
@@ -59,7 +56,6 @@
       ansible.builtin.systemd:
         name: telegraf
         state: restarted
-
 # # _____________________________________________________________________________
 # - name: Duckdns Setup
 #   hosts: ent
@@ -102,6 +98,3 @@
 #         regexp: 'domain='
 #         line: 'domain=autismfactory"'
 #         state: present
-
-
-

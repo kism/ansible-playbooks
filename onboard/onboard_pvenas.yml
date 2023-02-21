@@ -4,8 +4,8 @@
   hosts: pvenas
   gather_facts: false
   become: true
-  collections:
-    - ansible.posix
+  # collections:
+  #   - ansible.posix
   tasks:
     - name: Install a list of packages
       ansible.builtin.apt:
