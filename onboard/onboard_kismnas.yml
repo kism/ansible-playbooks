@@ -3,10 +3,11 @@
   hosts: kismnas
   become: true
   tasks:
-    - name: Install samba
+    - name: Install samba and rsync
       ansible.builtin.dnf:
         name:
           - samba
+          - rsync
         state: present
 
     - name: Copy script to bring up wireguard

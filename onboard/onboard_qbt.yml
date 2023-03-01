@@ -4,12 +4,23 @@
   hosts: qbt
   gather_facts: false
   become: true
-  collections:
-    - community.general
+  # collections:
+  #   - community.general
   tasks:
     - name: Reminder
       ansible.builtin.debug:
         msg: Actually make this playbook
+
+- name: Update all my apt based linux hosts
+  hosts: qbt
+  become: true
+  tasks:
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg:
+          - qbittorrent-nox
+        state: present
 
   # _____________________________________________________________________________
 - name: Setup telegraf

@@ -155,25 +155,25 @@
         mode: '0770'
 
 # _____________________________________________________________________________
-- name: Copy the kgadmins root ca certificate rule APT/DNF
-  hosts: ubuntu
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Copy the kgadmins root ca certificate rule Ubuntu
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /etc/pki/tls/certs/kglan_root.crt
-        owner: root
-        group: root
-        mode: '0444'
+# - name: Copy the kgadmins root ca certificate rule APT/DNF
+#   hosts: ubuntu
+#   become: true
+#   gather_facts: false
+#   tasks:
+#     - name: Copy the kgadmins root ca certificate rule Ubuntu
+#       ansible.builtin.copy:
+#         src: certs/kglan_root.cer
+#         dest: /etc/pki/tls/certs/kglan_root.crt
+#         owner: root
+#         group: root
+#         mode: '0444'
 
-    - name: Update CA Certs Ubuntu
-      become: true
-      ansible.builtin.shell:
-        cmd: 'update-ca-certificates'
-      tags:
-        - skip_ansible_lint
+#     - name: Update CA Certs Ubuntu
+#       become: true
+#       ansible.builtin.shell:
+#         cmd: 'update-ca-certificates'
+#       tags:
+#         - skip_ansible_lint
 
 - name: Copy the kgadmins root ca certificate rule Oracle Linux
   hosts: oraclelinux
@@ -209,7 +209,7 @@
         mode: '0444'
 
 - name: Copy the kgadmins root ca certificate rule Debian
-  hosts: debian:proxmox
+  hosts: debian:proxmox:ubuntu
   become: true
   tasks:
     - name: Copy the kgadmins root ca certificate rule Debian
@@ -413,6 +413,12 @@
   become: true
   gather_facts: true
   tasks:
+    - name: Remove old telegraf key
+      ansible.builtin.shell:
+        cmd: 'rpm --erase gpg-pubkey-2582e0c5-56099b04'
+      tags:
+        - skip_ansible_lint
+
     - name: Copy file with owner and permission, using symbolic representation
       ansible.builtin.copy:
         src: repos_dnf/influxdb.repo
@@ -460,12 +466,6 @@
   become: true
   gather_facts: false
   tasks:
-    - name: Remove old telegraf key
-      ansible.builtin.shell:
-        cmd: 'rpm --erase gpg-pubkey-2582e0c5-56099b04'
-      tags:
-        - skip_ansible_lint
-
     - name: Copy common telegraf config
       ansible.builtin.copy:
         src: configs/telegraf/common_influxdb.conf
