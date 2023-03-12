@@ -10,7 +10,7 @@ REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer \
     -v -n --nginx                                    \
     -d graf.kg.lan                                   \
     --server https://cert.kg.lan/acme/acme/directory
-	
+
 systemctl reload nginx
 
 
