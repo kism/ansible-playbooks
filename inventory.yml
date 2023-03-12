@@ -28,6 +28,9 @@ all:
     kismnas:
       ansible_host: kismnas.kg.lan
       timezone: awst
+    rproxy:
+      ansible_host: rproxy.kg.lan
+      timezone: awst
     podc:
       ansible_host: podc.kg.lan
       timezone: awst
@@ -68,6 +71,7 @@ dnfbased:
     ent:
     autismfactory:
     autismsequel:
+    rproxy:
 
 pacmanbased:
   dpshub:
@@ -88,6 +92,7 @@ oraclelinux:
     kismnas:
     autismfactory:
     autismsequel:
+    rproxy:
 
 manjaro:
   dpshub:
@@ -111,6 +116,7 @@ vms:
     ent:
     kismnas:
     autismsequel:
+    rproxy:
 
 baremetal:
   hosts:

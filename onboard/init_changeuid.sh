@@ -1,8 +1,12 @@
 groupmod -g 1099 kgadmins
 
-user=ansible_svc
+user=kism
 olduid=1000
-newuid=1088
+newuid=1089
+
+# user=ansible_svc
+# olduid=1000
+# newuid=1088
 
 echo $user
 echo $olduid
