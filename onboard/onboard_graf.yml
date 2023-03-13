@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 # _____________________________________________________________________________
 - name: Basic setup for Grafana
   hosts: graf
@@ -89,9 +90,7 @@
         job: "/bin/bash /opt/scripts/renewcerts.sh"
 
     - name: Grab a new cert
-      # yamllint disable rule:line-length
       ansible.builtin.shell: "REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer certbot certonly --agree-tos --email=kg@localhost -v -n --nginx -d graf.kg.lan --server https://cert.kg.lan/acme/acme/directory"
-      # yamllint enable rule:line-length
       tags:
         - skip_ansible_lint
 

@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 # _____________________________________________________________________________
 - name: Setup letsencrypt and setup cron job
   hosts: ifdb
@@ -33,7 +34,7 @@
     - name: Initial certbot config
       become: true
       ansible.builtin.shell:
-        cmd: "certbot certonly --agree-tos --email={{secret_email}} -v -n --standalone -d kism.duckdns.org"
+        cmd: "certbot certonly --agree-tos --email={{ secret_email }} -v -n --standalone -d kism.duckdns.org"
       register: command_output
       tags:
         - skip_ansible_lint

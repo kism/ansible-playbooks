@@ -1,3 +1,5 @@
+---
+# yamllint disable rule:line-length
 # _____________________________________________________________________________
 - name: Basic setup for factorio server
   hosts: gameserver

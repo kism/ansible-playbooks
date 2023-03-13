@@ -1,15 +1,30 @@
 ---
+# yamllint disable rule:line-length
 - name: Setup reverse proxy host
   hosts: rproxy
   become: true
   gather_facts: false
+  vars:
+      nginxconfigs:
+          - nginx-rproxy-rproxy.conf
+          - nginx-rproxy-influxdb2.conf
+          - nginx-rproxy-grafana.conf
+          - nginx-rproxy-gba.conf
   tasks:
+      - name: Install fedoraproject epel
+        ansible.builtin.dnf:
+            name: "https://download-ib01.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
+            state: present
+
+        # makecache maybe
+
       - name: Install Packages
         ansible.builtin.dnf:
             name:
                 - nginx
                 - certbot
                 - python3-certbot-nginx
+                - fail2ban
             state: installed
 
       - name: Let Nginx 80 through firewalld
@@ -58,7 +73,6 @@
         tags:
             - skip_ansible_lint
 
-
       - name: Copy nginx site confs
         ansible.builtin.copy:
             src: "configs/nginx/{{ item }}"
@@ -66,11 +80,7 @@
             mode: "0660"
         notify:
             - Restart nginx
-        loop:
-            - nginx-rproxy-rproxy.conf
-            - nginx-rproxy-influxdb2.conf
-            - nginx-rproxy-grafana.conf
-            - nginx-rproxy-gba.conf
+        loop: "{{ nginxconfigs }}"
 
       - name: Create symbolic links to make sites available
         ansible.builtin.file:
@@ -81,11 +91,25 @@
             state: link
         notify:
             - Restart nginx
-        loop:
-            - nginx-rproxy-rproxy.conf
-            - nginx-rproxy-influxdb2.conf
-            - nginx-rproxy-grafana.conf
-            - nginx-rproxy-gba.conf
+        loop: "{{ nginxconfigs }}"
+
+      - name: Add valid ips to files
+        ansible.builtin.replace:
+            path: "/etc/nginx/sites-available/{{ item }}"
+            regexp: "secret_public_ip1"
+            replace: "{{ secret_public_ip1 }}"
+        notify:
+            - Restart nginx
+        loop: "{{ nginxconfigs }}"
+
+      - name: Add valid ips to files
+        ansible.builtin.replace:
+            path: "/etc/nginx/sites-available/{{ item }}"
+            regexp: "secret_local_ip_range1"
+            replace: "{{ secret_local_ip_range1 }}"
+        notify:
+            - Restart nginx
+        loop: "{{ nginxconfigs }}"
 
       - name: Copy nginx index.html
         ansible.builtin.copy:
@@ -104,7 +128,7 @@
       - name: Initial certbot config
         become: true
         ansible.builtin.shell:
-            cmd: "certbot --agree-tos --email={{secret_email}} -v -n --nginx --expand -d kierangee.au -d influxdb2.kierangee.au -d gba.kierangee.au -d grafana.kierangee.au"
+            cmd: "certbot --agree-tos --email={{ secret_email }} -v -n --nginx --expand -d kierangee.au -d influxdb2.kierangee.au -d gba.kierangee.au -d grafana.kierangee.au"
         register: command_output
         tags:
             - skip_ansible_lint

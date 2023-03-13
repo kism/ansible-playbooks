@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 # _____________________________________________________________________________
 - name: Install required sensor packages for telegraf
   hosts: pve:pvenas
