@@ -1,9 +1,18 @@
 # _____________________________________________________________________________
-- name: Setup telegraf
+- name: Setup nginx
   hosts: podc
   become: true
   gather_facts: false
   tasks:
+
+    - name: Install nginx and certbot
+      ansible.builtin.dnf:
+        name:
+          - nginx
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
     - name: Allow http and https
       ansible.posix.firewalld:
         service: "{{ item }}"

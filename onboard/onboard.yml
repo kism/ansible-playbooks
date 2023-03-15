@@ -81,19 +81,19 @@
     - name: Adding existing user kism to groups
       ansible.builtin.user:
         name: kism
-        groups: 'kgadmins, content_private, content_public, backup_svc'
+        groups: "kgadmins, content_private, content_public, backup_svc"
         append: true
 
     - name: Add lanprivate account to groups
       ansible.builtin.user:
         name: lanprivate
-        groups: 'content_private, content_public'
+        groups: "content_private, content_public"
         append: true
 
     - name: Add lanuser account to groups
       ansible.builtin.user:
         name: lanuser
-        groups: 'content_public'
+        groups: "content_public"
         append: true
 
     - name: Copy the kgadmins sudoers rule
@@ -102,13 +102,13 @@
         dest: /etc/sudoers.d/kgadmins
         owner: root
         group: root
-        mode: '0660'
+        mode: "0660"
 
     - name: Ensure that bash is setup correctly for kism
       become: true
       become_user: kism
       ansible.builtin.shell:
-        cmd: 'curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash'
+        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
       register: command_output
       changed_when: command_output.rc == 0
       tags:
@@ -118,7 +118,7 @@
       become: true
       become_user: root
       ansible.builtin.shell:
-        cmd: 'curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash'
+        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
       register: command_output
       changed_when: command_output.rc == 0
       tags:
@@ -152,7 +152,7 @@
       ansible.builtin.file:
         path: /opt/scripts
         state: directory
-        mode: '0770'
+        mode: "0770"
 
 # _____________________________________________________________________________
 # - name: Copy the kgadmins root ca certificate rule APT/DNF
@@ -186,12 +186,12 @@
         dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
         owner: root
         group: root
-        mode: '0444'
+        mode: "0444"
 
     - name: Update CA Certs Oracle Linux
       become: true
       ansible.builtin.shell:
-        cmd: 'update-ca-trust'
+        cmd: "update-ca-trust"
       tags:
         - skip_ansible_lint
 
@@ -206,7 +206,7 @@
         dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
         owner: root
         group: root
-        mode: '0444'
+        mode: "0444"
 
 - name: Copy the kgadmins root ca certificate rule Debian
   hosts: debian:proxmox:ubuntu
@@ -218,11 +218,11 @@
         dest: /usr/local/share/ca-certificates/kglan_root.crt
         owner: root
         group: root
-        mode: '0444'
+        mode: "0444"
 
     - name: Update CA Certs Debian
       ansible.builtin.shell:
-        cmd: 'update-ca-certificates'
+        cmd: "update-ca-certificates"
       tags:
         - skip_ansible_lint
 
@@ -235,8 +235,8 @@
     - name: Disable root Login
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
-        regexp: '^.?PermitRootLogin'
-        line: 'PermitRootLogin no'
+        regexp: "^.?PermitRootLogin"
+        line: "PermitRootLogin no"
         state: present
       notify:
         - Reload sshd
@@ -245,7 +245,7 @@
       ansible.builtin.file:
         path: /etc/ssh/sshd_config.d
         state: directory
-        mode: '0755'
+        mode: "0755"
 
     - name: Copy ssh config
       ansible.builtin.copy:
@@ -253,7 +253,7 @@
         dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
         owner: root
         group: root
-        mode: '0600'
+        mode: "0600"
       notify:
         - Reload sshd
 
@@ -399,7 +399,7 @@
         dest: /etc/firewalld/services
         owner: root
         group: root
-        mode: '0644'
+        mode: "0644"
 
   handlers:
     - name: Restart firewalld
@@ -415,7 +415,7 @@
   tasks:
     - name: Remove old telegraf key
       ansible.builtin.shell:
-        cmd: 'rpm --erase gpg-pubkey-2582e0c5-56099b04'
+        cmd: "rpm --erase gpg-pubkey-2582e0c5-56099b04"
       ignore_errors: true
       tags:
         - skip_ansible_lint
@@ -426,7 +426,7 @@
         dest: /etc/yum.repos.d/influxdb.repo
         owner: root
         group: root
-        mode: '644'
+        mode: "644"
 
     - name: Import InfluxDB GPG key
       ansible.builtin.rpm_key:
@@ -445,14 +445,14 @@
   tasks:
     - name: Telegraf apt key
       ansible.builtin.apt_key:
-        url: 'https://repos.influxdata.com/influxdata-archive_compat.key'
+        url: "https://repos.influxdata.com/influxdata-archive_compat.key"
         id: 7DF8B07E
         state: present
 
     - name: Add Telegraf repository
       ansible.builtin.apt_repository:
-        repo: 'deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable'
-        filename: 'telegraf'
+        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        filename: "telegraf"
         state: present
 
     - name: Install a list of packages
@@ -473,14 +473,14 @@
         dest: /etc/telegraf/telegraf.d/common_influxdb.conf
         owner: telegraf
         group: telegraf
-        mode: '600'
+        mode: "600"
       notify:
         - Restart telegraf
 
     - name: Setup telegraf conf
       ansible.builtin.lineinfile:
         path: /etc/telegraf/telegraf.d/common_influxdb.conf
-        regexp: 'token = '
+        regexp: "token = "
         line: 'token = "{{ secret_influxdb_telegraf_write }}"'
         state: present
       notify:

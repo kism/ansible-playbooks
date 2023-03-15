@@ -16,7 +16,7 @@
         dest: /etc/samba/smb.conf
         owner: root
         group: root
-        mode: '0744'
+        mode: "0744"
 
     - name: Start and enable Grafana service
       ansible.builtin.systemd:
@@ -56,7 +56,7 @@
         dest: /etc/telegraf/telegraf.d/kismnas.conf
         owner: telegraf
         group: telegraf
-        mode: '600'
+        mode: "600"
       notify:
         - Restart telegraf
 
@@ -75,7 +75,7 @@
     - name: Reminder
       ansible.builtin.debug:
         msg: Add samba users manually
-# smbpasswd -a kism
+    # smbpasswd -a kism
 
     - name: Reminder
       ansible.builtin.debug:

@@ -47,7 +47,7 @@ all:
     autismsequel:
       ansible_host: autismsequel
       timezone: awst
-    manjaro-x230t:
+    manjarox230t:
       ansible_host: manjaro-x230t.kg.lan
       timezone: awst
     kpbp:
@@ -75,7 +75,7 @@ dnfbased:
 
 pacmanbased:
   dpshub:
-  manjaro-x230t:
+  manjarox230t:
   kpbp:
 
 opkgbased:
@@ -96,7 +96,7 @@ oraclelinux:
 
 manjaro:
   dpshub:
-  manjaro-x230t:
+  manjarox230t:
   kpbp:
 
 debian:

@@ -155,7 +155,6 @@
       tags:
         - skip_ansible_lint
 
-
 # _____________________________________________________________________________
 - name: Setup telegraf
   hosts: ifdb
