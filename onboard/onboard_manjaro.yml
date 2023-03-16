@@ -1,0 +1,89 @@
+# _____________________________________________________________________________
+- name: Setup packages
+  hosts: manjaro-x230t
+  become: true
+  become_user: kism
+  gather_facts: false
+  tasks:
+    - name: Install my essentials
+      community.general.pacman:
+        name:
+          - git
+          - wget
+          - curl
+          - htop
+          - nload
+          - tmux
+          - vim
+          - neofetch
+          - keychain
+        state: present
+      become: true
+      become_user: root
+
+    - name: Add my favorite /home subdirectory
+      ansible.builtin.file:
+        path: ~/src
+        state: directory
+        mode: "0755"
+
+    - name: Clone dotfiles repo
+      ansible.builtin.git:
+        repo: https://github.com/kism/dotfiles
+        dest: ~/src/dotfiles
+        version: master
+
+# _____________________________________________________________________________
+- name: Setup zsh
+  hosts: manjaro-x230t
+  become: true
+  gather_facts: false
+  become_user: kism
+
+  tasks:
+    - name: Install zsh
+      community.general.pacman:
+        name:
+          - zsh
+        state: present
+      become: true
+      become_user: root
+
+    - name: Create antigen folder
+      ansible.builtin.file:
+        path: ~/.antigen
+        state: directory
+        owner: kism
+        group: kism
+        mode: "0770"
+
+    - name: Download antigen
+      ansible.builtin.get_url:
+        url: https://git.io/antigen
+        dest: ~/.antigen/antigen.zsh
+        owner: kism
+        group: kism
+        mode: "0755"
+
+    - name: Copy zsh config
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/kism/dotfiles/master/_zsh/.zshrc
+        dest: ~/.zshrc
+        owner: kism
+        group: kism
+        mode: "0644"
+
+    - name: Setup zsh
+      become: true
+      ansible.builtin.shell:
+        cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
+      register: command_output
+      tags:
+        - skip_ansible_lint
+
+    - name: Change my shell to zsh
+      become: true
+      become_user: root
+      ansible.builtin.user:
+        name: "kism"
+        shell: /bin/zsh

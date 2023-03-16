@@ -145,7 +145,7 @@
       become: true
       become_user: root
 
-    - name: Add my favorite /opt subdirectory
+    - name: Create antigen folder
       ansible.builtin.file:
         path: ~/.antigen
         state: directory
@@ -153,7 +153,7 @@
         group: kism
         mode: "0770"
 
-    - name: Download foo.conf
+    - name: Download antigen
       ansible.builtin.get_url:
         url: https://git.io/antigen
         dest: ~/.antigen/antigen.zsh
@@ -169,7 +169,7 @@
         group: kism
         mode: "0644"
 
-    - name: Initial certbot config
+    - name: Setup zsh
       become: true
       ansible.builtin.shell:
         cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'

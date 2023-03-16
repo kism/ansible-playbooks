@@ -4,7 +4,7 @@
 
 # _____________________________________________________________________________
 - name: User and filesystem Setup
-  hosts: aptbased:dnfbased:pacmanbased
+  hosts: aptbased:dnfbased:pacmanbased:test
   become: true
   gather_facts: false
   # collections:
