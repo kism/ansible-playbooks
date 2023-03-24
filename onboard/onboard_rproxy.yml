@@ -60,18 +60,26 @@
       notify:
         - Restart nginx
 
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - /etc/nginx/sites-available
+        - /etc/nginx/sites-enabled
+
+
     # I hate these two
     - name: Remove file (delete file)
       ansible.builtin.shell:
-        cmd: "rm /etc/nginx/sites-available/*"
+        cmd: "rm {{ item }}/*"
+      ignore_errors: true
       tags:
         - skip_ansible_lint
-
-    - name: Remove file (delete file)
-      ansible.builtin.shell:
-        cmd: "rm /etc/nginx/sites-enabled/*"
-      tags:
-        - skip_ansible_lint
+      loop:
+        - /etc/nginx/sites-available
+        - /etc/nginx/sites-enabled
 
     - name: Copy nginx site confs
       ansible.builtin.copy:
