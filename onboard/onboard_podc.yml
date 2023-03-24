@@ -5,6 +5,34 @@
   become: true
   gather_facts: false
   tasks:
+    - name: Add the user 'podcasto' with a bash shell
+      ansible.builtin.user:
+        name: podcasto
+        uid: 1083
+        shell: /bin/false
+        append: true
+
+    - name: Create archivepodcast directory
+      ansible.builtin.file:
+        path: "/opt/archivepodcast"
+        state: directory
+        owner: podcasto
+        group: podcasto
+        mode: "0700"
+
+    - name: Attempt to change ownership on /opt/archivepodcast
+      ansible.builtin.file:
+        path: "/opt/archivepodcast"
+        recurse: true
+        owner: podcasto
+        group: podcasto
+
+# _____________________________________________________________________________
+- name: Setup nginx
+  hosts: podc
+  become: true
+  gather_facts: false
+  tasks:
     - name: Install nginx and certbot
       ansible.builtin.dnf:
         name:
@@ -122,14 +150,51 @@
 - name: Setup archive-podcast
   hosts: podc
   become: true
+  become_user: podcasto
   gather_facts: false
   tasks:
-    - name: Example clone of a single branch
+    - name: Clone archivepodcast
       ansible.builtin.git:
         repo: https://github.com/kism/archivepodcast
         dest: /opt/archivepodcast
         single_branch: true
         version: master
+
+    - name: Copy archivepodcast config
+      ansible.builtin.copy:
+        src: configs/archivepodcast/settings.json
+        dest: /opt/archivepodcast/settings.json
+        mode: "600"
+
+    - name: Create venv
+      become: true
+      ansible.builtin.shell:
+        cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
+      register: command_output
+      tags:
+        - skip_ansible_lint
+
+    - name: Install flask into the specified (virtualenv), inheriting globally installed modules
+      ansible.builtin.pip:
+        requirements: /opt/archivepodcast/requirements.txt
+        virtualenv: /opt/archivepodcast/env
+        virtualenv_site_packages: true
+
+    - name: Copy systemd service
+      become_user: root
+      ansible.builtin.copy:
+        src: systemd/system/archivepodcast.service
+        dest: /etc/systemd/system/archivepodcast.service
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Enable systemd service
+      ansible.builtin.systemd:
+        name: archivepodcast
+        enabled: true
+        state: started
+        masked: false
 
 # _____________________________________________________________________________
 - name: Setup telegraf

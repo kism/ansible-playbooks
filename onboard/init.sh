@@ -18,6 +18,7 @@ group="kgadmins"
 # 1086 qbtuser
 # 1085 lanprivate
 # 1084 lanuser
+# 1083 podcasto
 
 id -u $account &>/dev/null || useradd --uid 1088 $account
 groupadd --gid 1099 $group
