@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=podcasto
 WorkingDirectory=/opt/archivepodcast
-ExecStart=/opt/archivepodcast/env/bin/python3 selfhostarchive.py -c settings.json
+ExecStart=/opt/archivepodcast/env/bin/python3 selfhostarchive.py --config settings.json --logfile /var/log/archivepodcast.log --loglevel INFO
 Restart=always
 
 [Install]

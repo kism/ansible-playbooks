@@ -17,6 +17,8 @@
           - vim
           - neofetch
           - keychain
+          - figlet
+          - toilet
         state: present
       become: true
       become_user: root

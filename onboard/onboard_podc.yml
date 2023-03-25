@@ -1,6 +1,6 @@
 ---
 # _____________________________________________________________________________
-- name: Setup nginx
+- name: Setup archivepodcast directory
   hosts: podc
   become: true
   gather_facts: false
@@ -33,6 +33,12 @@
   become: true
   gather_facts: false
   tasks:
+    - name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+      ansible.posix.seboolean:
+        name: httpd_can_network_connect
+        state: true
+        persistent: true
+
     - name: Install nginx and certbot
       ansible.builtin.dnf:
         name:
@@ -131,7 +137,7 @@
   become: true
   gather_facts: false
   tasks:
-    - name: Install nginx and certbot
+    - name: Install certbot
       ansible.builtin.dnf:
         name:
           - certbot
@@ -159,15 +165,16 @@
         dest: /opt/archivepodcast
         single_branch: true
         version: master
+      notify: Restart archivepodcast
 
     - name: Copy archivepodcast config
       ansible.builtin.copy:
         src: configs/archivepodcast/settings.json
         dest: /opt/archivepodcast/settings.json
         mode: "600"
+      notify: Restart archivepodcast
 
     - name: Create venv
-      become: true
       ansible.builtin.shell:
         cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
       register: command_output
@@ -179,8 +186,21 @@
         requirements: /opt/archivepodcast/requirements.txt
         virtualenv: /opt/archivepodcast/env
         virtualenv_site_packages: true
+      notify: Restart archivepodcast
+
+    - name: Create archivepodcast log file
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/var/log/archivepodcast.log"
+        state: touch
+        owner: podcasto
+        group: podcasto
+        mode: "0664"
+      notify: Restart archivepodcast
 
     - name: Copy systemd service
+      become: true
       become_user: root
       ansible.builtin.copy:
         src: systemd/system/archivepodcast.service
@@ -188,13 +208,27 @@
         owner: root
         group: root
         mode: "0644"
+      notify: Restart archivepodcast
 
     - name: Enable systemd service
+      become: true
+      become_user: root
       ansible.builtin.systemd:
-        name: archivepodcast
+        name: archivepodcast.service
         enabled: true
+        daemon_reload: true
         state: started
         masked: false
+      notify: Restart archivepodcast
+
+  handlers:
+    - name: Restart archivepodcast
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: archivepodcast
+        daemon_reload: true
+        state: restarted
 
 # _____________________________________________________________________________
 - name: Setup telegraf

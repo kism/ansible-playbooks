@@ -16,7 +16,6 @@
         name: "*"
         state: latest
 
-
 - name: Update all my apt based linux hosts
   hosts: aptbased
   become: true

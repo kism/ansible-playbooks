@@ -1,7 +1,7 @@
 ---
 - name: Unconditionally shut down the machine with all defaults
   hosts: vms
-  become: yes
+  become: true
   tasks:
-  - name: Unconditionally shut down the machine with all defaults
-    community.general.shutdown:
+    - name: Unconditionally shut down the machine with all defaults
+      community.general.shutdown:
