@@ -320,8 +320,8 @@
       ansible.builtin.git:
         repo: https://github.com/kism/geostat
         dest: /opt/geostat
-        single_branch: true
-        version: feature/filetypefilter
+        single_branch: false
+        version: "feature/filetypefilter"
       notify: Restart geostat
 
     - name: Copy geostat config
@@ -349,7 +349,7 @@
       notify:
         - Restart geostat
 
-    - name: Unarchive a file that is already on the remote machine
+    - name: Grab geoip database
       ansible.builtin.unarchive:
         src: https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz
         dest: /opt/geostat
@@ -357,8 +357,15 @@
       notify:
         - Restart geostat
 
-    - name: Fix selinux
-      ansible.builtin.command: rm -rf /opt/geostat/GeoLite2-City*
+    - name: move mmdb to correct location
+      ansible.builtin.shell:
+        cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
+      tags:
+        - skip_ansible_lint
+
+    - name: remove geostat folder
+      ansible.builtin.shell:
+        cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
       tags:
         - skip_ansible_lint
 
