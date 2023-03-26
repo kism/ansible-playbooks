@@ -373,6 +373,50 @@
         virtualenv_site_packages: true
       notify: Restart geostat
 
+    - name: Copy systemd service
+      become: true
+      become_user: root
+      ansible.builtin.copy:
+        src: systemd/system/geostat.service
+        dest: /etc/systemd/system/geostat.service
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart geostat
+
+    - name: Enable systemd service
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: geostat.service
+        enabled: true
+        daemon_reload: true
+        state: started
+        masked: false
+      notify: Restart geostat
+
+    - name: Copy systemd service
+      become: true
+      become_user: root
+      ansible.builtin.copy:
+        src: systemd/system/geostat.service
+        dest: /etc/systemd/system/geostat.service
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart geostat
+
+    - name: Enable systemd service
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: geostat.service
+        enabled: true
+        daemon_reload: true
+        state: started
+        masked: false
+      notify: Restart geostat
+
   handlers:
     - name: Restart geostat
       become: true
