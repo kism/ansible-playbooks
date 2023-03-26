@@ -405,8 +405,6 @@
         masked: false
       notify: Restart geostat
 
-
-
   handlers:
     - name: Restart geostat
       become: true
