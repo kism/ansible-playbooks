@@ -9,23 +9,14 @@
       ansible.builtin.user:
         name: podcasto
         uid: 1083
-        shell: /bin/false
+        shell: /sbin/nologin
         append: true
 
-    - name: Create archivepodcast directory
-      ansible.builtin.file:
-        path: "/opt/archivepodcast"
-        state: directory
-        owner: podcasto
-        group: podcasto
-        mode: "0700"
-
-    - name: Attempt to change ownership on /opt/archivepodcast
-      ansible.builtin.file:
-        path: "/opt/archivepodcast"
-        recurse: true
-        owner: podcasto
-        group: podcasto
+    - name: Disable kdump
+      ansible.builtin.systemd:
+        name: kdump
+        enabled: false
+        masked: true
 
 # _____________________________________________________________________________
 - name: Setup nginx
@@ -38,6 +29,11 @@
         name: httpd_can_network_connect
         state: true
         persistent: true
+
+    - name: Fix selinux
+      ansible.builtin.command: restorecon -Rv /
+      tags:
+        - skip_ansible_lint
 
     - name: Install nginx and certbot
       ansible.builtin.dnf:
@@ -159,6 +155,25 @@
   become_user: podcasto
   gather_facts: false
   tasks:
+    - name: Create archivepodcast directory
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/opt/archivepodcast"
+        state: directory
+        owner: podcasto
+        group: podcasto
+        mode: "0700"
+
+    - name: Attempt to change ownership on /opt/archivepodcast
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/opt/archivepodcast"
+        recurse: true
+        owner: podcasto
+        group: podcasto
+
     - name: Clone archivepodcast
       ansible.builtin.git:
         repo: https://github.com/kism/archivepodcast
@@ -231,6 +246,27 @@
         state: restarted
 
 # _____________________________________________________________________________
+- name: Setup logrotate
+  hosts: podc
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy archivepodcast logrotate
+      ansible.builtin.copy:
+        src: configs/logrotate/archivepodcast
+        dest: /etc/logrotate.d/archivepodcast
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart logrotate
+
+  handlers:
+    - name: Restart logrotate
+      ansible.builtin.systemd:
+        name: logrotate
+        state: restarted
+
+# _____________________________________________________________________________
 - name: Setup telegraf
   hosts: podc
   become: true
@@ -250,4 +286,98 @@
     - name: Restart telegraf
       ansible.builtin.systemd:
         name: telegraf
+        state: restarted
+
+# _____________________________________________________________________________
+- name: Setup log monitoring for influxdb2 with my fork of geostat
+  hosts: podc
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Create geostat directory
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/opt/geostat"
+        state: directory
+        owner: nginx
+        group: nginx
+        mode: "0700"
+
+    - name: Attempt to change ownership on /opt/geostat
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/opt/geostat"
+        recurse: true
+        owner: nginx
+        group: nginx
+
+    - name: Clone geostat
+      ansible.builtin.git:
+        repo: https://github.com/kism/geostat
+        dest: /opt/geostat
+        single_branch: true
+        version: master
+      notify: Restart geostat
+
+    - name: Copy geostat config
+      ansible.builtin.copy:
+        src: configs/geostat/settings.ini
+        dest: /opt/geostat/settings.ini
+        mode: "600"
+      notify: Restart geostat
+
+    - name: Setup geostat influx token
+      ansible.builtin.lineinfile:
+        path: /opt/geostat/settings.ini
+        regexp: "token = "
+        line: "token = {{ secret_influxdb_geostat_write }}"
+        state: present
+      notify:
+        - Restart geostat
+
+    - name: Setup geostat log location
+      ansible.builtin.lineinfile:
+        path: /opt/geostat/settings.ini
+        regexp: "logpath = "
+        line: "logpath = {{ secret_geostat_path }}"
+        state: present
+      notify:
+        - Restart geostat
+
+    - name: Unarchive a file that is already on the remote machine
+      ansible.builtin.unarchive:
+        src: https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz
+        dest: /opt/geostat
+        remote_src: true
+      notify:
+        - Restart geostat
+
+    - name: Fix selinux
+      ansible.builtin.command: rm -rf /opt/geostat/GeoLite2-City*
+      tags:
+        - skip_ansible_lint
+
+    - name: Create venv
+      ansible.builtin.shell:
+        cmd: "cd /opt/geostat/ ; python3 -m venv env"
+      register: command_output
+      tags:
+        - skip_ansible_lint
+
+    - name: Install flask into the specified (virtualenv), inheriting globally installed modules
+      ansible.builtin.pip:
+        requirements: /opt/geostat/requirements.txt
+        virtualenv: /opt/geostat/env
+        virtualenv_site_packages: true
+      notify: Restart geostat
+
+  handlers:
+    - name: Restart geostat
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: geostat
+        daemon_reload: true
         state: restarted
