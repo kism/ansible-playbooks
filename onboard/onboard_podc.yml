@@ -321,7 +321,7 @@
         repo: https://github.com/kism/geostat
         dest: /opt/geostat
         single_branch: true
-        version: master
+        version: feature/filetypefilter
       notify: Restart geostat
 
     - name: Copy geostat config
