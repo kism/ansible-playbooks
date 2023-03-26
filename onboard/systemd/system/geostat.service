@@ -3,7 +3,7 @@ Description=Nginx log geo ip to influxdb
 After=network.target
 
 [Service]
-User=podcasto
+User=nginx
 WorkingDirectory=/opt/geostat
 ExecStart=/opt/geostat/env/bin/python3 geoparser.py
 Restart=always

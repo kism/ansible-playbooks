@@ -304,14 +304,17 @@
         group: nginx
         mode: "0700"
 
-    - name: Attempt to change ownership on /opt/geostat
+    - name: Attempt to change ownership on /opt/geostat and /var/log/nginx
       become: true
       become_user: root
       ansible.builtin.file:
-        path: "/opt/geostat"
+        path: "{{ item }}"
         recurse: true
         owner: nginx
         group: nginx
+      loop:
+        - /opt/geostat
+        - /var/log/nginx
 
     - name: Clone geostat
       ansible.builtin.git:

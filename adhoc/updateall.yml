@@ -15,6 +15,8 @@
       ansible.builtin.dnf:
         name: "*"
         state: latest
+      tags:
+        - skip_ansible_lint
 
 - name: Update all my apt based linux hosts
   hosts: aptbased
