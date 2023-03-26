@@ -304,18 +304,6 @@
         group: nginx
         mode: "0700"
 
-    - name: Attempt to change ownership on /opt/geostat and /var/log/nginx
-      become: true
-      become_user: root
-      ansible.builtin.file:
-        path: "{{ item }}"
-        recurse: true
-        owner: nginx
-        group: nginx
-      loop:
-        - /opt/geostat
-        - /var/log/nginx
-
     - name: Clone geostat
       ansible.builtin.git:
         repo: https://github.com/kism/geostat
@@ -383,27 +371,17 @@
         virtualenv_site_packages: true
       notify: Restart geostat
 
-    - name: Copy systemd service
+    - name: Change ownership on /opt/geostat and /var/log/nginx
       become: true
       become_user: root
-      ansible.builtin.copy:
-        src: systemd/system/geostat.service
-        dest: /etc/systemd/system/geostat.service
-        owner: root
-        group: root
-        mode: "0644"
-      notify: Restart geostat
-
-    - name: Enable systemd service
-      become: true
-      become_user: root
-      ansible.builtin.systemd:
-        name: geostat.service
-        enabled: true
-        daemon_reload: true
-        state: started
-        masked: false
-      notify: Restart geostat
+      ansible.builtin.file:
+        path: "{{ item }}"
+        recurse: true
+        owner: nginx
+        group: nginx
+      loop:
+        - /opt/geostat
+        - /var/log/nginx
 
     - name: Copy systemd service
       become: true
@@ -426,6 +404,8 @@
         state: started
         masked: false
       notify: Restart geostat
+
+
 
   handlers:
     - name: Restart geostat
