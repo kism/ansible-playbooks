@@ -162,6 +162,13 @@
         mode: "600"
       notify: Restart archivepodcast
 
+    - name: Grab ffmpeg
+      ansible.builtin.unarchive:
+        src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
+        dest: /opt/archivepodcast
+        extra_opts: [--strip-components=1]
+        remote_src: true
+
     - name: Create venv
       ansible.builtin.shell:
         cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
