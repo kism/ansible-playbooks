@@ -35,7 +35,7 @@
       tags:
         - skip_ansible_lint
 
-    - name: Install nginx and certbot
+    - name: Install nginx
       ansible.builtin.dnf:
         name:
           - nginx
@@ -48,12 +48,6 @@
         mode: "0660"
       notify:
         - Restart nginx
-
-    - name: Set server address
-      ansible.builtin.replace:
-        path: "/etc/nginx/nginx.conf"
-        regexp: "SERVER_NAME"
-        replace: "{{ secret_domain }}"
 
     - name: Create a directory if it does not exist
       ansible.builtin.file:
@@ -126,27 +120,6 @@
       ansible.builtin.systemd:
         name: nginx
         state: reloaded
-
-# _____________________________________________________________________________
-- name: Setup certbot
-  hosts: podc
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Install certbot
-      ansible.builtin.dnf:
-        name:
-          - certbot
-          - python3-certbot-nginx
-        state: present
-
-    - name: Initial certbot config
-      become: true
-      ansible.builtin.shell:
-        cmd: "certbot --agree-tos --email={{ secret_email }} -v -n --nginx -d {{ secret_domain }}"
-      register: command_output
-      tags:
-        - skip_ansible_lint
 
 # _____________________________________________________________________________
 - name: Setup archive-podcast
@@ -244,6 +217,27 @@
         name: archivepodcast
         daemon_reload: true
         state: restarted
+
+# _____________________________________________________________________________
+- name: Setup certbot
+  hosts: podc
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install certbot
+      ansible.builtin.dnf:
+        name:
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    - name: Initial certbot config
+      become: true
+      ansible.builtin.shell:
+        cmd: "certbot --agree-tos --email={{ secret_email }} -v -n --nginx -d {{ secret_domain }}"
+      register: command_output
+      tags:
+        - skip_ansible_lint
 
 # _____________________________________________________________________________
 - name: Setup logrotate
