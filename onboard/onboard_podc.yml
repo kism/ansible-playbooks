@@ -19,6 +19,64 @@
         masked: true
 
 # _____________________________________________________________________________
+- name: Setup ffmpeg
+  hosts: podc
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Create geostat directory
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/opt/ffmpeg"
+        state: directory
+        owner: root
+        group: root
+        mode: "0775"
+
+    - name: Change ownership on /opt/ffmpeg
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: "/opt/ffmpeg"
+        recurse: true
+        owner: root
+        group: root
+
+    - name: Task name
+      ansible.builtin.stat:
+        path: /opt/ffmpeg/ffmpeg
+      register: register_ffmpeg
+
+    - name: Get age of ffmpeg
+      ansible.builtin.find:
+        paths: /opt/ffmpeg
+        pattern: "ffmpeg"
+        file_type: file
+        age: 120d
+      register: ffmpeg_age
+
+    - name: Grab ffmpeg
+      ansible.builtin.unarchive:
+        src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
+        dest: /opt/ffmpeg
+        extra_opts: [--strip-components=1]
+        remote_src: true
+      when: not ffmpeg_age or not register_ffmpeg
+
+    - name: Create symbolic links to make sites available
+      ansible.builtin.file:
+        src: "/opt/ffmpeg/{{ item }}"
+        dest: "/usr/bin/{{ item }}"
+        owner: root
+        group: root
+        state: link
+      loop:
+        - ffmpeg
+        - ffprobe
+        - qt-faststart
+
+# _____________________________________________________________________________
 - name: Setup nginx
   hosts: podc
   become: true
@@ -160,14 +218,7 @@
         src: configs/archivepodcast/settings.json
         dest: /opt/archivepodcast/settings.json
         mode: "600"
-      notify: Restart archivepodcast
-
-    - name: Grab ffmpeg
-      ansible.builtin.unarchive:
-        src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
-        dest: /opt/archivepodcast
-        extra_opts: [--strip-components=1]
-        remote_src: true
+      notify: Reload archivepodcast
 
     - name: Create venv
       ansible.builtin.shell:
@@ -193,6 +244,8 @@
         group: podcasto
         mode: "0664"
       notify: Restart archivepodcast
+      changed_when: false
+
 
     - name: Copy systemd service
       become: true
@@ -224,6 +277,14 @@
         name: archivepodcast
         daemon_reload: true
         state: restarted
+
+    - name: Reload archivepodcast
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: archivepodcast
+        state: reloaded
+
 
 # _____________________________________________________________________________
 - name: Setup certbot
@@ -329,6 +390,11 @@
       notify:
         - Restart geostat
 
+    - name: Task name
+      ansible.builtin.stat:
+        path: /opt/ffmpeg/ffmpeg
+      register: register_geostat
+
     - name: Setup geostat log location
       ansible.builtin.lineinfile:
         path: /opt/geostat/settings.ini
@@ -338,23 +404,33 @@
       notify:
         - Restart geostat
 
+    - name: Get age of geotip database
+      ansible.builtin.find:
+        paths: /opt/geostat
+        pattern: "GeoLite2-City.mmdb"
+        age: 120d
+      register: geostat_age
+
     - name: Grab geoip database
       ansible.builtin.unarchive:
         src: https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz
         dest: /opt/geostat
         remote_src: true
+      when: geostat_age or not register_geostat
       notify:
         - Restart geostat
 
     - name: move mmdb to correct location
       ansible.builtin.shell:
         cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
+      when: geostat_age or not register_geostat
       tags:
         - skip_ansible_lint
 
     - name: remove geostat folder
       ansible.builtin.shell:
         cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
+      when: geostat_age or not register_geostat
       tags:
         - skip_ansible_lint
 
@@ -362,6 +438,7 @@
       ansible.builtin.shell:
         cmd: "cd /opt/geostat/ ; python3 -m venv env"
       register: command_output
+      changed_when: false
       tags:
         - skip_ansible_lint
 
