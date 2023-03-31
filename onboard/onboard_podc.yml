@@ -416,7 +416,7 @@
         src: https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz
         dest: /opt/geostat
         remote_src: true
-      when: geostat_age or not register_geostat
+      when: not geostat_age or not register_geostat
       notify:
         - Restart geostat
 
