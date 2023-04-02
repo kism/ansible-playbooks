@@ -228,7 +228,7 @@
 
 # _____________________________________________________________________________
 - name: SSH settings, not for proxmox
-  hosts: debian:ubuntu:oraclelinux:manjaro # NOT PROXMOX
+  hosts: debian:ubuntu:oraclelinux:manjaro # NOT PROXMOX, will break clustering
   become: true
   gather_facts: false
   tasks:

@@ -37,16 +37,17 @@ all:
     kierangeeau:
       ansible_host: kierangee.au
       timezone: awst
-    autismfactory:
-      ansible_host: autismfactory.kg.lan
-      timezone: awst
+
     dpshub:
       ansible_host: localhost
       ansible_port: 2222
       timezone: awst
-    autismsequel:
-      ansible_host: autismsequel
-      timezone: awst
+    # autismsequel:
+    #   ansible_host: autismsequel
+    #   timezone: awst
+    # autismfactory:
+    #   ansible_host: autismfactory.kg.lan
+    #   timezone: awst
     manjaro-x230t:
       ansible_host: manjaro-x230t.kg.lan
       timezone: awst
@@ -69,8 +70,8 @@ dnfbased:
     podc:
     kismnas:
     ent:
-    autismfactory:
-    autismsequel:
+    # autismfactory:
+    # autismsequel:
     rproxy:
 
 pacmanbased:
@@ -117,7 +118,7 @@ vms:
     graf:
     ent:
     kismnas:
-    autismsequel:
+    # autismsequel:
     rproxy:
 
 baremetal:
@@ -126,14 +127,14 @@ baremetal:
     pvenas:
     cert:
     podc:
-    autismfactory:
+    # autismfactory:
 
 proxmox:
   hosts:
     pve:
     pvenas:
 
-gameserver:
-  hosts:
-    autismfactory:
-    autismsequel:
+# gameserver:
+#   hosts:
+#     autismfactory:
+#     autismsequel:

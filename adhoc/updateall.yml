@@ -22,6 +22,11 @@
   hosts: aptbased
   become: true
   tasks:
+    - name: Update APT database
+      ansible.builtin.apt:
+        update_cache: true
+
     - name: Update APT
       ansible.builtin.apt:
         upgrade: true
+        autoremove: true
