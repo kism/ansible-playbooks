@@ -423,7 +423,7 @@
     - name: move mmdb to correct location
       ansible.builtin.shell:
         cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
-      when: geostat_age or not register_geostat
+      when: not geostat_age or not register_geostat
       tags:
         - skip_ansible_lint
 
