@@ -1,58 +1,5 @@
 ---
 # yamllint disable rule:line-length
-# _____________________________________________________________________________
-- name: Setup letsencrypt and setup cron job
-  hosts: ifdb
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Setup hosts
-      ansible.builtin.lineinfile:
-        path: /etc/hosts
-        regexp: ".*kism.duckdns.org"
-        line: "127.0.0.1 kism.duckdns.org"
-        state: present
-
-    - name: Install certbot
-      ansible.builtin.dnf:
-        name:
-          - certbot
-        state: present
-
-    - name: Allow certbot standalone through firewalld
-      ansible.posix.firewalld:
-        service: http
-        zone: public
-        permanent: true
-        state: enabled
-
-    - name: Restart firewalld
-      ansible.builtin.systemd:
-        name: firewalld
-        state: restarted
-
-    - name: Initial certbot config
-      become: true
-      ansible.builtin.shell:
-        cmd: "certbot certonly --agree-tos --email={{ secret_email }} -v -n --standalone -d kism.duckdns.org"
-      register: command_output
-      tags:
-        - skip_ansible_lint
-
-    - name: Set certbot cron job
-      ansible.builtin.cron:
-        name: "Try refresh Certificates"
-        minute: "0"
-        hour: "4"
-        job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/'
-
-    - name: Attempt to change ownership on /etc/letsencrypt/
-      ansible.builtin.file:
-        path: "/etc/letsencrypt/"
-        state: directory
-        recurse: true
-        owner: "influxdb"
-        group: "influxdb"
 
 - name: Basic setup for InfluxDB
   hosts: ifdb
@@ -88,41 +35,11 @@
       notify:
         - Restart firewalld
 
-    - name: Copy common influxdb startup script
-      ansible.builtin.copy:
-        src: configs/influxdb/influxd-systemd-start.sh
-        dest: /usr/lib/influxdb/scripts/influxd-systemd-start.sh
-        owner: root
-        group: root
-        mode: "0775"
-      notify:
-        - Restart influxdb
-
     - name: Start and enable InfluxDB service
       ansible.builtin.systemd:
         name: influxdb
         enabled: true
         state: started
-
-    - name: Copy repo file to yum.repos.d
-      ansible.builtin.copy:
-        src: scripts_cron/influxping.py
-        dest: /opt/scripts/influxping.py
-        owner: root
-        group: root
-        mode: "0755"
-
-    - name: Set ping scan (ping) cron job
-      ansible.builtin.cron:
-        name: "Ping scan (ping) > InfluxDB"
-        minute: "*/5"
-        job: "cd /opt/scripts && /opt/scripts/influxping.py ping"
-
-    - name: Set ping scan (scan) cron job
-      ansible.builtin.cron:
-        name: "Ping scan (ping) > InfluxDB"
-        minute: "58"
-        job: "cd /opt/scripts && /opt/scripts/influxping.py scan"
 
   handlers:
     - name: Restart influxdb
@@ -149,7 +66,7 @@
     - name: Initial influxdb config
       become: true
       ansible.builtin.shell:
-        cmd: 'influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o "kg lan" -b "Telegraf Main" -host https://kism.duckdns.org:8086 -f'
+        cmd: 'influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o "kg lan" -b "Telegraf Main" -host https://influxdb2.kierangee.au:443 -f'
       register: command_output
       failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
       tags:
@@ -212,13 +129,13 @@
     - name: Set influxpingscan scan in cron
       ansible.builtin.cron:
         name: "influxpingscan scan"
-        minute: "*/10"
+        minute: "58"
         job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py scan"
 
     - name: Set influxpingscan ping in cron
       ansible.builtin.cron:
         name: "influxpingscan ping"
-        minute: "58"
+        minute: "*/5"
         job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py ping"
 
 # _____________________________________________________________________________
