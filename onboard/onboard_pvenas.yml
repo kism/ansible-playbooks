@@ -138,3 +138,25 @@
     - name: Install hd-idle
       ansible.builtin.apt:
         deb: https://github.com/adelolmo/hd-idle/releases/download/v1.18/hd-idle_1.18_amd64.deb
+
+  # _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: pvenas
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Copy pvenas telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/pvenas.conf
+        dest: /etc/telegraf/telegraf.d/pvenas.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted

@@ -486,6 +486,17 @@
       notify:
         - Restart telegraf
 
+
+    - name: Copy the telefraf sudoers rule
+      ansible.builtin.copy:
+        src: configs/sudoers/telegraf
+        dest: /etc/sudoers.d/telegraf
+        owner: root
+        group: root
+        mode: "0660"
+      notify:
+        - Restart telegraf
+
     - name: Start and enable telegraf service
       ansible.builtin.systemd:
         name: telegraf
