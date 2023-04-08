@@ -213,13 +213,13 @@
       ansible.builtin.cron:
         name: "influxpingscan scan"
         minute: "*/10"
-        job: "/opt/influxpingscan/env/bin/python3 influxpingscan.py scan"
+        job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py scan"
 
     - name: Set influxpingscan ping in cron
       ansible.builtin.cron:
         name: "influxpingscan ping"
         minute: "58"
-        job: "/opt/influxpingscan/env/bin/python3 influxpingscan.py ping"
+        job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py ping"
 
 # _____________________________________________________________________________
 - name: Setup telegraf
