@@ -1,159 +1,225 @@
 ---
 # yamllint disable rule:line-length
 # _____________________________________________________________________________
-- name: Setup letsencrypt and setup cron job
-  hosts: ifdb
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Setup hosts
-      ansible.builtin.lineinfile:
-        path: /etc/hosts
-        regexp: ".*kism.duckdns.org"
-        line: "127.0.0.1 kism.duckdns.org"
-        state: present
+# - name: Setup letsencrypt and setup cron job
+#   hosts: ifdb
+#   become: true
+#   gather_facts: false
+#   tasks:
+#     - name: Setup hosts
+#       ansible.builtin.lineinfile:
+#         path: /etc/hosts
+#         regexp: ".*kism.duckdns.org"
+#         line: "127.0.0.1 kism.duckdns.org"
+#         state: present
 
-    - name: Install certbot
-      ansible.builtin.dnf:
-        name:
-          - certbot
-        state: present
+#     - name: Install certbot
+#       ansible.builtin.dnf:
+#         name:
+#           - certbot
+#         state: present
 
-    - name: Allow certbot standalone through firewalld
-      ansible.posix.firewalld:
-        service: http
-        zone: public
-        permanent: true
-        state: enabled
+#     - name: Allow certbot standalone through firewalld
+#       ansible.posix.firewalld:
+#         service: http
+#         zone: public
+#         permanent: true
+#         state: enabled
 
-    - name: Restart firewalld
-      ansible.builtin.systemd:
-        name: firewalld
-        state: restarted
+#     - name: Restart firewalld
+#       ansible.builtin.systemd:
+#         name: firewalld
+#         state: restarted
 
-    - name: Initial certbot config
-      become: true
-      ansible.builtin.shell:
-        cmd: "certbot certonly --agree-tos --email={{ secret_email }} -v -n --standalone -d kism.duckdns.org"
-      register: command_output
-      tags:
-        - skip_ansible_lint
+#     - name: Initial certbot config
+#       become: true
+#       ansible.builtin.shell:
+#         cmd: "certbot certonly --agree-tos --email={{ secret_email }} -v -n --standalone -d kism.duckdns.org"
+#       register: command_output
+#       tags:
+#         - skip_ansible_lint
 
-    - name: Set certbot cron job
-      ansible.builtin.cron:
-        name: "Try refresh Certificates"
-        minute: "0"
-        hour: "4"
-        job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/'
+#     - name: Set certbot cron job
+#       ansible.builtin.cron:
+#         name: "Try refresh Certificates"
+#         minute: "0"
+#         hour: "4"
+#         job: 'certbot renew --post-hook "systemctl reload influxdb" && chown -R influxdb:influxdb /etc/letsencrypt/'
 
-    - name: Attempt to change ownership on /etc/letsencrypt/
-      ansible.builtin.file:
-        path: "/etc/letsencrypt/"
-        state: directory
-        recurse: true
-        owner: "influxdb"
-        group: "influxdb"
+#     - name: Attempt to change ownership on /etc/letsencrypt/
+#       ansible.builtin.file:
+#         path: "/etc/letsencrypt/"
+#         state: directory
+#         recurse: true
+#         owner: "influxdb"
+#         group: "influxdb"
 
-- name: Basic setup for InfluxDB
-  hosts: ifdb
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Copy file with owner and permission, using symbolic representation
-      ansible.builtin.copy:
-        src: repos_dnf/influxdb.repo
-        dest: /etc/yum.repos.d/influxdb.repo
-        owner: root
-        group: root
-        mode: "644"
+# - name: Basic setup for InfluxDB
+#   hosts: ifdb
+#   become: true
+#   gather_facts: false
+#   tasks:
+#     - name: Copy file with owner and permission, using symbolic representation
+#       ansible.builtin.copy:
+#         src: repos_dnf/influxdb.repo
+#         dest: /etc/yum.repos.d/influxdb.repo
+#         owner: root
+#         group: root
+#         mode: "644"
 
-    - name: Import InfluxDB GPG key
-      ansible.builtin.rpm_key:
-        state: present
-        key: https://repos.influxdata.com/influxdb.key
+#     - name: Import InfluxDB GPG key
+#       ansible.builtin.rpm_key:
+#         state: present
+#         key: https://repos.influxdata.com/influxdb.key
 
-    - name: Install InfluxDB
-      ansible.builtin.dnf:
-        name:
-          - influxdb2
-          - influxdb2-cli
-        state: present
+#     - name: Install InfluxDB
+#       ansible.builtin.dnf:
+#         name:
+#           - influxdb2
+#           - influxdb2-cli
+#         state: present
 
-    - name: Allow influxdb through firewalld
-      ansible.posix.firewalld:
-        service: influxdb
-        zone: public
-        permanent: true
-        state: enabled
-      notify:
-        - Restart firewalld
+#     - name: Allow influxdb through firewalld
+#       ansible.posix.firewalld:
+#         service: influxdb
+#         zone: public
+#         permanent: true
+#         state: enabled
+#       notify:
+#         - Restart firewalld
 
-    - name: Copy common influxdb startup script
-      ansible.builtin.copy:
-        src: configs/influxdb/influxd-systemd-start.sh
-        dest: /usr/lib/influxdb/scripts/influxd-systemd-start.sh
-        owner: root
-        group: root
-        mode: "0775"
-      notify:
-        - Restart influxdb
+#     - name: Copy common influxdb startup script
+#       ansible.builtin.copy:
+#         src: configs/influxdb/influxd-systemd-start.sh
+#         dest: /usr/lib/influxdb/scripts/influxd-systemd-start.sh
+#         owner: root
+#         group: root
+#         mode: "0775"
+#       notify:
+#         - Restart influxdb
 
-    - name: Start and enable InfluxDB service
-      ansible.builtin.systemd:
-        name: influxdb
-        enabled: true
-        state: started
+#     - name: Start and enable InfluxDB service
+#       ansible.builtin.systemd:
+#         name: influxdb
+#         enabled: true
+#         state: started
 
-    - name: Copy repo file to yum.repos.d
-      ansible.builtin.copy:
-        src: scripts_cron/influxping.py
-        dest: /opt/scripts/influxping.py
-        owner: root
-        group: root
-        mode: "0755"
+#     - name: Copy repo file to yum.repos.d
+#       ansible.builtin.copy:
+#         src: scripts_cron/influxping.py
+#         dest: /opt/scripts/influxping.py
+#         owner: root
+#         group: root
+#         mode: "0755"
 
-    - name: Set ping scan (ping) cron job
-      ansible.builtin.cron:
-        name: "Ping scan (ping) > InfluxDB"
-        minute: "*/5"
-        job: "cd /opt/scripts && /opt/scripts/influxping.py ping"
+#     - name: Set ping scan (ping) cron job
+#       ansible.builtin.cron:
+#         name: "Ping scan (ping) > InfluxDB"
+#         minute: "*/5"
+#         job: "cd /opt/scripts && /opt/scripts/influxping.py ping"
 
-    - name: Set ping scan (scan) cron job
-      ansible.builtin.cron:
-        name: "Ping scan (ping) > InfluxDB"
-        minute: "58"
-        job: "cd /opt/scripts && /opt/scripts/influxping.py scan"
+#     - name: Set ping scan (scan) cron job
+#       ansible.builtin.cron:
+#         name: "Ping scan (ping) > InfluxDB"
+#         minute: "58"
+#         job: "cd /opt/scripts && /opt/scripts/influxping.py scan"
 
-  handlers:
-    - name: Restart influxdb
-      ansible.builtin.systemd:
-        name: influxdb
-        state: restarted
+#   handlers:
+#     - name: Restart influxdb
+#       ansible.builtin.systemd:
+#         name: influxdb
+#         state: restarted
 
-    - name: Restart firewalld
-      ansible.builtin.systemd:
-        name: telegraf
-        state: restarted
+#     - name: Restart firewalld
+#       ansible.builtin.systemd:
+#         name: telegraf
+#         state: restarted
+
+# # _____________________________________________________________________________
+# - name: Setup influxdb accounts and databases
+#   hosts: ifdb
+#   become: true
+#   gather_facts: false
+#   tasks:
+#     - name: Restart influxdb
+#       ansible.builtin.systemd:
+#         name: influxdb
+#         state: restarted
+
+#     - name: Initial influxdb config
+#       become: true
+#       ansible.builtin.shell:
+#         cmd: 'influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o "kg lan" -b "Telegraf Main" -host https://kism.duckdns.org:8086 -f'
+#       register: command_output
+#       failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
+#       tags:
+#         - skip_ansible_lint
 
 # _____________________________________________________________________________
-- name: Setup influxdb accounts and databases
+- name: Setup influxpingscan
   hosts: ifdb
   become: true
   gather_facts: false
   tasks:
-    - name: Restart influxdb
-      ansible.builtin.systemd:
-        name: influxdb
-        state: restarted
+    - name: Create influxscan directory
+      ansible.builtin.file:
+        path: "/opt/influxpingscan"
+        state: directory
+        owner: influxdb
+        group: influxdb
+        mode: "0700"
 
-    - name: Initial influxdb config
-      become: true
+    - name: Attempt to change ownership on /opt/influxpingscan
+      ansible.builtin.file:
+        path: "/opt/influxpingscan"
+        recurse: true
+        owner: influxdb
+        group: influxdb
+
+    - name: Clone archivepodcast
+      ansible.builtin.git:
+        repo: https://github.com/kism/influxpingscan
+        dest: /opt/influxpingscan
+        single_branch: true
+        version: master
+
+    - name: Copy archivepodcast config
+      ansible.builtin.copy:
+        src: configs/influxpingscan/ifdb_settings.ini
+        dest: /opt/influxpingscan/settings.ini
+        mode: "600"
+
+    - name: Create venv
       ansible.builtin.shell:
-        cmd: 'influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o "kg lan" -b "Telegraf Main" -host https://kism.duckdns.org:8086 -f'
+        cmd: "cd /opt/influxpingscan/ ; python3 -m venv env"
       register: command_output
-      failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
       tags:
         - skip_ansible_lint
+
+    - name: Install requirements into the specified (virtualenv)
+      ansible.builtin.pip:
+        requirements: /opt/influxpingscan/requirements.txt
+        virtualenv: /opt/influxpingscan/env
+        virtualenv_site_packages: true
+
+    - name: Set influxdb token
+      ansible.builtin.lineinfile:
+        path: /opt/influxpingscan/settings.ini
+        regexp: "^.?token ="
+        line: "token = {{ secret_influxping_write }}"
+        state: present
+
+    - name: Set influxpingscan scan in cron
+      ansible.builtin.cron:
+        name: "influxpingscan scan"
+        minute: "*/10"
+        job: "/opt/influxpingscan/env/bin/python3 influxpingscan.py scan"
+
+    - name: Set influxpingscan ping in cron
+      ansible.builtin.cron:
+        name: "influxpingscan ping"
+        minute: "58"
+        job: "/opt/influxpingscan/env/bin/python3 influxpingscan.py ping"
 
 # _____________________________________________________________________________
 - name: Setup telegraf
