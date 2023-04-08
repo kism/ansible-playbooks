@@ -1,4 +1,4 @@
-*.json
+
 *.asc
 secrets.yml
-/onboard/archivepodcast/settings.json
+/onboard/configs/archivepodcast/settings.json
