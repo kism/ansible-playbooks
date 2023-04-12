@@ -1,9 +1,9 @@
 ---
 all:
   hosts:
-    openwrt:
-      ansible_host: openwrt.kg.lan
-      timezone: utc
+    # openwrt:
+    #   ansible_host: openwrt.kg.lan
+    #   timezone: utc
     ent:
       ansible_host: ent.kg.lan
       timezone: awst
@@ -34,9 +34,7 @@ all:
     podc:
       ansible_host: podc.kg.lan
       timezone: awst
-    kierangeeau:
-      ansible_host: kierangee.au
-      timezone: awst
+
 
     dpshub:
       ansible_host: localhost
@@ -80,9 +78,9 @@ pacmanbased:
     manjaro-x230t:
     kpbp:
 
-opkgbased:
-  hosts:
-    openwrt:
+# opkgbased:
+#   hosts:
+#     openwrt:
 
 # Operating Systems
 oraclelinux:

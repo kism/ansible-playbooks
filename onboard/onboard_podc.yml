@@ -390,9 +390,9 @@
       notify:
         - Restart geostat
 
-    - name: Task name
+    - name: Check if geo db is around
       ansible.builtin.stat:
-        path: /opt/ffmpeg/ffmpeg
+        path: /opt/geostat/GeoLite2-City.mmdb
       register: register_geostat
 
     - name: Setup geostat log location

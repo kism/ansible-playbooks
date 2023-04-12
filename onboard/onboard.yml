@@ -102,7 +102,7 @@
         dest: /etc/sudoers.d/kgadmins
         owner: root
         group: root
-        mode: "0660"
+        mode: "0640"
 
     - name: Ensure that bash is setup correctly for kism
       become: true
@@ -249,8 +249,8 @@
 
     - name: Copy ssh config
       ansible.builtin.copy:
-        src: configs/sshd/99-sshnopasswordauth.conf
-        dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
+        src: configs/sshd/90-sshnopasswordauth.conf
+        dest: /etc/ssh/sshd_config.d/90-sshnopasswordauth.conf
         owner: root
         group: root
         mode: "0600"
@@ -493,7 +493,7 @@
         dest: /etc/sudoers.d/telegraf
         owner: root
         group: root
-        mode: "0660"
+        mode: "0640"
       notify:
         - Restart telegraf
 

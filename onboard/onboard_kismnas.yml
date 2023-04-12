@@ -33,6 +33,16 @@
       notify:
         - Restart firewalld
 
+    - name: Copy the backups_svc sudoers rule
+      ansible.builtin.copy:
+        src: configs/sshd/99-backup_svc.conf
+        dest: /etc/ssh/ssh_config.d/99-backup_svc.conf
+        owner: root
+        group: root
+        mode: "0640"
+      notify:
+        - Restart sshd
+
   handlers:
     - name: Restart smbd
       ansible.builtin.systemd:
@@ -43,6 +53,11 @@
       ansible.builtin.systemd:
         name: firewalld
         state: restarted
+
+    - name: Restart sshd
+      ansible.builtin.systemd:
+        name: sshd
+        state: reloaded
 
 # _____________________________________________________________________________
 - name: Setup telegraf

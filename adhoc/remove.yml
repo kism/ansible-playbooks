@@ -1,0 +1,8 @@
+- name: Update all my DNF based linux hosts
+  become: true
+  hosts: all
+  tasks:
+    - name: Remove old sshd config item
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
+        state: absent

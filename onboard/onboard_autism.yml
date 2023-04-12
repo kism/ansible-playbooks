@@ -50,7 +50,7 @@
         dest: /etc/sudoers.d/factorio
         owner: root
         group: root
-        mode: "0660"
+        mode: "0640"
 
   handlers:
     - name: Restart firewalld
