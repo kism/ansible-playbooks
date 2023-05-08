@@ -37,6 +37,7 @@ chmod -R o-wrx,g+rX,u=+rwX /srv/Freya
 chmod -R o-wrx,g+rX,u=+rwX /srv/Vivi
 
 # Let everyone get to the hard drive partitions
+chmod o+rX,g+rX,u=+rX /srv
 chmod o+rX,g+rX,u=+rX /srv/Garnet
 chmod o+rX,g+rX,u=+rX /srv/Amarant
 chmod o+rX,g+rX,u=+rX /srv/Freya
