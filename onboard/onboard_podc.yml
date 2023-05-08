@@ -267,7 +267,6 @@
         daemon_reload: true
         state: started
         masked: false
-      notify: Restart archivepodcast
 
   handlers:
     - name: Restart archivepodcast
@@ -491,3 +490,27 @@
         name: geostat
         daemon_reload: true
         state: restarted
+
+
+
+# _____________________________________________________________________________
+- name: Setup Fail2Ban
+  hosts: podc
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install Fail2Ban
+      ansible.builtin.dnf:
+        name:
+          - fail2ban
+        state: present
+
+    - name: Enable systemd service
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: fail2ban.service
+        enabled: true
+        daemon_reload: true
+        state: started
+        masked: false
