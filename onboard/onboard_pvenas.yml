@@ -131,7 +131,7 @@
       ansible.builtin.cron:
         name: "Run snapraid script"
         minute: "0"
-        hour: "23,09"
+        hour: "09"
         job: "/opt/scripts/snapraid_helper.sh"
 
     # Install hd-idle
