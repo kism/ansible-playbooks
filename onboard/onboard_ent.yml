@@ -47,7 +47,7 @@
 
     - name: Copy ent specific ssh config
       ansible.builtin.copy:
-        src: configs/sshd/ent_99-sshnopasswordauth.conf
+        src: configs/sshd/ent_90-sshnopasswordauth.conf
         dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
         owner: root
         group: root

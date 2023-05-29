@@ -1,0 +1,7 @@
+- name: Update all my DNF based linux hosts
+  become: true
+  hosts: all
+  tasks:
+  - name: Print all available facts
+    ansible.builtin.debug:
+      var: ansible_facts

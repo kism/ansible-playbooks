@@ -1,3 +1,4 @@
 {
-  "workbench.colorTheme": "SynthWave '84"
+  "workbench.colorTheme": "SynthWave '84",
+  "ansible.python.interpreterPath": "/bin/python"
 }
