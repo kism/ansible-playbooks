@@ -60,12 +60,12 @@ aptbased:
     pvenas:
     qbt:
     cert:
+    podc:
 
 dnfbased:
   hosts:
     ifdb:
     graf:
-    podc:
     kismnas:
     ent:
     # autismfactory:
@@ -87,7 +87,6 @@ oraclelinux:
   hosts:
     ifdb:
     graf:
-    podc:
     ent:
     kismnas:
     autismfactory:
@@ -103,6 +102,7 @@ manjaro:
 debian:
   hosts:
     cert:
+    podc:
 
 ubuntu:
   hosts:
