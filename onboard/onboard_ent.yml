@@ -5,37 +5,6 @@
   become: true
   gather_facts: false
   tasks:
-    # Wireguard
-    - name: Install wireguard
-      ansible.builtin.dnf:
-        name:
-          - wireguard-tools
-        state: present
-
-    - name: Allow wireguard through firewalld
-      ansible.posix.firewalld:
-        service: wireguard
-        zone: public
-        permanent: true
-        state: enabled
-      notify:
-        - Restart firewalld
-
-    - name: Set duckdns cron job
-      ansible.builtin.cron:
-        name: "Turn off wireguard at 4am"
-        minute: "0"
-        hour: "4"
-        job: "/usr/bin/wg-quick down wg0"
-
-    - name: Copy script to bring up wireguard
-      ansible.builtin.copy:
-        src: scripts_adhoc/wgup.sh
-        dest: /home/kism/wgup.sh
-        owner: kism
-        group: kism
-        mode: "0740"
-
     # MOTD, bash config
     - name: Copy motd file
       ansible.builtin.copy:
@@ -184,11 +153,4 @@
         name: "kism"
         shell: /bin/zsh
 
-# _____________________________________________________________________________
-- name: Reminders
-  hosts: ent
-  tasks:
-    # REMEMBER
-    - name: Reminder
-      ansible.builtin.debug:
-        msg: Remember to copy the wireguard config to /etc/wireguard/wg0.conf
+
