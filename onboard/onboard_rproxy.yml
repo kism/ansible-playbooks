@@ -119,6 +119,15 @@
         - Restart nginx
       loop: "{{ nginxconfigs }}"
 
+    - name: Add valid ips to files
+      ansible.builtin.replace:
+        path: "/etc/nginx/sites-available/{{ item }}"
+        regexp: "secret_local_ip_range2"
+        replace: "{{ secret_local_ip_range2 }}"
+      notify:
+        - Restart nginx
+      loop: "{{ nginxconfigs }}"
+
     - name: Copy nginx index.html
       ansible.builtin.copy:
         src: configs/nginx/nginx-rproxy-index.html

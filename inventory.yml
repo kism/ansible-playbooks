@@ -19,9 +19,9 @@ all:
     graf:
       ansible_host: graf.kg.lan
       timezone: awst
-    qbt:
-      ansible_host: qbtnew
-      timezone: awst
+    # qbt:
+    #   ansible_host: qbtnew
+    #   timezone: awst
     cert:
       ansible_host: cert.kg.lan
       timezone: utc
@@ -58,7 +58,7 @@ aptbased:
   hosts:
     pve:
     pvenas:
-    qbt:
+    # qbt:
     cert:
     podc:
 
@@ -104,14 +104,14 @@ debian:
     cert:
     podc:
 
-ubuntu:
-  hosts:
-    qbt:
+# ubuntu:
+#   hosts:
+#     qbt:
 
 # Server Type
 vms:
   hosts:
-    qbt:
+    # qbt:
     ifdb:
     graf:
     ent:
