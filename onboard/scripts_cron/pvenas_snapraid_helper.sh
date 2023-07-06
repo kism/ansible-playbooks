@@ -290,7 +290,7 @@ fi
 
 echo "[`date`] All jobs ended."
 
-
+sleep 240
 
 hd-idle -t /dev/sda
 hd-idle -t /dev/sdb
