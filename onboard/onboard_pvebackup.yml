@@ -8,4 +8,21 @@
       ansible.builtin.dnf:
         name:
           - samba
+          - rsync
         state: present
+
+    - name: Add my favorite /opt subdirectory
+      ansible.builtin.file:
+        path: /backups
+        state: directory
+        owner: backup_svc
+        group: backup_svc
+        mode: "0770"
+
+    - name: Copy script to bring up wireguard
+      ansible.builtin.copy:
+        src: configs/smb/pvebackup_smb.conf
+        dest: /etc/samba/smb.conf
+        owner: root
+        group: root
+        mode: "0744"
