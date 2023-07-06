@@ -1,7 +1,7 @@
 ---
 # _____________________________________________________________________________
 - name: Setup archivepodcast directory
-  hosts: podc
+  hosts: podc, test.podc
   become: true
   gather_facts: false
   tasks:
@@ -20,8 +20,8 @@
     #   ignore_errors: true
 
 # _____________________________________________________________________________
-- name: Setup ffmpegabout:blank#blocked
-  hosts: podc
+- name: Setup ffmpeg
+  hosts: podc, test.podc
   become: true
   gather_facts: false
   tasks:
@@ -57,7 +57,6 @@
         remote_src: true
     #   when: not register_ffmpeg.stat.exists or (ansible_date_time.epoch|int - register_ffmpeg.stat.mtime|int > 10368000)
 
-
     - name: Create symbolic links to make sites available
       ansible.builtin.file:
         src: "/opt/ffmpeg/{{ item }}"
@@ -71,30 +70,46 @@
         - qt-faststart
 
 # _____________________________________________________________________________
-- name: Setup nginx
-  hosts: podc
+- name: Setup nginx dnf
+  hosts: dnfbased
   become: true
   gather_facts: false
   tasks:
+    - name: Set httpd_can_network_connect flag on and keep it persistent across reboots # selinux not enabled by default on debian
+      ansible.posix.seboolean:
+        name: httpd_can_network_connect
+        state: true
+        persistent: true
 
+    - name: Fix selinux
+      ansible.builtin.command: restorecon -Rv /
+      tags:
+        - skip_ansible_lint
 
-    # - name: Set httpd_can_network_connect flag on and keep it persistent across reboots # selinux not enabled by default on debian
-    #   ansible.posix.seboolean:
-    #     name: httpd_can_network_connect
-    #     state: true
-    #     persistent: true
+    - name: Install nginx
+      ansible.builtin.dnf:
+        name:
+          - nginx
+        state: present
 
-
-    # - name: Fix selinux # for debian you need to turn it on
-    #   ansible.builtin.command: restorecon -Rv /
-    #   tags:
-    #     - skip_ansible_lint
-
+- name: Setup nginx apt
+  hosts: aptbased
+  become: true
+  gather_facts: false
+  tasks:
     - name: Install nginx
       ansible.builtin.apt:
         name:
           - nginx
         state: present
+
+
+
+- name: Setup nginx
+  hosts: podc, test.podc
+  become: true
+  gather_facts: false
+  tasks:
 
     - name: Copy nginx conf
       ansible.builtin.copy:
@@ -183,7 +198,6 @@
   become_user: podcasto
   gather_facts: false
   tasks:
-
     - name: Install venv
       ansible.builtin.apt:
         name:
@@ -191,7 +205,6 @@
           - python3-pip
         state: present
       become_user: root
-
 
     - name: Create archivepodcast directory
       become: true
@@ -253,7 +266,6 @@
       notify: Restart archivepodcast
       changed_when: false
 
-
     - name: Copy systemd service
       become: true
       become_user: root
@@ -290,7 +302,6 @@
       ansible.builtin.systemd:
         name: archivepodcast
         state: reloaded
-
 
 # _____________________________________________________________________________
 - name: Setup certbot
@@ -497,7 +508,6 @@
         name: geostat
         daemon_reload: true
         state: restarted
-
 # # _____________________________________________________________________________
 # - name: Setup Fail2Ban
 #   hosts: podc

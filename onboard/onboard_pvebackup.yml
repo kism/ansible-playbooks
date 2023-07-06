@@ -1,0 +1,11 @@
+# _____________________________________________________________________________
+- name: Setup smbd
+  hosts: pvebackup
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install smbd
+      ansible.builtin.dnf:
+        name:
+          - samba
+        state: present

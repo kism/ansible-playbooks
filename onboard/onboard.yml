@@ -4,7 +4,7 @@
 
 # _____________________________________________________________________________
 - name: User and filesystem Setup
-  hosts: aptbased:dnfbased:pacmanbased:test
+  hosts: aptbased:dnfbased:pacmanbased
   become: true
   gather_facts: false
   # collections:
@@ -312,20 +312,22 @@
 
     - name: Install useful apps
       ansible.builtin.dnf:
-        name:
-          - htop
-          - iotop
-          - nload
-          - neofetch
-          - vim
-          - git
-          - tmux
-          - cronie
-          - file
-          - tree
-          - wget
-          - tar
+        name: "{{ item }}"
         state: present
+      ignore_errors: true
+      loop:
+        - htop
+        - iotop
+        - nload
+        - neofetch
+        - vim
+        - git
+        - tmux
+        - cronie
+        - file
+        - tree
+        - wget
+        - tar
 
     - name: Remove anaconda-ks.cfg
       ansible.builtin.file:

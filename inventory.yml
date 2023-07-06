@@ -34,7 +34,15 @@ all:
     podc:
       ansible_host: podc.kg.lan
       timezone: awst
-
+    test.podc:
+      ansible_host: test.podc.kg.lan
+      timezone: awst
+    hass:
+      ansible_host: hass.kg.lan
+      timezone: awst
+    pvebackup:
+      ansible_host: pvebackup.kg.lan
+      timezone: awst
 
     dpshub:
       ansible_host: localhost
@@ -71,12 +79,15 @@ dnfbased:
     # autismfactory:
     # autismsequel:
     rproxy:
+    test.podc:
+    pvebackup:
 
 pacmanbased:
   hosts:
     dpshub:
     manjaro-x230t:
     kpbp:
+    hass:
 
 # opkgbased:
 #   hosts:
@@ -92,12 +103,18 @@ oraclelinux:
     autismfactory:
     autismsequel:
     rproxy:
+    test.podc:
+    pvebackup:
 
 manjaro:
   hosts:
     dpshub:
     manjaro-x230t:
     kpbp:
+
+arch:
+  hosts:
+    hass:
 
 debian:
   hosts:
@@ -118,6 +135,8 @@ vms:
     kismnas:
     # autismsequel:
     rproxy:
+    hass:
+    pvebackup:
 
 baremetal:
   hosts:
@@ -125,13 +144,13 @@ baremetal:
     pvenas:
     cert:
     podc:
+    test.podc:
     # autismfactory:
 
 proxmox:
   hosts:
     pve:
     pvenas:
-
 # gameserver:
 #   hosts:
 #     autismfactory:
