@@ -12,18 +12,18 @@
         shell: /sbin/nologin
         append: true
 
-    # - name: Disable kdump
-    #   ansible.builtin.systemd:
-    #     name: kdump
-    #     enabled: false
-    #     masked: true
-    #   ignore_errors: true
+    - name: Disable kdump
+      ansible.builtin.systemd:
+        name: kdump
+        enabled: false
+        masked: true
+      ignore_errors: true
 
 # _____________________________________________________________________________
 - name: Setup ffmpeg
   hosts: podc, test.podc
   become: true
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Create geostat directory
       become: true
@@ -44,18 +44,21 @@
         owner: root
         group: root
 
-    # - name: Check if ffmpeg is there # TODO BROKEN ON NEW INSTALL?
-    #   ansible.builtin.stat:
-    #     path: /opt/ffmpeg/ffmpeg
-    #   register: register_ffmpeg
-
     - name: Grab ffmpeg
       ansible.builtin.unarchive:
         src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz
         dest: /opt/ffmpeg
         extra_opts: [--strip-components=1]
         remote_src: true
-    #   when: not register_ffmpeg.stat.exists or (ansible_date_time.epoch|int - register_ffmpeg.stat.mtime|int > 10368000)
+      when: ansible_architecture == 'aarch64'
+
+    - name: Grab ffmpeg amd64
+      ansible.builtin.unarchive:
+        src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
+        dest: /opt/ffmpeg
+        extra_opts: [--strip-components=1]
+        remote_src: true
+      when: ansible_architecture == 'x86_64'
 
     - name: Create symbolic links to make sites available
       ansible.builtin.file:
@@ -70,27 +73,46 @@
         - qt-faststart
 
 # _____________________________________________________________________________
-- name: Setup nginx dnf
-  hosts: dnfbased
+- name: Setup nginx
+  hosts: podc, test.podc
   become: true
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Set httpd_can_network_connect flag on and keep it persistent across reboots # selinux not enabled by default on debian
       ansible.posix.seboolean:
         name: httpd_can_network_connect
         state: true
         persistent: true
+      ignore_errors: true
 
     - name: Fix selinux
       ansible.builtin.command: restorecon -Rv /
       tags:
         - skip_ansible_lint
+      ignore_errors: true
 
-    - name: Install nginx
+    - name: Install nginx dnf
       ansible.builtin.dnf:
         name:
           - nginx
         state: present
+      when: ansible_pkg_mgr == 'dnf'
+
+
+    - name: Install nginx yum
+      ansible.builtin.dnf:
+        name:
+          - nginx
+        state: present
+      when: ansible_pkg_mgr == 'yum'
+
+    - name: Install nginx
+      ansible.builtin.apt:
+        name:
+          - nginx
+        state: present
+      when: ansible_pkg_mgr == 'apt'
+
 
 - name: Setup nginx apt
   hosts: aptbased
@@ -108,7 +130,7 @@
 - name: Setup nginx
   hosts: podc, test.podc
   become: true
-  gather_facts: false
+  gather_facts: true
   tasks:
 
     - name: Copy nginx conf
@@ -169,23 +191,24 @@
         enabled: true
       notify: Restart nginx
 
-    # - name: Allow http and https
-    #   ansible.posix.firewalld:
-    #     service: "{{ item }}"
-    #     zone: public
-    #     permanent: true
-    #     state: enabled
-    #   loop:
-    #     - http
-    #     - https
-    #   notify:
-    #     - Restart firewalld
+    - name: Allow http and https
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        zone: public
+        permanent: true
+        state: enabled
+      loop:
+        - http
+        - https
+      notify:
+        - Restart firewalld
+      when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'yum'
 
   handlers:
-    # - name: Restart firewalld
-    #   ansible.builtin.systemd:
-    #     name: firewalld
-    #     state: restarted
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
     - name: Restart nginx
       ansible.builtin.systemd:
         name: nginx
@@ -193,18 +216,27 @@
 
 # _____________________________________________________________________________
 - name: Setup archive-podcast
-  hosts: podc
+  hosts: podc, test.podc
   become: true
   become_user: podcasto
-  gather_facts: false
+  gather_facts: true
   tasks:
-    - name: Install venv
+    - name: Install venv apt
       ansible.builtin.apt:
         name:
           - python3-venv
           - python3-pip
         state: present
       become_user: root
+      when: ansible_pkg_mgr == 'apt'
+
+    - name: Install venv dnf
+      ansible.builtin.dnf:
+        name:
+          - python3-pip
+        state: present
+      become_user: root
+      when: ansible_pkg_mgr == 'dnf'
 
     - name: Create archivepodcast directory
       become: true
@@ -349,6 +381,7 @@
 - name: Setup telegraf
   hosts: podc
   become: true
+  become_user: podcasto
   gather_facts: false
   tasks:
     - name: Copy podc telegraf configs
@@ -369,7 +402,7 @@
 
 # _____________________________________________________________________________
 - name: Setup log monitoring for influxdb2 with my fork of geostat
-  hosts: podc
+  hosts: podc, test.podc
   become: true
   gather_facts: false
   tasks:
@@ -383,13 +416,18 @@
         group: podcasto # TODO TODOTODOTODOTODOTODOTODOTODOTODOTODO
         mode: "0700"
 
-    # - name: Clone geostat # BROKRN
-    #   ansible.builtin.git:
-    #     repo: https://github.com/kism/geostat
-    #     dest: /opt/geostat
-    #     single_branch: false
-    #     version: "feature/filetypefilter"
-    #   notify: Restart geostat
+    - name: Fix git lmao
+      ansible.builtin.shell:
+        cmd: "git config --global --add safe.directory /opt/geostat"
+
+    - name: Clone geostat # BROKRN
+      ansible.builtin.git:
+        repo: https://github.com/kism/geostat
+        dest: /opt/geostat
+        single_branch: false
+        force: true
+        refspec: "refs/heads/feature/filetypefilter"
+      notify: Restart geostat
 
     - name: Copy geostat config
       ansible.builtin.copy:
@@ -407,10 +445,10 @@
       notify:
         - Restart geostat
 
-    # - name: Check if geo db is around
-    #   ansible.builtin.stat:
-    #     path: /opt/geostat/GeoLite2-City.mmdb
-    #   register: register_geostat
+    - name: Check if geo db is around
+      ansible.builtin.stat:
+        path: /opt/geostat/GeoLite2-City.mmdb
+      register: register_geostat
 
     - name: Setup geostat log location
       ansible.builtin.lineinfile:
@@ -420,13 +458,6 @@
         state: present
       notify:
         - Restart geostat
-
-    # - name: Get age of geotip database
-    #   ansible.builtin.find:
-    #     paths: /opt/geostat
-    #     pattern: "GeoLite2-City.mmdb"
-    #     age: 120d
-    #   register: geostat_age
 
     - name: Grab geoip database
       ansible.builtin.unarchive:
