@@ -103,14 +103,11 @@
           - nginx
         state: present
 
-
-
 - name: Setup nginx
   hosts: podc, test.podc
   become: true
   gather_facts: false
   tasks:
-
     - name: Copy nginx conf
       ansible.builtin.copy:
         src: "configs/nginx/nginx-podc.conf"
@@ -232,6 +229,13 @@
         single_branch: true
         version: master
       notify: Restart archivepodcast
+
+    - name: git config archivepodcast
+      become: true
+      ansible.builtin.shell:
+        cmd: "git config --global --add safe.directory /opt/archivepodcast"
+      tags:
+        - skip_ansible_lint
 
     - name: Copy archivepodcast config
       ansible.builtin.copy:
@@ -383,13 +387,20 @@
         group: podcasto # TODO TODOTODOTODOTODOTODOTODOTODOTODOTODO
         mode: "0700"
 
-    # - name: Clone geostat # BROKRN
-    #   ansible.builtin.git:
-    #     repo: https://github.com/kism/geostat
-    #     dest: /opt/geostat
-    #     single_branch: false
-    #     version: "feature/filetypefilter"
-    #   notify: Restart geostat
+    - name: Clone geostat # BROKRN
+      ansible.builtin.git:
+        repo: https://github.com/kism/geostat
+        dest: /opt/geostat
+        single_branch: false
+        version: "feature/filetypefilter"
+      notify: Restart geostat
+
+    - name: git config geostat
+      become: true
+      ansible.builtin.shell:
+        cmd: "git config --global --add safe.directory /opt/geostat"
+      tags:
+        - skip_ansible_lint
 
     - name: Copy geostat config
       ansible.builtin.copy:
