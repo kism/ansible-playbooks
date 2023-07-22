@@ -7,6 +7,7 @@ chown -R kism:content_public  /srv/Freya/Apps
 chown -R kism:content_public  /srv/Freya/Emulators
 chown -R kism:content_public  /srv/Freya/Fonts
 chown -R kism:content_public  /srv/Freya/ROMs
+chown -R kism:content_public  /srv/Freya/Video
 chown -R kism:content_private /srv/Freya/z
 
 chown -R kism:content_public  /srv/Garnet/Download
