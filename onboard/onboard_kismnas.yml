@@ -10,6 +10,15 @@
           - rsync
         state: present
 
+    - name: Copy dfree script
+      ansible.builtin.copy:
+        src: scripts_adhoc/pvenas_dfree_pool_min.sh
+        dest: /opt/scripts/dfree_pool_min
+        owner: root
+        group: root
+        mode: "0774"
+
+
     - name: Copy smb config
       ansible.builtin.copy:
         src: configs/smb/kismnas_smb.conf
