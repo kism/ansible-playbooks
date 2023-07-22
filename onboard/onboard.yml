@@ -4,231 +4,423 @@
 
 # _____________________________________________________________________________
 - name: User and filesystem Setup
-  hosts: aptbased:dnfbased:pacmanbased
+  hosts: all
   become: true
-  gather_facts: false
-  # collections:
-  #   - community.general
+  gather_facts: true
+  vars:
+    packages_to_install:
+      - htop
+      - iotop
+      - nload
+      - neofetch
+      - vim
+      - git
+      - tmux
+      - cronie
+      - file
+      - tree
+      - wget
+      - tar
+      - gpg
+      - ncdu
   tasks:
-    # User Management
-    - name: Add the user 'kism' with a bash shell
-      ansible.builtin.user:
-        name: kism
-        uid: 1089
-        # gid: 1089
-        shell: /bin/bash
-        append: true
+    - name: User Management
+      block:
+        - name: Add the user 'kism' with a bash shell
+          ansible.builtin.user:
+            name: kism
+            password: "{{ secret_password_hash }}"
 
-    - name: Set authorized keys taken from url using lookup
-      ansible.posix.authorized_key:
-        user: kism
-        state: present
-        exclusive: true
-        key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
+            uid: 1089
+            # gid: 1089
+            shell: /bin/bash
+            append: true
 
-    # Misc non root users
-    - name: Add the user 'backup_svc' with a bash shell
-      ansible.builtin.user:
-        name: backup_svc
-        uid: 1087
-        # gid: 1087
-        shell: /bin/bash
-        append: true
+        - name: Set authorized keys taken from url using lookup
+          ansible.posix.authorized_key:
+            user: kism
+            state: present
+            exclusive: true
+            key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
 
-    - name: Add the user 'qbtuser' with a bash shell
-      ansible.builtin.user:
-        name: qbtuser
-        uid: 1086
-        # gid: 1086
-        shell: /bin/bash
-        append: true
+        # Misc non root users
+        - name: Add the user 'backup_svc' with a bash shell
+          ansible.builtin.user:
+            name: backup_svc
+            uid: 1087
+            # gid: 1087
+            shell: /bin/bash
+            append: true
 
-    - name: Add the user 'lanprivate' with a bash shell
-      ansible.builtin.user:
-        name: lanprivate
-        uid: 1085
-        # gid: 1085
-        shell: /usr/sbin/nologin
-        append: true
+        - name: Add the user 'qbtuser' with a bash shell
+          ansible.builtin.user:
+            name: qbtuser
+            uid: 1086
+            # gid: 1086
+            shell: /bin/bash
+            append: true
 
-    - name: Add the user 'lanuser' with a bash shell
-      ansible.builtin.user:
-        name: lanuser
-        uid: 1084
-        # gid: 1084
-        shell: /usr/sbin/nologin
-        append: true
+        - name: Add the user 'lanprivate' with a bash shell
+          ansible.builtin.user:
+            name: lanprivate
+            uid: 1085
+            # gid: 1085
+            shell: /usr/sbin/nologin
+            append: true
 
-    # Groups
-    - name: Ensure group "kgadmins" exists
-      ansible.builtin.group:
-        name: kgadmins
-        gid: 1099
-        state: present
+        - name: Add the user 'lanuser' with a bash shell
+          ansible.builtin.user:
+            name: lanuser
+            uid: 1084
+            # gid: 1084
+            shell: /usr/sbin/nologin
+            append: true
 
-    - name: Ensure group "content_private" exists
-      ansible.builtin.group:
-        name: content_private
-        gid: 1098
-        state: present
+        # Groups
+        - name: Ensure group "kgadmins" exists
+          ansible.builtin.group:
+            name: kgadmins
+            gid: 1099
+            state: present
 
-    - name: Ensure group "content_public" exists
-      ansible.builtin.group:
-        name: content_public
-        gid: 1097
-        state: present
+        - name: Ensure group "content_private" exists
+          ansible.builtin.group:
+            name: content_private
+            gid: 1098
+            state: present
 
-    - name: Adding existing user kism to groups
-      ansible.builtin.user:
-        name: kism
-        groups: "kgadmins, content_private, content_public, backup_svc"
-        append: true
+        - name: Ensure group "content_public" exists
+          ansible.builtin.group:
+            name: content_public
+            gid: 1097
+            state: present
 
-    - name: Add lanprivate account to groups
-      ansible.builtin.user:
-        name: lanprivate
-        groups: "content_private, content_public"
-        append: true
+        - name: Adding existing user kism to groups
+          ansible.builtin.user:
+            name: kism
+            groups: "kgadmins, content_private, content_public, backup_svc"
+            append: true
 
-    - name: Add lanuser account to groups
-      ansible.builtin.user:
-        name: lanuser
-        groups: "content_public"
-        append: true
+        - name: Add lanprivate account to groups
+          ansible.builtin.user:
+            name: lanprivate
+            groups: "content_private, content_public"
+            append: true
 
-    - name: Copy the kgadmins sudoers rule
-      ansible.builtin.copy:
-        src: configs/sudoers/kgadmins
-        dest: /etc/sudoers.d/kgadmins
-        owner: root
-        group: root
-        mode: "0640"
+        - name: Add lanuser account to groups
+          ansible.builtin.user:
+            name: lanuser
+            groups: "content_public"
+            append: true
 
-    - name: Ensure that bash is setup correctly for kism
-      become: true
-      become_user: kism
-      ansible.builtin.shell:
-        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
-      register: command_output
-      changed_when: command_output.rc == 0
-      tags:
-        - skip_ansible_lint
+        - name: Copy the kgadmins sudoers rule
+          ansible.builtin.copy:
+            src: configs/sudoers/kgadmins
+            dest: /etc/sudoers.d/kgadmins
+            owner: root
+            group: root
+            mode: "0640"
 
-    - name: Ensure that bash is setup correctly for root
-      become: true
-      become_user: root
-      ansible.builtin.shell:
-        cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
-      register: command_output
-      changed_when: command_output.rc == 0
-      tags:
-        - skip_ansible_lint
+        - name: Ensure that bash is setup correctly for kism
+          become: true
+          become_user: kism
+          ansible.builtin.shell:
+            cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
+          register: command_output
+          changed_when: command_output.rc == 0
+          tags:
+            - skip_ansible_lint
 
-# _____________________________________________________________________________
-- name: Misc filsystem stuff for everything
-  hosts: aptbased:dnfbased:pacmanbased
-  become: true
-  gather_facts: false
-  # collections:
-  #   - community.general
-  tasks:
-    - name: Set timezone to Perth
-      when: timezone == 'awst'
-      community.general.timezone:
-        name: Australia/Perth
+        - name: Ensure that bash is setup correctly for root
+          become: true
+          become_user: root
+          ansible.builtin.shell:
+            cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
+          register: command_output
+          changed_when: command_output.rc == 0
+          tags:
+            - skip_ansible_lint
 
-    - name: Set timezone to UTC
-      when:
-        - timezone == 'utc'
-      community.general.timezone:
-        name: Etc/UTC
+    - name: Misc filsystem stuff for everything
+      block:
+        - name: Set timezone to Perth
+          when: timezone == 'awst'
+          community.general.timezone:
+            name: Australia/Perth
 
-    - name: Remove cockpit motd
-      ansible.builtin.file:
-        path: /etc/motd.d/cockpit
-        state: absent
+        - name: Set timezone to UTC
+          when:
+            - timezone == 'utc'
+          community.general.timezone:
+            name: Etc/UTC
 
-    - name: Add my favorite /opt subdirectory
-      ansible.builtin.file:
-        path: /opt/scripts
-        state: directory
-        mode: "0770"
+        - name: Remove cockpit motd
+          ansible.builtin.file:
+            path: /etc/motd.d/cockpit
+            state: absent
 
-# _____________________________________________________________________________
-# - name: Copy the kgadmins root ca certificate rule APT/DNF
-#   hosts: ubuntu
-#   become: true
-#   gather_facts: false
-#   tasks:
-#     - name: Copy the kgadmins root ca certificate rule Ubuntu
-#       ansible.builtin.copy:
-#         src: certs/kglan_root.cer
-#         dest: /etc/pki/tls/certs/kglan_root.crt
-#         owner: root
-#         group: root
-#         mode: '0444'
+        - name: Add my favorite /opt subdirectory
+          ansible.builtin.file:
+            path: /opt/scripts
+            state: directory
+            mode: "0770"
 
-#     - name: Update CA Certs Ubuntu
-#       become: true
-#       ansible.builtin.shell:
-#         cmd: 'update-ca-certificates'
-#       tags:
-#         - skip_ansible_lint
-
-- name: Copy the kgadmins root ca certificate rule Oracle Linux
-  hosts: oraclelinux
-  become: true
-  gather_facts: false
-  tasks:
     - name: Copy the kgadmins root ca certificate rule Oracle Linux
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
-        owner: root
-        group: root
-        mode: "0444"
+      when: ansible_pkg_mgr == 'yum' or ansible_pkg_mgr == 'dnf'
+      block:
+        - name: Copy the kgadmins root ca certificate rule Oracle Linux
+          ansible.builtin.copy:
+            src: certs/kglan_root.cer
+            dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
+            owner: root
+            group: root
+            mode: "0444"
 
-    - name: Update CA Certs Oracle Linux
-      become: true
-      ansible.builtin.shell:
-        cmd: "update-ca-trust"
-      tags:
-        - skip_ansible_lint
+        - name: Update CA Certs Oracle Linux
+          become: true
+          ansible.builtin.shell:
+            cmd: "update-ca-trust"
+          tags:
+            - skip_ansible_lint
 
-- name: Copy the kgadmins root ca certificate rule pacman Manjaro
-  hosts: manjaro
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Copy the kgadmins root ca certificate rule Manjaro
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
-        owner: root
-        group: root
-        mode: "0444"
+    - name: Copy the kgadmins root ca certificate rule Oracle Linux
+      when: ansible_pkg_mgr == 'pacman'
+      block:
+        - name: Copy the kgadmins root ca certificate rule Manjaro
+          ansible.builtin.copy:
+            src: certs/kglan_root.cer
+            dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
+            owner: root
+            group: root
+            mode: "0444"
 
-- name: Copy the kgadmins root ca certificate rule Debian
-  hosts: debian:proxmox:ubuntu
-  become: true
-  tasks:
-    - name: Copy the kgadmins root ca certificate rule Debian
-      ansible.builtin.copy:
-        src: certs/kglan_root.cer
-        dest: /usr/local/share/ca-certificates/kglan_root.crt
-        owner: root
-        group: root
-        mode: "0444"
+    - name: Copy the kgadmins root ca certificate rule apt
+      when: ansible_pkg_mgr == 'apt'
+      block:
+        - name: Copy the kgadmins root ca certificate rule Debian
+          ansible.builtin.copy:
+            src: certs/kglan_root.cer
+            dest: /usr/local/share/ca-certificates/kglan_root.crt
+            owner: root
+            group: root
+            mode: "0444"
 
-    - name: Update CA Certs Debian
-      ansible.builtin.shell:
-        cmd: "update-ca-certificates"
-      tags:
-        - skip_ansible_lint
+        - name: Update CA Certs Debian
+          ansible.builtin.shell:
+            cmd: "update-ca-certificates"
+          tags:
+            - skip_ansible_lint
+
+    - name: Install DNF Packages
+      when: ansible_pkg_mgr == 'dnf'
+      block:
+        - name: Update DNF Cache
+          ansible.builtin.dnf:
+            update_cache: true
+            state: present
+
+        - name: Enable epel
+          ansible.builtin.dnf:
+            name: epel-release
+            state: present
+          register: epel
+
+        - name: Update DNF Cache w/epel enabled
+          ansible.builtin.dnf:
+            update_cache: true
+            state: present
+          when: epel.changed
+          tags:
+            - skip_ansible_lint
+
+        - name: Upgrade packages
+          ansible.builtin.dnf:
+            update_only: true
+            state: present
+
+        - name: Remove packages that I want to avoid
+          ansible.builtin.dnf:
+            name:
+              - cockpit
+              - cups
+              - xorg-x11-server-Xorg
+              - libX11
+              - libwayland-client
+            state: absent
+
+        - name: Install useful apps
+          ansible.builtin.dnf:
+            name: "{{ item }}"
+            state: present
+          ignore_errors: true
+          loop: "{{ packages_to_install }}"
+
+        - name: Remove anaconda-ks.cfg
+          ansible.builtin.file:
+            path: /root/anaconda-ks.cfg
+            state: absent
+
+    - name: Install apt Packages
+      when: ansible_pkg_mgr == 'apt'
+      block:
+        - name: Update APT
+          ansible.builtin.apt:
+            update_cache: true
+            upgrade: full
+
+        - name: Install a list of packages
+          ansible.builtin.apt:
+            install_recommends: false
+            pkg: "{{ packages_to_install }}"
+            state: present
+
+    # _____________________________________________________________________________
+    - name: Setup basic Firewalld on dnf based hosts
+      when: ansible_pkg_mgr == 'dnf'
+      block:
+        - name: Install firewalld
+          ansible.builtin.dnf:
+            name:
+              - firewalld
+            state: present
+
+        - name: Remove cockpit from firewall config
+          ansible.posix.firewalld:
+            service: cockpit
+            zone: public
+            permanent: true
+            state: disabled
+          notify:
+            - Restart firewalld
+
+        - name: Allow ssh
+          ansible.posix.firewalld:
+            service: ssh
+            zone: public
+            permanent: true
+            state: enabled
+          notify:
+            - Restart firewalld
+
+        - name: Firewall enabled and running
+          ansible.builtin.systemd:
+            name: firewalld
+            enabled: true
+            state: started
+
+        - name: Copy firewalld configs
+          ansible.builtin.copy:
+            src: firewalld/
+            dest: /etc/firewalld/services
+            owner: root
+            group: root
+            mode: "0644"
+
+    # _____________________________________________________________________________
+    - name: Setup telegraf on dnf based hosts
+      when: ansible_pkg_mgr == 'dnf'
+      block:
+        - name: Remove old telegraf key
+          ansible.builtin.shell:
+            cmd: "rpm --erase gpg-pubkey-2582e0c5-56099b04"
+          ignore_errors: true
+          tags:
+            - skip_ansible_lint
+
+        - name: Copy file with owner and permission, using symbolic representation
+          ansible.builtin.copy:
+            src: repos_dnf/influxdb.repo
+            dest: /etc/yum.repos.d/influxdb.repo
+            owner: root
+            group: root
+            mode: "644"
+
+        - name: Import InfluxDB GPG key
+          ansible.builtin.rpm_key:
+            state: present
+            key: https://repos.influxdata.com/influxdb.key
+
+        - name: Install telegraf
+          ansible.builtin.dnf:
+            name: telegraf
+            state: present
+
+    - name: Setup telegraf on apt based hosts
+      when: ansible_pkg_mgr == 'apt'
+      block:
+        - name: Telegraf apt key
+          ansible.builtin.get_url:
+            url: "https://repos.influxdata.com/influxdata-archive_compat.key"
+            dest: /etc/apt/trusted.gpg.d/influxdata-archive_compat.key
+            mode: "0644"
+            force: true
+
+        - name: Add Telegraf repository
+          ansible.builtin.apt_repository:
+            repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+            filename: "telegraf"
+            state: present
+
+        - name: Install a list of packages
+          ansible.builtin.apt:
+            install_recommends: false
+            pkg:
+              - telegraf
+            state: present
+
+    - name: Setup telegraf hosts
+      when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'apt'
+      block:
+        - name: Copy common telegraf config
+          ansible.builtin.copy:
+            src: configs/telegraf/common_influxdb.conf
+            dest: /etc/telegraf/telegraf.d/common_influxdb.conf
+            owner: telegraf
+            group: telegraf
+            mode: "600"
+          notify:
+            - Restart telegraf
+
+        - name: Setup telegraf conf
+          ansible.builtin.lineinfile:
+            path: /etc/telegraf/telegraf.d/common_influxdb.conf
+            regexp: "token = "
+            line: 'token = "{{ secret_influxdb_telegraf_write }}"'
+            state: present
+          notify:
+            - Restart telegraf
+
+        - name: Copy the telefraf sudoers rule
+          ansible.builtin.copy:
+            src: configs/sudoers/telegraf
+            dest: /etc/sudoers.d/telegraf
+            owner: root
+            group: root
+            mode: "0640"
+          notify:
+            - Restart telegraf
+
+        - name: Start and enable telegraf service
+          ansible.builtin.systemd:
+            name: telegraf
+            enabled: true
+          notify:
+            - Restart telegraf
+
+  handlers:
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
+
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
 
 # _____________________________________________________________________________
 - name: SSH settings, not for proxmox
-  hosts: debian:ubuntu:oraclelinux:manjaro # NOT PROXMOX, will break clustering
+  hosts: all,!proxmox # NOT PROXMOX, will break clustering
   become: true
   gather_facts: false
   tasks:
@@ -269,246 +461,3 @@
       ansible.builtin.systemd:
         name: sshd
         state: reloaded
-
-# _____________________________________________________________________________
-- name: Update all packages on my DNF based linux hosts
-  hosts: dnfbased
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Update DNF Cache
-      ansible.builtin.dnf:
-        update_cache: true
-        state: present
-
-    - name: Enable epel
-      ansible.builtin.dnf:
-        name: epel-release
-        state: present
-      register: epel
-
-    - name: Update DNF Cache w/epel enabled
-      ansible.builtin.dnf:
-        update_cache: true
-        state: present
-      when: epel.changed
-      tags:
-        - skip_ansible_lint
-
-    - name: Upgrade packages
-      ansible.builtin.dnf:
-        update_only: true
-        state: present
-
-    - name: Remove packages that I want to avoid
-      ansible.builtin.dnf:
-        name:
-          - cockpit
-          - cups
-          - xorg-x11-server-Xorg
-          - libX11
-          - libwayland-client
-        state: absent
-
-    - name: Install useful apps
-      ansible.builtin.dnf:
-        name: "{{ item }}"
-        state: present
-      ignore_errors: true
-      loop:
-        - htop
-        - iotop
-        - nload
-        - neofetch
-        - vim
-        - git
-        - tmux
-        - cronie
-        - file
-        - tree
-        - wget
-        - tar
-
-    - name: Remove anaconda-ks.cfg
-      ansible.builtin.file:
-        path: /root/anaconda-ks.cfg
-        state: absent
-
-- name: Update all my apt based linux hosts
-  hosts: aptbased
-  become: true
-  tasks:
-    - name: Update APT
-      ansible.builtin.apt:
-        update_cache: true
-        upgrade: full
-
-    - name: Install a list of packages
-      ansible.builtin.apt:
-        install_recommends: false
-        pkg:
-          - htop
-          - iotop
-          - nload
-          - neofetch
-          - vim
-          - git
-          - tmux
-          - file
-          - tree
-          - wget
-          - tar
-        state: present
-
-# _____________________________________________________________________________
-- name: Setup basic Firewalld on dnf based hosts
-  hosts: dnfbased
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Install firewalld
-      ansible.builtin.dnf:
-        name:
-          - firewalld
-        state: present
-
-    - name: Remove cockpit from firewall config
-      ansible.posix.firewalld:
-        service: cockpit
-        zone: public
-        permanent: true
-        state: disabled
-      notify:
-        - Restart firewalld
-
-    - name: Allow ssh
-      ansible.posix.firewalld:
-        service: ssh
-        zone: public
-        permanent: true
-        state: enabled
-      notify:
-        - Restart firewalld
-
-    - name: Firewall enabled and running
-      ansible.builtin.systemd:
-        name: firewalld
-        enabled: true
-        state: started
-
-    - name: Copy firewalld configs
-      ansible.builtin.copy:
-        src: firewalld/
-        dest: /etc/firewalld/services
-        owner: root
-        group: root
-        mode: "0644"
-
-  handlers:
-    - name: Restart firewalld
-      ansible.builtin.systemd:
-        name: firewalld
-        state: restarted
-
-# _____________________________________________________________________________
-- name: Setup telegraf on dnf based hosts
-  hosts: dnfbased
-  become: true
-  gather_facts: true
-  tasks:
-    - name: Remove old telegraf key
-      ansible.builtin.shell:
-        cmd: "rpm --erase gpg-pubkey-2582e0c5-56099b04"
-      ignore_errors: true
-      tags:
-        - skip_ansible_lint
-
-    - name: Copy file with owner and permission, using symbolic representation
-      ansible.builtin.copy:
-        src: repos_dnf/influxdb.repo
-        dest: /etc/yum.repos.d/influxdb.repo
-        owner: root
-        group: root
-        mode: "644"
-
-    - name: Import InfluxDB GPG key
-      ansible.builtin.rpm_key:
-        state: present
-        key: https://repos.influxdata.com/influxdb.key
-
-    - name: Install telegraf
-      ansible.builtin.dnf:
-        name: telegraf
-        state: present
-
-- name: Setup telegraf on apt based hosts
-  hosts: aptbased
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Telegraf apt key
-      ansible.builtin.apt_key:
-        url: "https://repos.influxdata.com/influxdata-archive_compat.key"
-        id: 7DF8B07E
-        state: present
-
-    - name: Add Telegraf repository
-      ansible.builtin.apt_repository:
-        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-        filename: "telegraf"
-        state: present
-
-    - name: Install a list of packages
-      ansible.builtin.apt:
-        install_recommends: false
-        pkg:
-          - telegraf
-        state: present
-
-- name: Setup telegraf hosts
-  hosts: dnfbased:aptbased
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Copy common telegraf config
-      ansible.builtin.copy:
-        src: configs/telegraf/common_influxdb.conf
-        dest: /etc/telegraf/telegraf.d/common_influxdb.conf
-        owner: telegraf
-        group: telegraf
-        mode: "600"
-      notify:
-        - Restart telegraf
-
-    - name: Setup telegraf conf
-      ansible.builtin.lineinfile:
-        path: /etc/telegraf/telegraf.d/common_influxdb.conf
-        regexp: "token = "
-        line: 'token = "{{ secret_influxdb_telegraf_write }}"'
-        state: present
-      notify:
-        - Restart telegraf
-
-
-    - name: Copy the telefraf sudoers rule
-      ansible.builtin.copy:
-        src: configs/sudoers/telegraf
-        dest: /etc/sudoers.d/telegraf
-        owner: root
-        group: root
-        mode: "0640"
-      notify:
-        - Restart telegraf
-
-    - name: Start and enable telegraf service
-      ansible.builtin.systemd:
-        name: telegraf
-        enabled: true
-      notify:
-        - Restart telegraf
-
-  handlers:
-    - name: Restart telegraf
-      ansible.builtin.systemd:
-        name: telegraf
-        state: restarted

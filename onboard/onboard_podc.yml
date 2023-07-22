@@ -1,7 +1,7 @@
 ---
 # _____________________________________________________________________________
 - name: Setup archivepodcast directory
-  hosts: podc, test.podc
+  hosts: archivepodcast
   become: true
   gather_facts: false
   tasks:
@@ -10,7 +10,6 @@
         name: podcasto
         uid: 1083
         shell: /sbin/nologin
-        append: true
 
     - name: Disable kdump
       ansible.builtin.systemd:
@@ -21,7 +20,7 @@
 
 # _____________________________________________________________________________
 - name: Setup ffmpeg
-  hosts: podc, test.podc
+  hosts: archivepodcast
   become: true
   gather_facts: true
   tasks:
@@ -74,7 +73,7 @@
 
 # _____________________________________________________________________________
 - name: Setup nginx
-  hosts: podc, test.podc
+  hosts: archivepodcast
   become: true
   gather_facts: true
   tasks:
@@ -98,7 +97,6 @@
         state: present
       when: ansible_pkg_mgr == 'dnf'
 
-
     - name: Install nginx yum
       ansible.builtin.dnf:
         name:
@@ -113,20 +111,8 @@
         state: present
       when: ansible_pkg_mgr == 'apt'
 
-
-- name: Setup nginx apt
-  hosts: aptbased
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Install nginx
-      ansible.builtin.apt:
-        name:
-          - nginx
-        state: present
-
 - name: Setup nginx
-  hosts: podc, test.podc
+  hosts: archivepodcast
   become: true
   gather_facts: true
   tasks:
@@ -213,7 +199,7 @@
 
 # _____________________________________________________________________________
 - name: Setup archive-podcast
-  hosts: podc, test.podc
+  hosts: archivepodcast
   become: true
   become_user: podcasto
   gather_facts: true
@@ -406,9 +392,9 @@
 
 # _____________________________________________________________________________
 - name: Setup log monitoring for influxdb2 with my fork of geostat
-  hosts: podc, test.podc
+  hosts: archivepodcast
   become: true
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Create geostat directory
       become: true
@@ -418,11 +404,13 @@
         state: directory
         owner: podcasto # TODO  TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
         group: podcasto # TODO TODOTODOTODOTODOTODOTODOTODOTODOTODO
-        mode: "0700"
+        mode: "0755"
 
     - name: Fix git lmao
       ansible.builtin.shell:
         cmd: "git config --global --add safe.directory /opt/geostat"
+      tags:
+        - skip_ansible_lint
 
     - name: Clone geostat # BROKRN
       ansible.builtin.git:
@@ -512,6 +500,13 @@
       loop:
         - /opt/geostat
         - /var/log/nginx
+
+    - name: Add the podcasto to the adm for debian
+      ansible.builtin.user:
+        name: podcasto
+        groups: adm
+        append: true
+      when: ansible_pkg_mgr == 'apt'
 
     - name: Copy systemd service
       become: true

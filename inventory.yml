@@ -61,38 +61,6 @@ all:
       ansible_host: kpbp.kg.lan
       timezone: awst
 
-# Package Managers
-aptbased:
-  hosts:
-    pve:
-    pvenas:
-    # qbt:
-    cert:
-    podc:
-
-dnfbased:
-  hosts:
-    ifdb:
-    graf:
-    kismnas:
-    ent:
-    # autismfactory:
-    # autismsequel:
-    rproxy:
-    test.podc:
-    pvebackup:
-
-pacmanbased:
-  hosts:
-    dpshub:
-    manjaro-x230t:
-    kpbp:
-    hass:
-
-# opkgbased:
-#   hosts:
-#     openwrt:
-
 # Operating Systems
 oraclelinux:
   hosts:
@@ -128,15 +96,11 @@ debian:
 # Server Type
 vms:
   hosts:
-    # qbt:
     ifdb:
     graf:
     ent:
     kismnas:
-    # autismsequel:
     rproxy:
-    hass:
-    pvebackup:
 
 baremetal:
   hosts:
@@ -145,13 +109,13 @@ baremetal:
     cert:
     podc:
     test.podc:
-    # autismfactory:
 
 proxmox:
   hosts:
     pve:
     pvenas:
-# gameserver:
-#   hosts:
-#     autismfactory:
-#     autismsequel:
+
+archivepodcast:
+  hosts:
+    podc:
+    test.podc:

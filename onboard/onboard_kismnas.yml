@@ -63,7 +63,7 @@
   become: true
   gather_facts: false
   tasks:
-    - name: Copy helios64 telegraf configs
+    - name: Copy telegraf configs
       ansible.builtin.copy:
         src: configs/telegraf/kismnas.conf
         dest: /etc/telegraf/telegraf.d/kismnas.conf
