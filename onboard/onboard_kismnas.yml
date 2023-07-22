@@ -16,7 +16,7 @@
         dest: /opt/scripts/dfree_pool_min
         owner: root
         group: root
-        mode: "0774"
+        mode: "0775"
 
 
     - name: Copy smb config
