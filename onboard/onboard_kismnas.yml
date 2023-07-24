@@ -3,11 +3,12 @@
   hosts: kismnas
   become: true
   tasks:
-    - name: Install samba and rsync
+    - name: Install packages for kismnas
       ansible.builtin.dnf:
         name:
           - samba
           - rsync
+          - wsdd
         state: present
 
     - name: Copy dfree script
@@ -31,18 +32,24 @@
 
     - name: Start and enable samba service
       ansible.builtin.systemd:
-        name: smb
+        name: "{{ item }}"
         enabled: true
         state: started
+      loop:
+        - smb
+        - wsdd
 
-    - name: Allow samba and nginx through firewalld
+    - name: Allow samba and wsdd through firewalld
       ansible.posix.firewalld:
-        service: samba
+        service: "{{ item }}"
         zone: public
         permanent: true
         state: enabled
       notify:
         - Restart firewalld
+      loop:
+        - samba
+        - wsdd
 
     - name: Copy the backups_svc sudoers rule
       ansible.builtin.copy:
