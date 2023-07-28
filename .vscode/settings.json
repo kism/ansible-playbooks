@@ -1,4 +1,15 @@
 {
   "workbench.colorTheme": "SynthWave '84",
-  "ansible.python.interpreterPath": "/bin/python"
+  "ansible.python.interpreterPath": "/bin/python",
+	// Specify default formatters
+	"[ansible]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[python]": {
+		"editor.defaultFormatter": "ms-python.black-formatter"
+	},
+	// Needed for ansible-lint to trigger for roles
+	"files.associations": {
+        "*.yml": "ansible"
+    }  
 }
