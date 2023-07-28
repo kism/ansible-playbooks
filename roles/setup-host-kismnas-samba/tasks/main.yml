@@ -1,0 +1,101 @@
+---
+- name: Basic setup for kismnas Samba
+  hosts: kismnas
+  become: true
+  tasks:
+    - name: Install packages for kismnas
+      ansible.builtin.dnf:
+        name:
+          - samba
+          - rsync
+          - wsdd
+        state: present
+
+    - name: Copy dfree script
+      ansible.builtin.copy:
+        src: scripts_adhoc/pvenas_dfree_pool_min.sh
+        dest: /opt/scripts/dfree_pool_min
+        owner: root
+        group: root
+        mode: "0775"
+
+
+    - name: Copy smb config
+      ansible.builtin.copy:
+        src: configs/smb/kismnas_smb.conf
+        dest: /etc/samba/smb.conf
+        owner: root
+        group: root
+        mode: "0744"
+      notify:
+        - Restart smbd
+
+    - name: Start and enable samba service
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      loop:
+        - smb
+        - wsdd
+
+    - name: Allow samba and wsdd through firewalld
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        zone: public
+        permanent: true
+        state: enabled
+      notify:
+        - Restart firewalld
+      loop:
+        - samba
+        - wsdd
+
+    - name: Copy the backups_svc sudoers rule
+      ansible.builtin.copy:
+        src: configs/sshd/99-backup_svc.conf
+        dest: /etc/ssh/ssh_config.d/99-backup_svc.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart sshd
+
+
+
+# _____________________________________________________________________________
+- name: Setup telegraf
+  hosts: kismnas
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy telegraf configs
+      ansible.builtin.copy:
+        src: configs/telegraf/kismnas.conf
+        dest: /etc/telegraf/telegraf.d/kismnas.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+
+
+# _____________________________________________________________________________
+- name: Reminders
+  hosts: kismnas
+  gather_facts: false
+  tasks:
+    # REMEMBER
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Add samba users manually
+    # smbpasswd -a kism
+
+    - name: Reminder
+      ansible.builtin.debug:
+        msg: Add mounts
+# pct set 102 -mp0 /srv/Amarant,mp=/srv/Amarant
+# pct set 102 -mp1 /srv/Garnet,mp=/srv/Garnet
+# pct set 102 -mp2 /srv/Freya,mp=/srv/Freya
+# pct set 102 -mp3 /srv/Vivi,mp=/srv/Vivi

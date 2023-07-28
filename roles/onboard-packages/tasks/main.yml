@@ -1,0 +1,63 @@
+
+- name: Install DNF Packages
+  when: ansible_pkg_mgr == 'dnf'
+  block:
+    - name: Update DNF Cache
+      ansible.builtin.dnf:
+        update_cache: true
+        state: present
+
+    - name: Enable epel
+      ansible.builtin.dnf:
+        name: epel-release
+        state: present
+      register: epel
+
+    - name: Update DNF Cache w/epel enabled
+      ansible.builtin.dnf:
+        update_cache: true
+        state: present
+      when: epel.changed
+      tags:
+        - skip_ansible_lint
+
+    - name: Upgrade packages
+      ansible.builtin.dnf:
+        update_only: true
+        state: present
+
+    - name: Remove packages that I want to avoid
+      ansible.builtin.dnf:
+        name:
+          - cockpit
+          - cups
+          - xorg-x11-server-Xorg
+          - libX11
+          - libwayland-client
+        state: absent
+
+    - name: Install useful apps
+      ansible.builtin.dnf:
+        name: "{{ item }}"
+        state: present
+      ignore_errors: true
+      loop: "{{ packages_to_install }}"
+
+    - name: Remove anaconda-ks.cfg
+      ansible.builtin.file:
+        path: /root/anaconda-ks.cfg
+        state: absent
+
+- name: Install apt Packages
+  when: ansible_pkg_mgr == 'apt'
+  block:
+    - name: Update APT
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: full
+
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg: "{{ packages_to_install }}"
+        state: present

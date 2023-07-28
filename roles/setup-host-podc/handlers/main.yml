@@ -1,0 +1,45 @@
+    - name: Restart geostat
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: geostat
+        daemon_reload: true
+        state: restarted
+
+
+    - name: Restart archivepodcast
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: archivepodcast
+        daemon_reload: true
+        state: restarted
+
+    - name: Reload archivepodcast
+      become: true
+      become_user: root
+      ansible.builtin.systemd:
+        name: archivepodcast
+        state: reloaded
+
+
+    - name: Restart logrotate
+      ansible.builtin.systemd:
+        name: logrotate
+        state: restarted
+        
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
+    - name: Restart nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: reloaded
+
+
+
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted

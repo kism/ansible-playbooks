@@ -1,0 +1,15 @@
+  handlers:
+    - name: Restart smbd
+      ansible.builtin.systemd:
+        name: smb
+        state: restarted
+
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted
+
+    - name: Restart telegraf
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted

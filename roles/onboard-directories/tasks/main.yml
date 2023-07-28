@@ -1,0 +1,10 @@
+- name: Remove cockpit motd
+  ansible.builtin.file:
+    path: /etc/motd.d/cockpit
+    state: absent
+
+- name: Add my favorite /opt subdirectory
+  ansible.builtin.file:
+    path: /opt/scripts
+    state: directory
+    mode: "0775"

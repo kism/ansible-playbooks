@@ -1,0 +1,6 @@
+- name: Misc filsystem stuff for everything
+  block:
+    - name: Set timezone to Perth
+      when: timezone == 'awst'
+      community.general.timezone:
+        name: Australia/Perth

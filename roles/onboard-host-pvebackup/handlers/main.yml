@@ -1,0 +1,9 @@
+    - name: Restart smbd
+      ansible.builtin.systemd:
+        name: smb
+        state: restarted
+
+    - name: Restart firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: restarted

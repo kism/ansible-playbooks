@@ -1,0 +1,41 @@
+
+- name: Setup basic Firewalld on dnf based hosts
+  when: ansible_pkg_mgr == 'dnf'
+  block:
+    - name: Install firewalld
+      ansible.builtin.dnf:
+        name:
+          - firewalld
+        state: present
+
+    - name: Remove cockpit from firewall config
+      ansible.posix.firewalld:
+        service: cockpit
+        zone: public
+        permanent: true
+        state: disabled
+      notify:
+        - Restart firewalld
+
+    - name: Allow ssh
+      ansible.posix.firewalld:
+        service: ssh
+        zone: public
+        permanent: true
+        state: enabled
+      notify:
+        - Restart firewalld
+
+    - name: Firewall enabled and running
+      ansible.builtin.systemd:
+        name: firewalld
+        enabled: true
+        state: started
+
+    - name: Copy firewalld configs
+      ansible.builtin.copy:
+        src: firewalld/
+        dest: /etc/firewalld/services
+        owner: root
+        group: root
+        mode: "0644"

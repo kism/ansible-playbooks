@@ -1,0 +1,40 @@
+
+
+
+# _____________________________________________________________________________
+- name: SSH settings, not for proxmox
+  hosts: all,!proxmox # NOT PROXMOX, will break clustering
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Disable root Login
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^.?PermitRootLogin"
+        line: "PermitRootLogin no"
+        state: present
+      notify:
+        - Reload sshd
+
+    - name: Ensure that /etc/ssh/sshd_config.d exists
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d
+        state: directory
+        mode: "0755"
+
+    - name: Copy ssh config
+      ansible.builtin.copy:
+        src: configs/sshd/90-sshnopasswordauth.conf
+        dest: /etc/ssh/sshd_config.d/90-sshnopasswordauth.conf
+        owner: root
+        group: root
+        mode: "0600"
+      notify:
+        - Reload sshd
+
+    - name: Remove 01-PermitRootLogin just incase, looking at you redhat
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d/01-permitrootlogin.conf
+        state: absent
+      notify:
+        - Reload sshd

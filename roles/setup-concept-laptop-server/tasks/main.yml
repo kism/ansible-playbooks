@@ -1,0 +1,21 @@
+- name: Assume this is being run on a laptop, disable sleep, hibernate etc
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: false
+    masked: true
+  loop:
+    - sleep.target
+    - suspend.target
+    - hibernate.target
+    - hybrid-sleep.target
+  notify:
+    - Restart systemd-logind
+
+- name: Set logind sleep settings, assuming laptop is plugged in
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/logind.conf
+    regexp: "^.?HandleLidSwitchExternalPower"
+    line: "HandleLidSwitchExternalPower=ignore"
+    state: present
+  notify:
+    - Restart systemd-logind
