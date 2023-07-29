@@ -1,70 +1,43 @@
----
-# _____________________________________________________________________________
-- name: Basic setup for game servers
-  hosts: gameserver
-  become: true
-  vars:
-    users:
-      - kism
-      - skibisky
-  tasks:
-    - name: Add the user 'factorio' without a shell FIXME TODO???????????
-      ansible.builtin.user:
-        name: factorio
-        shell: /bin/false
-        append: true
+- name: Add the user 'factorio' without a shell FIXME TODO???????????
+  ansible.builtin.user:
+    name: factorio
+    shell: /bin/false
+    append: true
 
-    - name: Add the user 'minecraft' without a shell FIXME TODO???????????
-      ansible.builtin.user:
-        name: minecraft
-        shell: /bin/false
-        append: true
+- name: Add the user 'minecraft' without a shell FIXME TODO???????????
+  ansible.builtin.user:
+    name: minecraft
+    shell: /bin/false
+    append: true
 
-    - name: Add friends linux accounts
-      ansible.builtin.user:
-        name: "{{ item }}"
-        shell: /bin/bash
-        append: true
-      loop: "{{ users }}"
+- name: Add friends linux accounts
+  ansible.builtin.user:
+    name: "{{ item }}"
+    shell: /bin/bash
+    append: true
+  loop: "{{ users }}"
 
-    - name: Set authorized keys taken from url using lookup
-      ansible.posix.authorized_key:
-        user: "{{ item }}"
-        state: present
-        exclusive: true
-        key: "{{ lookup('url', 'https://github.com/' + '{{ item }}' + '.keys', split_lines=False) }}"
-      loop: "{{ users }}"
+- name: Set authorized keys taken from url using lookup
+  ansible.posix.authorized_key:
+    user: "{{ item }}"
+    state: present
+    exclusive: true
+    key: "{{ lookup('url', 'https://github.com/' + '{{ item }}' + '.keys', split_lines=False) }}"
+  loop: "{{ users }}"
 
-    - name: Add users to factorio group
-      ansible.builtin.user:
-        name: "{{ item }}"
-        groups:
-          - factorio
-          - minecraft
-        append: true
-      loop: "{{ users }}"
+- name: Add users to factorio group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups:
+      - factorio
+      - minecraft
+    append: true
+  loop: "{{ users }}"
 
-    - name: Copy the factorio sudoers rule
-      ansible.builtin.copy:
-        src: configs/sudoers/factorio
-        dest: /etc/sudoers.d/factorio
-        owner: root
-        group: root
-        mode: "0640"
-
-
-
-# _____________________________________________________________________________
-- name: Setup telegraf
-  hosts: autismfactory
-  become: true
-  tasks:
-    - name: Copy common telegraf configs
-      ansible.builtin.copy:
-        src: configs/telegraf/autismfactory.conf
-        dest: /etc/telegraf/telegraf.d/autismfactory.conf
-        owner: telegraf
-        group: telegraf
-        mode: "600"
-      notify:
-        - Restart telegraf
+- name: Copy the factorio sudoers rule
+  ansible.builtin.copy:
+    src: configs/sudoers/factorio
+    dest: /etc/sudoers.d/factorio
+    owner: root
+    group: root
+    mode: "0640"

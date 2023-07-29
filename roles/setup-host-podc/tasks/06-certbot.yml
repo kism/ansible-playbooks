@@ -1,0 +1,16 @@
+
+- name: Install certbot
+  ansible.builtin.apt:
+    name:
+      - certbot
+      - python3-certbot-nginx
+    state: present
+
+- name: Initial certbot config
+  become: true
+  ansible.builtin.shell:
+    cmd: "certbot --agree-tos --email={{ secret_email }} -v -n --nginx -d {{ secret_domain }}"
+  register: command_output
+  tags:
+    - skip_ansible_lint
+

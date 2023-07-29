@@ -1,0 +1,52 @@
+---
+# yamllint disable rule:line-length
+- name: Copy file with owner and permission, using symbolic representation
+  ansible.builtin.copy:
+    src: repos_dnf/influxdb.repo
+    dest: /etc/yum.repos.d/influxdb.repo
+    owner: root
+    group: root
+    mode: "644"
+
+- name: Import InfluxDB GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://repos.influxdata.com/influxdb.key
+
+- name: Install InfluxDB
+  ansible.builtin.dnf:
+    name:
+      - influxdb2
+      - influxdb2-cli
+    state: present
+
+- name: Allow influxdb through firewalld
+  ansible.posix.firewalld:
+    service: influxdb
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld
+
+- name: Start and enable InfluxDB service
+  ansible.builtin.systemd:
+    name: influxdb
+    enabled: true
+    state: started
+
+
+
+- name: Restart influxdb
+  ansible.builtin.systemd:
+    name: influxdb
+    state: restarted
+
+- name: Initial influxdb config
+  become: true
+  ansible.builtin.shell:
+    cmd: 'influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o "kg lan" -b "Telegraf Main" -host https://influxdb2.kierangee.au:443 -f'
+  register: command_output
+  failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
+  tags:
+    - skip_ansible_lint

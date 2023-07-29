@@ -1,0 +1,15 @@
+packages_to_install:
+  - htop
+  - iotop
+  - nload
+  - neofetch
+  - vim
+  - git
+  - tmux
+  - cronie
+  - file
+  - tree
+  - wget
+  - tar
+  - gpg
+  - ncdu

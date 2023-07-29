@@ -1,0 +1,134 @@
+
+- name: Create geostat directory
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: "/opt/geostat"
+    state: directory
+    owner: podcasto # TODO  TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
+    group: podcasto # TODO TODOTODOTODOTODOTODOTODOTODOTODOTODO
+    mode: "0755"
+
+- name: Fix git lmao
+  ansible.builtin.shell:
+    cmd: "git config --global --add safe.directory /opt/geostat"
+  tags:
+    - skip_ansible_lint
+
+- name: Clone geostat # BROKRN
+  ansible.builtin.git:
+    repo: https://github.com/kism/geostat
+    dest: /opt/geostat
+    single_branch: false
+    force: true
+    refspec: "refs/heads/feature/filetypefilter"
+  notify: Restart geostat
+
+- name: Copy geostat config
+  ansible.builtin.copy:
+    src: configs/geostat/settings.ini
+    dest: /opt/geostat/settings.ini
+    mode: "600"
+  notify: Restart geostat
+
+- name: Setup geostat influx token
+  ansible.builtin.lineinfile:
+    path: /opt/geostat/settings.ini
+    regexp: "token = "
+    line: "token = {{ secret_influxdb_geostat_write }}"
+    state: present
+  notify:
+    - Restart geostat
+
+- name: Check if geo db is around
+  ansible.builtin.stat:
+    path: /opt/geostat/GeoLite2-City.mmdb
+  register: register_geostat
+
+- name: Setup geostat log location
+  ansible.builtin.lineinfile:
+    path: /opt/geostat/settings.ini
+    regexp: "logpath = "
+    line: "logpath = {{ secret_geostat_path }}"
+    state: present
+  notify:
+    - Restart geostat
+
+- name: Grab geoip database
+  ansible.builtin.unarchive:
+    src: https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz
+    dest: /opt/geostat
+    remote_src: true
+  # when: not geostat_age or not register_geostat
+  notify:
+    - Restart geostat
+
+- name: move mmdb to correct location
+  ansible.builtin.shell:
+    cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
+  # when: not geostat_age or not register_geostat
+  tags:
+    - skip_ansible_lint
+
+- name: remove geostat folder
+  ansible.builtin.shell:
+    cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
+  # when: geostat_age or not register_geostat
+  tags:
+    - skip_ansible_lint
+
+- name: Create venv
+  ansible.builtin.shell:
+    cmd: "cd /opt/geostat/ ; python3 -m venv env"
+  register: command_output
+  changed_when: false
+  tags:
+    - skip_ansible_lint
+
+- name: Install flask into the specified (virtualenv), inheriting globally installed modules
+  ansible.builtin.pip:
+    requirements: /opt/geostat/requirements.txt
+    virtualenv: /opt/geostat/env
+    virtualenv_site_packages: true
+  notify: Restart geostat
+
+- name: Change ownership on /opt/geostat and /var/log/nginx
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: "{{ item }}"
+    recurse: true
+    owner: podcasto
+    group: podcasto
+  loop:
+    - /opt/geostat
+    - /var/log/nginx
+
+- name: Add the podcasto to the adm for debian
+  ansible.builtin.user:
+    name: podcasto
+    groups: adm
+    append: true
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Copy systemd service
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: systemd/system/geostat.service
+    dest: /etc/systemd/system/geostat.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart geostat
+
+- name: Enable systemd service
+  become: true
+  become_user: root
+  ansible.builtin.systemd:
+    name: geostat.service
+    enabled: true
+    daemon_reload: true
+    state: started
+    masked: false
+  notify: Restart geostat

@@ -1,0 +1,46 @@
+- name: Install zsh
+  ansible.builtin.dnf:
+    name:
+      - zsh
+    state: present
+  become: true
+  become_user: root
+
+- name: Create antigen folder
+  ansible.builtin.file:
+    path: ~/.antigen
+    state: directory
+    owner: kism
+    group: kism
+    mode: "0770"
+
+- name: Download antigen
+  ansible.builtin.get_url:
+    url: https://git.io/antigen
+    dest: ~/.antigen/antigen.zsh
+    owner: kism
+    group: kism
+    mode: "0755"
+
+- name: Copy bash config
+  ansible.builtin.copy:
+    src: dotfiles/ent.zshrc
+    dest: /home/kism/.zshrc
+    owner: kism
+    group: kism
+    mode: "0644"
+
+- name: Setup zsh
+  become: true
+  ansible.builtin.shell:
+    cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
+  register: command_output
+  tags:
+    - skip_ansible_lint
+
+- name: Change my shell to zsh
+  become: true
+  become_user: root
+  ansible.builtin.user:
+    name: "kism"
+    shell: /bin/zsh

@@ -1,0 +1,106 @@
+
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots # selinux not enabled by default on debian
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+  ignore_errors: true
+
+- name: Fix selinux
+  ansible.builtin.command: restorecon -Rv /
+  tags:
+    - skip_ansible_lint
+  ignore_errors: true
+
+- name: Install nginx dnf
+  ansible.builtin.dnf:
+    name:
+      - nginx
+    state: present
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install nginx yum
+  ansible.builtin.dnf:
+    name:
+      - nginx
+    state: present
+  when: ansible_pkg_mgr == 'yum'
+
+- name: Install nginx
+  ansible.builtin.apt:
+    name:
+      - nginx
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
+
+- name: Copy nginx conf
+  ansible.builtin.copy:
+    src: "configs/nginx/nginx-podc.conf"
+    dest: /etc/nginx/nginx.conf
+    mode: "0660"
+  notify:
+    - Restart nginx
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /etc/nginx/sites-available/
+    - /etc/nginx/sites-enabled/
+
+# I hate these two
+- name: Remove file (delete file)
+  ansible.builtin.shell:
+    cmd: "rm {{ item }}*"
+  ignore_errors: true
+  tags:
+    - skip_ansible_lint
+  loop:
+    - /etc/nginx/sites-available/
+    - /etc/nginx/sites-enabled/
+
+- name: Copy nginx site confs
+  ansible.builtin.copy:
+    src: "configs/nginx/nginx-archivepodcast.conf"
+    dest: /etc/nginx/sites-available/
+    mode: "0660"
+  notify:
+    - Restart nginx
+
+- name: Create symbolic links to make sites available
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/nginx-archivepodcast.conf"
+    dest: "/etc/nginx/sites-enabled/nginx-archivepodcast.conf"
+    owner: root
+    group: root
+    state: link
+  notify:
+    - Restart nginx
+
+- name: Set server address
+  ansible.builtin.replace:
+    path: "/etc/nginx/sites-available/nginx-archivepodcast.conf"
+    regexp: "secret_domain"
+    replace: "{{ secret_domain }}"
+
+- name: Nginx enabled and running
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: true
+  notify: Restart nginx
+
+- name: Allow http and https
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    zone: public
+    permanent: true
+    state: enabled
+  loop:
+    - http
+    - https
+  notify:
+    - Restart firewalld
+  when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'yum'

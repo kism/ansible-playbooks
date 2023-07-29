@@ -61,3 +61,11 @@
         install_recommends: false
         pkg: "{{ packages_to_install }}"
         state: present
+
+
+- name: Disable kdump
+  ansible.builtin.systemd:
+    name: kdump
+    enabled: false
+    masked: true
+  ignore_errors: true

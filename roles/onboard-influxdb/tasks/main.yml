@@ -1,91 +1,89 @@
+- name: Setup telegraf on dnf based hosts
+  when: ansible_pkg_mgr == 'dnf'
+  block:
+    - name: Remove old telegraf key
+      ansible.builtin.shell:
+        cmd: "rpm --erase gpg-pubkey-2582e0c5-56099b04"
+      ignore_errors: true
+      tags:
+        - skip_ansible_lint
 
-    # _____________________________________________________________________________
-    - name: Setup telegraf on dnf based hosts
-      when: ansible_pkg_mgr == 'dnf'
-      block:
-        - name: Remove old telegraf key
-          ansible.builtin.shell:
-            cmd: "rpm --erase gpg-pubkey-2582e0c5-56099b04"
-          ignore_errors: true
-          tags:
-            - skip_ansible_lint
+    - name: Copy file with owner and permission, using symbolic representation
+      ansible.builtin.copy:
+        src: repos_dnf/influxdb.repo
+        dest: /etc/yum.repos.d/influxdb.repo
+        owner: root
+        group: root
+        mode: "644"
 
-        - name: Copy file with owner and permission, using symbolic representation
-          ansible.builtin.copy:
-            src: repos_dnf/influxdb.repo
-            dest: /etc/yum.repos.d/influxdb.repo
-            owner: root
-            group: root
-            mode: "644"
+    - name: Import InfluxDB GPG key
+      ansible.builtin.rpm_key:
+        state: present
+        key: https://repos.influxdata.com/influxdb.key
 
-        - name: Import InfluxDB GPG key
-          ansible.builtin.rpm_key:
-            state: present
-            key: https://repos.influxdata.com/influxdb.key
+    - name: Install telegraf
+      ansible.builtin.dnf:
+        name: telegraf
+        state: present
 
-        - name: Install telegraf
-          ansible.builtin.dnf:
-            name: telegraf
-            state: present
+- name: Setup telegraf on apt based hosts
+  when: ansible_pkg_mgr == 'apt'
+  block:
+    - name: Telegraf apt key
+      ansible.builtin.get_url:
+        url: "https://repos.influxdata.com/influxdata-archive_compat.key"
+        dest: /etc/apt/trusted.gpg.d/influxdata-archive_compat.key
+        mode: "0644"
+        force: true
 
-    - name: Setup telegraf on apt based hosts
-      when: ansible_pkg_mgr == 'apt'
-      block:
-        - name: Telegraf apt key
-          ansible.builtin.get_url:
-            url: "https://repos.influxdata.com/influxdata-archive_compat.key"
-            dest: /etc/apt/trusted.gpg.d/influxdata-archive_compat.key
-            mode: "0644"
-            force: true
+    - name: Add Telegraf repository
+      ansible.builtin.apt_repository:
+        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        filename: "telegraf"
+        state: present
 
-        - name: Add Telegraf repository
-          ansible.builtin.apt_repository:
-            repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-            filename: "telegraf"
-            state: present
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg:
+          - telegraf
+        state: present
 
-        - name: Install a list of packages
-          ansible.builtin.apt:
-            install_recommends: false
-            pkg:
-              - telegraf
-            state: present
+- name: Setup telegraf hosts
+  when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'apt'
+  block:
+    - name: Copy common telegraf config
+      ansible.builtin.copy:
+        src: configs/telegraf/common_influxdb.conf
+        dest: /etc/telegraf/telegraf.d/common_influxdb.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
 
-    - name: Setup telegraf hosts
-      when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'apt'
-      block:
-        - name: Copy common telegraf config
-          ansible.builtin.copy:
-            src: configs/telegraf/common_influxdb.conf
-            dest: /etc/telegraf/telegraf.d/common_influxdb.conf
-            owner: telegraf
-            group: telegraf
-            mode: "600"
-          notify:
-            - Restart telegraf
+    - name: Setup telegraf conf
+      ansible.builtin.lineinfile:
+        path: /etc/telegraf/telegraf.d/common_influxdb.conf
+        regexp: "token = "
+        line: 'token = "{{ secret_influxdb_telegraf_write }}"'
+        state: present
+      notify:
+        - Restart telegraf
 
-        - name: Setup telegraf conf
-          ansible.builtin.lineinfile:
-            path: /etc/telegraf/telegraf.d/common_influxdb.conf
-            regexp: "token = "
-            line: 'token = "{{ secret_influxdb_telegraf_write }}"'
-            state: present
-          notify:
-            - Restart telegraf
+    - name: Copy the telefraf sudoers rule
+      ansible.builtin.copy:
+        src: configs/sudoers/telegraf
+        dest: /etc/sudoers.d/telegraf
+        owner: root
+        group: root
+        mode: "0640"
+      notify:
+        - Restart telegraf
 
-        - name: Copy the telefraf sudoers rule
-          ansible.builtin.copy:
-            src: configs/sudoers/telegraf
-            dest: /etc/sudoers.d/telegraf
-            owner: root
-            group: root
-            mode: "0640"
-          notify:
-            - Restart telegraf
-
-        - name: Start and enable telegraf service
-          ansible.builtin.systemd:
-            name: telegraf
-            enabled: true
-          notify:
-            - Restart telegraf
+    - name: Start and enable telegraf service
+      ansible.builtin.systemd:
+        name: telegraf
+        enabled: true
+      notify:
+        - Restart telegraf

@@ -1,0 +1,18 @@
+# MOTD, bash config
+- name: Copy motd file
+  ansible.builtin.copy:
+    src: configs/motd/ent.txt
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Copy ent specific ssh config
+  ansible.builtin.copy:
+    src: configs/sshd/ent_90-sshnopasswordauth.conf
+    dest: /etc/ssh/sshd_config.d/99-sshnopasswordauth.conf
+    owner: root
+    group: root
+    mode: "0600"
+  notify:
+    - Reload sshd

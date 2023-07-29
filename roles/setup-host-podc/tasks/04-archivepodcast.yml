@@ -1,0 +1,125 @@
+- name: Install venv apt
+  ansible.builtin.apt:
+    name:
+      - python3-venv
+      - python3-pip
+    state: present
+  become_user: root
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Install venv dnf
+  ansible.builtin.dnf:
+    name:
+      - python3-pip
+    state: present
+  become_user: root
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Create archivepodcast directory
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: "/opt/archivepodcast"
+    state: directory
+    owner: podcasto
+    group: podcasto
+    mode: "0700"
+
+- name: Attempt to change ownership on /opt/archivepodcast
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: "/opt/archivepodcast"
+    recurse: true
+    owner: podcasto
+    group: podcasto
+
+- name: Clone archivepodcast
+  ansible.builtin.git:
+    repo: https://github.com/kism/archivepodcast
+    dest: /opt/archivepodcast
+    single_branch: true
+    version: master
+  notify: Restart archivepodcast
+  become: true
+  become_user: podcasto
+
+- name: git config archivepodcast
+  become: true
+  become_user: podcasto
+  ansible.builtin.shell:
+    cmd: "git config --global --add safe.directory /opt/archivepodcast"
+  tags:
+    - skip_ansible_lint
+
+- name: Copy archivepodcast config
+  ansible.builtin.copy:
+    src: configs/archivepodcast/settings.json
+    dest: /opt/archivepodcast/settings.json
+    mode: "600"
+  notify: Reload archivepodcast
+  become: true
+  become_user: podcasto
+
+- name: Create venv
+  ansible.builtin.shell:
+    cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
+  register: command_output
+  tags:
+    - skip_ansible_lint
+  become: true
+  become_user: podcasto
+
+- name: Install flask into the specified (virtualenv), inheriting globally installed modules
+  ansible.builtin.pip:
+    requirements: /opt/archivepodcast/requirements.txt
+    virtualenv: /opt/archivepodcast/env
+    virtualenv_site_packages: true
+  notify: Restart archivepodcast
+  become: true
+  become_user: podcasto
+
+- name: Create archivepodcast log file
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: "/var/log/archivepodcast.log"
+    state: touch
+    owner: podcasto
+    group: podcasto
+    mode: "0664"
+  notify: Restart archivepodcast
+  changed_when: false
+
+- name: Copy systemd service
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: systemd/system/archivepodcast.service
+    dest: /etc/systemd/system/archivepodcast.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart archivepodcast
+
+- name: Enable systemd service
+  become: true
+  become_user: root
+  ansible.builtin.systemd:
+    name: archivepodcast.service
+    enabled: true
+    daemon_reload: true
+    state: started
+    masked: false
+
+- name: Copy archivepodcast logrotate
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: configs/logrotate/archivepodcast
+    dest: /etc/logrotate.d/archivepodcast
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart logrotate
+

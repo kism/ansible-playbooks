@@ -1,0 +1,60 @@
+
+- name: Create influxscan directory
+  ansible.builtin.file:
+    path: "/opt/influxpingscan"
+    state: directory
+    owner: influxdb
+    group: influxdb
+    mode: "0700"
+
+- name: Attempt to change ownership on /opt/influxpingscan
+  ansible.builtin.file:
+    path: "/opt/influxpingscan"
+    recurse: true
+    owner: influxdb
+    group: influxdb
+
+- name: Clone archivepodcast
+  ansible.builtin.git:
+    repo: https://github.com/kism/influxpingscan
+    dest: /opt/influxpingscan
+    single_branch: true
+    version: master
+
+- name: Copy archivepodcast config
+  ansible.builtin.copy:
+    src: configs/influxpingscan/ifdb_settings.ini
+    dest: /opt/influxpingscan/settings.ini
+    mode: "600"
+
+- name: Create venv
+  ansible.builtin.shell:
+    cmd: "cd /opt/influxpingscan/ ; python3 -m venv env"
+  register: command_output
+  tags:
+    - skip_ansible_lint
+
+- name: Install requirements into the specified (virtualenv)
+  ansible.builtin.pip:
+    requirements: /opt/influxpingscan/requirements.txt
+    virtualenv: /opt/influxpingscan/env
+    virtualenv_site_packages: true
+
+- name: Set influxdb token
+  ansible.builtin.lineinfile:
+    path: /opt/influxpingscan/settings.ini
+    regexp: "^.?token ="
+    line: "token = {{ secret_influxping_write }}"
+    state: present
+
+- name: Set influxpingscan scan in cron
+  ansible.builtin.cron:
+    name: "influxpingscan scan"
+    minute: "58"
+    job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py scan"
+
+- name: Set influxpingscan ping in cron
+  ansible.builtin.cron:
+    name: "influxpingscan ping"
+    minute: "*/5"
+    job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py ping"

@@ -1,0 +1,5 @@
+- name: Add the user 'podcasto' with a bash shell
+  ansible.builtin.user:
+    name: podcasto
+    uid: 1083
+    shell: /sbin/nologin
