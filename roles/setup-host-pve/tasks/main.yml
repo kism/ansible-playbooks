@@ -1,20 +1,9 @@
-- name: Setup telegraf
-  hosts: pve
-  gather_facts: false
-  become: true
-  tasks:
-    - name: Copy pve telegraf configs
-      ansible.builtin.copy:
-        src: configs/telegraf/pve.conf
-        dest: /etc/telegraf/telegraf.d/pve.conf
-        owner: telegraf
-        group: telegraf
-        mode: "600"
-      notify:
-        - Restart telegraf
-
-  handlers:
-    - name: Restart telegraf
-      ansible.builtin.systemd:
-        name: telegraf
-        state: restarted
+- name: Copy pve telegraf configs
+  ansible.builtin.copy:
+    src: configs/telegraf/pve.conf
+    dest: /etc/telegraf/telegraf.d/pve.conf
+    owner: telegraf
+    group: telegraf
+    mode: "600"
+  notify:
+    - Restart telegraf

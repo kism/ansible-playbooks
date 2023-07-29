@@ -1,4 +1,4 @@
 
 *.asc
 secrets.yml
-/onboard/configs/archivepodcast/settings.json
+roles/setup-concept-archivepodcast/files/archivepodcast_settings.json

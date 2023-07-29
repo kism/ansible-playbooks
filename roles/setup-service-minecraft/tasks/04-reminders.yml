@@ -1,0 +1,3 @@
+- name: Reminder
+  ansible.builtin.debug:
+    msg: "Install your favorite minecraft server to /opt/minecraft"

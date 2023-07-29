@@ -3,7 +3,6 @@
     name: telegraf
     state: restarted
 
-
 - name: Restart influxdb
   ansible.builtin.systemd:
     name: influxdb

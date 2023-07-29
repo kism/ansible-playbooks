@@ -1,0 +1,17 @@
+- name: Copy file with owner and permission, using symbolic representation
+  ansible.builtin.copy:
+    src: repos_dnf/adoptium.repo
+    dest: /etc/yum.repos.d/adoptium.repo
+    owner: root
+    group: root
+    mode: "0664"
+
+- name: Import Adoptium GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://packages.adoptium.net/artifactory/api/gpg/key/public
+
+- name: Install Adoptium
+  ansible.builtin.dnf:
+    name: temurin-19-jdk
+    state: present

@@ -1,47 +1,45 @@
-
-
+- name: Copy the kgadmins root ca certificate rule Oracle Linux
+  when: ansible_pkg_mgr == 'yum' or ansible_pkg_mgr == 'dnf'
+  block:
     - name: Copy the kgadmins root ca certificate rule Oracle Linux
-      when: ansible_pkg_mgr == 'yum' or ansible_pkg_mgr == 'dnf'
-      block:
-        - name: Copy the kgadmins root ca certificate rule Oracle Linux
-          ansible.builtin.copy:
-            src: certs/kglan_root.cer
-            dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
-            owner: root
-            group: root
-            mode: "0444"
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
+        owner: root
+        group: root
+        mode: "0444"
 
-        - name: Update CA Certs Oracle Linux
-          become: true
-          ansible.builtin.shell:
-            cmd: "update-ca-trust"
-          tags:
-            - skip_ansible_lint
+    - name: Update CA Certs Oracle Linux
+      become: true
+      ansible.builtin.shell:
+        cmd: "update-ca-trust"
+      tags:
+        - skip_ansible_lint
 
-    - name: Copy the kgadmins root ca certificate rule Oracle Linux
-      when: ansible_pkg_mgr == 'pacman'
-      block:
-        - name: Copy the kgadmins root ca certificate rule Manjaro
-          ansible.builtin.copy:
-            src: certs/kglan_root.cer
-            dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
-            owner: root
-            group: root
-            mode: "0444"
+- name: Copy the kgadmins root ca certificate rule Oracle Linux
+  when: ansible_pkg_mgr == 'pacman'
+  block:
+    - name: Copy the kgadmins root ca certificate rule Manjaro
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
+        owner: root
+        group: root
+        mode: "0444"
 
-    - name: Copy the kgadmins root ca certificate rule apt
-      when: ansible_pkg_mgr == 'apt'
-      block:
-        - name: Copy the kgadmins root ca certificate rule Debian
-          ansible.builtin.copy:
-            src: certs/kglan_root.cer
-            dest: /usr/local/share/ca-certificates/kglan_root.crt
-            owner: root
-            group: root
-            mode: "0444"
+- name: Copy the kgadmins root ca certificate rule apt
+  when: ansible_pkg_mgr == 'apt'
+  block:
+    - name: Copy the kgadmins root ca certificate rule Debian
+      ansible.builtin.copy:
+        src: certs/kglan_root.cer
+        dest: /usr/local/share/ca-certificates/kglan_root.crt
+        owner: root
+        group: root
+        mode: "0444"
 
-        - name: Update CA Certs Debian
-          ansible.builtin.shell:
-            cmd: "update-ca-certificates"
-          tags:
-            - skip_ansible_lint
+    - name: Update CA Certs Debian
+      ansible.builtin.shell:
+        cmd: "update-ca-certificates"
+      tags:
+        - skip_ansible_lint

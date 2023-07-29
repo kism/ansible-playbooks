@@ -1,0 +1,15 @@
+- name: Create minecraft directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0770"
+  loop:
+    - /opt/minecraft
+
+- name: Recursively change ownership of a directory
+  ansible.builtin.file:
+    path: /opt/minecraft
+    state: directory
+    recurse: true
+    owner: minecraft
+    group: minecraft

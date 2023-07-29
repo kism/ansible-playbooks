@@ -35,8 +35,6 @@
     enabled: true
     state: started
 
-
-
 - name: Restart influxdb
   ansible.builtin.systemd:
     name: influxdb

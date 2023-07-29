@@ -1,4 +1,3 @@
-
 - name: Create influxscan directory
   ansible.builtin.file:
     path: "/opt/influxpingscan"

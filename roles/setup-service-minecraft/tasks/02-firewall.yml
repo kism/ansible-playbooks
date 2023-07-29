@@ -1,0 +1,9 @@
+- name: Allow Minecraft through firewalld
+  ansible.posix.firewalld:
+    service: minecraft
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld
+

@@ -1,4 +1,4 @@
-- name: Restart firewalld
+- name: Restart telegraf
   ansible.builtin.systemd:
-    name: firewalld
+    name: telegraf
     state: restarted
