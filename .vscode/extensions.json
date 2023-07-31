@@ -8,6 +8,7 @@
         "ms-python.vscode-pylance",
         "redhat.ansible",
         "redhat.vscode-yaml",
-        "samuelcolvin.jinjahtml"
+        "samuelcolvin.jinjahtml",
+        "vscode-icons-team.vscode-icons"
     ]
 }
