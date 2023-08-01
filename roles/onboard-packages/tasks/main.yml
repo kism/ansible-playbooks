@@ -61,9 +61,15 @@
         pkg: "{{ packages_to_install }}"
         state: present
 
-- name: Disable kdump
-  ansible.builtin.systemd:
+
+- name: Check if kdump is installed
+  stat:
+    path: /etc/init.d/kdump
+  register: kdump_installed
+
+- name: Disable kdump service
+  service:
     name: kdump
-    enabled: false
-    masked: true
-  ignore_errors: true
+    state: stopped
+    enabled: no
+  when: kdump_installed.stat.exists
