@@ -24,7 +24,7 @@
 
 - name: Copy bash config
   ansible.builtin.copy:
-    src: dotfiles/ent.zshrc
+    src: files/ent.zshrc
     dest: /home/kism/.zshrc
     owner: kism
     group: kism

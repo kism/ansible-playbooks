@@ -1,5 +1,5 @@
-- name: Setup qBittorrent on a host
-  hosts: qbt
+- name: Setup ent jumpbox
+  hosts: ent
   gather_facts: true
   become: true
   vars:
@@ -7,7 +7,7 @@
     var_two: bbb
 
   roles:
-    - onboard-packages
+    # - onboard-packages
     - onboard-user
     - onboard-directories
     - onboard-sshd
@@ -15,4 +15,4 @@
     - onboard-telegraf
     - onboard-firewall
     - onboard-ca-trust
-    - setup-host-qbt
+    - setup-host-ent

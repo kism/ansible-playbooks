@@ -87,7 +87,7 @@
 
 - name: Copy the kgadmins sudoers rule
   ansible.builtin.copy:
-    src: configs/sudoers/kgadmins
+    src: files/sudoers_kgadmins
     dest: /etc/sudoers.d/kgadmins
     owner: root
     group: root

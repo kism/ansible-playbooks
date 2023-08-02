@@ -1,7 +1,7 @@
 # MOTD, bash config
 - name: Copy motd file
   ansible.builtin.copy:
-    src: configs/motd/ent.txt
+    src: files/ent_motd.txt
     dest: /etc/motd
     owner: root
     group: root

@@ -13,7 +13,7 @@
 
 - name: Copy duck cron job
   ansible.builtin.copy:
-    src: scripts_cron/duck.sh
+    src: files/duck.sh
     dest: /opt/duckdns/duck.sh
     owner: root
     group: root

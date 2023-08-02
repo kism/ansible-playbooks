@@ -15,7 +15,7 @@
 
 - name: Copy ssh config
   ansible.builtin.copy:
-    src: configs/sshd/90-sshnopasswordauth.conf
+    src: files/90-sshnopasswordauth.conf
     dest: /etc/ssh/sshd_config.d/90-sshnopasswordauth.conf
     owner: root
     group: root
