@@ -1,9 +1,7 @@
-- name: Setup qBittorrent on a host
-  hosts: qbt
+- name: Setup rproxy, reverse proxy
+  hosts: rproxy
   gather_facts: true
   become: true
-  vars:
-    service_account: qbtuser
 
   roles:
     # General Onboards
@@ -17,4 +15,4 @@
     - onboard-ca-trust
 
     # Host Specific
-    - setup-host-qbt
+    - setup-host-rproxy

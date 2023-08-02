@@ -33,7 +33,7 @@
 
     - name: Copy firewalld configs
       ansible.builtin.copy:
-        src: firewalld/
+        src: files/
         dest: /etc/firewalld/services
         owner: root
         group: root

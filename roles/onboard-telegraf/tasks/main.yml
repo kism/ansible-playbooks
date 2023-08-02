@@ -8,9 +8,9 @@
       tags:
         - skip_ansible_lint
 
-    - name: Copy file with owner and permission, using symbolic representation
+    - name: Copy over influxdb repo
       ansible.builtin.copy:
-        src: repos_dnf/influxdb.repo
+        src: files/influxdb.repo
         dest: /etc/yum.repos.d/influxdb.repo
         owner: root
         group: root
@@ -54,7 +54,7 @@
   block:
     - name: Copy common telegraf config
       ansible.builtin.copy:
-        src: configs/telegraf/common_influxdb.conf
+        src: files/common_influxdb.conf
         dest: /etc/telegraf/telegraf.d/common_influxdb.conf
         owner: telegraf
         group: telegraf
@@ -73,7 +73,7 @@
 
     - name: Copy the telefraf sudoers rule
       ansible.builtin.copy:
-        src: configs/sudoers/telegraf
+        src: files/sudoers_telegraf
         dest: /etc/sudoers.d/telegraf
         owner: root
         group: root

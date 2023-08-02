@@ -3,7 +3,7 @@
   block:
     - name: Copy the kgadmins root ca certificate rule Oracle Linux
       ansible.builtin.copy:
-        src: certs/kglan_root.cer
+        src: files/kglan_root.cer
         dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
         owner: root
         group: root

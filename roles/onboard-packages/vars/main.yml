@@ -13,3 +13,10 @@ packages_to_install:
   - tar
   - gpg
   - ncdu
+
+packages_to_remove:
+  - cockpit
+  - cups
+  - xorg-x11-server-Xorg
+  - libX11
+  - libwayland-client

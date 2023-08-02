@@ -41,7 +41,7 @@
 
 - name: Copy nginx conf
   ansible.builtin.copy:
-    src: "configs/nginx/nginx-rproxy.conf"
+    src: "files/nginx-rproxy.conf"
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
@@ -69,7 +69,7 @@
 
 - name: Copy nginx site confs
   ansible.builtin.copy:
-    src: "configs/nginx/{{ item }}"
+    src: "files/{{ item }}"
     dest: /etc/nginx/sites-available/
     mode: "0660"
   notify:
@@ -116,7 +116,7 @@
 
 - name: Copy nginx index.html
   ansible.builtin.copy:
-    src: configs/nginx/nginx-rproxy-index.html
+    src: files/nginx-rproxy-index.html
     dest: /usr/share/nginx/html/index.html
     mode: "0664"
   notify:
@@ -127,14 +127,6 @@
     path: /usr/share/nginx/html/pki
     state: directory
     mode: "0755"
-
-- name: Copy cert
-  ansible.builtin.copy:
-    src: certs/kglan_root.cer
-    dest: /usr/share/nginx/html/pki/kglan_root.cer
-    mode: "0664"
-  notify:
-    - Restart nginx
 
 - name: Enable crond
   ansible.builtin.systemd:

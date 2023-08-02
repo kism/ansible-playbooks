@@ -3,11 +3,11 @@
   gather_facts: true
   become: true
   vars:
-    var_one: aaa
-    var_two: bbb
+    service_account: kism
 
   roles:
-    # - onboard-packages
+    # General Onboards
+    - onboard-packages
     - onboard-user
     - onboard-directories
     - onboard-sshd
@@ -15,4 +15,6 @@
     - onboard-telegraf
     - onboard-firewall
     - onboard-ca-trust
+
+    # Host Specific
     - setup-host-ent

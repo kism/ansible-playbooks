@@ -1,5 +1,5 @@
-
-- name: Set httpd_can_network_connect flag on and keep it persistent across reboots # selinux not enabled by default on debian
+# selinux not enabled by default on debian, TODO do better
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
   ansible.posix.seboolean:
     name: httpd_can_network_connect
     state: true
@@ -36,7 +36,7 @@
 
 - name: Copy nginx conf
   ansible.builtin.copy:
-    src: "configs/nginx/nginx-podc.conf"
+    src: "files/nginx-podc.conf"
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
@@ -64,7 +64,7 @@
 
 - name: Copy nginx site confs
   ansible.builtin.copy:
-    src: "configs/nginx/nginx-archivepodcast.conf"
+    src: "files/nginx-archivepodcast.conf"
     dest: /etc/nginx/sites-available/
     mode: "0660"
   notify:
