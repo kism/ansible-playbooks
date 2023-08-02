@@ -1,0 +1,11 @@
+- name: Setup qBittorrent on a host
+  hosts: qbt
+  gather_facts: true
+  become: true
+  vars:
+    var_one: aaa
+    var_two: bbb
+
+  roles:
+    - role1
+    - role2
