@@ -12,3 +12,6 @@
 
 Running on macos
 `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
+
+Run
+`ansible-playbook build_ent.yml -i inventory.yml --user ansible_svc -e @secrets.yml`

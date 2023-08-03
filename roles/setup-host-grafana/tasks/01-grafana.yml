@@ -2,7 +2,7 @@
 
 - name: Copy repo file to yum.repos.d
   ansible.builtin.copy:
-    src: repos_dnf/grafana.repo
+    src: files/grafana.repo
     dest: /etc/yum.repos.d/grafana.repo
     owner: root
     group: root

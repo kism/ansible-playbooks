@@ -7,7 +7,7 @@
 
   roles:
     # General Onboards
-    - onboard-packages
+    - onboard-packages-server
     - onboard-user
     - onboard-directories
     - onboard-sshd

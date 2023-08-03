@@ -53,12 +53,15 @@
         update_cache: true
         upgrade: full
 
-    - name: Install a list of packages
+    - name: Install useful apps
       ansible.builtin.apt:
         install_recommends: false
-        pkg: "{{ packages_to_install }}"
+        pkg: "{{ item }}"
         state: present
-
+      ignore_errors: true
+      loop: "{{ packages_to_install }}"
+      tags:
+        - skip_ansible_lint # Happy for this to partly fail, some systems can't get all of these
 
 - name: Check if kdump is installed
   ansible.builtin.stat:

@@ -21,7 +21,7 @@
   block:
     - name: Copy the kgadmins root ca certificate rule Manjaro
       ansible.builtin.copy:
-        src: certs/kglan_root.cer
+        src: files/kglan_root.cer
         dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
         owner: root
         group: root
@@ -32,7 +32,7 @@
   block:
     - name: Copy the kgadmins root ca certificate rule Debian
       ansible.builtin.copy:
-        src: certs/kglan_root.cer
+        src: files/kglan_root.cer
         dest: /usr/local/share/ca-certificates/kglan_root.crt
         owner: root
         group: root

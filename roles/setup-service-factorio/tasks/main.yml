@@ -1,7 +1,6 @@
 ---
 # yamllint disable rule:line-length
 
-
 - name: Copy Factorio service
   ansible.builtin.copy:
     src: systemd/system/factorio.service
@@ -50,8 +49,6 @@
     owner: factorio
     group: factorio
 
-
-
 - name: Reminder
   ansible.builtin.debug:
-    msg: Remember to copy over a save and config, find the paths defined in /etc/systemd/system/factorio.service
+    msg: ⚠️ Remember to copy over a save and config, find the paths defined in /etc/systemd/system/factorio.service ⚠️

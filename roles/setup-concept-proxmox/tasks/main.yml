@@ -1,4 +1,3 @@
-
 - name: Install packages
   ansible.builtin.apt:
     install_recommends: false
@@ -17,12 +16,14 @@
   become: true
   ansible.builtin.shell:
     cmd: "certbot certonly --non-interactive --agree-tos --standalone --register-unsafely-without-email -v -d {{ ansible_host }} --server https://cert.kg.lan/acme/acme/directory"
+  register: certbot_output
+  failed_when:
   tags:
     - skip_ansible_lint
 
 - name: Copy the cert post renewell script
   ansible.builtin.copy:
-    src: scripts_cron/proxmox_renewcerts.sh
+    src: files/proxmox_renewcerts.sh
     dest: /opt/scripts/proxmox_renewcerts.sh
     owner: root
     group: root

@@ -1,9 +1,9 @@
-- name: Setup qBittorrent on a host
-  hosts: qbt
+- name: Setup ifdb influxdb2 host
+  hosts: ifdb
   gather_facts: true
   become: true
   vars:
-    service_account: qbtuser
+    service_account: kism
 
   roles:
     # General Onboards
@@ -17,4 +17,4 @@
     - onboard-ca-trust
 
     # Host Specific
-    - setup-host-qbt
+    - setup-host-influxdb2

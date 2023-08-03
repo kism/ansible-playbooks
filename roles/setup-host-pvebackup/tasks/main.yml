@@ -15,7 +15,7 @@
 
 - name: Copy smb config
   ansible.builtin.copy:
-    src: configs/smb/pvebackup_smb.conf
+    src: files/pvebackup_smb.conf
     dest: /etc/samba/smb.conf
     owner: root
     group: root
@@ -40,5 +40,5 @@
 
 - name: Reminder
   ansible.builtin.debug:
-    msg: Add samba users manually
+    msg: ⚠️ Add samba users manually ⚠️
 # smbpasswd -a kism

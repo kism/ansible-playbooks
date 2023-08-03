@@ -13,7 +13,7 @@
 
 - name: Copy renewcerts cron job
   ansible.builtin.copy:
-    src: scripts_cron/renewcerts.sh
+    src: files/renewcerts.sh
     dest: /opt/scripts/renewcerts.sh
     owner: root
     group: root
@@ -39,7 +39,7 @@
 
 - name: Copy nginx-grafana.conf
   ansible.builtin.copy:
-    src: configs/nginx/nginx-grafana.conf
+    src: files/nginx-grafana.conf
     dest: /etc/nginx/conf.d/nginx-grafana.conf
     owner: root
     group: root
@@ -53,4 +53,3 @@
     - Restart nginx
   tags:
     - skip_ansible_lint
-
