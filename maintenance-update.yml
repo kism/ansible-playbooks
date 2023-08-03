@@ -11,8 +11,8 @@
   roles:
     - maintenance-shutdown
 
-# - name: Restart others
-#   hosts: publiccloudvms, baremetal
-#   become: true
-#   roles:
-#     - maintenance-reboot
+- name: Restart others
+  hosts: publiccloudvms, baremetal
+  become: true
+  roles:
+    - maintenance-reboot
