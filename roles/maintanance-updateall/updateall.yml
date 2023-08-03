@@ -1,11 +1,6 @@
----
-# Update all the servers, init script to make this script work:
-# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/onboard/init.sh | bash
-
-- name: Update all my DNF based linux hosts
-  hosts: dnfbased
-  become: true
-  tasks:
+- name: Update dnf packages
+  when: ansible_pkg_mgr == 'dnf'
+  block:
     - name: Update DNF Cache
       ansible.builtin.dnf:
         update_cache: true
@@ -18,10 +13,9 @@
       tags:
         - skip_ansible_lint
 
-- name: Update all my apt based linux hosts
-  hosts: aptbased
-  become: true
-  tasks:
+- name: Update apt packages
+  when: ansible_pkg_mgr == 'apt'
+  block:
     - name: Update APT database
       ansible.builtin.apt:
         update_cache: true
