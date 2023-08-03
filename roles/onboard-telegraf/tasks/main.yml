@@ -71,13 +71,13 @@
       notify:
         - Restart telegraf
 
-    - name: Copy the telefraf sudoers rule
+    - name: Copy host telegraf config
       ansible.builtin.copy:
-        src: files/sudoers_telegraf
-        dest: /etc/sudoers.d/telegraf
-        owner: root
-        group: root
-        mode: "0640"
+        src: "files/hostconfigs/{{ ansible_facts['hostname'] }}.conf"
+        dest: "/etc/telegraf/telegraf.d/{{ ansible_facts['hostname'] }}.conf"
+        owner: telegraf
+        group: telegraf
+        mode: "600"
       notify:
         - Restart telegraf
 

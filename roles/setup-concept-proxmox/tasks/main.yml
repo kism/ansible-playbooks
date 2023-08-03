@@ -41,3 +41,13 @@
     minute: "0"
     hour: "0,12"
     job: "/usr/bin/certbot renew --quiet --post-hook /opt/scripts/proxmox_renewcerts.sh"
+
+- name: Copy the telefraf sudoers rule proxmox hosts
+  ansible.builtin.copy:
+    src: files/sudoers_telegraf
+    dest: /etc/sudoers.d/telegraf
+    owner: root
+    group: root
+    mode: "0640"
+  notify:
+    - Restart telegraf
