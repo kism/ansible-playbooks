@@ -6,7 +6,7 @@
         update_cache: true
         state: installed
 
-    - name: Upgrade packages
+    - name: Update dnf packages
       ansible.builtin.dnf:
         name: "*"
         state: latest
@@ -20,7 +20,7 @@
       ansible.builtin.apt:
         update_cache: true
 
-    - name: Update APT
+    - name: Update apt packages
       ansible.builtin.apt:
         upgrade: true
         autoremove: true

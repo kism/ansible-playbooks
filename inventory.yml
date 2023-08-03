@@ -1,9 +1,6 @@
 ---
 all:
   hosts:
-    # openwrt:
-    #   ansible_host: openwrt.kg.lan
-    #   timezone: utc
     ent:
       ansible_host: ent.kg.lan
       timezone: awst
@@ -19,9 +16,6 @@ all:
     graf:
       ansible_host: graf.kg.lan
       timezone: awst
-    # qbt:
-    #   ansible_host: qbtnew
-    #   timezone: awst
     cert:
       ansible_host: cert.kg.lan
       timezone: utc
@@ -37,85 +31,30 @@ all:
     test.podc:
       ansible_host: test.podc.kg.lan
       timezone: awst
-    hass:
-      ansible_host: hass.kg.lan
-      timezone: awst
     pvebackup:
       ansible_host: pvebackup.kg.lan
       timezone: awst
-
-    dpshub:
-      ansible_host: localhost
-      ansible_port: 2222
-      timezone: awst
-    # autismsequel:
-    #   ansible_host: autismsequel
+    # dpshub_wsl:
+    #   ansible_host: localhost
+    #   ansible_port: 2222
     #   timezone: awst
-    # autismfactory:
-    #   ansible_host: autismfactory.kg.lan
-    #   timezone: awst
-    manjaro-x230t:
-      ansible_host: manjaro-x230t.kg.lan
-      timezone: awst
-    kpbp:
-      ansible_host: kpbp.kg.lan
-      timezone: awst
-
-# Operating Systems
-oraclelinux:
-  hosts:
-    ifdb:
-    graf:
-    ent:
-    kismnas:
-    autismfactory:
-    autismsequel:
-    rproxy:
-    test.podc:
-    pvebackup:
-
-manjaro:
-  hosts:
-    dpshub:
-    manjaro-x230t:
-    kpbp:
-
-arch:
-  hosts:
-    hass:
-
-debian:
-  hosts:
-    cert:
-    podc:
-
-# ubuntu:
-#   hosts:
-#     qbt:
 
 # Server Type
-vms:
+proxmoxvms:
   hosts:
     ifdb:
     graf:
     ent:
     kismnas:
     rproxy:
+
+publiccloudvms:
+  hosts:
+    podc:
+    test.podc:
 
 baremetal:
   hosts:
     pve:
     pvenas:
     cert:
-    podc:
-    test.podc:
-
-proxmox:
-  hosts:
-    pve:
-    pvenas:
-
-archivepodcast:
-  hosts:
-    podc:
-    test.podc:

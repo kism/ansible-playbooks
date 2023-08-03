@@ -1,0 +1,5 @@
+- name: Print ansible facts
+  hosts: test.podc
+  become: true
+  roles:
+    - maintenance-getfacts
