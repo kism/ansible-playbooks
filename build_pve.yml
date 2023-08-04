@@ -5,6 +5,7 @@
 
   roles:
     # General Onboards, NO onboard-sshd due to breaking clustering
+    - linux-onboard-prepare-package-manager
     - onboard-packages-server
     - onboard-user
     - onboard-directories

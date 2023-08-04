@@ -7,14 +7,15 @@
 
   roles:
     # General Onboards
-    # - onboard-packages-server
-    # - onboard-user
-    # - onboard-directories
-    # - onboard-sshd
-    # - onboard-timezone
-    # - onboard-telegraf
-    # - onboard-firewall
-    # - onboard-ca-trust
+    - linux-onboard-prepare-package-manager
+    - onboard-packages-server
+    - onboard-user
+    - onboard-directories
+    - onboard-sshd
+    - onboard-timezone
+    - onboard-telegraf
+    - onboard-firewall
+    - onboard-ca-trust
 
     # Host Specific
     - setup-host-kismnas

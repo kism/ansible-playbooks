@@ -1,5 +1,6 @@
 - name: Print ansible facts
-  hosts: podc-test
+  hosts: localhost
+  connection: local
   become: true
   roles:
     - maintenance-getfacts

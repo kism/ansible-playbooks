@@ -7,6 +7,7 @@
     # gid: 1089
     shell: /bin/bash
     append: true
+  when: ansible_facts["env"]["SUDO_USER"] != "kism"
 
 - name: Set authorized keys taken from url using lookup
   ansible.posix.authorized_key:

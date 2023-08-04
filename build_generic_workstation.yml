@@ -1,0 +1,19 @@
+- name: Setup a Linux workstation
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  become: true
+  vars:
+    service_account: kism
+
+  roles:
+    # General Onboards
+    - linux-onboard-prepare-package-manager
+    - linux-onboard-workstation-packages
+    - linux-onboard-user
+    - linux-onboard-directories
+    - linux-onboard-timezone
+    - linux-onboard-ca-trust
+
+    # # Host Specific
+    # - setup-host-ent

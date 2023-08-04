@@ -5,6 +5,7 @@
 
   roles:
     # General Onboards
+    - linux-onboard-prepare-package-manager
     - onboard-packages-server
     - onboard-user
     - onboard-directories

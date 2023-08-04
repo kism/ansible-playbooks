@@ -6,15 +6,16 @@
     service_account: kism
 
   roles:
-    # # General Onboards
-    # - onboard-packages-server
-    # - onboard-user
-    # - onboard-directories
-    # - onboard-sshd
-    # - onboard-timezone
+    # General Onboards
+    - linux-onboard-prepare-package-manager
+    - onboard-packages-server
+    - onboard-user
+    - onboard-directories
+    - onboard-sshd
+    - onboard-timezone
     - onboard-telegraf
-    # - onboard-firewall
-    # - onboard-ca-trust
+    - onboard-firewall
+    - onboard-ca-trust
 
-    # # Host Specific
-    # - setup-host-ent
+    # Host Specific
+    - setup-host-ent

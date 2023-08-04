@@ -41,7 +41,7 @@ packages_pacman:
   - ncdu
   - vim
   - neovim
-  - openssh-server
+  - openssh
 
 packages_brew:
   - coreutils

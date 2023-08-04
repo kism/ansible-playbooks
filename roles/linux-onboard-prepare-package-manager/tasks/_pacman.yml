@@ -1,13 +1,21 @@
-- name: Fix pacman part 1
-  ansible.builtin.shell: "pacman-key --init"
+- name: Pacman fix block
+  block:
+    - name: Fix pacman part 1
+      ansible.builtin.shell: "pacman-key --init"
 
-- name: Fix pacman part 2
-  ansible.builtin.shell: "pacman-key --populate"
+    - name: Fix pacman part 2
+      ansible.builtin.shell: "pacman-key --populate"
 
-- name: Fix pacman part 3
-  ansible.builtin.shell: "pacman-key --refresh-keys"
+    - name: Install packages for pacman
+      community.general.pacman:
+        name: "archlinux-keyring"
+        state: present
 
-- name: Install packages for pacman
-  community.general.pacman:
-    name: "archlinux-keyring"
-    state: present
+  rescue:
+    - name: Fix pacman part 3
+      ansible.builtin.shell: "pacman-key --refresh-keys"
+
+    - name: Install packages for pacman
+      community.general.pacman:
+        name: "archlinux-keyring"
+        state: present
