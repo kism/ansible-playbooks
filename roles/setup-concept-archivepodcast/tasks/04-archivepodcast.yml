@@ -15,6 +15,10 @@
   become_user: root
   when: ansible_pkg_mgr == 'dnf'
 
+- name: Install pipenv python package
+  ansible.builtin.pip:
+    name: pipenv
+
 - name: Create archivepodcast directory
   become: true
   become_user: root
@@ -52,15 +56,6 @@
   tags:
     - skip_ansible_lint
 
-- name: Copy archivepodcast config
-  ansible.builtin.copy:
-    src: configs/archivepodcast/settings.json
-    dest: /opt/archivepodcast/settings.json
-    mode: "600"
-  notify: Reload archivepodcast
-  become: true
-  become_user: podcasto
-
 - name: Create venv
   ansible.builtin.shell:
     cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
@@ -70,11 +65,10 @@
   become: true
   become_user: podcasto
 
-- name: Install flask into the specified (virtualenv), inheriting globally installed modules
-  ansible.builtin.pip:
-    requirements: /opt/archivepodcast/requirements.txt
-    virtualenv: /opt/archivepodcast/env
-    virtualenv_site_packages: true
+- name: Install flask into the specified (Pipenv), inheriting globally installed modules
+  ansible.builtin.shell:
+    cmd: "/usr/local/bin/pipenv install"
+    chdir: "/opt/archivepodcast"
   notify: Restart archivepodcast
   become: true
   become_user: podcasto
@@ -95,7 +89,7 @@
   become: true
   become_user: root
   ansible.builtin.copy:
-    src: systemd/system/archivepodcast.service
+    src: files/archivepodcast.service
     dest: /etc/systemd/system/archivepodcast.service
     owner: root
     group: root
@@ -116,10 +110,9 @@
   become: true
   become_user: root
   ansible.builtin.copy:
-    src: configs/logrotate/archivepodcast
+    src: files/archivepodcast_logrotate
     dest: /etc/logrotate.d/archivepodcast
     owner: root
     group: root
     mode: "0644"
   notify: Restart logrotate
-

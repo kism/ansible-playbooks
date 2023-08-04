@@ -4,6 +4,15 @@
       - certbot
       - python3-certbot-nginx
     state: present
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Install nginx dnf
+  ansible.builtin.dnf:
+    name:
+      - certbot
+      - python3-certbot-nginx
+    state: present
+  when: ansible_pkg_mgr == 'dnf'
 
 - name: Initial certbot config
   become: true

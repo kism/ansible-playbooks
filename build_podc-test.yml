@@ -1,0 +1,18 @@
+- name: Setup archivepodcast on podc-test
+  hosts: podc-test
+  gather_facts: true
+  become: true
+
+  roles:
+    # General Onboards, No Telegraf
+    - onboard-packages-server
+    # - onboard-user
+    # - onboard-directories
+    # - onboard-sshd
+    # - onboard-timezone
+    # - onboard-firewall
+    # - onboard-ca-trust
+
+    # Host Specific
+    # - setup-concept-archivepodcast
+    # - { role: ../archivepodcastsecrets/roles/setup-concept-archivepodcast-secrets }

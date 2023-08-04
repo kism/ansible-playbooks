@@ -4,13 +4,13 @@
     name: httpd_can_network_connect
     state: true
     persistent: true
-  ignore_errors: true
+  when: ansible_selinux.status == 'enabled'
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /
   tags:
     - skip_ansible_lint
-  ignore_errors: true
+  when: ansible_selinux.status == 'enabled'
 
 - name: Install nginx dnf
   ansible.builtin.dnf:
@@ -32,7 +32,6 @@
       - nginx
     state: present
   when: ansible_pkg_mgr == 'apt'
-
 
 - name: Copy nginx conf
   ansible.builtin.copy:

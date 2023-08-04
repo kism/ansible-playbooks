@@ -28,7 +28,7 @@ all:
     podc:
       ansible_host: podc.kg.lan
       timezone: awst
-    test.podc:
+    podc-test:
       ansible_host: test.podc.kg.lan
       timezone: awst
     pvebackup:
@@ -51,7 +51,7 @@ proxmoxvms:
 publiccloudvms:
   hosts:
     podc:
-    test.podc:
+    podc-test:
 
 baremetal:
   hosts:

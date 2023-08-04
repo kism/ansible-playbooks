@@ -1,4 +1,5 @@
 
 *.asc
 secrets.yml
+secrets*.yml
 roles/setup-concept-archivepodcast/files/archivepodcast_settings.json
