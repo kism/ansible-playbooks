@@ -73,6 +73,15 @@
   become: true
   become_user: podcasto
 
+- name: Copy archivepodcast config
+  ansible.builtin.copy:
+    src: "files/{{ ansible_facts['hostname'] }}.json"
+    dest: /opt/archivepodcast/settings.json
+    mode: "600"
+  notify: Reload archivepodcast
+  become: true
+  become_user: podcasto
+
 - name: Create archivepodcast log file
   become: true
   become_user: root
