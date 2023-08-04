@@ -1,0 +1,9 @@
+- name: Install useful apps
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  ignore_errors: true
+  loop: "{{ packages_dnf }}"
+  tags:
+    - skip_ansible_lint # Happy for this to partly fail, some systems can't get all of these
+

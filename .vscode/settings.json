@@ -11,5 +11,5 @@
 	// Needed for ansible-lint to trigger for roles
 	"files.associations": {
         "*.yml": "ansible"
-    }  
+    }
 }

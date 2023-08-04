@@ -10,6 +10,13 @@
 * make username kism a variable
 * make telegraf config work with ansible_hostname
 
+Install collections
+
+```bash
+ansible-galaxy collection install community.general
+```
+
+
 Running on macos
 `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
 
