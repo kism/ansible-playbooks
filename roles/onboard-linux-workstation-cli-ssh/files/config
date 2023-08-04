@@ -1,0 +1,14 @@
+Host openwrt
+    User root
+
+Host kierangee.au
+    ForwardAgent yes
+
+Host kism.duckdns.org
+    ForwardAgent yes
+    
+Host ent
+    ForwardAgent yes
+
+Host ent.kg.lan
+    ForwardAgent yes
