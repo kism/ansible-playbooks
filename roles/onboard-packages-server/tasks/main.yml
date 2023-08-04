@@ -24,7 +24,6 @@
       when: ansible_distribution == "OracleLinux" and ansible_distribution_major_version == "9"
       register: epel
 
-
     - name: Update DNF Cache w/epel enabled
       ansible.builtin.dnf:
         update_cache: true
