@@ -16,15 +16,15 @@
   roles:
     # General Onboards
     - linux-onboard-prepare-package-manager
-    - onboard-packages-server
-    - onboard-user
-    - onboard-directories
-    - onboard-sshd
+    - linux-onboard-packages-server
+    - linux-onboard-user
+    - linux-onboard-directories
+    - linux-onboard-server-sshd
     - onboard-timezone
     # No telegraf for test
     - onboard-firewall
     - onboard-ca-trust
 
     # Host Specific
-    - setup-concept-archivepodcast
-    - { role: ../archivepodcastsecrets/roles/setup-concept-archivepodcast-secrets }
+    - linux-setup-concept-archivepodcast
+    - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }

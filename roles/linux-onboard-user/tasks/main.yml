@@ -1,10 +1,13 @@
+- name: Set root password
+  ansible.builtin.user:
+    name: root
+    password: "{{ secret_root_password_hash }}"
+
 - name: Add the user 'kism' with a bash shell
   ansible.builtin.user:
     name: kism
-    password: "{{ secret_password_hash }}"
-
+    password: "{{ secret_kism_password_hash }}"
     uid: 1089
-    # gid: 1089
     shell: /bin/bash
     append: true
   when: ansible_facts["env"]["SUDO_USER"] != "kism"

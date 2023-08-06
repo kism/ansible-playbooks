@@ -6,4 +6,3 @@
   loop: "{{ packages_dnf }}"
   tags:
     - skip_ansible_lint # Happy for this to partly fail, some systems can't get all of these
-

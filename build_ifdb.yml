@@ -8,14 +8,14 @@
   roles:
     # General Onboards
     - linux-onboard-prepare-package-manager
-    - onboard-packages-server
-    - onboard-user
-    - onboard-directories
-    - onboard-sshd
+    - linux-onboard-packages-server
+    - linux-onboard-user
+    - linux-onboard-directories
+    - linux-onboard-server-sshd
     - onboard-timezone
     - onboard-telegraf
     - onboard-firewall
     - onboard-ca-trust
 
     # Host Specific
-    - setup-host-influxdb2
+    - linux-setup-host-influxdb2

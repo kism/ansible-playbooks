@@ -4,16 +4,17 @@
   become: true
 
   roles:
-    # General Onboards, NO onboard-sshd due to breaking clustering
+    # General Onboards,
     - linux-onboard-prepare-package-manager
-    - onboard-packages-server
-    - onboard-user
-    - onboard-directories
+    - linux-onboard-packages-server
+    - linux-onboard-user
+    - linux-onboard-directories
+    # NO onboard-sshd due to breaking clustering
     - onboard-timezone
     - onboard-telegraf
     - onboard-firewall
     - onboard-ca-trust
 
     # Host Specific
-    - setup-concept-proxmox
-    - setup-host-pve
+    - linux-setup-concept-proxmox
+    - linux-setup-host-pve

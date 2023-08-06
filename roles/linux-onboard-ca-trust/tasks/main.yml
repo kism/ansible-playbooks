@@ -9,4 +9,3 @@
 - name: Install packages Pacman
   ansible.builtin.include_tasks: _pacman.yml
   when: ansible_pkg_mgr == 'pacman'
-

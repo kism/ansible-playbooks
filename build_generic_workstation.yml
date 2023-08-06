@@ -4,16 +4,24 @@
   gather_facts: true
   become: true
   vars:
+    timezone: awst
     service_account: kism
 
   roles:
     # General Onboards
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-workstation-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-timezone
-    - linux-onboard-ca-trust
+    # - linux-onboard-prepare-package-manager
+    # - linux-onboard-workstation-packages
+    # - linux-onboard-user
+    # - linux-onboard-directories
+    # - linux-onboard-timezone
+    # - linux-onboard-ca-trust
 
-    # # Host Specific
-    # - setup-host-ent
+    # workstation specific
+    - linux-onboard-workstation-cli-bash
+    - linux-onboard-workstation-cli-htop
+    - linux-onboard-workstation-cli-nvim
+    - linux-onboard-workstation-cli-ssh
+    - linux-onboard-workstation-cli-tmux
+    - linux-onboard-workstation-cli-vim
+    - linux-onboard-workstation-gui-i3
+    - linux-onboard-workstation-packages
