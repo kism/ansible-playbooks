@@ -34,10 +34,6 @@ all:
     pvebackup:
       ansible_host: pvebackup.kg.lan
       timezone: awst
-    # dpshub_wsl:
-    #   ansible_host: localhost
-    #   ansible_port: 2222
-    #   timezone: awst
 
 # Server Type
 proxmoxvms:
