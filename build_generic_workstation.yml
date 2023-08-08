@@ -9,12 +9,12 @@
 
   roles:
     # General Onboards
-    # - linux-onboard-prepare-package-manager
-    # - linux-onboard-workstation-packages
-    # - linux-onboard-user
-    # - linux-onboard-directories
-    # - linux-onboard-timezone
-    # - linux-onboard-ca-trust
+    - linux-onboard-prepare-package-manager
+    - linux-onboard-workstation-packages
+    - linux-onboard-user
+    - linux-onboard-directories
+    - linux-onboard-timezone
+    - linux-onboard-ca-trust
 
     # workstation specific
     - linux-onboard-workstation-cli-bash
