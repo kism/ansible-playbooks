@@ -1,4 +1,4 @@
-- name: Print ansible facts
+- name: Update all packages with maintenance-updateall role
   hosts: proxmoxvms, publiccloudvms, baremetal
   gather_facts: true
   become: true
