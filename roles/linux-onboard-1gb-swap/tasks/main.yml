@@ -1,6 +1,6 @@
 - name: fallocate
   become: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "fallocate -l 1G /swapfile"
   register: command_output
   ignore_errors: true
@@ -9,7 +9,7 @@
 
 - name: dd
   become: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "if=/dev/zero of=/swapfile bs=1024 count=1048576"
   register: command_output
   tags:
@@ -23,7 +23,7 @@
 
 - name: mkswap
   become: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "mkswap /swapfile"
   ignore_errors: true
   register: command_output
@@ -32,7 +32,7 @@
 
 - name: swapon
   become: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "swapon /swapfile"
   ignore_errors: true
   register: command_output

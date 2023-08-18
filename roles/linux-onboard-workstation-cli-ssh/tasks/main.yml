@@ -1,0 +1,7 @@
+- name: Copy htop
+  become_user: "{{ service_account }}"
+  ansible.builtin.copy:
+    src: "files/config"
+    dest: "~/.ssh/config"
+    owner: "{{ service_account }}"
+    mode: "0644"

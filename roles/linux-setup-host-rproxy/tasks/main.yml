@@ -58,7 +58,7 @@
 
 # I hate these two
 - name: Remove file (delete file)
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "rm {{ item }}/*"
   ignore_errors: true
   tags:
@@ -136,7 +136,7 @@
 
 - name: Initial certbot config
   become: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "certbot --agree-tos --email={{ secret_email }} -v -n --nginx --expand -d kierangee.au -d influxdb2.kierangee.au -d grafana.kierangee.au"
   register: command_output
   tags:

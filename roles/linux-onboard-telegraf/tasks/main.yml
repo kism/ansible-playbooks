@@ -2,7 +2,7 @@
   when: ansible_pkg_mgr == 'dnf'
   block:
     - name: Remove old telegraf key
-      ansible.builtin.shell:
+      ansible.builtin.command:
         cmd: "rpm --erase gpg-pubkey-2582e0c5-56099b04"
       ignore_errors: true
       tags:

@@ -1,10 +1,12 @@
 - name: Pacman fix block
   block:
     - name: Fix pacman part 1
-      ansible.builtin.shell: "pacman-key --init"
+      ansible.builtin.command: "pacman-key --init"
+      changed_when: true
 
     - name: Fix pacman part 2
-      ansible.builtin.shell: "pacman-key --populate"
+      ansible.builtin.command: "pacman-key --populate"
+      changed_when: true
 
     - name: Install packages for pacman
       community.general.pacman:
@@ -13,7 +15,8 @@
 
   rescue:
     - name: Fix pacman part 3
-      ansible.builtin.shell: "pacman-key --refresh-keys"
+      ansible.builtin.command: "pacman-key --refresh-keys"
+      changed_when: true
 
     - name: Install packages for pacman
       community.general.pacman:

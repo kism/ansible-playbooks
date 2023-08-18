@@ -33,7 +33,17 @@
     job: "/bin/bash /opt/scripts/renewcerts.sh"
 
 - name: Grab a new cert
-  ansible.builtin.shell: "REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer certbot certonly --agree-tos --email=kg@localhost -v -n --nginx -d graf.kg.lan --server https://cert.kg.lan/acme/acme/directory"
+  ansible.builtin.command:
+    cmd: |
+      "REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer \
+      certbot certonly \
+      --agree-tos \
+      --email=kg@localhost \
+      -v \
+      -n \
+      --nginx \
+      -d graf.kg.lan \
+      --server https://cert.kg.lan/acme/acme/directory"
   tags:
     - skip_ansible_lint
 
@@ -48,7 +58,7 @@
     - Restart nginx
 
 - name: Kill nginx (I hate this, I think its something to do with certbot)
-  ansible.builtin.shell: "killall nginx"
+  ansible.builtin.command: "killall nginx"
   notify:
     - Restart nginx
   tags:

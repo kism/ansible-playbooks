@@ -7,7 +7,7 @@
     mode: "0444"
 
 - name: Update CA Certs Debian
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "update-ca-certificates"
   tags:
     - skip_ansible_lint

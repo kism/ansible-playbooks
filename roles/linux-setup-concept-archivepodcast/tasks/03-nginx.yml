@@ -52,7 +52,7 @@
 
 # I hate these two
 - name: Remove file (delete file)
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "rm {{ item }}*"
   ignore_errors: true
   tags:

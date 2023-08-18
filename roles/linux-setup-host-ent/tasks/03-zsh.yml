@@ -33,7 +33,7 @@
 - name: Setup zsh
   become: true
   become_user: kism
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
   register: command_output
   tags:

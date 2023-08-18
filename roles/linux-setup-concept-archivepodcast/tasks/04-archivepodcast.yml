@@ -51,13 +51,13 @@
 - name: git config archivepodcast
   become: true
   become_user: podcasto
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "git config --global --add safe.directory /opt/archivepodcast"
   tags:
     - skip_ansible_lint
 
 - name: Create venv
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
   register: command_output
   tags:
@@ -66,7 +66,7 @@
   become_user: podcasto
 
 - name: Install flask into the specified (Pipenv), inheriting globally installed modules
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "/usr/local/bin/pipenv install"
     chdir: "/opt/archivepodcast"
   notify: Restart archivepodcast

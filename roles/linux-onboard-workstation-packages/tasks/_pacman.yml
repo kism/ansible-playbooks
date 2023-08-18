@@ -1,4 +1,5 @@
 - name: Install packages for pacman
   community.general.pacman:
     name: "{{ packages_pacman }}"
-    state: present
+    state: latest
+    update_cache: true

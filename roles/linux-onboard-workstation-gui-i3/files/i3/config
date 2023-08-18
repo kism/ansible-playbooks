@@ -9,13 +9,13 @@ set $mod Mod4
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 
 # Easiest
-font pango:DejaVu Sans Mono 11 
+font pango:DejaVu Sans Mono 11
 
 # Generally I decide against nerdfont setups
-#font pango:Hasklug Nerd Font Mono Regular 12 
+#font pango:Hasklug Nerd Font Mono Regular 12
 
 # If you are low dpi install this and use it
-#font pango:dina 14 
+#font pango:dina 14
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -155,7 +155,7 @@ exec --no-startup-id pamac-tray           # Manjaro/Arch Package manager gui
 exec --no-startup-id blueman-applet       # Bluetooth Manager
 
 # allows for sudo in programs that are running as user process
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) & 
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &
 #exec --no-startup-id xinput -set-prop 'HAILUCK CO.,LTD USB KEYBOARD Touchpad' 'libinput Accel Speed' 0.7 # i'm pretty sure this is fixed in that one xorg file, even in the manjaro defaults
 
 
@@ -183,4 +183,3 @@ for_window [class="steam"]                floating enable
 for_window [class="vlc"]                  floating enable
 for_window [class="pavucontrol"]          floating enable
 for_window [class="nm-connection-editor"] floating enable
-

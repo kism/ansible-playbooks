@@ -8,7 +8,7 @@
 
 - name: Update CA Certs Oracle Linux
   become: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "update-ca-trust"
   tags:
     - skip_ansible_lint

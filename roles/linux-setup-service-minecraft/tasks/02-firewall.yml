@@ -6,4 +6,3 @@
     state: enabled
   notify:
     - Restart firewalld
-

@@ -62,7 +62,7 @@
 
 - name: Setup zsh
   become: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
   register: command_output
   tags:

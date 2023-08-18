@@ -9,7 +9,7 @@
     mode: "0755"
 
 - name: Fix git lmao
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "git config --global --add safe.directory /opt/geostat"
   tags:
     - skip_ansible_lint
@@ -22,6 +22,8 @@
     force: true
     refspec: "refs/heads/feature/filetypefilter"
   notify: Restart geostat
+  tags:
+    - skip_ansible_lint # God damn I mmade this fork specifically for this
 
 - name: Copy geostat config
   ansible.builtin.copy:
@@ -63,21 +65,21 @@
     - Restart geostat
 
 - name: move mmdb to correct location
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
   # when: not geostat_age or not register_geostat
   tags:
     - skip_ansible_lint
 
 - name: remove geostat folder
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
   # when: geostat_age or not register_geostat
   tags:
     - skip_ansible_lint
 
 - name: Create venv
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "cd /opt/geostat/ ; python3 -m venv env"
   register: command_output
   changed_when: false
