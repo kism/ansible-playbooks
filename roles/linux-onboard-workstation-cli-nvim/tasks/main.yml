@@ -1,3 +1,10 @@
+- name: Create folder structure
+  become_user: "{{ service_account }}"
+  ansible.builtin.file:
+    path: ~/.local/share/nvim/site/autoload/
+    state: directory
+    mode: "0700"
+
 - name: Copy nvim settings
   ansible.builtin.copy:
     src: "{{ item }}"
