@@ -1,0 +1,21 @@
+- name: Download Antigen
+  become: true
+  become_user: "{{ service_account }}"
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh
+    dest: ~/.antigen/antigen.zsh
+    mode: "0600"
+
+- name: Copy zsh config
+  become: true
+  become_user: "{{ service_account }}"
+  ansibe.builtin.copy:
+    src: files/.zshrc
+    dest: ~/.zshrc
+
+- name: Configure zsh
+  become: true
+  become_user: "{{ service_account }}"
+  ansible.builtin.command:
+    cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
+  changed_when: true

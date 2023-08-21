@@ -8,7 +8,7 @@
     - files/.config
     - files/.local
   become: true
-  become_user: { { service_account } }
+  become_user: "{{ service_account }}"
 
 - name: Download and setup plug
   ansible.builtin.get_url:
@@ -16,11 +16,11 @@
     dest: ~/.local/share/nvim/site/autoload/plug.vim
     mode: "0600"
   become: true
-  become_user: { { service_account } }
+  become_user: "{{ service_account }}"
 
 - name: Install plug plugins
   ansible.builtin.command:
     cmd: "nvim --headless +PlugInstall +qa"
   changed_when: true
   become: true
-  become_user: { { service_account } }
+  become_user: "{{ service_account }}"

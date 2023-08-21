@@ -6,17 +6,19 @@
   vars:
     timezone: awst
     service_account: kism
+    service_account_email: kieran.lost.the.game@gmail.com
+    service_account_name: "Kieran Gee"
 
   roles:
     # General Onboards
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-workstation-packages
-    - linux-onboard-user
+    # - linux-onboard-prepare-package-manager
+    # - linux-onboard-workstation-packages
     - linux-onboard-directories
     - linux-onboard-timezone
     - linux-onboard-ca-trust
 
     # workstation specific
+    # - linux-onboard-workstation-packages
     - linux-onboard-workstation-cli-bash
     - linux-onboard-workstation-cli-htop
     - linux-onboard-workstation-cli-nvim
@@ -24,4 +26,3 @@
     - linux-onboard-workstation-cli-tmux
     - linux-onboard-workstation-cli-vim
     - linux-onboard-workstation-gui-i3
-    - linux-onboard-workstation-packages
