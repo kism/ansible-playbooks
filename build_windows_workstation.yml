@@ -1,8 +1,10 @@
 - name: Setup a Windows workstation
-  hosts: localhost
-  connection: local
+  hosts: dpshub
+  connection: winrm
   gather_facts: true
-  become: true
   vars:
     timezone: awst
     service_account: kism
+  roles:
+    - windows-onboard-workstation-settings
+    - windows-onboard-workstation-posh
