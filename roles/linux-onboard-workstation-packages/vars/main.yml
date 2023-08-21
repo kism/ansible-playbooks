@@ -1,72 +1,75 @@
 packages_apt:
-  - zsh
+  - curl
   - git
   - htop
-  - tmux
-  - curl
-  - wget
-  - neofetch
   - keychain
-  - tree
   - ncdu
-  - vim
+  - neofetch
   - neovim
   - openssh-server
+  - tmux
+  - tree
+  - vim
+  - wget
+  - zsh
 
 packages_dnf:
-  - zsh
+  - curl
+  - figlet
   - git
   - htop
-  - tmux
-  - curl
-  - wget
-  - neofetch
   - keychain
-  - tree
   - ncdu
-  - vim
+  - neofetch
   - neovim
+  - nload
   - openssh-server
+  - tmux
+  - toilet
+  - tree
+  - vim
+  - wget
+  - zsh
 
 packages_pacman:
-  - zsh
+  - curl
   - git
   - htop
-  - tmux
-  - curl
-  - wget
-  - neofetch
   - keychain
-  - tree
   - ncdu
-  - vim
+  - neofetch
   - neovim
   - openssh
+  - tmux
+  - tree
+  - vim
+  - wget
+  - zsh
 
 packages_brew:
   - coreutils
-  - zsh
+  - curl
   - git
   - htop
-  - tmux
-  - curl
-  - wget
-  - neofetch
   - keychain
-  - tree
   - ncdu
-  - vim
+  - neofetch
   - neovim
+  - tmux
+  - tree
+  - vim
+  - wget
+  - zsh
 
 packages_pkg:
-  - zsh
+  - curl
   - git
   - htop
-  - tmux
-  - curl
-  - wget
-  - neofetch
   - keychain
-  - tree
   - ncdu
+  - neofetch
+  - tmux
+  - tree
   - vim-console
+  - wget
+  - zsh

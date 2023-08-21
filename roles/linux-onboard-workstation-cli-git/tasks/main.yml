@@ -1,6 +1,6 @@
 - name: Set url settings
   become_user: "{{ service_account }}"
-  ansible.builtin.cmd:
+  ansible.builtin.command:
     cmd: 'git config --global url."git@github.com:".insteadOf "https://github.com/"'
 
 - name: Add a setting to ~/.gitconfig

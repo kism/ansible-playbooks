@@ -9,7 +9,7 @@
 - name: Copy zsh config
   become: true
   become_user: "{{ service_account }}"
-  ansibe.builtin.copy:
+  ansible.builtin.copy:
     src: files/.zshrc
     dest: ~/.zshrc
 
