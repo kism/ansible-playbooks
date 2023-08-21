@@ -1,8 +1,9 @@
 - name: Create folder structure
-  become_user: "{{ service_account}}"
+  become_user: "{{ service_account }}"
   ansible.builtin.file:
     path: ~/.config/htop
     state: directory
+    mode: "0700"
 
 - name: Copy htop
   become_user: "{{ service_account }}"
