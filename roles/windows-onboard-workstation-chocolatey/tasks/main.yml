@@ -1,0 +1,21 @@
+# - name: Install Oh My Chocolatey
+#   become: true
+#   become_user: "{{ service_account }}"
+#   become_method: runas
+#   ansible.windows.win_powershell:
+#     script: "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+
+- name: Ensure Chocolatey itself is installed, using community repo for the bootstrap
+  chocolatey.chocolatey.win_chocolatey:
+    name: chocolatey
+
+- name: Install chocolatey packages
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ chocolatey_package_list }}"
+
+# - name: Install chocolatey packages
+#   chocolatey.chocolatey.win_chocolatey:
+#     name: "{{ chocolatey_package_list }}"
+#     state: latest

@@ -1,0 +1,19 @@
+- name: Create directory structure
+  ansible.windows.win_file:
+    path: "C:\\Users\\{{ service_account }}\\Documents\\WindowsPowerShell"
+    state: directory
+
+- name: Copy powershell profile
+  ansible.windows.win_copy:
+    src: files/Microsoft.PowerShell_profile.ps1
+    dest: "C:\\Users\\{{ service_account }}\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1"
+
+- name: Create directory structure
+  ansible.windows.win_file:
+    path: "C:\\Users\\{{ service_account }}\\AppData\\Local\\Programs\\oh-my-posh\\themes"
+    state: directory
+
+- name: Create directory structure
+  ansible.windows.win_copy:
+    src: files/ys2.omp.json
+    dest: "C:\\Users\\{{ service_account }}\\AppData\\Local\\Programs\\oh-my-posh\\themes\\ys2.omp.json"

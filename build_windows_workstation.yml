@@ -1,10 +1,14 @@
 - name: Setup a Windows workstation
   hosts: dpshub
-  connection: winrm
   gather_facts: true
+  become: true
+  become_user: kism
+  become_method: runas
   vars:
     timezone: awst
     service_account: kism
+
   roles:
     - windows-onboard-workstation-settings
+    # - windows-onboard-workstation-chocolatey
     - windows-onboard-workstation-posh

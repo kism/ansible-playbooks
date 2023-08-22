@@ -37,6 +37,10 @@ all:
     dpshub:
       ansible_host: dpshub.kg.lan
       timezone: awst
+      ansible_connection: ssh
+      ansible_shell_type: cmd
+      ansible_python_interpreter: "C:\\Python311\\python.exe"
+
 # Server Type
 proxmoxvms:
   hosts:

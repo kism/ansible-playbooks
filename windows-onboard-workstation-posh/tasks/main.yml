@@ -1,5 +1,0 @@
-- name: Install Oh My Posh
-  ansible.builtin.command:
-    cmd: "Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://ohmyposh.dev/install.ps1'))"
-
-

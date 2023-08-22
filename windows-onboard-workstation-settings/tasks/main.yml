@@ -1,3 +1,0 @@
-- name: Install Oh My Posh
-  ansible.builtin.command:
-    cmd: "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"
