@@ -4,17 +4,20 @@
     dest: "C:\\Users\\{{ service_account }}\\.ssh\\authorized_keys"
 
 - name: Set execution policy
+  become: true
   ansible.windows.win_powershell:
     script: "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"
 
 - name: Run onboarding
   become: true
   become_method: runas
-  ansible.windows.win_shell: "{{ lookup('file', 'files/Windows_10_Settings.ps1') }}"
+  ansible.windows.win_powershell:
+    script: "{{ lookup('file', 'files/Windows_10_Settings.ps1') }}"
   when: "'Windows 10' in ansible_facts['os_name']"
 
 - name: Run onboarding
   become: true
   become_method: runas
-  ansible.windows.win_shell: "{{ lookup('file', 'files/Windows_11_Settings.ps1') }}"
+  ansible.windows.win_powershell:
+    script: "{{ lookup('file', 'files/Windows_11_Settings.ps1') }}"
   when: "'Windows 11' in ansible_facts['os_name']"
