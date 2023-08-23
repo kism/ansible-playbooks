@@ -61,5 +61,6 @@ chocolatey_package_list:
   - fira
   - firacode
   - hasklig
+  - nerd-fonts-hasklig
   - inconsolata
   - sourcecodepro
