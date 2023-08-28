@@ -8,14 +8,15 @@
   roles:
     # General Onboards
     - linux-onboard-prepare-package-manager
-    - linux-onboard-packages-server
+    - linux-onboard-server-packages
     - linux-onboard-user
     - linux-onboard-directories
     - linux-onboard-server-sshd
-    - onboard-timezone
-    - onboard-telegraf
-    - onboard-firewall
-    - onboard-ca-trust
+    - linux-onboard-fail2ban
+    - linux-onboard-timezone
+    - linux-onboard-telegraf
+    - linux-onboard-firewall
+    - linux-onboard-ca-trust
 
     # Host Specific
     - linux-setup-host-qbt

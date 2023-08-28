@@ -17,14 +17,14 @@ Running on macos
 `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
 
 Run
-`ansible-playbook build_ent.yml -i inventory.yml --user ansible_svc -e @secrets.yml` --vault-password-file=/tmp/ansiblevaultpassword
+`ansible-playbook build_ent.yml -i inventory.yml --user ansible_svc -e @../archivepodcastsecrets/secrets.yml --vault-password-file=/tmp/ansiblevaultpassword`
 
-`ansible-playbook build_podc-test.yml -i inventory.yml --user ansible_svc -e @secrets.yml -e @secrets_podc-test.yml` --vault-password-file=/tmp/ansiblevaultpassword
+`ansible-playbook build_podc-test.yml -i inventory.yml --user ansible_svc -e @../archivepodcastsecrets/secrets.yml -e @../archivepodcastsecrets/secrets_podc-test.yml --vault-password-file=/tmp/ansiblevaultpassword`
 
 ## Vault
 
 ```bash
-echo "<password>" > /tmp/ansiblevaultpassword
+echo password > /tmp/ansiblevaultpassword
 ansible-vault encrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ```

@@ -8,10 +8,10 @@
     group: root
     mode: "0644"
 
-# - name: Import Grafana GPG key
-#   ansible.builtin.rpm_key:
-#     state: present
-#     key: https://rpm.grafana.com/gpg.key
+- name: Import Grafana GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpm.grafana.com/gpg.key
 
 - name: Install Grafana
   ansible.builtin.dnf:
