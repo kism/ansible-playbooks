@@ -73,8 +73,8 @@
 
     - name: Copy host telegraf config
       ansible.builtin.copy:
-        src: "files/hostconfigs/{{ ansible_facts['hostname'] }}.conf"
-        dest: "/etc/telegraf/telegraf.d/{{ ansible_facts['hostname'] }}.conf"
+        src: "files/hostconfigs/{{ inventory_hostname  }}.conf"
+        dest: "/etc/telegraf/telegraf.d/{{ inventory_hostname  }}.conf"
         owner: telegraf
         group: telegraf
         mode: "600"

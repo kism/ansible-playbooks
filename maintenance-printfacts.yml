@@ -1,9 +1,5 @@
 - name: Print ansible facts
-  hosts: dpshub
-  connection: ssh
-  become: true
-  become_user: kism
-  become_method: runas
+  hosts: all
   roles:
     - maintenance-getfacts
   tasks:

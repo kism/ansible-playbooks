@@ -1,11 +1,11 @@
 - name: Copy filters
   ansible.builtin.copy:
-    src: files/filter/*
+    src: files/filter/
     dest: /etc/fail2ban/filter.d/
 
 - name: Copy jail
   ansible.builtin.copy:
-    src: files/jail/*
+    src: files/jail/
     dest: /etc/fail2ban/jail.d/
 
 - name: Enable fail2ban service
