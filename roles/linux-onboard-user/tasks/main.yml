@@ -100,7 +100,7 @@
 - name: Ensure that bash is setup correctly for kism
   become: true
   become_user: kism
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
   register: command_output
   changed_when: command_output.rc == 0
@@ -110,7 +110,7 @@
 - name: Ensure that bash is setup correctly for root
   become: true
   become_user: root
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
   register: command_output
   changed_when: command_output.rc == 0
