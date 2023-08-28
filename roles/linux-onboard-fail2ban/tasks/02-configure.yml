@@ -2,11 +2,13 @@
   ansible.builtin.copy:
     src: files/filter/
     dest: /etc/fail2ban/filter.d/
+  notify: Restart fail2ban
 
 - name: Copy jail
   ansible.builtin.copy:
     src: files/jail/
     dest: /etc/fail2ban/jail.d/
+  notify: Restart fail2ban
 
 - name: Enable fail2ban service
   ansible.builtin.systemd:
