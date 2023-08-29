@@ -27,6 +27,7 @@ usermod -p '*' $account
 chage -I -1 -m 0 -M 99999 -E -1 $account
 mkdir -p /home/$account/.ssh
 echo "%$group ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/$group
+chmod 440 /etc/sudoers.d/$group
 echo -e $publickeys > /home/$account/.ssh/authorized_keys
 chown -R $account:$account /home/$account
 chmod 700 /home/$account/.ssh
