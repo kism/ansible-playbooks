@@ -65,21 +65,21 @@
     - Restart geostat
 
 - name: move mmdb to correct location
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
   # when: not geostat_age or not register_geostat
   tags:
     - skip_ansible_lint
 
 - name: remove geostat folder
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
   # when: geostat_age or not register_geostat
   tags:
     - skip_ansible_lint
 
-- name: Create venv
-  ansible.builtin.command:
+- name: Create shell
+  ansible.builtin.shell:
     cmd: "cd /opt/geostat/ ; python3 -m venv env"
   register: command_output
   changed_when: false

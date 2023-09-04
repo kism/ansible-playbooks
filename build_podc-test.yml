@@ -9,6 +9,7 @@
           - secret_email is defined
           - secret_geostat_path is defined
           - secret_maxmind_license is defined
+
 - name: Setup archivepodcast on podc-test
   hosts: podc-test
   gather_facts: true

@@ -31,6 +31,9 @@ all:
     podc-test:
       ansible_host: test.podc.kg.lan
       timezone: awst
+    podc-dr:
+      ansible_host: dr.podc.kg.lan
+      timezone: awst
     pvebackup:
       ansible_host: pvebackup.kg.lan
       timezone: awst

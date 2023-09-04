@@ -57,7 +57,7 @@
     - skip_ansible_lint
 
 - name: Create venv
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
   register: command_output
   tags:

@@ -1,0 +1,33 @@
+# - name: Check that vars are defined
+#   hosts: podc-dr
+#   gather_facts: false
+#   tasks:
+#     - name: Check that vars are defined
+#       ansible.builtin.assert:
+#         that:
+#           - secret_domain is defined
+#           - secret_email is defined
+#           - secret_geostat_path is defined
+#           - secret_maxmind_license is defined
+
+- name: Setup archivepodcast on podc-dr
+  hosts: podc-dr
+  gather_facts: true
+  become: true
+  roles:
+    # General Onboards
+    # - linux-onboard-prepare-package-manager
+    # - linux-onboard-server-packages
+    # - linux-onboard-user
+    # - linux-onboard-directories
+    # - linux-onboard-server-sshd
+    # - linux-onboard-fail2ban
+    # - linux-onboard-timezone
+    # # No telegraf for test
+    # - linux-onboard-firewall
+    # - linux-onboard-ca-trust
+
+    # Host Specific
+    - linux-setup-concept-archivepodcast-overlayfs
+    - linux-setup-concept-archivepodcast
+    # - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }

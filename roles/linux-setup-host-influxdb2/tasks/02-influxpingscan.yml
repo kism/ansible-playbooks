@@ -27,7 +27,7 @@
     mode: "600"
 
 - name: Create venv
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: "cd /opt/influxpingscan/ ; python3 -m venv env"
   register: command_output
   tags:
