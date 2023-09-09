@@ -105,12 +105,12 @@
     - /opt/geostat
     - /var/log/nginx
 
-- name: Add the podcasto to the adm for debian
-  ansible.builtin.user:
-    name: podcasto
-    groups: adm
-    append: true
-  when: ansible_pkg_mgr == 'apt'
+# - name: Add the podcasto to the adm for debian
+#   ansible.builtin.user:
+#     name: podcasto
+#     groups: adm
+#     append: true
+#   when: ansible_pkg_mgr == 'apt'
 
 - name: Copy systemd service
   become: true

@@ -75,9 +75,9 @@
 
 - name: Copy archivepodcast config
   ansible.builtin.copy:
-    src: "files/{{ ansible_facts['hostname'] }}.json"
+    src: "files/{{ ansible_host }}.json"
     dest: /opt/archivepodcast/settings.json
-    mode: "600"
+    mode: "0600"
   notify: Reload archivepodcast
   become: true
   become_user: podcasto

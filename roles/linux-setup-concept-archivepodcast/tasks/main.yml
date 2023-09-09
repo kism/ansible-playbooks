@@ -4,14 +4,14 @@
 # - name: FFmpeg Setup
 #   ansible.builtin.include_tasks: 02-ffmpeg.yml
 
-# - name: Nginx setup
-#   ansible.builtin.include_tasks: 03-nginx.yml
+- name: Nginx setup
+  ansible.builtin.include_tasks: 03-nginx.yml
 
-# - name: Archivepodcast setup
-#   ansible.builtin.include_tasks: 04-archivepodcast.yml
+- name: Archivepodcast setup
+  ansible.builtin.include_tasks: 04-archivepodcast.yml
 
-# - name: Geostat Setup
-#   ansible.builtin.include_tasks: 05-geostat.yml
+- name: Geostat Setup
+  ansible.builtin.include_tasks: 05-geostat.yml
 
 - name: Certbot Setup
   ansible.builtin.include_tasks: 06-certbot.yml

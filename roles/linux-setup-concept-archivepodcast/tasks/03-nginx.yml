@@ -1,16 +1,23 @@
 # selinux not enabled by default on debian, TODO do better
+
+- name: Enable SELinux
+  ansible.posix.selinux:
+    policy: targeted
+    state: enforcing
+  when: ansible_selinux != "false"
+
 - name: Set httpd_can_network_connect flag on and keep it persistent across reboots
   ansible.posix.seboolean:
     name: httpd_can_network_connect
     state: true
     persistent: true
-  when: ansible_selinux.status == 'enabled'
+  when: ansible_selinux.status == 'enabled' or ansible_selinux.status == 'permissive'
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /
   tags:
     - skip_ansible_lint
-  when: ansible_selinux.status == 'enabled'
+  when: ansible_selinux.status == 'enabled' or ansible_selinux.status == 'permissive'
 
 - name: Install nginx dnf
   ansible.builtin.dnf:

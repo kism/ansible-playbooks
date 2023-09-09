@@ -1,5 +1,5 @@
 - name: Check that vars are defined
-  hosts: podc
+  # hosts: podc
   gather_facts: false
   tasks:
     - name: Check that vars are defined

@@ -1,0 +1,74 @@
+- name: Check output1
+  ansible.builtin.stat:
+    path: /mnt/output1
+  register: register_name_output1
+
+- name: Check output2
+  ansible.builtin.stat:
+    path: /mnt/output2
+  register: register_name_output2
+
+- name: Check if the line exists in fstab
+  ansible.builtin.command:
+    cmd: cat /etc/fstab
+  register: fstab_text
+  ignore_errors: true
+  changed_when: false
+
+- name: Assert that fun directories exist
+  ansible.builtin.assert:
+    that:
+      - register_name_output1.stat.exists
+      - register_name_output2.stat.exists
+      - "'/mnt/output2 ext4' in fstab_text.stdout"
+
+# Now that the assert is done
+
+- name: Add the user 'podcasto' with a bash shell
+  ansible.builtin.user:
+    name: podcasto
+    uid: 1083
+    shell: /sbin/nologin
+
+- name: create directory for mergerfs
+  ansible.builtin.file:
+    path: "/mnt/{{ item }}"
+    state: directory
+    owner: podcasto
+    group: podcasto
+    mode: "0770"
+  loop:
+    - output1
+    - output2
+    - output
+
+- name: Install DNF Packages
+  ansible.builtin.dnf:
+    pkg:
+      - https://github.com/trapexit/mergerfs/releases/download/2.36.0/mergerfs-2.36.0-1.el9.aarch64.rpm
+    disable_gpg_check: true
+    state: present
+  when: ansible_pkg_mgr == 'dnf' and ansible_architecture == 'aarch64'
+
+- name: Install DNF Packages
+  ansible.builtin.dnf:
+    pkg:
+      - https://github.com/trapexit/mergerfs/releases/download/2.36.0/mergerfs-2.36.0-1.el9.x86_64.rpm
+    disable_gpg_check: true
+    state: present
+  when: ansible_pkg_mgr == 'dnf' and ansible_architecture == 'x86_64'
+
+- name: Install APT Packages
+  ansible.builtin.apt:
+    pkg:
+      - mergerfs
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Create mergerfs mount for archivepodcast
+  ansible.posix.mount:
+    fstype: fuse.mergerfs
+    src: /mnt/output1:/mnt/output2/
+    path: /mnt/output
+    opts: cache.files=off,dropcacheonclose=true,category.create=mfs
+    state: mounted

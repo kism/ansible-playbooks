@@ -1,0 +1,17 @@
+{
+    "webpagetitle": "Test",
+    "webpagedescription": "Test",
+    "webpagepodcastguidelink": "https://medium.com/@joshmuccio/how-to-manually-add-a-rss-feed-to-your-podcast-app-on-desktop-ios-android-478d197a3770",
+    "inetpath": "https://test.podc.kg.lan/",
+    "webroot": "output/",
+    "podcast": [
+        {
+            "podcasturl": "https://www.podcast.com",
+            "podcastnewname": "Test",
+            "podcastnameoneword": "test",
+            "podcastdescription": "Test",
+            "live": false,
+            "contactemail": ""
+        }
+    ]
+}
