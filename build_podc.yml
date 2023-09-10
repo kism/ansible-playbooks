@@ -1,5 +1,5 @@
 - name: Check that vars are defined
-  # hosts: podc
+  hosts: podc
   gather_facts: false
   tasks:
     - name: Check that vars are defined
@@ -25,7 +25,8 @@
     - linux-onboard-telegraf
     - linux-onboard-firewall
     - linux-onboard-ca-trust
+    - linux-onboard-nginx
 
-    # Host Specific
+    # # Host Specific, required for switchover
     - linux-setup-concept-archivepodcast
     - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }

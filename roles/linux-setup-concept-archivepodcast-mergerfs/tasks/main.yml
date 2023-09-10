@@ -30,7 +30,7 @@
     uid: 1083
     shell: /sbin/nologin
 
-- name: create directory for mergerfs
+- name: Create directory for mergerfs
   ansible.builtin.file:
     path: "/mnt/{{ item }}"
     state: directory

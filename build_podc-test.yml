@@ -26,6 +26,7 @@
     # No telegraf for test
     - linux-onboard-firewall
     - linux-onboard-ca-trust
+    - linux-onboard-nginx
 
     # Host Specific
     - linux-setup-concept-archivepodcast

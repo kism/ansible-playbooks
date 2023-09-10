@@ -1,45 +1,3 @@
-# selinux not enabled by default on debian, TODO do better
-
-- name: Enable SELinux
-  ansible.posix.selinux:
-    policy: targeted
-    state: enforcing
-  when: ansible_selinux != "false"
-
-- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
-  ansible.posix.seboolean:
-    name: httpd_can_network_connect
-    state: true
-    persistent: true
-  when: ansible_selinux.status == 'enabled' or ansible_selinux.status == 'permissive'
-
-- name: Fix selinux
-  ansible.builtin.command: restorecon -Rv /
-  tags:
-    - skip_ansible_lint
-  when: ansible_selinux.status == 'enabled' or ansible_selinux.status == 'permissive'
-
-- name: Install nginx dnf
-  ansible.builtin.dnf:
-    name:
-      - nginx
-    state: present
-  when: ansible_pkg_mgr == 'dnf'
-
-- name: Install nginx yum
-  ansible.builtin.dnf:
-    name:
-      - nginx
-    state: present
-  when: ansible_pkg_mgr == 'yum'
-
-- name: Install nginx
-  ansible.builtin.apt:
-    name:
-      - nginx
-    state: present
-  when: ansible_pkg_mgr == 'apt'
-
 - name: Copy nginx conf
   ansible.builtin.copy:
     src: "files/nginx-podc.conf"
@@ -91,22 +49,3 @@
     path: "/etc/nginx/sites-available/nginx-archivepodcast.conf"
     regexp: "secret_domain"
     replace: "{{ secret_domain }}"
-
-- name: Nginx enabled and running
-  ansible.builtin.systemd:
-    name: nginx
-    enabled: true
-  notify: Restart nginx
-
-- name: Allow http and https
-  ansible.posix.firewalld:
-    service: "{{ item }}"
-    zone: public
-    permanent: true
-    state: enabled
-  loop:
-    - http
-    - https
-  notify:
-    - Restart firewalld
-  when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'yum'

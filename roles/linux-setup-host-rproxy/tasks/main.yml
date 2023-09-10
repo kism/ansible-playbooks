@@ -134,6 +134,12 @@
     enabled: true
     state: started
 
+- name: Force restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: true
+    state: restarted
+
 - name: Initial certbot config
   become: true
   ansible.builtin.command:

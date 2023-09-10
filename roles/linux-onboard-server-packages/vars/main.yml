@@ -1,22 +1,22 @@
 packages_to_install:
-  - htop
-  - iotop
-  - nload
-  - neofetch
-  - vim
-  - git
-  - tmux
   - cronie
   - file
-  - tree
-  - wget
-  - tar
+  - git
   - gpg
+  - htop
+  - iotop
   - ncdu
+  - neofetch
+  - nload
+  - tar
+  - tmux
+  - tree
+  - vim
+  - wget
 
 packages_to_remove:
   - cockpit
   - cups
-  - xorg-x11-server-Xorg
-  - libX11
   - libwayland-client
+  - libX11
+  - xorg-x11-server-Xorg

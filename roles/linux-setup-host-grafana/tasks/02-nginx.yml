@@ -35,14 +35,14 @@
 - name: Grab a new cert
   ansible.builtin.command:
     cmd: |
-      "REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer \
-      certbot certonly \
-      --agree-tos \
-      --email=kg@localhost \
-      -v \
-      -n \
-      --nginx \
-      -d graf.kg.lan \
+      "REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer
+      certbot certonly
+      --agree-tos
+      --email=kg@localhost
+      -v
+      -n
+      --nginx
+      -d graf.kg.lan
       --server https://cert.kg.lan/acme/acme/directory"
   tags:
     - skip_ansible_lint

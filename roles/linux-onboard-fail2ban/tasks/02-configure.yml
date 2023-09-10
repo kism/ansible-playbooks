@@ -8,6 +8,7 @@
   ansible.builtin.copy:
     src: files/jail/
     dest: /etc/fail2ban/jail.d/
+    mode: "0644"
   notify: Restart fail2ban
 
 - name: Enable fail2ban service

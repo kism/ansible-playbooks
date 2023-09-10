@@ -72,6 +72,7 @@
   notify: Restart archivepodcast
   become: true
   become_user: podcasto
+  changed_when: true
 
 - name: Copy archivepodcast config
   ansible.builtin.copy:

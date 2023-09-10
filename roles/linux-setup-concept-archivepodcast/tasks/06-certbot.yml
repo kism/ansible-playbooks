@@ -17,7 +17,12 @@
 - name: Initial certbot config
   become: true
   ansible.builtin.command:
-    cmd: "certbot --agree-tos --email={{ secret_email }} -v -n --nginx -d {{ secret_domain }}"
+    cmd: |
+      certbot
+      --agree-tos
+      --email={{ secret_email }}
+      -v -n --nginx
+      -d {{ secret_domain }}
   register: command_output
   tags:
     - skip_ansible_lint

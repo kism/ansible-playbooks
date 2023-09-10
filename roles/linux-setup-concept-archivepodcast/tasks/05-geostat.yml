@@ -4,8 +4,8 @@
   ansible.builtin.file:
     path: "/opt/geostat"
     state: directory
-    owner: podcasto # TODO  TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO
-    group: podcasto # TODO TODOTODOTODOTODOTODOTODOTODOTODOTODO
+    owner: podcasto
+    group: podcasto
     mode: "0755"
 
 - name: Fix git lmao
@@ -14,7 +14,7 @@
   tags:
     - skip_ansible_lint
 
-- name: Clone geostat # BROKRN
+- name: Clone geostat
   ansible.builtin.git:
     repo: https://github.com/kism/geostat
     dest: /opt/geostat
@@ -41,11 +41,6 @@
   notify:
     - Restart geostat
 
-- name: Check if geo db is around
-  ansible.builtin.stat:
-    path: /opt/geostat/GeoLite2-City.mmdb
-  register: register_geostat
-
 - name: Setup geostat log location
   ansible.builtin.lineinfile:
     path: /opt/geostat/settings.ini
@@ -60,21 +55,18 @@
     src: https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz
     dest: /opt/geostat
     remote_src: true
-  # when: not geostat_age or not register_geostat
   notify:
     - Restart geostat
 
 - name: move mmdb to correct location
   ansible.builtin.shell:
     cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
-  # when: not geostat_age or not register_geostat
   tags:
     - skip_ansible_lint
 
 - name: remove geostat folder
   ansible.builtin.shell:
     cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
-  # when: geostat_age or not register_geostat
   tags:
     - skip_ansible_lint
 
@@ -104,13 +96,6 @@
   loop:
     - /opt/geostat
     - /var/log/nginx
-
-# - name: Add the podcasto to the adm for debian
-#   ansible.builtin.user:
-#     name: podcasto
-#     groups: adm
-#     append: true
-#   when: ansible_pkg_mgr == 'apt'
 
 - name: Copy systemd service
   become: true
