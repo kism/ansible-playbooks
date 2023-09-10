@@ -20,7 +20,7 @@
     dest: /opt/geostat
     single_branch: false
     force: true
-    refspec: "refs/heads/feature/filetypefilter"
+    version: "feature\/filetypefilter"
   notify: Restart geostat
   tags:
     - skip_ansible_lint # God damn I mmade this fork specifically for this

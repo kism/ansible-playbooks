@@ -27,6 +27,6 @@
     - linux-onboard-ca-trust
     - linux-onboard-nginx
 
-    # # Host Specific, required for switchover
+    # Host Specific, required for switchover
     - linux-setup-concept-archivepodcast
     - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }
