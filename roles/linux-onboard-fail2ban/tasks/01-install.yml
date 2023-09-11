@@ -3,6 +3,7 @@
     pkg: "fail2ban"
     state: present
   when: ansible_pkg_mgr == 'dnf'
+  notify: Restart fail2ban
 
 - name: Install fail2ban via apt
   ansible.builtin.apt:
@@ -10,3 +11,4 @@
     pkg: "fail2ban"
     state: present
   when: ansible_pkg_mgr == 'apt'
+  notify: Restart fail2ban
