@@ -1,22 +1,18 @@
-- name: Get Service Status
+- name: Get nginx service status
   ansible.builtin.systemd:
     name: "nginx.service"
   register: nginx_status
 
-- name: Get Service Status
-  ansible.builtin.debug:
-    msg: "{{ nginx_status }}"
-
 - name: Copy filters
   ansible.builtin.copy:
-    src: files/filter/
+    src: files/filter/wordpress.conf
     dest: /etc/fail2ban/filter.d/wordpress.conf
   notify: Restart fail2ban
   when: nginx_status["status"]["LoadState"] != "not-found"
 
 - name: Copy jail
   ansible.builtin.copy:
-    src: files/jail/
+    src: files/jail/wordpress.conf
     dest: /etc/fail2ban/jail.d/wordpress.conf
     mode: "0644"
   notify: Restart fail2ban
