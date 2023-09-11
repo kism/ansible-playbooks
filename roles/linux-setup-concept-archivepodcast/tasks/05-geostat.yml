@@ -118,3 +118,14 @@
     state: started
     masked: false
   notify: Restart geostat
+
+- name: Copy nginx logrotate
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: files/nginx_logrotate
+    dest: /etc/logrotate.d/nginx
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart logrotate

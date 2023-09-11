@@ -56,14 +56,14 @@
   tags:
     - skip_ansible_lint
 
-- name: Create venv
-  ansible.builtin.shell:
-    cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
-  register: command_output
-  tags:
-    - skip_ansible_lint
-  become: true
-  become_user: podcasto
+# - name: Create venv
+#   ansible.builtin.shell:
+#     cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
+#   register: command_output
+#   tags:
+#     - skip_ansible_lint
+#   become: true
+#   become_user: podcasto
 
 - name: Install flask into the specified (Pipenv), inheriting globally installed modules
   ansible.builtin.command:
