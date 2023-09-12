@@ -1,4 +1,4 @@
-- name: Create geostat directory
+- name: Create ffmpreg directory
   become: true
   become_user: root
   ansible.builtin.file:

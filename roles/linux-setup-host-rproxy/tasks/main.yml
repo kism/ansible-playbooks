@@ -14,31 +14,6 @@
       - fail2ban
     state: installed
 
-- name: Let Nginx 80 through firewalld
-  ansible.posix.firewalld:
-    zone: public
-    service: http
-    permanent: true
-    immediate: true
-    state: enabled
-  notify:
-    - Restart firewalld
-
-- name: Let Nginx 443 through firewalld
-  ansible.posix.firewalld:
-    zone: public
-    service: https
-    permanent: true
-    immediate: true
-    state: enabled
-  notify:
-    - Restart firewalld
-
-- name: Nginx enabled and running
-  ansible.builtin.systemd:
-    name: nginx
-    enabled: true
-
 - name: Copy nginx conf
   ansible.builtin.copy:
     src: "files/nginx-rproxy.conf"
@@ -87,32 +62,42 @@
     - Restart nginx
   loop: "{{ nginxconfigs }}"
 
-- name: Add valid ips to files
-  ansible.builtin.replace:
-    path: "/etc/nginx/sites-available/{{ item }}"
-    regexp: "secret_public_ip1"
-    replace: "{{ secret_public_ip1 }}"
+- name: Copy ip whitelist
+  ansible.builtin.copy:
+    src: files/ipwhitelist.conf
+    dest: /etc/nginx/ipwhitelist.conf
+    owner: root
+    group: root
+    mode: "0644"
   notify:
     - Restart nginx
-  loop: "{{ nginxconfigs }}"
 
-- name: Add valid ips to files
-  ansible.builtin.replace:
-    path: "/etc/nginx/sites-available/{{ item }}"
-    regexp: "secret_local_ip_range1"
-    replace: "{{ secret_local_ip_range1 }}"
-  notify:
-    - Restart nginx
-  loop: "{{ nginxconfigs }}"
+# - name: Add valid ips to files
+#   ansible.builtin.replace:
+#     path: "/etc/nginx/sites-available/{{ item }}"
+#     regexp: "secret_public_ip1"
+#     replace: "{{ secret_public_ip1 }}"
+#   notify:
+#     - Restart nginx
+#   loop: "{{ nginxconfigs }}"
 
-- name: Add valid ips to files
-  ansible.builtin.replace:
-    path: "/etc/nginx/sites-available/{{ item }}"
-    regexp: "secret_local_ip_range2"
-    replace: "{{ secret_local_ip_range2 }}"
-  notify:
-    - Restart nginx
-  loop: "{{ nginxconfigs }}"
+# - name: Add valid ips to files
+#   ansible.builtin.replace:
+#     path: "/etc/nginx/sites-available/{{ item }}"
+#     regexp: "secret_local_ip_range1"
+#     replace: "{{ secret_local_ip_range1 }}"
+#   notify:
+#     - Restart nginx
+#   loop: "{{ nginxconfigs }}"
+
+# - name: Add valid ips to files
+#   ansible.builtin.replace:
+#     path: "/etc/nginx/sites-available/{{ item }}"
+#     regexp: "secret_local_ip_range2"
+#     replace: "{{ secret_local_ip_range2 }}"
+#   notify:
+#     - Restart nginx
+#   loop: "{{ nginxconfigs }}"
 
 - name: Copy nginx index.html
   ansible.builtin.copy:

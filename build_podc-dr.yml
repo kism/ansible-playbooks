@@ -16,16 +16,16 @@
   become: true
   roles:
     # General Onboards
-    # - linux-onboard-prepare-package-manager
-    # - linux-onboard-server-packages
-    # - linux-onboard-user
-    # - linux-onboard-directories
-    # - linux-onboard-server-sshd
-    # - linux-onboard-fail2ban
-    # - linux-onboard-timezone
-    # # No telegraf for test
-    # - linux-onboard-firewall
-    # - linux-onboard-ca-trust
+    - linux-onboard-prepare-package-manager
+    - linux-onboard-server-packages
+    - linux-onboard-user
+    - linux-onboard-directories
+    - linux-onboard-server-sshd
+    - linux-onboard-fail2ban
+    - linux-onboard-timezone
+    # No telegraf for test
+    - linux-onboard-firewall
+    - linux-onboard-ca-trust
     - linux-onboard-nginx
 
     # Host Specific

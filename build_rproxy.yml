@@ -9,6 +9,7 @@
     - linux-onboard-server-packages
     - linux-onboard-user
     - linux-onboard-directories
+    - linux-onboard-nginx
     - linux-onboard-server-sshd
     - linux-onboard-fail2ban
     - linux-onboard-timezone
