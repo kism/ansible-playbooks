@@ -5,24 +5,18 @@
 
 - name: Copy filters
   ansible.builtin.copy:
-    src: files/filter/wordpress.conf
-    dest: /etc/fail2ban/filter.d/wordpress.conf
+    src: files/filter/nginx-kism.conf
+    dest: /etc/fail2ban/filter.d/nginx-kism.conf
   notify: Restart fail2ban
   when: nginx_status["status"]["LoadState"] != "not-found"
 
 - name: Copy jail
   ansible.builtin.copy:
-    src: files/jail/wordpress.conf
-    dest: /etc/fail2ban/jail.d/wordpress.conf
+    src: files/jail/nginx-kism.conf
+    dest: /etc/fail2ban/jail.d/nginx-kism.conf
     mode: "0644"
   notify: Restart fail2ban
   when: nginx_status["status"]["LoadState"] != "not-found"
-
-- name: Copy filters
-  ansible.builtin.copy:
-    src: files/filter/sshd.conf
-    dest: /etc/fail2ban/filter.d/sshd.conf
-  notify: Restart fail2ban
 
 - name: Copy jail
   ansible.builtin.copy:
