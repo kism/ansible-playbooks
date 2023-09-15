@@ -1,0 +1,8 @@
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+maxretry = 3
+bantime = 5400
+findtime = 1900
+ignoreip = {{ secret_public_ip1 }} {{ secret_local_ip_range1 }} {{ secret_local_ip_range2 }}

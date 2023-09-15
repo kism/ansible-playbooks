@@ -19,8 +19,8 @@
   when: nginx_status["status"]["LoadState"] != "not-found"
 
 - name: Copy jail
-  ansible.builtin.copy:
-    src: files/jail/sshd.conf
+  ansible.builtin.template:
+    src: files/jail/sshd.conf.j2
     dest: /etc/fail2ban/jail.d/sshd.conf
     mode: "0644"
   notify: Restart fail2ban

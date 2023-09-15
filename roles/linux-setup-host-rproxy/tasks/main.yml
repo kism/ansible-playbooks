@@ -63,7 +63,7 @@
   loop: "{{ nginxconfigs }}"
 
 - name: Copy ip whitelist
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: files/ipwhitelist.conf
     dest: /etc/nginx/ipwhitelist.conf
     owner: root
