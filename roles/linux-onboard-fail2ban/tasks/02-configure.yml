@@ -7,6 +7,7 @@
   ansible.builtin.copy:
     src: files/filter/nginx-kism.conf
     dest: /etc/fail2ban/filter.d/nginx-kism.conf
+    mode: "0640"
   notify: Restart fail2ban
   when: nginx_status["status"]["LoadState"] != "not-found"
 
