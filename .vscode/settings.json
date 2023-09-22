@@ -1,5 +1,5 @@
 {
-  "workbench.colorTheme": "Oldschool Theme (Teal)",
+  "workbench.colorTheme": "paddy-citadel",
   "ansible.python.interpreterPath": "/bin/python",
 	// Specify default formatters
 	"[ansible]": {

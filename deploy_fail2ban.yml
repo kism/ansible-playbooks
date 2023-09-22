@@ -1,8 +1,0 @@
-- name: Setup rproxy, reverse proxy
-  hosts: rproxy, podc, podc-test
-  gather_facts: true
-  become: true
-
-  roles:
-    - linux-onboard-fail2ban
-

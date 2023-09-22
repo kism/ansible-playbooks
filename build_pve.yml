@@ -16,11 +16,7 @@
     - linux-onboard-firewall
     - linux-onboard-ca-trust
 
-
-
-
-
-
     # Host Specific
     - linux-setup-concept-proxmox
+    - linux-onboard-postfix-gmail
     - linux-setup-host-pve

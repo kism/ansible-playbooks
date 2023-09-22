@@ -1,0 +1,99 @@
+# From:
+# https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3
+
+
+- name: Install dependancies apt
+  ansible.builtin.apt:
+    pkg:
+      - libsasl2-modules
+      - mailutils
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+  notify: Restart postfix
+
+- name: Install dependancies dnf
+  ansible.builtin.apt:
+    pkg:
+      - libsasl2-modules
+      - mailutils
+    state: present
+  when: ansible_pkg_mgr == 'dnf'
+  notify: Restart postfix
+
+- name: Creating a file with content
+  ansible.builtin.copy:
+    dest: /etc/postfix/sasl_passwd
+    content: "smtp.gmail.com {{ secret_notification_email }}:{{ secret_notification_email_password }}"
+    mode: "0600"
+  notify: Restart postfix
+
+- name: Generate postmap config
+  ansible.builtin.command:
+    cmd: "postmap hash:/etc/postfix/sasl_passwd"
+  changed_when: true
+  notify: Restart postfix
+
+- name: Insert Postfix Config
+  ansible.builtin.blockinfile:
+    path: /etc/postfix/main.cf
+    block: |
+      # KiSM's Config
+      relayhost = smtp.gmail.com:587
+      smtp_use_tls = yes
+      smtp_sasl_auth_enable = yes
+      smtp_sasl_security_options =
+      smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+      smtp_tls_CAfile = /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
+      smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
+      smtp_tls_session_cache_timeout = 3600s
+  notify: Restart postfix
+#
+# -----------------------------------------------------------------------------------------------------
+
+# # See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+# myhostname=pvenas.kg.lan
+
+# smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+# biff = no
+
+# # appending .domain is the MUA's job.
+# append_dot_mydomain = no
+
+# # Uncomment the next line to generate "delayed mail" warnings
+# #delay_warning_time = 4h
+
+# alias_maps = hash:/etc/aliases
+# alias_database = hash:/etc/aliases
+# mydestination = $myhostname, localhost.$mydomain, localhost
+# relayhost =
+# mynetworks = 127.0.0.0/8
+# inet_interfaces = loopback-only
+# recipient_delimiter = +
+
+# compatibility_level = 2
+
+# -----------------------------------------------------------------------------------------------------
+
+# # See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+# myhostname=pve.kg.lan
+
+# smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+# biff = no
+
+# # appending .domain is the MUA's job.
+# append_dot_mydomain = no
+
+# # Uncomment the next line to generate "delayed mail" warnings
+# #delay_warning_time = 4h
+
+# alias_maps = hash:/etc/aliases
+# alias_database = hash:/etc/aliases
+# mydestination = $myhostname, localhost.$mydomain, localhost
+# relayhost =
+# mynetworks = 127.0.0.0/8
+# inet_interfaces = loopback-only
+# recipient_delimiter = +
+
+# compatibility_level = 2

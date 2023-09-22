@@ -18,4 +18,5 @@
 
     # Host Specific
     - linux-setup-concept-proxmox
+    - linux-onboard-postfix-gmail
     - linux-setup-host-pvenas
