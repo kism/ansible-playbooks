@@ -1,6 +1,6 @@
 - name: Unconditionally shut down the machine with all defaults
   community.general.shutdown:
 
-- name: Pause for 1 minute to build app cache
+- name: Pause to wait for the next step
   ansible.builtin.pause:
     minutes: 1
