@@ -15,7 +15,7 @@
 - name: Grab initial acme cert
   become: true
   ansible.builtin.command:
-    cmd: |
+    cmd: >
       certbot certonly
       --non-interactive
       --agree-tos
@@ -25,7 +25,7 @@
       -d {{ ansible_host }}
       --server https://cert.kg.lan/acme/acme/directory
   register: certbot_output
-  failed_when:
+  # failed_when: false
   tags:
     - skip_ansible_lint
 

@@ -34,7 +34,7 @@
 
 - name: Grab a new cert
   ansible.builtin.command:
-    cmd: |
+    cmd: >
       "REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/kglan_root.cer
       certbot certonly
       --agree-tos
