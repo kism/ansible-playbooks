@@ -2,5 +2,6 @@ nginxconfigs:
   - nginx-rproxy-rproxy.conf
   - nginx-rproxy-influxdb2.conf
   - nginx-rproxy-grafana.conf
-  # - nginx-rproxy-opnsense.conf
+  - nginx-rproxy-opnsense.conf
+  - nginx-rproxy-homeassistant.conf
   # - nginx-rproxy-gba.conf

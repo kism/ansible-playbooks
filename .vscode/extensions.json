@@ -9,6 +9,7 @@
         "redhat.ansible",
         "redhat.vscode-yaml",
         "samuelcolvin.jinjahtml",
-        "vscode-icons-team.vscode-icons"
+        "vscode-icons-team.vscode-icons",
+        "yile-ou.paddy-color-theme"
     ]
 }

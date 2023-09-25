@@ -22,6 +22,16 @@
   notify:
     - Restart nginx
 
+- name: Remove file (delete file)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  tags:
+    - skip_ansible_lint
+  loop:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
 - name: Create a directory if it does not exist
   ansible.builtin.file:
     path: "{{ item }}"
@@ -31,17 +41,7 @@
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
 
-# I hate these two
-- name: Remove file (delete file)
-  ansible.builtin.command:
-    cmd: "rm {{ item }}/*"
-  ignore_errors: true
-  tags:
-    - skip_ansible_lint
-  loop:
-    - /etc/nginx/sites-available
-    - /etc/nginx/sites-enabled
-
+# is this bad?
 - name: Copy nginx site confs
   ansible.builtin.copy:
     src: "files/{{ item }}"
@@ -64,7 +64,7 @@
 
 - name: Copy ip whitelist
   ansible.builtin.template:
-    src: files/ipwhitelist.conf
+    src: files/ipwhitelist.conf.j2
     dest: /etc/nginx/ipwhitelist.conf
     owner: root
     group: root
@@ -101,7 +101,14 @@
 - name: Initial certbot config
   become: true
   ansible.builtin.command:
-    cmd: "certbot --agree-tos --email={{ secret_email }} -v -n --nginx --expand -d kierangee.au -d influxdb2.kierangee.au -d grafana.kierangee.au"
+    cmd: >
+      certbot
+      --agree-tos
+      --email={{ secret_email }}
+      -v -n
+      --nginx
+      --expand
+      -d kierangee.au -d influxdb2.kierangee.au -d grafana.kierangee.au -d opnsense.kierangee.au -d homeassistant.kierangee.au
   register: command_output
   tags:
     - skip_ansible_lint
