@@ -56,3 +56,4 @@
   loop:
     - samba
     - wsdd
+    - mdns
