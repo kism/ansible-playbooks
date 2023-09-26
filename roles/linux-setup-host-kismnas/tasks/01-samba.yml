@@ -4,6 +4,7 @@
       - samba
       - rsync
       - wsdd
+      - avahi
     state: present
 
 - name: Copy dfree script
@@ -24,7 +25,17 @@
   notify:
     - Restart smbd
 
-- name: Start and enable samba service
+- name: Copy avahi config
+  ansible.builtin.copy:
+    src: files/kismnas_avahi_smb.xml
+    dest: /etc/avahi/services/smb.service
+    owner: root
+    group: root
+    mode: "0744"
+  notify:
+    - Restart avahi
+
+- name: Start and enable services
   ansible.builtin.systemd:
     name: "{{ item }}"
     enabled: true
@@ -32,6 +43,7 @@
   loop:
     - smb
     - wsdd
+    - avahi-daemon
 
 - name: Allow samba and wsdd through firewalld
   ansible.posix.firewalld:

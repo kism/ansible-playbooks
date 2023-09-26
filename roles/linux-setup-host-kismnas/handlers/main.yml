@@ -8,7 +8,7 @@
     name: firewalld
     state: restarted
 
-- name: Restart telegraf
+- name: Restart avahi
   ansible.builtin.systemd:
-    name: telegraf
+    name: avahi-daemon
     state: restarted

@@ -1,2 +1,2 @@
-# dependencies:
-#   role: community.general.shutdown
+collections:
+  - community.general
