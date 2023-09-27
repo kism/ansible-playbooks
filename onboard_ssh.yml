@@ -1,5 +1,5 @@
 - name: Setup ssh keys on all
-  hosts: all
+  hosts: all,!qbt
   gather_facts: true
   become: true
   roles:
