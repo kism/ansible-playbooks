@@ -1,5 +1,5 @@
 - name: Setup qBittorrent on a host
-  hosts: qbt
+  hosts: !qbt # do not actually run this lol
   gather_facts: true
   become: true
   vars:
