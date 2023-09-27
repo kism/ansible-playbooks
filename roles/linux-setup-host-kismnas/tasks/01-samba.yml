@@ -43,7 +43,7 @@
   loop:
     - smb
     - wsdd
-    # - avahi-daemon
+    - avahi-daemon
 
 - name: Allow samba and wsdd through firewalld
   ansible.posix.firewalld:
