@@ -19,6 +19,8 @@
     dest: /opt/influxpingscan
     single_branch: true
     version: master
+  become: true
+  become_user: influxdb
 
 - name: Copy archivepodcast config
   ansible.builtin.copy:
@@ -26,18 +28,18 @@
     dest: /opt/influxpingscan/settings.ini
     mode: "600"
 
-- name: Create venv
-  ansible.builtin.shell:
-    cmd: "cd /opt/influxpingscan/ ; python3 -m venv env"
-  register: command_output
-  tags:
-    - skip_ansible_lint
-
-- name: Install requirements into the specified (virtualenv)
+- name: Install pipenv python package
   ansible.builtin.pip:
-    requirements: /opt/influxpingscan/requirements.txt
-    virtualenv: /opt/influxpingscan/env
-    virtualenv_site_packages: true
+    name: pipenv
+
+- name: Install flask into the specified (Pipenv), inheriting globally installed modules
+  ansible.builtin.command:
+    cmd: "/usr/local/bin/pipenv install"
+    chdir: "/opt/influxpingscan"
+  notify: Restart archivepodcast
+  become: true
+  become_user: influxdb
+  changed_when: true
 
 - name: Set influxdb token
   ansible.builtin.lineinfile:
@@ -50,10 +52,10 @@
   ansible.builtin.cron:
     name: "influxpingscan scan"
     minute: "58"
-    job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py scan"
+    job: "/usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py scan"
 
 - name: Set influxpingscan ping in cron
   ansible.builtin.cron:
     name: "influxpingscan ping"
     minute: "*/5"
-    job: "/opt/influxpingscan/env/bin/python3 /opt/influxpingscan/influxpingscan.py ping"
+    job: "/usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py ping"
