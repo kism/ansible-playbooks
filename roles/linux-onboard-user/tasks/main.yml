@@ -9,7 +9,7 @@
     password: "{{ secret_kism_password_hash }}"
     uid: 1089
     shell: /bin/bash
-  when: ansible_facts["env"]["SUDO_USER"] != "kism"
+  when: ansible_facts["env"]["SUDO_USER"] is not defined or ansible_facts["env"]["SUDO_USER"] != "kism"
 
 - name: Set authorized keys taken from url using lookup
   ansible.posix.authorized_key:

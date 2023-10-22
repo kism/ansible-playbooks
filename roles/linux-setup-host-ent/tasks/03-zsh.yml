@@ -7,6 +7,8 @@
   become_user: root
 
 - name: Create antigen folder
+  become: true
+  become_user: kism
   ansible.builtin.file:
     path: ~/.antigen
     state: directory
@@ -15,6 +17,8 @@
     mode: "0770"
 
 - name: Download antigen
+  become: true
+  become_user: kism
   ansible.builtin.get_url:
     url: https://git.io/antigen
     dest: ~/.antigen/antigen.zsh
