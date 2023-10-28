@@ -64,9 +64,9 @@
   become_user: podcasto
   changed_when: true
 
-- name: Run pipenv upgrade
+- name: Run pipenv sync
   ansible.builtin.command:
-    cmd: "/usr/local/bin/pipenv upgrade"
+    cmd: "/usr/local/bin/pipenv sync"
     chdir: "/opt/archivepodcast"
   notify: Restart archivepodcast
   become: true
