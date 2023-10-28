@@ -78,7 +78,7 @@
     src: "files/{{ ansible_host }}.json"
     dest: /opt/archivepodcast/settings.json
     mode: "0600"
-  notify: Reload archivepodcast
+  notify: Restart archivepodcast # One day this will be reload...
   become: true
   become_user: podcasto
 

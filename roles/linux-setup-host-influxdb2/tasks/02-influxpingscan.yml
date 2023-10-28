@@ -32,9 +32,18 @@
   ansible.builtin.pip:
     name: pipenv
 
-- name: Install flask into the specified (Pipenv), inheriting globally installed modules
+- name: Setup pipenv environment
   ansible.builtin.command:
     cmd: "/usr/local/bin/pipenv install"
+    chdir: "/opt/influxpingscan"
+  notify: Restart archivepodcast
+  become: true
+  become_user: influxdb
+  changed_when: true
+
+- name: Setup pipenv environment
+  ansible.builtin.command:
+    cmd: "/usr/local/bin/pipenv sync"
     chdir: "/opt/influxpingscan"
   notify: Restart archivepodcast
   become: true

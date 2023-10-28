@@ -78,7 +78,7 @@
   tags:
     - skip_ansible_lint
 
-- name: Install flask into the specified (virtualenv), inheriting globally installed modules
+- name: Install geostat depends into the specified (virtualenv), inheriting globally installed modules
   ansible.builtin.pip:
     requirements: /opt/geostat/requirements.txt
     virtualenv: /opt/geostat/env
