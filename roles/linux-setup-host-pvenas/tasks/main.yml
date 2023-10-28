@@ -110,7 +110,7 @@
     group: root
     mode: "644"
 
-- name: Copy snapraid conf
+- name: Copy snapraid helper https://gist.github.com/bfg100k/87a1bbccf4f15d963ff7
   ansible.builtin.copy:
     src: files/pvenas_snapraid_helper.sh
     dest: /opt/scripts/snapraid_helper.sh

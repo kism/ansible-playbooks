@@ -65,7 +65,7 @@ EMAIL_ADDRESS="root"
 # NOTE that depending on how active your filesystem is being used, a low
 # number here may result in your parity info being out of sync often and/or
 # you having to do lots of manual sync.
-DEL_THRESHOLD=50
+DEL_THRESHOLD=200
 
 # Set number of warnings before we force a sync job.
 # This option comes in handy when you cannot be bothered to manually
