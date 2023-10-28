@@ -1,13 +1,12 @@
-- name: Install venv apt
+- name: Install pip apt
   ansible.builtin.apt:
     name:
-      - python3-venv
       - python3-pip
     state: present
   become_user: root
   when: ansible_pkg_mgr == 'apt'
 
-- name: Install venv dnf
+- name: Install pip dnf
   ansible.builtin.dnf:
     name:
       - python3-pip
@@ -56,18 +55,18 @@
   tags:
     - skip_ansible_lint
 
-# - name: Create venv
-#   ansible.builtin.shell:
-#     cmd: "cd /opt/archivepodcast/ ; python3 -m venv env"
-#   register: command_output
-#   tags:
-#     - skip_ansible_lint
-#   become: true
-#   become_user: podcasto
-
-- name: Install flask into the specified (Pipenv), inheriting globally installed modules
+- name: Run pipenv install
   ansible.builtin.command:
     cmd: "/usr/local/bin/pipenv install"
+    chdir: "/opt/archivepodcast"
+  notify: Restart archivepodcast
+  become: true
+  become_user: podcasto
+  changed_when: true
+
+- name: Run pipenv upgrade
+  ansible.builtin.command:
+    cmd: "/usr/local/bin/pipenv upgrade"
     chdir: "/opt/archivepodcast"
   notify: Restart archivepodcast
   become: true

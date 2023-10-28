@@ -17,7 +17,7 @@
     owner: root
     group: root
 
-- name: Grab ffmpeg
+- name: Grab ffmpeg aarch64
   ansible.builtin.unarchive:
     src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz
     dest: /opt/ffmpeg
