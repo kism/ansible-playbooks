@@ -29,6 +29,5 @@
     - linux-onboard-nginx
 
     # Host Specific
-    - linux-setup-concept-archivepodcast-mergerfs
     - linux-setup-concept-archivepodcast
     - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }

@@ -20,12 +20,12 @@
     - linux-onboard-user
     - linux-onboard-directories
     - linux-onboard-server-sshd
-    - linux-onboard-fail2ban
     - linux-onboard-timezone
     - linux-onboard-telegraf
     - linux-onboard-firewall
     - linux-onboard-ca-trust
     - linux-onboard-nginx
+    - linux-onboard-fail2ban
 
     # Host Specific, required for switchover
     - linux-setup-concept-archivepodcast
