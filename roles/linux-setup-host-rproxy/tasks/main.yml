@@ -10,7 +10,7 @@
     name:
       - nginx
       - certbot
-      - python3-certbot-nginx
+      - python3-certbot-dns-cloudflare
       - fail2ban
     state: installed
 
@@ -98,17 +98,28 @@
     enabled: true
     state: restarted
 
+- name: Set cloudflare key
+  ansible.builtin.copy:
+    content: "dns_cloudflare_api_token = {{ secret_cloudflare_api_dns }}"
+    dest: "/root/.cloudflare.ini"
+    mode: 600
+    owner: root
+    group: root
+
+
+
 - name: Initial certbot config
   become: true
   ansible.builtin.command:
     cmd: >
-      certbot
+      certbot certonly
       --agree-tos
       --email={{ secret_email }}
       -v -n
-      --nginx
       --expand
-      -d kierangee.au -d influxdb2.kierangee.au -d grafana.kierangee.au -d opnsense.kierangee.au -d homeassistant.kierangee.au
+      --dns-cloudflare
+      --dns-cloudflare-credentials ~/.secrets/certbot/cloudflare.ini
+      -d kierangee.au
   register: command_output
   tags:
     - skip_ansible_lint

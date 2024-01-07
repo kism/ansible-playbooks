@@ -5,17 +5,17 @@
 
   roles:
     # General Onboards
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-nginx
-    - linux-onboard-server-sshd
-    - linux-onboard-fail2ban
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
+    # - linux-onboard-prepare-package-manager
+    # - linux-onboard-server-packages
+    # - linux-onboard-user
+    # - linux-onboard-directories
+    # - linux-onboard-nginx
+    # - linux-onboard-server-sshd
+    # - linux-onboard-fail2ban
+    # - linux-onboard-timezone
+    # - linux-onboard-telegraf
+    # - linux-onboard-firewall
+    # - linux-onboard-ca-trust
 
     # Host Specific
     - linux-setup-host-rproxy
