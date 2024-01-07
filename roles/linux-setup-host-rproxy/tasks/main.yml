@@ -92,12 +92,6 @@
     enabled: true
     state: started
 
-- name: Force restart nginx
-  ansible.builtin.systemd:
-    name: nginx
-    enabled: true
-    state: restarted
-
 - name: Set cloudflare key
   ansible.builtin.copy:
     content: "dns_cloudflare_api_token = {{ secret_cloudflare_api_dns }}"
@@ -105,6 +99,16 @@
     mode: 600
     owner: root
     group: root
+
+
+- name: Remove Let's Encrypt directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/letsencrypt/live
+    - /etc/letsencrypt/archive
+    - /etc/letsencrypt/renewal
 
 
 
@@ -115,14 +119,21 @@
       certbot certonly
       --agree-tos
       --email={{ secret_email }}
-      -v -n
-      --expand
+      -v
+      --non-interactive
+      --post-hook "service nginx reload"
       --dns-cloudflare
-      --dns-cloudflare-credentials ~/.secrets/certbot/cloudflare.ini
-      -d kierangee.au
+      --dns-cloudflare-credentials /root/.cloudflare.ini
+      -d kierangee.au,*.kierangee.au
   register: command_output
   tags:
     - skip_ansible_lint
+
+- name: Force restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: true
+    state: restarted
 
 - name: Set certbot cron job
   ansible.builtin.cron:
