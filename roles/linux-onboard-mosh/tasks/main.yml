@@ -1,0 +1,36 @@
+- name: Install mosh dnf
+  ansible.builtin.dnf:
+    name:
+      - mosh
+    state: present
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install mosh yum
+  ansible.builtin.dnf:
+    name:
+      - mosh
+    state: present
+  when: ansible_pkg_mgr == 'yum'
+
+- name: Install mosh
+  ansible.builtin.apt:
+    name:
+      - mosh
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
+- name: mosh enabled and running
+  ansible.builtin.systemd:
+    name: mosh
+    enabled: true
+  notify: Restart mosh
+
+- name: Allow http and https
+  ansible.posix.firewalld:
+    service: "mosh"
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld
+  when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'yum'
