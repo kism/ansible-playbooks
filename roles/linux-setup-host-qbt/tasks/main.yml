@@ -25,4 +25,3 @@
     fstype: ext4
     opts: "defaults,nofail,discard"
     state: mounted
-

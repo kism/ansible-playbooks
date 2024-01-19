@@ -7,7 +7,7 @@
 - name: Disable the Snapd service
   ansible.builtin.systemd:
     name: snapd
-    enabled: no
+    enabled: false
 
 - name: Uninstall Snap packages
   ansible.builtin.apt:
