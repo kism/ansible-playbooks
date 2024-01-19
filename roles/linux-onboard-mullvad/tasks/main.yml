@@ -18,3 +18,8 @@
   ansible.builtin.apt:
     name: mullvad-vpn
     state: present
+
+- name: Enable WireGuard kernel module
+  community.general.modprobe:
+    name: wireguard
+    state: present
