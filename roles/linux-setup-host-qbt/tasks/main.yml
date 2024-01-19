@@ -21,7 +21,7 @@
 - name: Mount /dev/md0 at /mnt/Quina
   ansible.posix.mount:
     path: /mnt/Quina
-    src: /dev/md0
+    src: /dev/sdb
     fstype: ext4
     opts: "defaults,nofail,discard"
     state: mounted
