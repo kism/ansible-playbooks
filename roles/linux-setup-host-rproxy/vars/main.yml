@@ -5,3 +5,4 @@ nginxconfigs:
   - nginx-rproxy-opnsense.conf
   - nginx-rproxy-homeassistant.conf
   - nginx-rproxy-gba.conf
+  - nginx-rproxy-qbt.conf
