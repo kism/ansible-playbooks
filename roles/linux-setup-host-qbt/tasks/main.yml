@@ -4,6 +4,20 @@
     package: qbittorrent-nox
     state: latest
 
+- name: Copy qBittorrent service
+  ansible.builtin.copy:
+    src: files/qbittorrent.service
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Setup qBittorrent service
+  ansible.builtin.systemd:
+    service: qbittorrent
+    daemon_reload: true
+    enabled: true
+
 - name: Mount /dev/md0 at /mnt/Quina
   ansible.posix.mount:
     path: /mnt/Quina
@@ -11,4 +25,3 @@
     fstype: ext4
     opts: "defaults,nofail,discard"
     state: mounted
-

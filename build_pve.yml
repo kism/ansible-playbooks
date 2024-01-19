@@ -4,19 +4,19 @@
   become: true
 
   roles:
-    # General Onboards
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    # NO onboard-sshd due to breaking clustering
-    - linux-onboard-fail2ban
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
+    # # General Onboards
+    # - linux-onboard-prepare-package-manager
+    # - linux-onboard-server-packages
+    # - linux-onboard-user
+    # - linux-onboard-directories
+    # # NO onboard-sshd due to breaking clustering
+    # - linux-onboard-fail2ban
+    # - linux-onboard-timezone
+    # - linux-onboard-telegraf
+    # - linux-onboard-firewall
+    # - linux-onboard-ca-trust
 
-    # Host Specific
-    - linux-setup-concept-proxmox
-    - linux-onboard-postfix-gmail
+    # # Host Specific
+    # - linux-setup-concept-proxmox
+    # - linux-onboard-postfix-gmail
     - linux-setup-host-pve

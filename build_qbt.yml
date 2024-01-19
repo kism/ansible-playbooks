@@ -2,25 +2,24 @@
   hosts: qbt
   gather_facts: true
   become: true
-  remote_user: ansible_svc
   vars:
     service_account: qbtuser
 
   roles:
     # General Onboards
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-server-sshd
-    - linux-onboard-fail2ban
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
-    - linux-onboard-motd
-    - linux-onboard-remove-snap
-    - linux-onboard-mullvad
+    # - linux-onboard-prepare-package-manager
+    # - linux-onboard-server-packages
+    # - linux-onboard-user
+    # - linux-onboard-directories
+    # - linux-onboard-server-sshd
+    # - linux-onboard-fail2ban
+    # - linux-onboard-timezone
+    # - linux-onboard-telegraf
+    # - linux-onboard-firewall
+    # - linux-onboard-ca-trust
+    # - linux-onboard-motd
+    # - linux-onboard-remove-snap
+    # - linux-onboard-mullvad
 
     # Host Specific
     - linux-setup-host-qbt

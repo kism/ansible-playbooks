@@ -4,3 +4,16 @@
     package:
       - mdadm
     state: latest
+
+- name: Copy mdadm config
+  ansible.builtin.copy:
+    src: files/mdadm.conf
+    dest: /etc/mdadm/mdadm.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Update initramfs
+  become: true
+  ansible.builtin.command:
+    cmd: update-initramfs -u

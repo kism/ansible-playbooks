@@ -116,8 +116,14 @@
   tags:
     - skip_ansible_lint
 
+# Remove ubuntu user
+
 - name: Ensure user ubuntu is disabled
   ansible.builtin.user:
     name: ubuntu
-    state: locked
-    shell: /usr/sbin/nologin
+    state: absent
+
+- name : Ensure old ubuntu home folder doesnt exist
+  ansible.builtin.file:
+    path: /home/ubuntu
+    state: absent

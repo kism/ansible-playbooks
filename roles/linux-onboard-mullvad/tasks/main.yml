@@ -1,13 +1,14 @@
 ---
 - name: Add Mullvad repository key
   ansible.builtin.apt_key:
-    url: https://mullvad.net/media/server/mullvad.gpg
+    url: https://repository.mullvad.net/deb/mullvad-keyring.asc
     state: present
 
 - name: Add Mullvad repository
   ansible.builtin.apt_repository:
-    repo: deb https://mullvad.net/download/deb stable main
+    repo: deb  https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
     state: present
+    filename: "mullvad"
 
 - name: Update apt cache
   ansible.builtin.apt:
