@@ -1,0 +1,6 @@
+---
+- name: Install mdadm
+  ansible.builtin.apt:
+    package:
+      - mdadm
+    state: latest

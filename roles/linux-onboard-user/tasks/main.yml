@@ -115,3 +115,9 @@
   changed_when: command_output.rc == 0
   tags:
     - skip_ansible_lint
+
+- name: Ensure user ubuntu is disabled
+  ansible.builtin.user:
+    name: ubuntu
+    state: locked
+    shell: /usr/sbin/nologin

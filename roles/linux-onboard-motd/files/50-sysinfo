@@ -1,0 +1,82 @@
+
+
+#!/bin/sh
+
+printf "\n"
+
+# Host
+printf "    Host: "
+printf "%s\n" $(hostname --fqdn)
+
+# OS information
+printf "      OS: "
+if [ -r /etc/os-release ]; then
+    . /etc/os-release
+    printf "%s\n" "$PRETTY_NAME"
+fi
+
+# Uptime
+printf "  Uptime: "
+uptime -p | sed 's/up //g'
+
+# Updates
+stamp="/var/lib/update-notifier/updates-available"
+if [ -r "$stamp" ]; then
+    printf " Updates: "
+    mystr=$(cat /var/lib/update-notifier/updates-available)
+    mystr=$(echo "$mystr" | sed '/Expanded Security Maintenance for Applications is not enabled./d')
+    mystr=$(echo "$mystr" | sed '/To see these additional updates/d')
+    mystr=$(echo "$mystr" | sed '/additional security updates can be applied with ESM Apps/d')
+    mystr=$(echo "$mystr" | sed '/Learn more about enabling ESM Apps service at/d')
+    mystr=$(echo "$mystr" | sed '/^$/d')
+    n_updates=$(echo "$mystr" | grep 'updates can be applied immediately' | awk '{print $1}')
+    n_updates_sec=$(echo "$mystr" | grep 'of these updates are standard security updates.' | awk '{print $1}')
+    printf "%s updates available" $n_updates
+    if [ -n "$n_updates_sec" ]; then
+        printf ", %s are security updates" $n_updates_sec
+    fi
+    printf "\n"
+fi
+
+# CPU Count
+printf "    CPUs: %s, (%s load)\n" "$(nproc --all)" "$(cat /proc/loadavg | awk '{print $1}')"
+
+# Memory Usage
+free_output=$(free -h --si)
+ram_space_free=$(echo "$free_output" | awk 'NR==2 {print $3}')
+ram_space_total=$(echo "$free_output" | awk 'NR==2 {print $2}')
+
+swap_space_free=$(echo "$free_output" | awk 'NR==3 {print $3}')
+swap_space_total=$(echo "$free_output" | awk 'NR==3 {print $2}')
+printf "  Memory: "
+printf "%s RAM (%s used)" $ram_space_total $ram_space_free
+if [ "$swap_space_total" != "0B" ]; then
+    printf ", %s swap (%s used) " $swap_space_total $swap_space_free
+fi
+printf "\n"
+
+# Disk Usage
+get_disk_usage() {
+    mountpath=$(echo $1 | tr -d ' ')
+    if $(mount | grep "$mountpath" >/dev/null); then
+        if $2; then
+            printf ", "
+        fi
+        df_output=$(df -h "$mountpath")
+        total_space=$(echo "$df_output" | awk 'NR==2 {print $2}')
+        space_used=$(echo "$df_output" | awk 'NR==2 {print $3}')
+        space_free=$(echo "$df_output" | awk 'NR==2 {print $4}')
+        percent_free=$(echo "$df_output" | awk 'NR==2 {print $5}' | tr -d '%')
+        printf "$1 %s of %s (%s%%)" $space_used $total_space $percent_free
+    fi
+}
+printf "   Space: "
+get_disk_usage "/" false
+get_disk_usage "/mnt/scratch" true
+printf "\n"
+
+# tmux
+TMUX_RUNNING="$(pgrep tmux)"
+if [ ! -z "$TMUX_RUNNING" ]; then
+    printf "    tmux: At least one user has tmux running\n"
+fi

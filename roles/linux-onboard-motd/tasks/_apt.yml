@@ -1,0 +1,29 @@
+- name: Check if update-motd package is installed
+  become: true
+  ansible.builtin.stat:
+    path: /etc/update-motd.d
+  register: dir_to_check
+
+- name: Print message if update-motd is installed
+  ansible.builtin.debug:
+    msg: "update-motd package is installed"
+  when: dir_to_check.stat.isdir is defined and dir_to_check.stat.isdir
+
+- name: Remove unwanted ubuntu motd files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/update-motd.d/10-help-text
+    - /etc/update-motd.d/50-motd-news
+    - /etc/update-motd.d/50-landscape-sysinfo
+    - /etc/update-motd.d/90-updates-available
+    - /etc/update-motd.d/91-release-upgrade
+  when: dir_to_check.stat.isdir is defined and dir_to_check.stat.isdir
+
+- name: Copy motd update files
+  ansible.builtin.copy:
+    src: files/
+    dest: /etc/update-motd.d/
+    mode: "0755"
+  when: dir_to_check.stat.isdir is defined and dir_to_check.stat.isdir

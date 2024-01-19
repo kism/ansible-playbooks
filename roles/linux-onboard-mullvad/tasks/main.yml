@@ -1,0 +1,19 @@
+---
+- name: Add Mullvad repository key
+  ansible.builtin.apt_key:
+    url: https://mullvad.net/media/server/mullvad.gpg
+    state: present
+
+- name: Add Mullvad repository
+  ansible.builtin.apt_repository:
+    repo: deb https://mullvad.net/download/deb stable main
+    state: present
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Mullvad VPN
+  ansible.builtin.apt:
+    name: mullvad-vpn
+    state: present

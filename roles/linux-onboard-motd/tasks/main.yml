@@ -1,0 +1,9 @@
+---
+- name: MOTD Ubuntu
+  ansible.builtin.include_tasks: _apt.yml
+  when: ansible_pkg_mgr == 'apt'
+
+- name: MOTD Redhat
+  ansible.builtin.include_tasks: _dnf.yml
+  when: ansible_pkg_mgr == 'dnf'
+
