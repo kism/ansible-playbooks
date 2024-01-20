@@ -20,10 +20,15 @@
     daemon_reload: true
     enabled: true
 
-- name: Mount /dev/md0 at /mnt/Quina
-  ansible.posix.mount:
-    path: /mnt/Quina
-    src: /dev/sdb
-    fstype: ext4
-    opts: "defaults,nofail,discard"
-    state: mounted
+# - name: Mount /dev/md0 at /mnt/Quina
+#   ansible.posix.mount:
+#     path: /mnt/Quina
+#     src: /dev/sdb
+#     fstype: ext4
+#     opts: "defaults,nofail,discard"
+#     state: mounted
+
+- name: Set hosts since this is on vpn
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: 10.42.0.23 influxdb2.kierangee.au
