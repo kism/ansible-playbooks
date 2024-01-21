@@ -6,3 +6,8 @@
     state: latest
   tags:
     - skip-ansible-lint
+
+- name: Add the wireguard module
+  community.general.modprobe:
+    name: wireguard
+    state: present

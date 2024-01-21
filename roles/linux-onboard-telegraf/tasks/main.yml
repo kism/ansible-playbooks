@@ -29,15 +29,14 @@
 - name: Setup telegraf on apt based hosts
   when: ansible_pkg_mgr == 'apt'
   block:
-    - name: Add InfluxDB APT GPG key
-      ansible.builtin.apt_key:
-        url: "https://repos.influxdata.com/influxdata-archive.key"
-        id: 7df8b07e
-        state: present
+    - name: Copy over apt key
+      ansible.builtin.get_url:
+        url: https://repos.influxdata.com/influxdata-archive.key
+        dest: /etc/apt/keyrings/influxdata-archive.key
 
     - name: Add Telegraf repository
       ansible.builtin.apt_repository:
-        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
         filename: "telegraf"
         state: present
 

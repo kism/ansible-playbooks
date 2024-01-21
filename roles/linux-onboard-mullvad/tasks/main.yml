@@ -1,12 +1,12 @@
 ---
-- name: Add Mullvad repository key
-  ansible.builtin.apt_key:
+- name: Copy over mullvad apt key
+  ansible.builtin.get_url:
     url: https://repository.mullvad.net/deb/mullvad-keyring.asc
-    state: present
+    dest: /etc/apt/keyrings/mullvad-keyring.asc
 
 - name: Add Mullvad repository
   ansible.builtin.apt_repository:
-    repo: deb  https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
+    repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
     state: present
     filename: "mullvad"
 

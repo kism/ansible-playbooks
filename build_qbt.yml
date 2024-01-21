@@ -18,8 +18,7 @@
     # - linux-onboard-firewall
     # - linux-onboard-ca-trust
     # - linux-onboard-motd
-    # - linux-onboard-remove-snap
-    # - linux-onboard-mullvad
+    - linux-onboard-mullvad
 
     # Host Specific
     - linux-setup-host-qbt
