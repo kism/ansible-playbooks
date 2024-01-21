@@ -1,1 +1,8 @@
 ---
+- name: Install Wireguard
+  ansible.builtin.apt:
+    package:
+      - wireguard-dkms
+    state: latest
+  tags:
+    - skip-ansible-lint
