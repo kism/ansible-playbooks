@@ -22,4 +22,4 @@
     - linux-setup-concept-baremetal
 
     # # Specific
-    # - linux-setup-host-helios64
+    - linux-setup-host-helios64
