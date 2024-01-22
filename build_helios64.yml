@@ -14,13 +14,14 @@
     # - linux-onboard-server-sshd
     # - linux-onboard-fail2ban
     # - linux-onboard-timezone
-    - linux-onboard-telegraf
+    # - linux-onboard-telegraf
     # - linux-onboard-firewall
     # - linux-onboard-ca-trust
 
     # Somewhat specific
-    - linux-setup-concept-baremetal
-    - linux-setup-concept-qbittorrent
+    # - linux-setup-concept-baremetal
+    # - linux-setup-concept-qbittorrent
+    - linux-onboard-mullvad
 
     # # Specific
-    - linux-setup-host-helios64
+    # - linux-setup-host-helios64

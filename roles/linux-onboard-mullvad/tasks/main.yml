@@ -1,14 +1,36 @@
 ---
-- name: Copy over mullvad apt key
-  ansible.builtin.get_url:
-    url: https://repository.mullvad.net/deb/mullvad-keyring.asc
-    dest: /etc/apt/keyrings/mullvad-keyring.asc
-
-- name: Add Mullvad repository
-  ansible.builtin.apt_repository:
-    repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
+- name: Install Wireguard
+  ansible.builtin.apt:
+    name: wireguard-dkms
     state: present
-    filename: "mullvad"
+
+- name: Setup mullvad repo on Ubuntu based hosts
+  when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Copy over mullvad apt key
+      ansible.builtin.get_url:
+        url: https://repository.mullvad.net/deb/mullvad-keyring.asc
+        dest: /etc/apt/keyrings/mullvad-keyring.asc
+
+    - name: Add Mullvad repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
+        state: present
+        filename: "mullvad"
+
+- name: Setup mullvad repo on Debian based hosts
+  when: ansible_distribution == 'Debian'
+  block:
+    - name: Add Mullvad APT GPG key
+      ansible.builtin.apt_key:
+        url: "https://repository.mullvad.net/deb/mullvad-keyring.asc"
+        state: present
+
+    - name: Add mullvad repository
+      ansible.builtin.apt_repository:
+        repo: "deb https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main"
+        filename: "mullvad"
+        state: present
 
 - name: Update apt cache
   ansible.builtin.apt:
