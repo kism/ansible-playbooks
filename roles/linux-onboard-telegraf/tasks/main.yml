@@ -26,8 +26,8 @@
         name: telegraf
         state: present
 
-- name: Setup telegraf on apt based hosts
-  when: ansible_pkg_mgr == 'apt'
+- name: Setup telegraf on Ubuntu based hosts
+  when: ansible_distribution == 'Ubuntu'
   block:
     - name: Copy over apt key
       ansible.builtin.get_url:
@@ -40,12 +40,28 @@
         filename: "telegraf"
         state: present
 
-    - name: Install a list of packages
-      ansible.builtin.apt:
-        install_recommends: false
-        pkg:
-          - telegraf
+- name: Setup telegraf on Debian based hosts
+  when: ansible_distribution == 'Debian'
+  block:
+    - name: Add InfluxDB APT GPG key
+      ansible.builtin.apt_key:
+        url: "https://repos.influxdata.com/influxdata-archive.key"
+        id: 7df8b07e
         state: present
+
+    - name: Add Telegraf repository
+      ansible.builtin.apt_repository:
+        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        filename: "telegraf"
+        state: present
+
+- name: Install telegraf package apt
+  ansible.builtin.apt:
+    install_recommends: false
+    pkg:
+      - telegraf
+    state: present
+  when: ansible_pkg_mgr == 'apt'
 
 - name: Setup telegraf hosts
   when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'apt'

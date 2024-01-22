@@ -16,7 +16,11 @@
     # - linux-onboard-firewall
     # - linux-onboard-ca-trust
 
-    # # Host Specific
+
+    # # Somewhat specific
+    # - linux-setup-concept-baremetal
     # - linux-setup-concept-proxmox
     # - linux-onboard-postfix-gmail
+
+    # # Host Specific
     - linux-setup-host-pve
