@@ -20,6 +20,7 @@
 
     # Somewhat specific
     - linux-setup-concept-baremetal
+    - linux-setup-concept-qbittorrent
 
     # # Specific
     - linux-setup-host-helios64
