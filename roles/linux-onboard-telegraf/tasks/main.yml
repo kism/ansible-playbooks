@@ -39,6 +39,14 @@
         repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
         filename: "telegraf"
         state: present
+      when: ansible_architecture == "x86_64"
+
+    - name: Add Telegraf repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        filename: "telegraf"
+        state: present
+      when: ansible_architecture == "arm64"
 
 - name: Setup telegraf on Debian based hosts
   when: ansible_distribution == 'Debian'

@@ -12,11 +12,19 @@
         url: https://repository.mullvad.net/deb/mullvad-keyring.asc
         dest: /etc/apt/keyrings/mullvad-keyring.asc
 
-    - name: Add Mullvad repository
+    - name: Add Mullvad repository x86_64
       ansible.builtin.apt_repository:
         repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
         state: present
         filename: "mullvad"
+      when: ansible_architecture == "x86_64"
+
+    - name: Add Mullvad repository arm64
+      ansible.builtin.apt_repository:
+        repo: deb [arch=arm64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
+        state: present
+        filename: "mullvad"
+      when: ansible_architecture == "arm64"
 
 - name: Setup mullvad repo on Debian based hosts
   when: ansible_distribution == 'Debian'
