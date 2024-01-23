@@ -22,7 +22,8 @@
     # - linux-setup-concept-baremetal
     # - linux-setup-concept-qbittorrent
     # - linux-onboard-mullvad
-    - linux-onboard-docker
+    # - linux-onboard-docker
+    - linux-onboard-docker-qbittorrent
 
     # # Specific
     # - linux-setup-host-helios64
