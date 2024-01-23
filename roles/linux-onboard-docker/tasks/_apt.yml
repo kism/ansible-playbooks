@@ -1,13 +1,70 @@
-- name: Copy the kgadmins root ca certificate rule Debian
-  ansible.builtin.copy:
-    src: files/kglan_root.cer
-    dest: /usr/local/share/ca-certificates/kglan_root.crt
-    owner: root
-    group: root
-    mode: "0444"
+- name: Remove unofficial packages
+  ansible.builtin.apt:
+    pkg:
+      - docker.io
+      - docker-compose
+      - docker-compose-v2
+      - docker-doc
+      - podman-docker    
+    state: absent  
 
-- name: Update CA Certs Debian
-  ansible.builtin.command:
-    cmd: "update-ca-certificates"
-  tags:
-    - skip_ansible_lint
+- name: Setup docker on Ubuntu based hosts
+  when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Copy over apt key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.gpg
+
+    - name: Add Docker repository x86_64
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
+        filename: "docker"
+        state: present
+      when: ansible_architecture == "x86_64"
+
+    - name: Add Docker repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
+        filename: "docker"
+        state: present
+      when: ansible_architecture == "arm64"      
+
+- name: Setup docker on Debian based hosts
+  when: ansible_distribution == 'Debian'
+  block:
+    - name: Add InfluxDB APT GPG key
+      ansible.builtin.apt_key:
+        url: "https://download.docker.com/linux/debian/gpg"
+        state: present
+
+    - name: Add Docker repository x86_64
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
+        filename: "docker"
+        state: present
+      when: ansible_architecture == "x86_64"
+
+    - name: Add Docker repository arm64
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
+        filename: "docker"
+        state: present
+      when: ansible_architecture == "arm64"
+
+- name: Install docker package apt
+  ansible.builtin.apt:
+    install_recommends: false
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+
+- name: Start docker service
+  ansible.builtin.systemd:
+    service: docker
+    state: running
+    enabled: true
