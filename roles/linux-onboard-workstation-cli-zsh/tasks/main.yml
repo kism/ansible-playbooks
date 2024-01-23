@@ -12,6 +12,7 @@
   ansible.builtin.copy:
     src: files/.zshrc
     dest: ~/.zshrc
+    mode: "660"
 
 - name: Configure zsh
   become: true

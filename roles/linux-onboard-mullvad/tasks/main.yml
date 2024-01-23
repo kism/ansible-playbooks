@@ -11,6 +11,9 @@
       ansible.builtin.get_url:
         url: https://repository.mullvad.net/deb/mullvad-keyring.asc
         dest: /etc/apt/keyrings/mullvad-keyring.asc
+        owner: root
+        group: root
+        mode: "0644"
 
     - name: Add Mullvad repository x86_64
       ansible.builtin.apt_repository:
@@ -24,7 +27,7 @@
         repo: deb [arch=arm64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
         state: present
         filename: "mullvad"
-      when: ansible_architecture == "arm64"
+      when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
 
 - name: Setup mullvad repo on Debian based hosts
   when: ansible_distribution == 'Debian'

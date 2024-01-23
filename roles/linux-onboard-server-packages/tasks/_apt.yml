@@ -15,3 +15,11 @@
       loop: "{{ packages_to_install }}"
       tags:
         - skip_ansible_lint # Happy for this to partly fail, some systems can't get all of these
+
+    - name: Install useful apps
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg:
+          - ca-certificates
+          - apt-transport-https
+        state: present

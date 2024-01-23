@@ -33,6 +33,9 @@
       ansible.builtin.get_url:
         url: https://repos.influxdata.com/influxdata-archive.key
         dest: /etc/apt/keyrings/influxdata-archive.key
+        owner: root
+        group: root
+        mode: "0644"
 
     - name: Add Telegraf repository
       ansible.builtin.apt_repository:
@@ -46,7 +49,7 @@
         repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
         filename: "telegraf"
         state: present
-      when: ansible_architecture == "arm64"
+      when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
 
 - name: Setup telegraf on Debian based hosts
   when: ansible_distribution == 'Debian'

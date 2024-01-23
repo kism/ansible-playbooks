@@ -13,6 +13,7 @@ packages_to_install:
   - tree
   - vim
   - wget
+  - gnupg2
 
 packages_to_remove:
   - cockpit

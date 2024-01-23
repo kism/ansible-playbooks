@@ -24,7 +24,7 @@
     dest: ~/.antigen/antigen.zsh
     owner: kism
     group: kism
-    mode: "0755"
+    mode: "0770"
 
 - name: Copy bash config
   ansible.builtin.copy:

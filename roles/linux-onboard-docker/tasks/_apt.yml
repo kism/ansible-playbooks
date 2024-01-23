@@ -5,52 +5,39 @@
       - docker-compose
       - docker-compose-v2
       - docker-doc
-      - podman-docker    
-    state: absent  
+      - podman-docker
+    state: absent
 
-- name: Setup docker on Ubuntu based hosts
-  when: ansible_distribution == 'Ubuntu'
-  block:
-    - name: Copy over apt key
-      ansible.builtin.get_url:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        dest: /etc/apt/keyrings/docker.gpg
+- name: debug
+  ansible.builtin.debug:
+    msg: "{{ ansible_architecture }} {{ ansible_distribution | lower }}"
 
-    - name: Add Docker repository x86_64
-      ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
-        filename: "docker"
-        state: present
-      when: ansible_architecture == "x86_64"
+- name: Copy over apt key Ubuntu
+  ansible.builtin.get_url:
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    dest: /tmp/docker.gpg
+    owner: root
+    group: root
+    mode: "0644"
 
-    - name: Add Docker repository
-      ansible.builtin.apt_repository:
-        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
-        filename: "docker"
-        state: present
-      when: ansible_architecture == "arm64"      
+- name: De-Armor Docker GPG key
+  ansible.builtin.shell:
+    cmd: gpg --dearmor < /tmp/docker.gpg > /etc/apt/keyrings/docker.gpg
+  changed_when: true
 
-- name: Setup docker on Debian based hosts
-  when: ansible_distribution == 'Debian'
-  block:
-    - name: Add InfluxDB APT GPG key
-      ansible.builtin.apt_key:
-        url: "https://download.docker.com/linux/debian/gpg"
-        state: present
+- name: Add Docker repository x86_64
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    filename: "docker"
+    state: present
+  when: ansible_architecture == "x86_64"
 
-    - name: Add Docker repository x86_64
-      ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
-        filename: "docker"
-        state: present
-      when: ansible_architecture == "x86_64"
-
-    - name: Add Docker repository arm64
-      ansible.builtin.apt_repository:
-        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution | lower }} stable"
-        filename: "docker"
-        state: present
-      when: ansible_architecture == "arm64"
+- name: Add Docker repository arm64
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    filename: "docker"
+    state: present
+  when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
 
 - name: Install docker package apt
   ansible.builtin.apt:
@@ -66,5 +53,5 @@
 - name: Start docker service
   ansible.builtin.systemd:
     service: docker
-    state: running
+    state: started
     enabled: true
