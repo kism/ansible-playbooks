@@ -73,7 +73,7 @@
 - name: Adding existing user kism to groups
   ansible.builtin.user:
     name: kism
-    groups: "kgadmins, content_private, content_public, backup_svc"
+    groups: "kgadmins, content_private, content_public, backup_svc, qbtuser"
     append: true
 
 - name: Add lanprivate account to groups
