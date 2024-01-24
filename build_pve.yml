@@ -9,7 +9,7 @@
     - configure-server-packages
     - configure-user
     - configure-directories
-    - configure-server-sshd
+    - configure-sshd
     - configure-timezone
     - configure-telegraf
     - configure-firewall

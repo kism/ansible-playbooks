@@ -20,7 +20,7 @@
     - configure-server-packages
     - configure-user
     - configure-directories
-    - configure-server-sshd
+    - configure-sshd
     - configure-timezone
     # - configure-telegraf # No telegraf for test
     - configure-firewall
