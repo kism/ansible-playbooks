@@ -17,3 +17,12 @@
     mode: "0660"
     owner: qbtuser
     group: qbtuser
+
+- name: Allow qBittorrent through firewalld
+  ansible.posix.firewalld:
+    service: qbittorrent
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>qBittorrent</short>
+  <description>qBittorrent is a cross-platform free and open-source BitTorrent client written in native C++.</description>
+  <port protocol="udp" port="6881"/>
+  <port protocol="tcp" port="6881"/>
+  <port protocol="tcp" port="8080"/>
+</service>
