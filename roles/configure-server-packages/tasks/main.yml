@@ -1,3 +1,4 @@
+---
 - name: Install DNF Packages
   ansible.builtin.include_tasks: _dnf.yml
   when: ansible_pkg_mgr == 'dnf'

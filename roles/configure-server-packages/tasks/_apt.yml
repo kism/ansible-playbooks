@@ -1,25 +1,39 @@
-- name: Install apt Packages
-  when: ansible_pkg_mgr == 'apt'
-  block:
-    - name: Update APT
-      ansible.builtin.apt:
-        update_cache: true
-        upgrade: full
+---
+- name: Update APT
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: full
 
-    - name: Install useful apps
-      ansible.builtin.apt:
-        install_recommends: false
-        pkg: "{{ item }}"
-        state: present
-      ignore_errors: true
-      loop: "{{ packages_to_install }}"
-      tags:
-        - skip_ansible_lint # Happy for this to partly fail, some systems can't get all of these
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  register: package_facts
 
-    - name: Install useful apps
-      ansible.builtin.apt:
-        install_recommends: false
-        pkg:
-          - ca-certificates
-          - apt-transport-https
-        state: present
+- name: Allow everything and enable UFW
+  community.general.ufw:
+    state: disabled
+  when: "'ufw' in package_facts.ansible_facts.packages"
+
+- name: Remove packages that I want to avoid
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ packages_to_remove }}"
+
+- name: Install useful apps
+  ansible.builtin.apt:
+    install_recommends: false
+    pkg: "{{ item }}"
+    state: present
+  ignore_errors: true
+  loop: "{{ packages_to_install }}"
+  tags:
+    - skip_ansible_lint # Happy for this to partly fail, some systems can't get all of these
+
+- name: Install useful apps
+  ansible.builtin.apt:
+    install_recommends: false
+    pkg:
+      - ca-certificates
+      - apt-transport-https
+    state: present

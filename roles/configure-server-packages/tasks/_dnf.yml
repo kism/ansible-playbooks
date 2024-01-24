@@ -1,3 +1,4 @@
+---
 - name: Remove packages that I want to avoid
   ansible.builtin.dnf:
     name: "{{ item }}"
