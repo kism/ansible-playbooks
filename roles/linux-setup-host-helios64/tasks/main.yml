@@ -1,17 +1,12 @@
 ---
-- name: Configure fancontrol
-  ansible.builtin.lineinfile:
-    path: /etc/fancontrol
-    regexp: "^FCTEMPS="
-    line: "FCTEMPS=/dev/fan-p6/pwm1=/dev/thermal-board/temp1_input /dev/fan-p7/pwm1=/dev/thermal-board/temp1_input"
-  notify: restart-fancontrol
+- name: Include fancontrol
+  ansible.builtin.include_tasks:
+    file: 01-fancontrol.yml
 
-# Install hd-idle
-- name: Install hd-idle
-  ansible.builtin.apt:
-    deb: https://github.com/adelolmo/hd-idle/releases/download/v1.21/hd-idle_1.21_arm64.deb
+- name: Include hd-idle
+  ansible.builtin.include_tasks:
+    file: 02-hd-idle.yml
 
-- name: Ensure a locale exists
-  community.general.locale_gen:
-    name: en_AU.UTF-8
-    state: present
+- name: Include reminders
+  ansible.builtin.include_tasks:
+    file: 03-reminders.yml

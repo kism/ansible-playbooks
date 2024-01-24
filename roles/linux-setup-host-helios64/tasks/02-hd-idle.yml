@@ -1,0 +1,4 @@
+---
+- name: Install hd-idle
+  ansible.builtin.apt:
+    deb: https://github.com/adelolmo/hd-idle/releases/download/v1.21/hd-idle_1.21_arm64.deb

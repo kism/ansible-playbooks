@@ -2,3 +2,18 @@
   ansible.builtin.systemd:
     service: fancontrol
     state: restarted
+
+- name: Restart smbd
+  ansible.builtin.systemd:
+    name: smb
+    state: restarted
+
+- name: Restart smbd
+  ansible.builtin.systemd:
+    name: ufw
+    state: restarted
+
+- name: Restart avahi
+  ansible.builtin.systemd:
+    name: avahi-daemon
+    state: restarted

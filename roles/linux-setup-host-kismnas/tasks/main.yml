@@ -1,5 +1,2 @@
-- name: Samba Setup
-  ansible.builtin.include_tasks: 01-samba.yml
-
 - name: Reminders
-  ansible.builtin.include_tasks: 02-reminders.yml
+  ansible.builtin.include_tasks: 01-reminders.yml
