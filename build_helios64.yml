@@ -24,6 +24,7 @@
     # - linux-onboard-mullvad
     # - linux-onboard-docker
     - linux-onboard-docker-qbittorrent
+    - linux-onboard-samba
 
     # # Specific
     # - linux-setup-host-helios64

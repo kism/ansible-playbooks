@@ -18,5 +18,8 @@
     # - linux-onboard-firewall
     # - linux-onboard-ca-trust
 
+    # Somewhat specific
+    - linux-onboard-samba
+
     # Host Specific
     - linux-setup-host-kismnas
