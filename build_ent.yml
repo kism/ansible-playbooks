@@ -6,17 +6,19 @@
     service_account: kism
 
   roles:
-    # General Onboards
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-server-sshd
-    - linux-onboard-fail2ban
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
+    # Standard onboarding
+    - configure-prepare-package-manager
+    - configure-server-packages
+    - configure-user
+    - configure-directories
+    - configure-server-sshd
+    - configure-timezone
+    - configure-telegraf
+    - configure-firewall
+    - configure-ca-trust
+
+    # Purpose specific
+    - configure-fail2ban
 
     # Host Specific
     - linux-setup-host-ent

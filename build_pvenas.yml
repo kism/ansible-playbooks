@@ -4,7 +4,7 @@
   become: true
 
   roles:
-    # General Onboards
+    # Standard onboarding
     - linux-onboard-prepare-package-manager
     - linux-onboard-server-packages
     - linux-onboard-user
@@ -17,7 +17,7 @@
     - linux-onboard-ca-trust
 
 
-    # # Somewhat specific
+    # Purpose specific
     # - linux-setup-concept-baremetal
     # - linux-setup-concept-proxmox
     # - linux-onboard-postfix-gmail

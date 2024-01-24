@@ -9,12 +9,12 @@
     service_account: kism
 
   roles:
-    # General Onboards
+    # Standard onboarding
     - linux-onboard-prepare-package-manager
     - linux-onboard-workstation-packages
     - linux-onboard-ca-trust
 
-    # workstation specific
+    # Purpose specific
     - linux-onboard-workstation-cli-bash
     - linux-onboard-workstation-cli-htop
     - linux-onboard-workstation-cli-nvim

@@ -6,18 +6,18 @@
     service_account: qbtuser
 
   roles:
-    # General Onboards
-    # - linux-onboard-prepare-package-manager
-    # - linux-onboard-server-packages
-    # - linux-onboard-user
-    # - linux-onboard-directories
-    # - linux-onboard-server-sshd
-    # - linux-onboard-fail2ban
-    # - linux-onboard-timezone
-    # - linux-onboard-telegraf
-    # - linux-onboard-firewall
-    # - linux-onboard-ca-trust
-    # - linux-onboard-motd
+    # Standard onboarding
+    - linux-onboard-prepare-package-manager
+    - linux-onboard-server-packages
+    - linux-onboard-user
+    - linux-onboard-directories
+    - linux-onboard-server-sshd
+    - linux-onboard-fail2ban
+    - linux-onboard-timezone
+    - linux-onboard-telegraf
+    - linux-onboard-firewall
+    - linux-onboard-ca-trust
+    - linux-onboard-motd
     - linux-onboard-mullvad
 
     # Host Specific

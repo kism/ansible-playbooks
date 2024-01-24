@@ -15,7 +15,7 @@
   gather_facts: true
   become: true
   roles:
-    # General Onboards
+    # Standard onboarding
     - linux-onboard-prepare-package-manager
     - linux-onboard-server-packages
     - linux-onboard-user
@@ -27,6 +27,8 @@
     - linux-onboard-firewall
     - linux-onboard-ca-trust
     - linux-onboard-nginx
+
+    # Purpose specific
 
     # Host Specific
     - linux-setup-concept-archivepodcast

@@ -6,7 +6,7 @@
     service_account: kism
 
   roles:
-    # General Onboards
+    # Standard onboarding
     - linux-onboard-prepare-package-manager
     - linux-onboard-server-packages
     - linux-onboard-user
@@ -17,6 +17,8 @@
     - linux-onboard-telegraf
     - linux-onboard-firewall
     - linux-onboard-ca-trust
+
+    # Purpose specific
     - linux-onboard-nginx
 
     # Host Specific
