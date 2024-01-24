@@ -10,6 +10,7 @@ services:
       - WEBUI_PORT=8080
     volumes:
       - /opt/qbittorrent/config:/config
+      - /opt/qbittorrent/watch:/watch
       - /mnt/Quina:/downloads
     ports:
       - 8080:8080

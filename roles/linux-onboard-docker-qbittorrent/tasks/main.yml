@@ -9,7 +9,7 @@
   with_items:
     - /opt/qbittorrent
     - /opt/qbittorrent/config
-
+    - /opt/qbittorrent/watch
 - name: Copy docker-compose.yml
   ansible.builtin.copy:
     src: files/docker-compose.yml
