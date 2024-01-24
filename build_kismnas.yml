@@ -7,7 +7,7 @@
 
   roles:
     # Standard server onboarding
-    - configure-prepare-package-manager
+    - configure-package-manager
     - configure-server-packages
     - configure-user
     - configure-directories
