@@ -9,8 +9,6 @@ Install collections
 ```bash
 ansible-galaxy collection install community.general
 ansible-galaxy collection install ansible.posix
-ansible-galaxy collection install ansible.windows
-ansible-galaxy collection install community.windows
 ```
 
 Running on macos
@@ -28,3 +26,10 @@ echo password > /tmp/ansiblevaultpassword
 ansible-vault encrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ```
+
+
+do later
+
+```bash
+ansible-galaxy collection install ansible.windows
+ansible-galaxy collection install community.windows```
