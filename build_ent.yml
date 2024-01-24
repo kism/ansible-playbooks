@@ -6,7 +6,7 @@
     service_account: kism
 
   roles:
-    # Standard onboarding
+    # Standard server onboarding
     - configure-prepare-package-manager
     - configure-server-packages
     - configure-user
@@ -16,6 +16,7 @@
     - configure-telegraf
     - configure-firewall
     - configure-ca-trust
+    - configure-motd
 
     # Purpose specific
     - configure-fail2ban

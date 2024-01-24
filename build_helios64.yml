@@ -6,25 +6,25 @@
     service_account: kism
 
   roles:
-    # Standard onboarding
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-server-sshd
-    - linux-onboard-fail2ban
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
+    # Standard server onboarding
+    - configure-prepare-package-manager
+    - configure-server-packages
+    - configure-user
+    - configure-directories
+    - configure-server-sshd
+    - configure-timezone
+    - configure-telegraf
+    - configure-firewall
+    - configure-ca-trust
+    - configure-motd
 
     # Purpose specific
-    - linux-setup-concept-baremetal
-    - linux-setup-concept-qbittorrent
-    - linux-onboard-mullvad
-    - linux-onboard-docker
-    - linux-onboard-docker-qbittorrent
-    - linux-onboard-samba
+    - configure-concept-baremetal
+    - configure-qbittorrent
+    - configure-mullvad
+    - configure-docker
+    - configure-docker-qbittorrent
+    - configure-samba
 
     # Host specific
     - linux-setup-host-helios64

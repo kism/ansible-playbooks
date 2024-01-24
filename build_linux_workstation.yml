@@ -10,7 +10,7 @@
     service_account_name: "Kieran Gee"
 
   roles:
-    # Standard onboarding
+    # Standard workstation onboarding
     - linux-onboard-prepare-package-manager
     - linux-onboard-directories
     - linux-onboard-timezone

@@ -4,23 +4,23 @@
   become: true
 
   roles:
-    # Standard onboarding
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    # NO onboard-sshd due to breaking clustering
-    - linux-onboard-fail2ban
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
+    # Standard server onboarding
+    - configure-prepare-package-manager
+    - configure-server-packages
+    - configure-user
+    - configure-directories
+    - configure-server-sshd
+    - configure-timezone
+    - configure-telegraf
+    - configure-firewall
+    - configure-ca-trust
+    - configure-motd
 
 
     # Purpose specific
-    # - linux-setup-concept-baremetal
-    # - linux-setup-concept-proxmox
-    # - linux-onboard-postfix-gmail
+    - configure-concept-baremetal
+    - configure-proxmox
+    - configure-postfix-gmail
 
     # Host specific
     - linux-setup-host-pvenas

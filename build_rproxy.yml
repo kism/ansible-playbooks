@@ -4,20 +4,21 @@
   become: true
 
   roles:
-    # Standard onboarding
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-server-sshd
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
+    # Standard server onboarding
+    - configure-prepare-package-manager
+    - configure-server-packages
+    - configure-user
+    - configure-directories
+    - configure-server-sshd
+    - configure-timezone
+    - configure-telegraf
+    - configure-firewall
+    - configure-ca-trust
+    - configure-motd
 
     # Purpose specific
-    - linux-onboard-fail2ban
-    - linux-onboard-nginx
+    - configure-fail2ban
+    - configure-nginx
 
     # Host Specific
     - linux-setup-host-rproxy

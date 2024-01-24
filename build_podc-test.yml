@@ -15,20 +15,21 @@
   gather_facts: true
   become: true
   roles:
-    # Standard onboarding
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-server-sshd
-    - linux-onboard-fail2ban
-    - linux-onboard-timezone
-    # No telegraf for test
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
-    - linux-onboard-nginx
+    # Standard server onboarding
+    - configure-prepare-package-manager
+    - configure-server-packages
+    - configure-user
+    - configure-directories
+    - configure-server-sshd
+    - configure-timezone
+    # - configure-telegraf # No telegraf for test
+    - configure-firewall
+    - configure-ca-trust
+    - configure-motd
 
     # Purpose specific
+    - configure-nginx
+    - configure-fail2ban
 
     # Host Specific
     - linux-setup-concept-archivepodcast

@@ -14,19 +14,24 @@
   gather_facts: true
   become: true
   roles:
-    # Standard onboarding
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-server-packages
-    - linux-onboard-user
-    - linux-onboard-directories
-    - linux-onboard-server-sshd
-    - linux-onboard-timezone
-    - linux-onboard-telegraf
-    - linux-onboard-firewall
-    - linux-onboard-ca-trust
-    - linux-onboard-nginx
-    - linux-onboard-fail2ban
+    # Standard server onboarding
+    - configure-prepare-package-manager
+    - configure-server-packages
+    - configure-user
+    - configure-directories
+    - configure-server-sshd
+    - configure-timezone
+    - configure-telegraf
+    - configure-firewall
+    - configure-ca-trust
+    - configure-motd
+
+    # Purpose specific
+    - configure-nginx
+    - configure-fail2ban
 
     # Host Specific, required for switchover
     - linux-setup-concept-archivepodcast
-    - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }
+    - {
+        role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets,
+      }
