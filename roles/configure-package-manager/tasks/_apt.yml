@@ -1,4 +1,3 @@
-- name: Ensure a locale exists
-  community.general.locale_gen:
-    name: en_AU.UTF-8
-    state: present
+- name: Update APT cache
+  ansible.builtin.apt:
+    update_cache: true

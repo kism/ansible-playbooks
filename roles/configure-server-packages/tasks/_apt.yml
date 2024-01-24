@@ -1,7 +1,6 @@
 ---
 - name: Update APT
   ansible.builtin.apt:
-    update_cache: true
     upgrade: full
 
 - name: Gather package facts
@@ -9,7 +8,7 @@
     manager: auto
   register: package_facts
 
-- name: Allow everything and enable UFW
+- name: Disable ufw
   community.general.ufw:
     state: disabled
   when: "'ufw' in package_facts.ansible_facts.packages"

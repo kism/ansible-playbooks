@@ -1,0 +1,8 @@
+- name: Ensure a locale exists
+  community.general.locale_gen:
+    name: en_AU.UTF-8
+    state: present
+
+- name: Configure locale to en_AU.UTF-8 and language to en_AU.UTF-8
+  ansible.builtin.command:
+    cmd: localectl set-locale LANG=en_AU.UTF-8 LANGUAGE=en_AU.UTF-8
