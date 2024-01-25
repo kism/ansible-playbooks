@@ -19,6 +19,7 @@
     - configure-motd
 
     # Purpose specific
+    - configure-concept-sd-rootfs
     - configure-concept-baremetal
     - configure-qbittorrent
     - configure-mullvad
