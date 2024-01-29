@@ -5,4 +5,4 @@
 
 - name: Run sshd setup on non-pve hosts
   ansible.builtin.include_tasks: 01-nonpve.yml
-  when: not folder_status.stat.exists
+  when: not pve_status.stat.exists
