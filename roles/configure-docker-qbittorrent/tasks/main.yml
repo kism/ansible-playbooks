@@ -26,3 +26,4 @@
     state: enabled
   notify:
     - Restart firewalld
+    - Restart docker

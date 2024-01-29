@@ -1,0 +1,9 @@
+- name: Restart firewalld
+  ansible.builtin.systemd:
+    name: firewalld
+    state: restarted
+
+- name: Restart docker
+  ansible.builtin.systemd:
+    name: docker
+    state: reloaded
