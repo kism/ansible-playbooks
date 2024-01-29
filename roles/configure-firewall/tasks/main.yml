@@ -4,6 +4,5 @@
   register: package_facts
 
 - name: Run firewalld tasks when firewalld is installed
-  ansible.builtin.include_tasks:
-    path: 01-firewalld.yml
+  ansible.builtin.include_tasks: 01-firewalld.yml
   when: "'firewalld' in package_facts.ansible_facts.packages"

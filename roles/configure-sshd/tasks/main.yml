@@ -4,6 +4,5 @@
   register: pve_status
 
 - name: Run sshd setup on non-pve hosts
-  ansible.builtin.include_tasks:
-    path: 01-nonpve.yml
+  ansible.builtin.include_tasks: 01-nonpve.yml
   when: not folder_status.stat.exists

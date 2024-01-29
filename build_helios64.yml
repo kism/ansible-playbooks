@@ -21,11 +21,10 @@
     # Purpose specific
     - configure-concept-sd-rootfs
     - configure-concept-baremetal
-    - configure-qbittorrent
     - configure-mullvad
     - configure-docker
     - configure-docker-qbittorrent
     - configure-samba
 
     # Host specific
-    - linux-setup-host-helios64
+    - host-configure-helios64
