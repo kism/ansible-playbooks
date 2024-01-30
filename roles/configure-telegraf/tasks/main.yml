@@ -109,6 +109,6 @@
     - name: Start and enable telegraf service
       ansible.builtin.systemd:
         name: telegraf
+        state: started
         enabled: true
-      notify:
-        - Restart telegraf
+        
