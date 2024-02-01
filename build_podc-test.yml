@@ -21,7 +21,7 @@
     - configure-user
     - configure-directories
     - configure-sshd
-    - configure-timezone
+    - configure-locale
     # - configure-telegraf # No telegraf for test
     - configure-firewall
     - configure-ca-trust
