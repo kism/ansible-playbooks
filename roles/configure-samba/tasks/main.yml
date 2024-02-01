@@ -113,3 +113,12 @@
     - samba
     - mdns
   when: ansible_distribution_release == 'bullseye'
+
+- name: Non better place, internet archive downloader
+  ansible.builtin.get_url:
+    url: https://archive.org/download/ia-pex/ia
+    dest: /usr/local/bin/ia
+    owner: root
+    group: root
+    mode: "0755"
+    
