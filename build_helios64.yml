@@ -19,12 +19,12 @@
     - configure-motd
 
     # Purpose specific
-    # - configure-concept-sd-rootfs
-    # - configure-concept-baremetal
-    # - configure-mullvad
-    # - configure-docker
-    # - configure-docker-qbittorrent
+    - configure-concept-sd-rootfs
+    - configure-concept-baremetal
+    - configure-mullvad
+    - configure-docker
+    - configure-docker-qbittorrent
     - configure-samba
 
     # Host specific
-    # - host-configure-helios64
+    - host-configure-helios64
