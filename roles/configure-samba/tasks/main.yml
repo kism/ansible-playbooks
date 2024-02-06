@@ -68,7 +68,7 @@
     - smb
     - wsdd
     - avahi-daemon
-  when: ansible_distribution_release != 'bullseye'
+  when: ansible_distribution_release != 'Bullseye'
 
 - name: Start and enable services bullseye
   ansible.builtin.systemd:
@@ -79,7 +79,7 @@
     - smbd
     # - wsdd
     - avahi-daemon
-  when: ansible_distribution_release == 'bullseye'
+  when: ansible_distribution_release == 'Bullseye'
 
 - name: Set public as default policy
   ansible.builtin.command:
@@ -121,4 +121,3 @@
     owner: root
     group: root
     mode: "0755"
-    

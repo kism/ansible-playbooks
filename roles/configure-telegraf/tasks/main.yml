@@ -29,7 +29,7 @@
 - name: Setup telegraf on Ubuntu based hosts
   when: ansible_distribution == 'Ubuntu'
   block:
-    - name: Copy over apt key
+    - name: Copy over apt key Ubuntu
       ansible.builtin.get_url:
         url: https://repos.influxdata.com/influxdata-archive.key
         dest: /etc/apt/keyrings/influxdata-archive.key
@@ -37,16 +37,16 @@
         group: root
         mode: "0644"
 
-    - name: Add Telegraf repository
+    - name: Add Telegraf repository Ubuntu amd64
       ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main"
         filename: "telegraf"
         state: present
       when: ansible_architecture == "x86_64"
 
-    - name: Add Telegraf repository
+    - name: Add Telegraf repository Ubuntu arm64
       ansible.builtin.apt_repository:
-        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main"
         filename: "telegraf"
         state: present
       when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
@@ -54,15 +54,15 @@
 - name: Setup telegraf on Debian based hosts
   when: ansible_distribution == 'Debian'
   block:
-    - name: Add InfluxDB APT GPG key
+    - name: Add InfluxDB APT GPG key Debian
       ansible.builtin.apt_key:
         url: "https://repos.influxdata.com/influxdata-archive.key"
         id: 7df8b07e
         state: present
 
-    - name: Add Telegraf repository
+    - name: Add Telegraf repository Debian
       ansible.builtin.apt_repository:
-        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main"
         filename: "telegraf"
         state: present
 
@@ -111,4 +111,3 @@
         name: telegraf
         state: started
         enabled: true
-        

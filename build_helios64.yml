@@ -2,6 +2,7 @@
   hosts: helios64
   gather_facts: true
   become: true
+  remote_user: ansible_svc
   vars:
     service_account: kism
 
