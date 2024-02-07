@@ -1,0 +1,14 @@
+- name: Copy my netplan config
+  ansible.builtin.copy:
+    src: files/helios.yml
+    dest: /etc/netplan/
+    mode: "0600"
+    owner: root
+    group: root
+  notify: Apply netplan
+
+- name: Remove default netplan
+  ansible.builtin.file:
+    path: /etc/netplan/armbian-default.yml
+    state: absent
+  notify: Apply netplan

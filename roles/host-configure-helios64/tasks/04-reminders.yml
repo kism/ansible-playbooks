@@ -1,6 +1,6 @@
 ---
 - name: Reminder
   ansible.builtin.debug:
-    msg: 
+    msg:
       - Add samba users manually
       - smbpasswd -a kism
