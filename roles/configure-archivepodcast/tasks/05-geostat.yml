@@ -130,10 +130,10 @@
     mode: "0644"
   notify: Restart logrotate
 
-- name: Setup cron job for replaceing database
+- name: Setup cron job for updating geoip database
   ansible.builtin.cron:
     name: Update GeoLite2-City.mmdb
     minute: 20
     hour: 4
     day: 2
-    job: "wget -P /tmp/geoip.tgz \"https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz\" && tar -xf /tmp/geoip.tgz -C /opt/geostat --wildcards --strip-components=1 '*.mmdb' && systemctl restart geostat"
+    job: "rm -rf /tmp/geoip.tgz ; wget -O /tmp/geoip.tgz \"https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz\" && tar -xf /tmp/geoip.tgz -C /opt/geostat --wildcards --strip-components=1 '*.mmdb' && systemctl restart geostat"
