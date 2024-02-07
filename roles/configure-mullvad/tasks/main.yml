@@ -3,6 +3,13 @@
   ansible.builtin.apt:
     name: wireguard-dkms
     state: present
+  when: ansible_distribution == "Debian" and ansible_distribution_release == "Bullseye"
+
+- name: Install Wireguard
+  ansible.builtin.apt:
+    name: wireguard
+    state: present
+  when: ansible_distribution == "Debian" and ansible_distribution_release != "Bullseye"
 
 - name: Setup mullvad repo on Ubuntu based hosts
   when: ansible_distribution == 'Ubuntu'
