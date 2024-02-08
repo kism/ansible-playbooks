@@ -10,8 +10,9 @@
     - /opt/qbittorrent
     - /opt/qbittorrent/config
     - /opt/qbittorrent/watch
+
 - name: Copy docker-compose.yml
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: files/docker-compose.yml
     dest: /opt/qbittorrent/
     mode: "0660"

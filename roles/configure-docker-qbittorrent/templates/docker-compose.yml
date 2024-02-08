@@ -1,0 +1,37 @@
+---
+version: "3"
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8080:8080 # qBittorrent webui
+      - 6881:6881 # qBittorrent listening port
+      - 6881:6881/udp # qBittorrent listening port/udp
+    environment:
+      - VPN_SERVICE_PROVIDER=mullvad
+      - OPENVPN_USER={{ mullvad_user }}
+      - SERVER_CITIES=Singapore
+      - FIREWALL_VPN_INPUT_PORTS=6881
+      - PUID=1086
+      - PGID=1086
+      - TZ=Australia/Perth
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Australia/Perth
+      - WEBUI_PORT=8080
+    volumes:
+      - /opt/qbittorrent/config:/config
+      - /opt/qbittorrent/watch:/watch
+      - /mnt/Quina:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
