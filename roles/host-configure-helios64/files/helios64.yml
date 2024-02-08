@@ -4,8 +4,8 @@ network:
     end0:
       match:
         macaddress: 64:62:66:d0:04:7e
-      set-name: end0
+      set-name: eth0
     end1:
       match:
         macaddress: 64:62:66:d0:04:7f
-      set-name: end1
+      set-name: eth1
