@@ -31,9 +31,9 @@ all:
     podc-test:
       ansible_host: test.podc.kg.lan
       timezone: awst
-    qbt:
-      ansible_host: qbt.kg.lan
-      timezone: awst
+    # qbt:
+    #   ansible_host: qbt.kg.lan
+    #   timezone: awst
     helios64:
       ansible_host: helios64.ira.mil.ie
       timezone: awst
