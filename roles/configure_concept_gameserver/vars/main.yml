@@ -1,4 +1,4 @@
 ---
-users:
+configure_concept_gameserver_users:
   - kism
   - skibisky

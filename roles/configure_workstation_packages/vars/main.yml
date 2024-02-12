@@ -1,5 +1,5 @@
 ---
-packages_apt:
+configure_workstation_packages_apt:
   - curl
   - git
   - htop
@@ -14,7 +14,7 @@ packages_apt:
   - wget
   - zsh
 
-packages_dnf:
+configure_workstation_packages_dnf:
   - curl
   - figlet
   - git
@@ -32,7 +32,7 @@ packages_dnf:
   - wget
   - zsh
 
-packages_pacman:
+configure_workstation_packages_pacman:
   - curl
   - git
   - htop
@@ -47,7 +47,7 @@ packages_pacman:
   - wget
   - zsh
 
-packages_brew:
+configure_workstation_packages_brew:
   - coreutils
   - curl
   - git
@@ -62,7 +62,7 @@ packages_brew:
   - wget
   - zsh
 
-packages_pkg:
+configure_workstation_packages_pkg:
   - curl
   - git
   - htop

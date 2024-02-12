@@ -4,7 +4,7 @@
   connection: local
   gather_facts: true
   become: false
-  become_method: su
+  become_method: ansible.builtin.su
   vars:
     timezone: awst
     service_account: kism

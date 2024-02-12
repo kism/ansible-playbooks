@@ -1,6 +1,6 @@
 ---
 - name: Install packages for pacman
   community.general.pacman:
-    name: "{{ packages_pacman }}"
+    name: "{{ configure_workstation_packages_pacman }}"
     state: latest
     update_cache: true

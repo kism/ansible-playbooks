@@ -1,5 +1,5 @@
 ---
-packages_to_install:
+configure_server_packages_to_install:
   - cronie
   - file
   - git
@@ -18,7 +18,7 @@ packages_to_install:
   - firewalld
   - pipx
 
-packages_to_remove:
+configure_server_packages_to_remove:
   - cockpit
   - cups
   - libwayland-client

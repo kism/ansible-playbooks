@@ -3,13 +3,13 @@
   ansible.builtin.dnf:
     name: "{{ item }}"
     state: absent
-  loop: "{{ packages_to_remove }}"
+  loop: "{{ configure_server_packages_to_remove }}"
 
 - name: Install useful apps
   ansible.builtin.dnf:
     name: "{{ item }}"
     state: present
   ignore_errors: true
-  loop: "{{ packages_to_install }}"
+  loop: "{{ configure_server_packages_to_install }}"
   tags:
     - skip_ansible_lint # Happy for this to partly fail, some systems can't get all of these
