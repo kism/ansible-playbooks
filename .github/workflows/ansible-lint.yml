@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run ansible-lint
-        uses: ansible/ansible-lint@main # or version tag instead of 'main'
 
       - name: Install Ansible
         run: sudo apt install ansible -y
@@ -21,3 +19,6 @@ jobs:
 
       - name: Install Ansible-Galaxy Requirements
         run: ansible-galaxy collection install ansible.posix
+
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@main # or version tag instead of 'main'
