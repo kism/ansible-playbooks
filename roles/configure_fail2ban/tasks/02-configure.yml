@@ -1,6 +1,7 @@
+---
 - name: Get nginx service status
   ansible.builtin.systemd:
-    name: "nginx.service"
+    name: nginx.service
   register: nginx_status
 
 - name: Copy filters

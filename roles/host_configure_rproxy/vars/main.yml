@@ -1,3 +1,4 @@
+---
 nginxconfigs:
   - nginx-rproxy-rproxy.conf
   - nginx-rproxy-influxdb2.conf

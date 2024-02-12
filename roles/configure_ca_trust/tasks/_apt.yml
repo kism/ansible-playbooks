@@ -1,3 +1,4 @@
+---
 - name: Copy the kgadmins root ca certificate rule Debian
   ansible.builtin.copy:
     src: files/kglan_root.cer
@@ -8,6 +9,6 @@
 
 - name: Update CA Certs Debian
   ansible.builtin.command:
-    cmd: "update-ca-certificates"
+    cmd: update-ca-certificates
   tags:
     - skip_ansible_lint

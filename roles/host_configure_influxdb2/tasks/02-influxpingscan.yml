@@ -1,6 +1,7 @@
+---
 - name: Create influxscan directory
   ansible.builtin.file:
-    path: "/opt/influxpingscan"
+    path: /opt/influxpingscan
     state: directory
     owner: influxdb
     group: influxdb
@@ -8,7 +9,7 @@
 
 - name: Attempt to change ownership on /opt/influxpingscan
   ansible.builtin.file:
-    path: "/opt/influxpingscan"
+    path: /opt/influxpingscan
     recurse: true
     owner: influxdb
     group: influxdb
@@ -34,8 +35,8 @@
 
 - name: Setup pipenv environment
   ansible.builtin.command:
-    cmd: "/usr/local/bin/pipenv install"
-    chdir: "/opt/influxpingscan"
+    cmd: /usr/local/bin/pipenv install
+    chdir: /opt/influxpingscan
   notify: Restart archivepodcast
   become: true
   become_user: influxdb
@@ -43,8 +44,8 @@
 
 - name: Setup pipenv environment
   ansible.builtin.command:
-    cmd: "/usr/local/bin/pipenv sync"
-    chdir: "/opt/influxpingscan"
+    cmd: /usr/local/bin/pipenv sync
+    chdir: /opt/influxpingscan
   notify: Restart archivepodcast
   become: true
   become_user: influxdb
@@ -53,18 +54,18 @@
 - name: Set influxdb token
   ansible.builtin.lineinfile:
     path: /opt/influxpingscan/settings.ini
-    regexp: "^.?token ="
-    line: "token = {{ secret_influxping_write }}"
+    regexp: ^.?token =
+    line: token = {{ secret_influxping_write }}
     state: present
 
 - name: Set influxpingscan scan in cron
   ansible.builtin.cron:
-    name: "influxpingscan scan"
+    name: influxpingscan scan
     minute: "58"
-    job: "/usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py scan"
+    job: /usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py scan
 
 - name: Set influxpingscan ping in cron
   ansible.builtin.cron:
-    name: "influxpingscan ping"
+    name: influxpingscan ping
     minute: "*/5"
-    job: "/usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py ping"
+    job: /usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py ping

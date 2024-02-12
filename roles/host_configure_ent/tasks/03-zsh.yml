@@ -1,3 +1,4 @@
+---
 - name: Install zsh
   ansible.builtin.dnf:
     name:
@@ -38,7 +39,7 @@
   become: true
   become_user: kism
   ansible.builtin.command:
-    cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
+    cmd: zsh -c ". ~/.zshrc; antigen update; antigen reset"
   register: command_output
   tags:
     - skip_ansible_lint
@@ -47,5 +48,5 @@
   become: true
   become_user: root
   ansible.builtin.user:
-    name: "kism"
+    name: kism
     shell: /bin/zsh

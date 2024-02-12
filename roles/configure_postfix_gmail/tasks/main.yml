@@ -1,3 +1,4 @@
+---
 # From:
 # https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3
 
@@ -22,13 +23,13 @@
 - name: Creating a file with content
   ansible.builtin.copy:
     dest: /etc/postfix/sasl_passwd
-    content: "smtp.gmail.com {{ secret_notification_email }}:{{ secret_notification_email_password }}"
+    content: smtp.gmail.com {{ secret_notification_email }}:{{ secret_notification_email_password }}
     mode: "0600"
   notify: Restart postfix
 
 - name: Generate postmap config
   ansible.builtin.command:
-    cmd: "postmap hash:/etc/postfix/sasl_passwd"
+    cmd: postmap hash:/etc/postfix/sasl_passwd
   changed_when: true
   notify: Restart postfix
 
@@ -50,7 +51,7 @@
 - name: Remove blank relayhost
   ansible.builtin.lineinfile:
     path: /etc/postfix/main.cf
-    regexp: '^relayhost\s*=\s*$'
+    regexp: ^relayhost\s*=\s*$
     line: "# relayhost ="
   notify: Restart postfix
 #

@@ -1,17 +1,20 @@
+---
 - name: Install pip apt
+  become: true
+  become_user: root
   ansible.builtin.apt:
     name:
       - python3-pip
     state: present
-  become_user: root
   when: ansible_pkg_mgr == 'apt'
 
 - name: Install pip dnf
+  become: true
+  become_user: root
   ansible.builtin.dnf:
     name:
       - python3-pip
     state: present
-  become_user: root
   when: ansible_pkg_mgr == 'dnf'
 
 - name: Install pipenv python package
@@ -22,7 +25,7 @@
   become: true
   become_user: root
   ansible.builtin.file:
-    path: "/opt/archivepodcast"
+    path: /opt/archivepodcast
     state: directory
     owner: podcasto
     group: podcasto
@@ -32,61 +35,61 @@
   become: true
   become_user: root
   ansible.builtin.file:
-    path: "/opt/archivepodcast"
+    path: /opt/archivepodcast
     recurse: true
     owner: podcasto
     group: podcasto
 
 - name: Clone archivepodcast
+  become: true
+  become_user: podcasto
   ansible.builtin.git:
     repo: https://github.com/kism/archivepodcast
     dest: /opt/archivepodcast
     single_branch: true
     version: master
   notify: Restart archivepodcast
-  become: true
-  become_user: podcasto
 
 - name: git config archivepodcast
   become: true
   become_user: podcasto
   ansible.builtin.command:
-    cmd: "git config --global --add safe.directory /opt/archivepodcast"
+    cmd: git config --global --add safe.directory /opt/archivepodcast
   tags:
     - skip_ansible_lint
 
 - name: Run pipenv install
-  ansible.builtin.command:
-    cmd: "/usr/local/bin/pipenv install"
-    chdir: "/opt/archivepodcast"
-  notify: Restart archivepodcast
   become: true
   become_user: podcasto
+  ansible.builtin.command:
+    cmd: /usr/local/bin/pipenv install
+    chdir: /opt/archivepodcast
+  notify: Restart archivepodcast
   changed_when: true
 
 - name: Run pipenv sync
-  ansible.builtin.command:
-    cmd: "/usr/local/bin/pipenv sync"
-    chdir: "/opt/archivepodcast"
-  notify: Restart archivepodcast
   become: true
   become_user: podcasto
+  ansible.builtin.command:
+    cmd: /usr/local/bin/pipenv sync
+    chdir: /opt/archivepodcast
+  notify: Restart archivepodcast
   changed_when: true
 
 - name: Copy archivepodcast config
+  become: true
+  become_user: podcasto
   ansible.builtin.copy:
-    src: "files/{{ ansible_host }}.json"
+    src: files/{{ ansible_host }}.json
     dest: /opt/archivepodcast/settings.json
     mode: "0600"
   notify: Restart archivepodcast # One day this will be reload...
-  become: true
-  become_user: podcasto
 
 - name: Create archivepodcast log file
   become: true
   become_user: root
   ansible.builtin.file:
-    path: "/var/log/archivepodcast.log"
+    path: /var/log/archivepodcast.log
     state: touch
     owner: podcasto
     group: podcasto

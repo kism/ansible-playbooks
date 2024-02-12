@@ -1,3 +1,4 @@
+---
 - name: Download Antigen
   become: true
   become_user: "{{ service_account }}"
@@ -18,5 +19,5 @@
   become: true
   become_user: "{{ service_account }}"
   ansible.builtin.command:
-    cmd: 'zsh -c ". ~/.zshrc; antigen update; antigen reset"'
+    cmd: zsh -c ". ~/.zshrc; antigen update; antigen reset"
   changed_when: true

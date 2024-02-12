@@ -37,9 +37,9 @@ all:
     helios64:
       ansible_host: helios64.ira.mil.ie
       timezone: awst
-    # podc-dr:
-    #   ansible_host: dr.podc.kg.lan
-    #   timezone: awst
+# podc-dr:
+#   ansible_host: dr.podc.kg.lan
+#   timezone: awst
 
 # Server Type
 proxmoxvms:
@@ -49,12 +49,10 @@ proxmoxvms:
     ent:
     kismnas:
     rproxy:
-
 publiccloudvms:
   hosts:
     podc:
     podc-test:
-
 baremetal:
   hosts:
     pve:

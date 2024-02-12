@@ -1,13 +1,13 @@
 ---
 - name: Reminder
   ansible.builtin.debug:
-    msg: 
+    msg:
       - Add samba users manually
       - smbpasswd -a kism
 
 - name: Reminder
   ansible.builtin.debug:
-    msg: 
+    msg:
       - Add mounts via pvenas
       - pct set 102 -mp0 /srv/Amarant,mp=/srv/Amarant
       - pct set 102 -mp1 /srv/Garnet,mp=/srv/Garnet

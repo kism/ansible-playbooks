@@ -1,3 +1,4 @@
+---
 - name: Check that vars are defined
   hosts: podc-test
   gather_facts: false
@@ -16,21 +17,21 @@
   become: true
   roles:
     # Standard server onboarding
-    - configure-package-manager
-    - configure-server-packages
-    - configure-user
-    - configure-directories
-    - configure-sshd
-    - configure-locale
-    # - configure-telegraf # No telegraf for test
-    - configure-firewall
-    - configure-ca-trust
-    - configure-motd
+    - configure_package_manager
+    - configure_server_packages
+    - configure_user
+    - configure_directories
+    - configure_sshd
+    - configure_locale
+    # - configure_telegraf # not for test
+    - configure_firewall
+    - configure_ca_trust
+    - configure_motd
 
     # Purpose specific
-    - configure-nginx
-    - configure-fail2ban
+    - configure_nginx
+    - configure_fail2ban
 
     # Host Specific
-    - linux-setup-concept-archivepodcast
-    - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }
+    - configure_archivepodcast
+    # - { role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets }

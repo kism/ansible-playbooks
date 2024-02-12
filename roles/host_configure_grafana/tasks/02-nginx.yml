@@ -1,3 +1,4 @@
+---
 - name: Install nginx and certbot
   ansible.builtin.dnf:
     name:
@@ -27,10 +28,10 @@
 
 - name: Set certbot script cron job
   ansible.builtin.cron:
-    name: "Renew SSL Certificate with ACME protocol"
+    name: Renew SSL Certificate with ACME protocol
     minute: "0"
     hour: "0,12"
-    job: "/bin/bash /opt/scripts/renewcerts.sh"
+    job: /bin/bash /opt/scripts/renewcerts.sh
 
 - name: Grab a new cert
   ansible.builtin.command:
@@ -58,7 +59,7 @@
     - Restart nginx
 
 - name: Kill nginx (I hate this, I think its something to do with certbot)
-  ansible.builtin.command: "killall nginx"
+  ansible.builtin.command: killall nginx
   notify:
     - Restart nginx
   tags:

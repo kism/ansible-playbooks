@@ -1,7 +1,8 @@
+---
 - name: Setup ssh keys on all
   hosts: all,!qbt
   gather_facts: true
   become: true
   roles:
     # General Onboards
-    - linux-onboard-user
+    - configure_user

@@ -1,3 +1,4 @@
+---
 - name: Install a list of packages
   ansible.builtin.apt:
     install_recommends: false
@@ -24,8 +25,8 @@
 
 - name: Mount up device by label
   ansible.posix.mount:
-    path: "/srv/{{ item }}"
-    src: "LABEL={{ item }}"
+    path: /srv/{{ item }}
+    src: LABEL={{ item }}
     fstype: ext4
     state: mounted
   loop:
@@ -59,8 +60,8 @@
 
 - name: Create symbolic links for openSeaChest man pages
   ansible.builtin.file:
-    src: "/opt/openseachest/man/man8/{{ item }}"
-    dest: "/usr/share/man/man8/{{ item }}"
+    src: /opt/openseachest/man/man8/{{ item }}
+    dest: /usr/share/man/man8/{{ item }}
     owner: root
     group: root
     state: link
@@ -120,10 +121,10 @@
 
 - name: Run snapraid script
   ansible.builtin.cron:
-    name: "Run snapraid script"
+    name: Run snapraid script
     minute: "0"
     hour: "09"
-    job: "/opt/scripts/snapraid_helper.sh"
+    job: /opt/scripts/snapraid_helper.sh
 
 # Install hd-idle
 - name: Install hd-idle

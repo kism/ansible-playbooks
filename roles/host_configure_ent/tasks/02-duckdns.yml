@@ -1,3 +1,4 @@
+---
 # Duckdns
 - name: Create a /opt/duckdns if it does not exist
   ansible.builtin.file:
@@ -21,13 +22,13 @@
 
 - name: Set duckdns cron job
   ansible.builtin.cron:
-    name: "Update duckdns"
+    name: Update duckdns
     minute: "20"
-    job: "/opt/duckdns/duck.sh"
+    job: /opt/duckdns/duck.sh
 
 - name: Create ducktoken file
   ansible.builtin.copy:
-    dest: "/opt/duckdns/ducktoken"
+    dest: /opt/duckdns/ducktoken
     mode: "0600"
     owner: root
     group: root

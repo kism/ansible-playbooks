@@ -1,3 +1,4 @@
+---
 - name: Remove unofficial packages
   ansible.builtin.apt:
     pkg:
@@ -10,7 +11,7 @@
 
 - name: Copy over apt key Ubuntu
   ansible.builtin.get_url:
-    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
     dest: /tmp/docker.gpg
     owner: root
     group: root
@@ -23,15 +24,17 @@
 
 - name: Add Docker repository x86_64
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-    filename: "docker"
+    repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release
+      }} stable
+    filename: docker
     state: present
   when: ansible_architecture == "x86_64"
 
 - name: Add Docker repository arm64
   ansible.builtin.apt_repository:
-    repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-    filename: "docker"
+    repo: deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release
+      }} stable
+    filename: docker
     state: present
   when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
 

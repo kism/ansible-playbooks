@@ -1,3 +1,4 @@
+---
 - name: Collect facts
   ansible.builtin.setup:
 

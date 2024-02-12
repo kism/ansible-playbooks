@@ -1,3 +1,4 @@
+---
 - name: Install packages for pacman
   community.general.pacman:
     name: "{{ packages_pacman }}"

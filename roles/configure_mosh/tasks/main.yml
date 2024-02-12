@@ -1,3 +1,4 @@
+---
 - name: Install mosh dnf
   ansible.builtin.dnf:
     name:
@@ -19,7 +20,7 @@
     state: present
   when: ansible_pkg_mgr == 'apt'
 
-- name: mosh enabled and running
+- name: Mosh enabled and running
   ansible.builtin.systemd:
     name: mosh
     enabled: true
@@ -27,7 +28,7 @@
 
 - name: Allow http and https
   ansible.posix.firewalld:
-    service: "mosh"
+    service: mosh
     zone: public
     permanent: true
     state: enabled

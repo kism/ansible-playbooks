@@ -1,3 +1,4 @@
+---
 - name: Check output1
   ansible.builtin.stat:
     path: /mnt/output1
@@ -32,7 +33,7 @@
 
 - name: Create directory for mergerfs
   ansible.builtin.file:
-    path: "/mnt/{{ item }}"
+    path: /mnt/{{ item }}
     state: directory
     owner: podcasto
     group: podcasto

@@ -1,3 +1,4 @@
+---
 - name: Add the user 'podcasto' with a bash shell
   ansible.builtin.user:
     name: podcasto

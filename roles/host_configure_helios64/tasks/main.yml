@@ -1,16 +1,16 @@
 ---
 - name: Include fancontrol
   ansible.builtin.include_tasks:
-    file: 01-fancontrol.yml
+    file: "01-fancontrol.yml"
 
 - name: Include hd-idle
   ansible.builtin.include_tasks:
-    file: 02-hd-idle.yml
+    file: "02-hd-idle.yml"
 
 - name: Include reminders
   ansible.builtin.include_tasks:
-    file: 03-network.yml
+    file: "03-network.yml"
 
 - name: Include reminders
   ansible.builtin.include_tasks:
-    file: 04-reminders.yml
+    file: "04-reminders.yml"

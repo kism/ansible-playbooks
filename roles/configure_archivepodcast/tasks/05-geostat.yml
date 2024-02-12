@@ -1,8 +1,9 @@
+---
 - name: Create geostat directory
   become: true
   become_user: root
   ansible.builtin.file:
-    path: "/opt/geostat"
+    path: /opt/geostat
     state: directory
     owner: podcasto
     group: podcasto
@@ -10,7 +11,7 @@
 
 - name: Fix git lmao
   ansible.builtin.command:
-    cmd: "git config --global --add safe.directory /opt/geostat"
+    cmd: git config --global --add safe.directory /opt/geostat
   tags:
     - skip_ansible_lint
 
@@ -20,7 +21,7 @@
     dest: /opt/geostat
     single_branch: false
     force: true
-    version: "feature\/filetypefilter"
+    version: feature/filetypefilter
   notify: Restart geostat
   tags:
     - skip_ansible_lint # God damn I mmade this fork specifically for this
@@ -36,7 +37,7 @@
   ansible.builtin.lineinfile:
     path: /opt/geostat/settings.ini
     regexp: "token = "
-    line: "token = {{ secret_influxdb_geostat_write }}"
+    line: token = {{ secret_influxdb_geostat_write }}
     state: present
   notify:
     - Restart geostat
@@ -45,7 +46,7 @@
   ansible.builtin.lineinfile:
     path: /opt/geostat/settings.ini
     regexp: "logpath = "
-    line: "logpath = {{ secret_geostat_path }}"
+    line: logpath = {{ secret_geostat_path }}
     state: present
   notify:
     - Restart geostat
@@ -60,7 +61,7 @@
 
 - name: move mmdb to correct location
   ansible.builtin.shell:
-    cmd: "cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat"
+    cmd: cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat
   tags:
     - skip_ansible_lint
 
@@ -72,7 +73,7 @@
 
 - name: Create shell
   ansible.builtin.shell:
-    cmd: "cd /opt/geostat/ ; python3 -m venv env"
+    cmd: cd /opt/geostat/ ; python3 -m venv env
   register: command_output
   changed_when: false
   tags:
@@ -136,4 +137,5 @@
     minute: 20
     hour: 4
     day: 2
-    job: "rm -rf /tmp/geoip.tgz ; wget -O /tmp/geoip.tgz \"https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license }}&suffix=tar.gz\" && tar -xf /tmp/geoip.tgz -C /opt/geostat --wildcards --strip-components=1 '*.mmdb' && systemctl restart geostat"
+    job: rm -rf /tmp/geoip.tgz ; wget -O /tmp/geoip.tgz "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={{ secret_maxmind_license
+      }}&suffix=tar.gz" && tar -xf /tmp/geoip.tgz -C /opt/geostat --wildcards --strip-components=1 '*.mmdb' && systemctl restart geostat

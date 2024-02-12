@@ -1,7 +1,9 @@
+---
 - name: Copy tmux.conf
+  become: true
   become_user: "{{ service_account }}"
   ansible.builtin.copy:
-    src: "files/.tmux.conf"
-    dest: "~/"
+    src: files/.tmux.conf
+    dest: ~/
     owner: "{{ service_account }}"
     mode: "0644"

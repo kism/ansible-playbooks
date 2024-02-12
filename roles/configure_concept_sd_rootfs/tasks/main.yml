@@ -1,5 +1,6 @@
+---
 - name: Set Journal max size, 20M seems to break
   ansible.builtin.lineinfile:
     path: /etc/systemd/journald.conf
-    regexp: "^.?SystemMaxUse="
+    regexp: ^.?SystemMaxUse=
     line: SystemMaxUse=5M

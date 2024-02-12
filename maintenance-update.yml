@@ -1,18 +1,19 @@
+---
 - name: Update all packages with maintenance-updateall role
   hosts: proxmoxvms, publiccloudvms, baremetal
   gather_facts: true
   become: true
   roles:
-    - linux-maintenance-update-all
+    - maintenance_update_all
 
 - name: Shutdown hosts in hypervisors that I control
   hosts: proxmoxvms
   become: true
   roles:
-    - linux-maintenance-shutdown
+    - maintenance_shutdown
 
 - name: Restart others
   hosts: publiccloudvms, baremetal
   become: true
   roles:
-    - linux-maintenance-reboot
+    - maintenance_reboot

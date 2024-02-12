@@ -1,7 +1,8 @@
+---
 - name: Setup telegraf
   hosts: all,!podc-test
   gather_facts: true
   become: true
   roles:
     # General Onboards
-    - configure-telegraf
+    - configure_telegraf

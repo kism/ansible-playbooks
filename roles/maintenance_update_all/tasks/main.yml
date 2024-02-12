@@ -1,3 +1,4 @@
+---
 - name: Update dnf packages
   when: ansible_pkg_mgr == 'dnf'
   block:
@@ -27,7 +28,7 @@
 
 - name: Check if pipx is installed
   ansible.builtin.stat:
-    path: /usr/local/bin/pipx  # Adjust the path based on your installation
+    path: /usr/local/bin/pipx # Adjust the path based on your installation
   register: pipx_check
 
 - name: Install update pipx packages

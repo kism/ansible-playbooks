@@ -1,3 +1,4 @@
+---
 - name: Setup basic Firewalld on dnf based hosts
   when: ansible_pkg_mgr == 'dnf'
   block:
@@ -15,7 +16,6 @@
         name:
           - firewalld
         state: present
-
 
 - name: Remove cockpit from firewall config
   ansible.posix.firewalld:

@@ -26,14 +26,14 @@
       ansible.builtin.apt_repository:
         repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
         state: present
-        filename: "mullvad"
+        filename: mullvad
       when: ansible_architecture == "x86_64"
 
     - name: Add Mullvad repository arm64
       ansible.builtin.apt_repository:
         repo: deb [arch=arm64 signed-by=/etc/apt/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
         state: present
-        filename: "mullvad"
+        filename: mullvad
       when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
 
 - name: Setup mullvad repo on Debian based hosts
@@ -41,13 +41,13 @@
   block:
     - name: Add Mullvad APT GPG key
       ansible.builtin.apt_key:
-        url: "https://repository.mullvad.net/deb/mullvad-keyring.asc"
+        url: https://repository.mullvad.net/deb/mullvad-keyring.asc
         state: present
 
     - name: Add mullvad repository
       ansible.builtin.apt_repository:
-        repo: "deb https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main"
-        filename: "mullvad"
+        repo: deb https://repository.mullvad.net/deb/stable {{ ansible_distribution_release }} main
+        filename: mullvad
         state: present
 
 - name: Update apt cache

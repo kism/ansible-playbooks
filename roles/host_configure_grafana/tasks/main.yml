@@ -1,5 +1,6 @@
+---
 - name: Samba Setup
-  ansible.builtin.include_tasks: 01-grafana.yml
+  ansible.builtin.include_tasks: "01-grafana.yml"
 
 - name: Reminders
-  ansible.builtin.include_tasks: 02-nginx.yml
+  ansible.builtin.include_tasks: "02-nginx.yml"

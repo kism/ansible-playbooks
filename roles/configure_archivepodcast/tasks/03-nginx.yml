@@ -1,6 +1,7 @@
+---
 - name: Copy nginx conf
   ansible.builtin.copy:
-    src: "files/nginx-podc.conf"
+    src: files/nginx-podc.conf
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
@@ -28,7 +29,7 @@
 
 - name: Copy nginx site confs
   ansible.builtin.copy:
-    src: "files/nginx-archivepodcast.conf"
+    src: files/nginx-archivepodcast.conf
     dest: /etc/nginx/sites-available/
     mode: "0660"
   notify:
@@ -36,8 +37,8 @@
 
 - name: Create symbolic links to make sites available
   ansible.builtin.file:
-    src: "/etc/nginx/sites-available/nginx-archivepodcast.conf"
-    dest: "/etc/nginx/sites-enabled/nginx-archivepodcast.conf"
+    src: /etc/nginx/sites-available/nginx-archivepodcast.conf
+    dest: /etc/nginx/sites-enabled/nginx-archivepodcast.conf
     owner: root
     group: root
     state: link
@@ -46,6 +47,6 @@
 
 - name: Set server address
   ansible.builtin.replace:
-    path: "/etc/nginx/sites-available/nginx-archivepodcast.conf"
-    regexp: "secret_domain"
+    path: /etc/nginx/sites-available/nginx-archivepodcast.conf
+    regexp: secret_domain
     replace: "{{ secret_domain }}"

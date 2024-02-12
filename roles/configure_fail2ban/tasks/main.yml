@@ -1,5 +1,6 @@
+---
 - name: Install Fail2Ban
-  ansible.builtin.include_tasks: 01-install.yml
+  ansible.builtin.include_tasks: "01-install.yml"
 
 - name: Configure Fail2Ban
-  ansible.builtin.include_tasks: 02-configure.yml
+  ansible.builtin.include_tasks: "02-configure.yml"

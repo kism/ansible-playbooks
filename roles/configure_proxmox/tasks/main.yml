@@ -1,3 +1,4 @@
+---
 - name: Install certbot
   ansible.builtin.apt:
     install_recommends: false
@@ -32,13 +33,12 @@
 - name: Replace hostname in renew
   ansible.builtin.replace:
     path: /opt/scripts/proxmox_renewcerts.sh
-    regexp: "HOSTNAME"
+    regexp: HOSTNAME
     replace: "{{ ansible_host }}"
 
 - name: Set certbot script cron job
   ansible.builtin.cron:
-    name: "Renew SSL Certificate with ACME protocol"
+    name: Renew SSL Certificate with ACME protocol
     minute: "0"
     hour: "0,12"
-    job: "/usr/bin/certbot renew --quiet --post-hook /opt/scripts/proxmox_renewcerts.sh"
-
+    job: /usr/bin/certbot renew --quiet --post-hook /opt/scripts/proxmox_renewcerts.sh

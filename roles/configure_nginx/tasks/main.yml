@@ -1,3 +1,4 @@
+---
 # selinux not enabled by default on debian, TODO do better
 
 - name: Enable SELinux

@@ -1,3 +1,4 @@
+---
 - name: Set root password
   ansible.builtin.user:
     name: root
@@ -73,19 +74,19 @@
 - name: Adding existing user kism to groups
   ansible.builtin.user:
     name: kism
-    groups: "kgadmins, content_private, content_public, backup_svc, qbtuser"
+    groups: kgadmins, content_private, content_public, backup_svc, qbtuser
     append: true
 
 - name: Add lanprivate account to groups
   ansible.builtin.user:
     name: lanprivate
-    groups: "content_private, content_public"
+    groups: content_private, content_public
     append: true
 
 - name: Add lanuser account to groups
   ansible.builtin.user:
     name: lanuser
-    groups: "content_public"
+    groups: content_public
     append: true
 
 - name: Copy the kgadmins sudoers rule
@@ -100,7 +101,7 @@
   become: true
   become_user: kism
   ansible.builtin.shell:
-    cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
+    cmd: curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
   register: command_output
   changed_when: command_output.rc == 0
   tags:
@@ -110,7 +111,7 @@
   become: true
   become_user: root
   ansible.builtin.shell:
-    cmd: "curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash"
+    cmd: curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
   register: command_output
   changed_when: command_output.rc == 0
   tags:

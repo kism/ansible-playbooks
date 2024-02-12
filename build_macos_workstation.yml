@@ -1,3 +1,4 @@
+---
 - name: Setup a MacOS workstation
   hosts: localhost
   connection: local
@@ -10,16 +11,15 @@
 
   roles:
     # Standard workstation onboarding
-    - linux-onboard-prepare-package-manager
-    - linux-onboard-workstation-packages
-    - linux-onboard-ca-trust
+    - configure_package_manager
+    - configure_workstation_packages
+    - configure_ca_trust
 
     # Purpose specific
-    - linux-onboard-workstation-cli-bash
-    - linux-onboard-workstation-cli-htop
-    - linux-onboard-workstation-cli-nvim
-    - linux-onboard-workstation-cli-ssh
-    - linux-onboard-workstation-cli-tmux
-    - linux-onboard-workstation-cli-vim
-    - linux-onboard-workstation-gui-i3
-    - linux-onboard-workstation-packages
+    - configure_workstation_bash
+    - configure_workstation_htop
+    - configure_workstation_nvim
+    - configure_workstation_ssh
+    - configure_workstation_tmux
+    - configure_workstation_vim
+    - configure_workstation_packages

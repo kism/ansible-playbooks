@@ -1,3 +1,4 @@
+---
 - name: Copy the kgadmins root ca certificate rule Oracle Linux
   ansible.builtin.copy:
     src: files/kglan_root.cer
@@ -9,6 +10,6 @@
 - name: Update CA Certs Oracle Linux
   become: true
   ansible.builtin.command:
-    cmd: "update-ca-trust"
+    cmd: update-ca-trust
   tags:
     - skip_ansible_lint

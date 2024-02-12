@@ -1,8 +1,9 @@
+---
 - name: Create ffmpreg directory
   become: true
   become_user: root
   ansible.builtin.file:
-    path: "/opt/ffmpeg"
+    path: /opt/ffmpeg
     state: directory
     owner: root
     group: root
@@ -12,7 +13,7 @@
   become: true
   become_user: root
   ansible.builtin.file:
-    path: "/opt/ffmpeg"
+    path: /opt/ffmpeg
     recurse: true
     owner: root
     group: root
@@ -35,8 +36,8 @@
 
 - name: Create symbolic links to make sites available
   ansible.builtin.file:
-    src: "/opt/ffmpeg/{{ item }}"
-    dest: "/usr/bin/{{ item }}"
+    src: /opt/ffmpeg/{{ item }}
+    dest: /usr/bin/{{ item }}
     owner: root
     group: root
     state: link

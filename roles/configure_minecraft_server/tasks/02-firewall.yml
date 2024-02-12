@@ -1,3 +1,4 @@
+---
 - name: Allow Minecraft through firewalld
   ansible.posix.firewalld:
     service: minecraft

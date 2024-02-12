@@ -1,3 +1,4 @@
+---
 - name: Create minecraft directories
   ansible.builtin.file:
     path: "{{ item }}"

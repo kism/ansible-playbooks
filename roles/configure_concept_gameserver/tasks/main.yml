@@ -1,3 +1,4 @@
+---
 - name: Add the user 'factorio' without a shell FIXME TODO???????????
   ansible.builtin.user:
     name: factorio

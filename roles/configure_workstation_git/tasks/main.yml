@@ -1,9 +1,15 @@
+---
 - name: Set url settings
+  become: true
   become_user: "{{ service_account }}"
   ansible.builtin.command:
-    cmd: 'git config --global url."git@github.com:".insteadOf "https://github.com/"'
+    cmd: git config --global url."git@github.com:".insteadOf "https://github.com/"
+  changed_when: true
+  tags:
+    - skip_ansible_lint
 
 - name: Add a setting to ~/.gitconfig
+  become: true
   become_user: "{{ service_account }}"
   community.general.git_config:
     name: user.email
@@ -12,6 +18,7 @@
   when: service_account == 'kism'
 
 - name: Add a setting to ~/.gitconfig
+  become: true
   become_user: "{{ service_account }}"
   community.general.git_config:
     name: user.name
@@ -19,6 +26,7 @@
     value: "{{ service_account_name }}"
 
 - name: Add a setting to ~/.gitconfig
+  become: true
   become_user: "{{ service_account }}"
   community.general.git_config:
     name: core.autocrlf
@@ -26,6 +34,7 @@
     value: false
 
 - name: Add a setting to ~/.gitconfig
+  become: true
   become_user: "{{ service_account }}"
   community.general.git_config:
     name: core.eol
@@ -33,6 +42,7 @@
     value: lf
 
 - name: Add a setting to ~/.gitconfig
+  become: true
   become_user: "{{ service_account }}"
   community.general.git_config:
     name: core.editor
@@ -40,6 +50,7 @@
     value: vim
 
 - name: Add a setting to ~/.gitconfig
+  become: true
   become_user: "{{ service_account }}"
   community.general.git_config:
     name: pull.rebase

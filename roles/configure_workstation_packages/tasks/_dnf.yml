@@ -1,3 +1,4 @@
+---
 - name: Install useful apps
   ansible.builtin.dnf:
     name: "{{ item }}"

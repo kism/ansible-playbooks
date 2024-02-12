@@ -1,3 +1,4 @@
+---
 - name: Install packages APT
   ansible.builtin.include_tasks: _apt.yml
   when: ansible_pkg_mgr == 'apt'

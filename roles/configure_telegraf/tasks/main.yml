@@ -1,9 +1,10 @@
+---
 - name: Setup telegraf on dnf based hosts
   when: ansible_pkg_mgr == 'dnf'
   block:
     - name: Remove old telegraf key
       ansible.builtin.command:
-        cmd: "rpm --erase gpg-pubkey-2582e0c5-56099b04"
+        cmd: rpm --erase gpg-pubkey-2582e0c5-56099b04
       ignore_errors: true
       tags:
         - skip_ansible_lint
@@ -39,15 +40,15 @@
 
     - name: Add Telegraf repository Ubuntu amd64
       ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main"
-        filename: "telegraf"
+        repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main
+        filename: telegraf
         state: present
       when: ansible_architecture == "x86_64"
 
     - name: Add Telegraf repository Ubuntu arm64
       ansible.builtin.apt_repository:
-        repo: "deb [arch=arm64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main"
-        filename: "telegraf"
+        repo: deb [arch=arm64 signed-by=/etc/apt/keyrings/influxdata-archive.key] https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main
+        filename: telegraf
         state: present
       when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
 
@@ -56,14 +57,14 @@
   block:
     - name: Add InfluxDB APT GPG key Debian
       ansible.builtin.apt_key:
-        url: "https://repos.influxdata.com/influxdata-archive.key"
+        url: https://repos.influxdata.com/influxdata-archive.key
         id: 7df8b07e
         state: present
 
     - name: Add Telegraf repository Debian
       ansible.builtin.apt_repository:
-        repo: "deb https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main"
-        filename: "telegraf"
+        repo: deb https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main
+        filename: telegraf
         state: present
 
 - name: Install telegraf package apt
@@ -91,15 +92,15 @@
       ansible.builtin.lineinfile:
         path: /etc/telegraf/telegraf.d/common_influxdb.conf
         regexp: "token = "
-        line: 'token = "{{ secret_influxdb_telegraf_write }}"'
+        line: token = "{{ secret_influxdb_telegraf_write }}"
         state: present
       notify:
         - Restart telegraf
 
     - name: Copy host telegraf config
       ansible.builtin.copy:
-        src: "files/hostconfigs/{{ inventory_hostname }}.conf"
-        dest: "/etc/telegraf/telegraf.d/{{ inventory_hostname }}.conf"
+        src: files/hostconfigs/{{ inventory_hostname }}.conf
+        dest: /etc/telegraf/telegraf.d/{{ inventory_hostname }}.conf
         owner: telegraf
         group: telegraf
         mode: "600"
