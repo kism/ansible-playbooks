@@ -8,10 +8,6 @@
       - podman-docker
     state: absent
 
-- name: debug
-  ansible.builtin.debug:
-    msg: "{{ ansible_architecture }} {{ ansible_distribution | lower }}"
-
 - name: Copy over apt key Ubuntu
   ansible.builtin.get_url:
     url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"

@@ -6,4 +6,3 @@
 - name: MOTD Redhat
   ansible.builtin.include_tasks: _dnf.yml
   when: ansible_pkg_mgr == 'dnf'
-

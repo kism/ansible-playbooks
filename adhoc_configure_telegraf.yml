@@ -4,4 +4,4 @@
   become: true
   roles:
     # General Onboards
-    - linux-onboard-telegraf
+    - configure-telegraf

@@ -123,7 +123,7 @@
     name: ubuntu
     state: absent
 
-- name : Ensure old ubuntu home folder doesnt exist
+- name: Ensure old ubuntu home folder doesnt exist
   ansible.builtin.file:
     path: /home/ubuntu
     state: absent
