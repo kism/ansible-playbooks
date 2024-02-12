@@ -6,3 +6,7 @@
 - name: Install APT Packages
   ansible.builtin.include_tasks: _apt.yml
   when: ansible_pkg_mgr == 'apt'
+
+- name: Install pipx Packages
+  ansible.builtin.include_tasks: _pipx.yml
+  when: ansible_pkg_mgr == 'pipx'

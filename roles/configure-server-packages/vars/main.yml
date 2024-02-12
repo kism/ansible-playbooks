@@ -15,6 +15,7 @@ packages_to_install:
   - wget
   - gnupg2
   - firewalld
+  - pipx
 
 packages_to_remove:
   - cockpit

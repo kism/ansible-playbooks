@@ -86,6 +86,8 @@
     cmd: firewall-cmd --set-default-zone=public
   notify:
     - Restart firewalld
+  tags:
+    skip_ansible_lint # No way to do this in the module
 
 - name: Allow samba and wsdd through firewalld
   ansible.posix.firewalld:
@@ -115,9 +117,8 @@
   when: ansible_distribution_release == 'bullseye'
 
 - name: Non better place, internet archive downloader
-  ansible.builtin.get_url:
-    url: https://archive.org/download/ia-pex/ia
-    dest: /usr/local/bin/ia
-    owner: root
-    group: root
-    mode: "0755"
+  community.general.pipx:
+    name: internetarchive
+    state: upgrade
+  become: true
+  become_user: kism
