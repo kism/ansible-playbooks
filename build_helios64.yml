@@ -1,0 +1,28 @@
+---
+- name: Setup helios64
+  hosts: helios64
+  gather_facts: true
+  become: true
+  vars:
+    service_account: kism
+
+  roles:
+    # Standard server onboarding
+    # - configure_package_manager
+    # - configure_server_packages
+    # - configure_user
+    # - configure_directories
+    # - configure_sshd
+    # - configure_locale
+    # - configure_telegraf
+    # - configure_firewall
+    # - configure_ca_trust
+    # - configure_motd
+
+    # Purpose specific
+    - configure_concept_baremetal
+    - configure_concept_sd_rootfs
+    - configure_docker_qbittorrent
+
+    # Host Specific
+    - host_configure_helios64
