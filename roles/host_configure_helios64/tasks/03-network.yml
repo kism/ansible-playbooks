@@ -1,8 +1,8 @@
 ---
 - name: Copy my netplan config
   ansible.builtin.copy:
-    src: files/helios.yml
-    dest: /etc/netplan/
+    src: files/helios64_netplan.yml
+    dest: /etc/netplan/helios64.yml
     mode: "0600"
     owner: root
     group: root

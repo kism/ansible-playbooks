@@ -7,14 +7,14 @@
   ansible.builtin.include_tasks:
     file: "02-hd-idle.yml"
 
-- name: Include reminders
-  ansible.builtin.include_tasks:
-    file: "03-network.yml"
+# - name: Include reminders
+#   ansible.builtin.include_tasks:
+#     file: "03-network.yml"
 
 - name: Include reminders
   ansible.builtin.include_tasks:
-    file: "04-reminders.yml"
+    file: "04-sysctl.yml"
 
 - name: Include reminders
   ansible.builtin.include_tasks:
-    file: "05-sysctl.yml"
+    file: "05-reminders.yml"
