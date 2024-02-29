@@ -7,3 +7,4 @@ host_configure_rproxy_nginxconfigs:
   - nginx-rproxy-homeassistant.conf
   - nginx-rproxy-gba.conf
   - nginx-rproxy-qbt.conf
+  - nginx-rproxy-allowlistapp.conf

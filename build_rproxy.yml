@@ -20,6 +20,7 @@
     # Purpose specific
     - configure_fail2ban
     - configure_nginx
+    - configure_allowlistapp
 
     # Host Specific
     - host_configure_rproxy

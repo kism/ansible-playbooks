@@ -1,0 +1,8 @@
+---
+- name: Restart allowlistapp
+  become: true
+  become_user: root
+  ansible.builtin.systemd:
+    name: allowlistapp
+    daemon_reload: true
+    state: restarted

@@ -1,0 +1,12 @@
+[Unit]
+Description=allowlistapp IP allowlist app for nginx
+After=network.target
+
+[Service]
+User=nginx
+WorkingDirectory=/opt/allowlistapp
+ExecStart=/usr/local/bin/pipenv run python allowlistapp.py --webaddress 127.0.0.1 --config settings.json
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

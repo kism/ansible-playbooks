@@ -1,0 +1,108 @@
+---
+- name: Install pip apt
+  become: true
+  become_user: root
+  ansible.builtin.apt:
+    name:
+      - python3-pip
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Install pip dnf
+  become: true
+  become_user: root
+  ansible.builtin.dnf:
+    name:
+      - python3-pip
+    state: present
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install pipenv python package
+  ansible.builtin.pip:
+    name: pipenv
+
+- name: Create allowlistapp directory
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: /opt/allowlistapp
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: "0700"
+
+- name: Attempt to change ownership on /opt/allowlistapp
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: /opt/allowlistapp
+    recurse: true
+    owner: nginx
+    group: nginx
+
+- name: Clone allowlistapp
+  become: true
+  become_user: nginx
+  ansible.builtin.git:
+    repo: https://github.com/kism/allowlistapp
+    dest: /opt/allowlistapp
+    single_branch: true
+    version: main
+  notify: Restart allowlistapp
+
+- name: git config allowlistapp
+  become: true
+  become_user: nginx
+  ansible.builtin.command:
+    cmd: git config --global --add safe.directory /opt/allowlistapp
+  tags:
+    - skip_ansible_lint
+
+- name: Run pipenv install
+  become: true
+  become_user: nginx
+  ansible.builtin.command:
+    cmd: /usr/local/bin/pipenv install
+    chdir: /opt/allowlistapp
+  notify: Restart allowlistapp
+  changed_when: true
+
+- name: Run pipenv sync
+  become: true
+  become_user: nginx
+  ansible.builtin.command:
+    cmd: /usr/local/bin/pipenv sync
+    chdir: /opt/allowlistapp
+  notify: Restart allowlistapp
+  changed_when: true
+
+- name: Copy systemd service
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: files/allowlistapp.service
+    dest: /etc/systemd/system/allowlistapp.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart allowlistapp
+
+- name: Enable systemd service
+  become: true
+  become_user: root
+  ansible.builtin.systemd:
+    name: allowlistapp.service
+    enabled: true
+    daemon_reload: true
+    state: started
+    masked: false
+
+- name: Add sudoers rule
+  become: true
+  become_user: root
+  community.general.sudoers:
+    name: nginx-allowlistapp
+    user: nginx
+    commands:
+      - /bin/systemctl reload nginx
+    nopassword: true
