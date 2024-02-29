@@ -3,6 +3,7 @@
   community.general.locale_gen:
     name: en_AU.UTF-8
     state: present
+  when: ansible_pkg_mgr == 'apt'
 
 - name: Configure locale to en_AU.UTF-8 and language to en_AU.UTF-8
   ansible.builtin.command:

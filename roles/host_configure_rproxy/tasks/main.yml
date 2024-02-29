@@ -65,10 +65,10 @@
 
 - name: Copy ip whitelist
   ansible.builtin.template:
-    src: files/ipwhitelist.conf.j2
+    src: templates/ipwhitelist.conf.j2
     dest: /etc/nginx/ipwhitelist.conf
-    owner: root
-    group: root
+    owner: nginx
+    group: nginx
     mode: "0644"
   notify:
     - Restart nginx
