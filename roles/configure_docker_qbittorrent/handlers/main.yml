@@ -8,3 +8,10 @@
   ansible.builtin.systemd:
     name: docker
     state: reloaded
+
+- name: Reload systemd
+
+  ansible.builtin.systemd:
+    name: docker-qbittorrent
+    daemon_reload: true
+    state: restarted

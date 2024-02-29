@@ -28,3 +28,13 @@
   notify:
     - Restart firewalld
     - Restart docker
+
+- name: Copy systemd service
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: files/docker-qbittorrent.service
+    dest: /etc/systemd/system/docker-qbittorrent.service
+    owner: root
+    group: root
+    mode: "0644"

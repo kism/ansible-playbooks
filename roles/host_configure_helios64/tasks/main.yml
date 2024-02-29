@@ -14,3 +14,7 @@
 - name: Include reminders
   ansible.builtin.include_tasks:
     file: "04-reminders.yml"
+
+- name: Include reminders
+  ansible.builtin.include_tasks:
+    file: "05-sysctl.yml"
