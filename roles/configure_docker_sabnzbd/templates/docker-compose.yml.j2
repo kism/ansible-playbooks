@@ -1,0 +1,15 @@
+---
+services:
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Australia/Perth
+    volumes:
+      - /mnt/Quina/config/sabnzbd/config:/config
+      - /mnt/Quina/downloads/usenet/complete:/downloads #optional
+      - /mnt/Quina/downloads/usenet/incomplete:/incomplete-downloads #optional
+    ports:
+      - 8081:8080

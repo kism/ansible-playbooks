@@ -1,15 +1,15 @@
 ---
-- name: Create folder structure
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0770"
-    owner: qbtuser
-    group: qbtuser
-  with_items:
-    - /opt/qbittorrent
-    - /opt/qbittorrent/config
-    - /opt/qbittorrent/watch
+# - name: Create folder structure
+#   ansible.builtin.file:
+#     path: "{{ item }}"
+#     state: directory
+#     mode: "0770"
+#     owner: qbtuser
+#     group: qbtuser
+#   with_items:
+#     - /opt/qbittorrent
+#     - /opt/qbittorrent/config
+#     - /opt/qbittorrent/watch
 
 # - name: Copy docker-compose.yml
 #   ansible.builtin.template:

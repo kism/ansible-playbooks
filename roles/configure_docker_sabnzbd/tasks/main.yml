@@ -1,0 +1,38 @@
+---
+# - name: Create folder structure
+#   ansible.builtin.file:
+#     path: "{{ item }}"
+#     state: directory
+#     mode: "0770"
+#     owner: qbtuser
+#     group: qbtuser
+#   with_items:
+#     - /opt/sabznbd
+#     - /opt/sabznbd/config
+
+- name: Copy docker-compose.yml
+  ansible.builtin.template:
+    src: templates/docker-compose.yml.j2
+    dest: /opt/sabznbd/
+    mode: "0660"
+    owner: qbtuser
+    group: qbtuser
+
+- name: Allow sabznbd through firewalld
+  ansible.posix.firewalld:
+    service: sabznbd
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld
+
+- name: Copy systemd service
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: files/docker-sabznbd.service
+    dest: /etc/systemd/system/docker-sabznbd.service
+    owner: root
+    group: root
+    mode: "0644"
