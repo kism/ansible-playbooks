@@ -6,8 +6,8 @@ After=docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=true
-WorkingDirectory=/opt/qbittorrent
-# ExecStart=/usr/bin/docker compose up --remove-orphans
+WorkingDirectory=/mnt/Quina/config/qbittorrent
+#ExecStart=/usr/bin/docker compose up --remove-orphans
 ExecStart=/usr/bin/docker compose up -d --remove-orphans
 ExecStop=/usr/bin/docker compose down
 
