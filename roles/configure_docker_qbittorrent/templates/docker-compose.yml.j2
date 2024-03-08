@@ -18,9 +18,12 @@ services:
       - PUID=1086
       - PGID=1086
       - TZ=Australia/Perth
+    volumes:
+      - /mnt/Quina/config/gluetun:/config
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
+    network_mode: service:gluetun
     environment:
       - PUID=1086
       - PGID=1086
@@ -30,10 +33,6 @@ services:
       - /mnt/Quina/config/qbittorrent/config:/config
       - /mnt/Quina/config/qbittorrent/watch:/watch
       - /mnt/Quina/downloads/torrent:/downloads
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
     restart: unless-stopped
     depends_on:
       gluetun:
