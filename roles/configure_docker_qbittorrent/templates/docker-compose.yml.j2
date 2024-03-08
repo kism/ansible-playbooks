@@ -20,6 +20,8 @@ services:
       - TZ=Australia/Perth
     volumes:
       - /mnt/Quina/config/gluetun:/config
+    networks:
+      net-gluetun:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -37,3 +39,8 @@ services:
     depends_on:
       gluetun:
         condition: service_healthy
+
+networks:
+  net-gluetun:
+    driver_opts:
+      com.docker.network.bridge.name: br-gluetun
