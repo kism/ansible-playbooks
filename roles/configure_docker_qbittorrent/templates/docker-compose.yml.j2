@@ -19,9 +19,10 @@ services:
       - PGID=1086
       - TZ=Australia/Perth
     volumes:
-      - /mnt/Quina/config/gluetun:/config
+      - /mnt/Quina/configs/gluetun:/config
     networks:
       net-gluetun:
+    restart: unless-stopped
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
