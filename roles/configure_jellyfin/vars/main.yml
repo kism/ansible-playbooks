@@ -1,0 +1,3 @@
+---
+# https://repo.jellyfin.org/?path=/server/linux/latest-stable/amd64
+configure_jellyfin_release_url: "https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_10.8.13_linux-amd64.tar.gz"
