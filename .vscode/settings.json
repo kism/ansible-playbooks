@@ -1,6 +1,6 @@
 {
   "workbench.colorTheme": "paddy-citadel",
-  "ansible.python.interpreterPath": "/home/kism/.local/share/virtualenvs/ansible-playbooks-UnFvvgfE/bin/python",
+  "ansible.python.interpreterPath": "/home/codespace/.local/share/virtualenvs/ansible-playbooks-0Mj6vStz/bin/python",
 	// Specify default formatters
 	"[ansible]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"

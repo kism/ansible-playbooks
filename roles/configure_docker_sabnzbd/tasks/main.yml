@@ -45,8 +45,8 @@
 - name: Copy systemd service
   become: true
   become_user: root
-  ansible.builtin.copy:
-    src: files/docker-sabnzbd.service
+  ansible.builtin.template:
+    src: templates/docker-sabnzbd.service.j2
     dest: /etc/systemd/system/docker-sabnzbd.service
     owner: root
     group: root
