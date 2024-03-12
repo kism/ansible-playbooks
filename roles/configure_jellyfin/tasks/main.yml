@@ -4,7 +4,33 @@
     path: "{{ item }}"
     owner: qbtuser
     group: qbtuser
-    mode: 755
+    mode: "0755"
   loop:
     - "{{ configure_jellyfin_base_dir }}"
     - "{{ configure_jellyfin_ffmpeg_dir }}"
+
+- name: Download and extract jellyfin
+  ansible.builtin.unarchive:
+    src: "{{ configure_jellyfin_url }}"
+    dest: "{{ configure_jellyfin_base_dir }}"
+
+- name: Download and extract jellyfin
+  ansible.builtin.unarchive:
+    src: "{{ configure_jellyfin_ffmpeg_url }}"
+    dest: "{{ configure_jellyfin_ffmpeg_dir }}"
+
+- name: Copy service helper script
+  ansible.builtin.template:
+    src: templates/startjellyfin.sh.j2
+    dest: "{{ configure_jellyfin_base_dir }}/startjellyfin.sh"
+    owner: root
+    group: root
+    mode: "0664"
+
+- name: Copy systemd service
+  ansible.builtin.template:
+    src: templates/jellyfin.service.j2
+    dest: /etc/systemd/system/jellyfin.service
+    owner: root
+    group: root
+    mode: "0664"

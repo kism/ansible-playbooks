@@ -7,7 +7,7 @@ Type=simple
 User=qbtuser
 Group=content_public
 Restart=always
-ExecStart={{ }}/jellyfin.sh
+ExecStart={{ configure_jellyfin_base_dir }}/startjellyfin.sh
 
 [Install]
 WantedBy=multi-user.target
