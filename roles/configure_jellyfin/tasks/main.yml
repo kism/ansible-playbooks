@@ -2,6 +2,7 @@
 - name: Create folders
   ansible.builtin.file:
     path: "{{ item }}"
+    state: directory
     owner: qbtuser
     group: qbtuser
     mode: "0755"
