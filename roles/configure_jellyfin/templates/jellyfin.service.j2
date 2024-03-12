@@ -1,0 +1,13 @@
+[Unit]
+Description=Jellyfin
+After=network.target
+
+[Service]
+Type=simple
+User=qbtuser
+Group=content_public
+Restart=always
+ExecStart={{ }}/jellyfin.sh
+
+[Install]
+WantedBy=multi-user.target

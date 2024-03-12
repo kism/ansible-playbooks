@@ -1,6 +1,6 @@
 #!/bin/bash
-JELLYFINDIR="/opt/jellyfin"
-FFMPEGDIR="/usr/share/jellyfin-ffmpeg"
+JELLYFINDIR="{{ configure_jellyfin_base_dir }}"
+FFMPEGDIR="{{ configure_jellyfin_ffmpeg_dir }}"
 
 $JELLYFINDIR/jellyfin/jellyfin \
  -d $JELLYFINDIR/data \

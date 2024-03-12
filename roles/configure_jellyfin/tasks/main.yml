@@ -1,0 +1,10 @@
+---
+- name: Create folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: qbtuser
+    group: qbtuser
+    mode: 755
+  loop:
+    - "{{ configure_jellyfin_base_dir }}"
+    - "{{ configure_jellyfin_ffmpeg_dir }}"
