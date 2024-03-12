@@ -19,10 +19,12 @@
     # - configure_ca_trust
     # - configure_motd
 
-    # Purpose specific
-    - configure_concept_baremetal
-    - configure_concept_sd_rootfs
-    - configure_docker_qbittorrent
+    # # Purpose specific
+    # - configure_concept_baremetal
+    # - configure_concept_sd_rootfs
+    # - configure_docker_qbittorrent
+    - configure_docker_sabnzbd
+
 
     # Host Specific
-    - host_configure_helios64
+    # - host_configure_helios64

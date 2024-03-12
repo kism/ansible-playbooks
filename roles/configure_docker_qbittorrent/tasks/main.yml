@@ -1,23 +1,24 @@
 ---
-# - name: Create folder structure
-#   ansible.builtin.file:
-#     path: "{{ item }}"
-#     state: directory
-#     mode: "0770"
-#     owner: qbtuser
-#     group: qbtuser
-#   with_items:
-#     - /opt/qbittorrent
-#     - /opt/qbittorrent/config
-#     - /opt/qbittorrent/watch
+- name: Create folder structure
+  ansible.builtin.file:
+    path: "{{ configure_docker_qbittorrent_base_dir }}/{{ item }}"
+    state: directory
+    mode: "0770"
+    owner: qbtuser
+    group: qbtuser
+  with_items:
+    - configs
+    - configs/qbittorrent
+    - downloads
+    - downloads/torrent
 
-# - name: Copy docker-compose.yml
-#   ansible.builtin.template:
-#     src: templates/docker-compose.yml.j2
-#     dest: /opt/qbittorrent/
-#     mode: "0660"
-#     owner: qbtuser
-#     group: qbtuser
+- name: Copy docker-compose.yml
+  ansible.builtin.template:
+    src: templates/docker-compose.yml.j2
+    dest: "{{ configure_docker_qbittorrent_base_dir }}/configs/qbittorrent/docker-compose.yml"
+    mode: "0660"
+    owner: qbtuser
+    group: qbtuser
 
 - name: Allow qBittorrent through firewalld
   ansible.posix.firewalld:

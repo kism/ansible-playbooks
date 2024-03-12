@@ -1,29 +1,44 @@
 ---
-# - name: Create folder structure
-#   ansible.builtin.file:
-#     path: "{{ item }}"
-#     state: directory
-#     mode: "0770"
-#     owner: qbtuser
-#     group: qbtuser
-#   with_items:
-#     - /opt/sabznbd
-#     - /opt/sabznbd/config
+- name: Create folder structure
+  ansible.builtin.file:
+    path: "{{ configure_docker_sabnzbd_base_dir }}/{{ item }}"
+    state: directory
+    mode: "0770"
+    owner: qbtuser
+    group: qbtuser
+  with_items:
+    - configs
+    - configs/sabnzbd
+    - configs/sabnzbd/config
+    - configs/radarr
+    - configs/radarr/config
+    - configs/sonarr
+    - configs/sonarr/config
+    - downloads
+    - downloads/usenet
+    - downloads/usenet/complete
+    - downloads/usenet/incomplete
+    - downloads/tv
+    - downloads/movies
 
 - name: Copy docker-compose.yml
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
-    dest: /opt/sabznbd/
+    dest: /mnt/Quina/configs/sabnzbd/docker-compose.yml
     mode: "0660"
     owner: qbtuser
     group: qbtuser
 
-- name: Allow sabznbd through firewalld
+- name: Allow sabnzbd through firewalld
   ansible.posix.firewalld:
-    service: sabznbd
+    service: "{{ item }}"
     zone: public
     permanent: true
     state: enabled
+  loop:
+    - sabnzbd
+    - radarr
+    - sonarr
   notify:
     - Restart firewalld
 
@@ -31,8 +46,8 @@
   become: true
   become_user: root
   ansible.builtin.copy:
-    src: files/docker-sabznbd.service
-    dest: /etc/systemd/system/docker-sabznbd.service
+    src: files/docker-sabnzbd.service
+    dest: /etc/systemd/system/docker-sabnzbd.service
     owner: root
     group: root
     mode: "0644"

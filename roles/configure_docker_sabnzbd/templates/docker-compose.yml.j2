@@ -8,9 +8,9 @@ services:
       - PGID=1086
       - TZ=Australia/Perth
     volumes:
-      - /mnt/Quina/configs/sabnzbd/config:/config
-      - /mnt/Quina/downloads/usenet/complete:/downloads #optional
-      - /mnt/Quina/downloads/usenet/incomplete:/incomplete-downloads #optional
+      - {{ configure_docker_sabnzbd_base_dir }}/configs/sabnzbd/config:/config
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads #optional
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/incomplete:/incomplete-downloads #optional
     ports:
       - 8081:8080
     networks:
@@ -25,9 +25,9 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - /mnt/Quina/configs/radarr/config:/config
-      - /mnt/Quina/downloads/usenet/tv:/tv #optional
-      - /mnt/Quina/downloads/usenet/complete:/downloads #optional
+      - {{ configure_docker_sabnzbd_base_dir }}/configs/radarr/config:/config
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/tv:/tv #optional
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads #optional
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -42,9 +42,9 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - /mnt/Quina/configs/radarr/config:/config
-      - /mnt/Quina/downloads/usenet/movies:/movies #optional
-      - /mnt/Quina/downloads/usenet/complete:/downloads #optional
+      - {{ configure_docker_sabnzbd_base_dir }}/configs/radarr/config:/config
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/movies:/movies #optional
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads #optional
     ports:
       - 7878:7878
     restart: unless-stopped
