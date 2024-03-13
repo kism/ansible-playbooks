@@ -14,11 +14,13 @@
   ansible.builtin.unarchive:
     src: "{{ configure_jellyfin_url }}"
     dest: "{{ configure_jellyfin_base_dir }}"
+    remote_src: true
 
-- name: Download and extract jellyfin
+- name: Download and extract jellyfin-ffmpeg
   ansible.builtin.unarchive:
     src: "{{ configure_jellyfin_ffmpeg_url }}"
     dest: "{{ configure_jellyfin_ffmpeg_dir }}"
+    remote_src: true
 
 - name: Copy service helper script
   ansible.builtin.template:
@@ -27,6 +29,14 @@
     owner: root
     group: root
     mode: "0664"
+
+- name: Set Jellyfin permissions
+  ansible.builtin.file:
+    path: "{{ configure_jellyfin_base_dir }}"
+    state: directory
+    recurse: true
+    owner: qbtuser
+    group: qbtuser
 
 - name: Copy systemd service
   ansible.builtin.template:
