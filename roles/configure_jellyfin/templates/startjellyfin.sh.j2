@@ -5,6 +5,6 @@ FFMPEGDIR="{{ configure_jellyfin_ffmpeg_dir }}"
 $JELLYFINDIR/jellyfin/jellyfin \
  -d $JELLYFINDIR/data \
  -C $JELLYFINDIR/cache \
- -c $JELLYFINDIR/config \
- -l $JELLYFINDIR/log \
+ -c /etc/opt/jellyfin \
+ -l /var/log/jellyfin \
  --ffmpeg $FFMPEGDIR/ffmpeg
