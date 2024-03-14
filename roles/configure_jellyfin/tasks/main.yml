@@ -78,3 +78,12 @@
     state: started
     daemon_reload: true
     enabled: true
+
+- name: Allow Jellyfin through firewalld
+  ansible.posix.firewalld:
+    service: jellyfin
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld

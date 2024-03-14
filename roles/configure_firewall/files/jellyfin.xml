@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Jellyfin</short>
+  <description>Jellyfin is a free and open-source media server</description>
+  <port protocol="tcp" port="8096" />
+</service>
