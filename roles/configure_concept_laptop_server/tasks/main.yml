@@ -1,6 +1,6 @@
 ---
 - name: Assume this is being run on a laptop, disable sleep, hibernate etc
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: "{{ item }}"
     enabled: false
     masked: true

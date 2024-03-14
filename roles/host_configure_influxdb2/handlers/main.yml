@@ -1,15 +1,15 @@
 ---
 - name: Restart telegraf
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: telegraf
     state: restarted
 
 - name: Restart influxdb
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: influxdb
     state: restarted
 
 - name: Restart firewalld
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: telegraf
     state: restarted

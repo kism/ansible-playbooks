@@ -30,13 +30,13 @@
     - Restart firewalld
 
 - name: Start and enable InfluxDB service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: influxdb
     enabled: true
     state: started
 
 - name: Restart influxdb
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: influxdb
     state: restarted
 

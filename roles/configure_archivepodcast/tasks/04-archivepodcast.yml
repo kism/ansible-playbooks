@@ -111,7 +111,7 @@
 - name: Enable systemd service
   become: true
   become_user: root
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: archivepodcast.service
     enabled: true
     daemon_reload: true

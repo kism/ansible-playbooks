@@ -1,11 +1,11 @@
 ---
 - name: Stop the Snapd service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: snapd
     state: stopped
 
 - name: Disable the Snapd service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: snapd
     enabled: false
 

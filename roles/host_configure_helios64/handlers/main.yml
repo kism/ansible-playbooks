@@ -1,6 +1,6 @@
 ---
 - name: Restart fancontrol
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     service: fancontrol
     state: restarted
 
