@@ -71,3 +71,10 @@
     owner: root
     group: root
     mode: "0664"
+
+- name: Enable and start service
+  ansible.builtin.systemd_service:
+    service: jellyfin
+    state: started
+    daemon_reload: true
+    enabled: true
