@@ -34,14 +34,10 @@
     group: qbtuser
     mode: "0644"
 
-- name: Read jellyfin-version file contents
+- name: Check current jellyfin version, update if needed
   ansible.builtin.slurp:
     src: "{{ configure_jellyfin_base_dir }}/jellyfin-version"
   register: file_contents
-
-# - name: Debug version strings
-#   ansible.builtin.debug:
-#     msg: "File: {{ file_contents.content | ansible.builtin.b64decode }}, Specified: {{ configure_jellyfin_version }}"
 
 - name: Upgrade Jellyfin
   when: file_contents.content | ansible.builtin.b64decode != configure_jellyfin_version
@@ -50,7 +46,6 @@
       ansible.builtin.file:
         path: "{{ configure_jellyfin_base_dir }}/jellyfin"
         state: absent
-        recurse: true
 
     - name: Create folders
       ansible.builtin.file:
@@ -95,7 +90,7 @@
     group: qbtuser
     mode: "0644"
 
-- name: Read jellyfin-ffmpeg-version file contents
+- name: Check current jellyfin ffmpeg version, update if needed
   ansible.builtin.slurp:
     src: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
   register: file_contents
@@ -114,7 +109,7 @@
     - name: Write version file
       ansible.builtin.copy:
         dest: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
-        content: "{{ configure_jellyfin_version }}"
+        content: "{{ configure_jellyfin_ffmpeg_version }}"
         owner: qbtuser
         group: qbtuser
         mode: "0644"
