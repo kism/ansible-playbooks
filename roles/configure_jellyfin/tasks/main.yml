@@ -26,27 +26,98 @@
     - "/var/log/jellyfin"
     - "{{ configure_jellyfin_ffmpeg_dir }}"
 
-- name: Download and extract jellyfin
-  ansible.builtin.unarchive:
-    src: "{{ configure_jellyfin_url }}"
-    dest: "{{ configure_jellyfin_base_dir }}/jellyfin"
-    remote_src: true
-    extra_opts:
-      - --strip-components=1
+- name: Create a file if it doesn't exist
+  ansible.builtin.file:
+    path: "{{ configure_jellyfin_base_dir }}/jellyfin-version"
+    state: touch
+    owner: qbtuser
+    group: qbtuser
+    mode: "0644"
 
-- name: Download and extract jellyfin-web
-  ansible.builtin.unarchive:
-    src: "{{ configure_jellyfin_web_url }}"
-    dest: "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
-    remote_src: true
-    extra_opts:
-      - --strip-components=1
+- name: Read jellyfin-version file contents
+  ansible.builtin.slurp:
+    src: "{{ configure_jellyfin_base_dir }}/jellyfin-version"
+  register: file_contents
 
-- name: Download and extract jellyfin-ffmpeg
-  ansible.builtin.unarchive:
-    src: "{{ configure_jellyfin_ffmpeg_url }}"
-    dest: "{{ configure_jellyfin_ffmpeg_dir }}"
-    remote_src: true
+# - name: Debug version strings
+#   ansible.builtin.debug:
+#     msg: "File: {{ file_contents.content | ansible.builtin.b64decode }}, Specified: {{ configure_jellyfin_version }}"
+
+- name: Upgrade Jellyfin
+  when: file_contents.content | ansible.builtin.b64decode != configure_jellyfin_version
+  block:
+    - name: Remove the folder
+      ansible.builtin.file:
+        path: "{{ configure_jellyfin_base_dir }}/jellyfin"
+        state: absent
+        recurse: true
+
+    - name: Create folders
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: qbtuser
+        group: qbtuser
+        mode: "0755"
+      loop:
+        - "{{ configure_jellyfin_base_dir }}/jellyfin"
+        - "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
+
+    - name: Download and extract jellyfin
+      ansible.builtin.unarchive:
+        src: "https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_{{ configure_jellyfin_version }}_linux-amd64.tar.gz"
+        dest: "{{ configure_jellyfin_base_dir }}/jellyfin"
+        remote_src: true
+        extra_opts:
+          - --strip-components=1
+
+    - name: Download and extract jellyfin-web
+      ansible.builtin.unarchive:
+        src: "https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-web_{{ configure_jellyfin_version }}_portable.tar.gz"
+        dest: "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
+        remote_src: true
+        extra_opts:
+          - --strip-components=1
+
+    - name: Write version file
+      ansible.builtin.copy:
+        dest: "{{ configure_jellyfin_base_dir }}/jellyfin-version"
+        content: "{{ configure_jellyfin_version }}"
+        owner: qbtuser
+        group: qbtuser
+        mode: "0644"
+
+- name: Create a file if it doesn't exist
+  ansible.builtin.file:
+    path: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
+    state: touch
+    owner: qbtuser
+    group: qbtuser
+    mode: "0644"
+
+- name: Read jellyfin-ffmpeg-version file contents
+  ansible.builtin.slurp:
+    src: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
+  register: file_contents
+
+- name: Upgrade Jellyfin
+  when: file_contents.content | ansible.builtin.b64decode != configure_jellyfin_ffmpeg_version
+  block:
+    - name: Download and extract jellyfin-ffmpeg
+      ansible.builtin.unarchive:
+        src: "https://github.com/jellyfin/jellyfin-ffmpeg/releases/download/v{{ configure_jellyfin_ffmpeg_version }}/jellyfin-ffmpeg_{{ configure_jellyfin_ffmpeg_version }}_portable_linux64-gpl.tar.xz"
+        dest: "{{ configure_jellyfin_ffmpeg_dir }}"
+        remote_src: true
+      tags:
+        - skip_ansible_lint
+
+    - name: Write version file
+      ansible.builtin.copy:
+        dest: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
+        content: "{{ configure_jellyfin_version }}"
+        owner: qbtuser
+        group: qbtuser
+        mode: "0644"
 
 - name: Copy service helper script
   ansible.builtin.template:

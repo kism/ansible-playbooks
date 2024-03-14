@@ -15,7 +15,7 @@
     # - configure_sshd
     # - configure_locale
     # - configure_telegraf
-    - configure_firewall
+    # - configure_firewall
     # - configure_ca_trust
     # - configure_motd
 
