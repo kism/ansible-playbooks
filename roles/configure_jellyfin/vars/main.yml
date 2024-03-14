@@ -1,6 +1,8 @@
 ---
 # https://repo.jellyfin.org/?path=/server/linux/latest-stable/amd64
 configure_jellyfin_url: "https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_10.8.13_linux-amd64.tar.gz"
+# https://github.com/jellyfin/jellyfin/releases
+configure_jellyfin_web_url: "https://github.com/jellyfin/jellyfin/archive/refs/tags/v10.8.13.tar.gz"
 # https://github.com/jellyfin/jellyfin-ffmpeg/releases
 configure_jellyfin_ffmpeg_url: "https://github.com/jellyfin/jellyfin-ffmpeg/releases/download/v6.0.1-3/jellyfin-ffmpeg_6.0.1-3_portable_linux64-gpl.tar.xz"
 configure_jellyfin_base_dir: "/opt/jellyfin"

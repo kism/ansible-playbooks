@@ -1,4 +1,9 @@
 ---
+- name: Set /opt perms
+  ansible.builtin.file:
+    path: "/opt"
+    mode: "0755"
+
 - name: Create folders
   ansible.builtin.file:
     path: "{{ item }}"
@@ -8,19 +13,35 @@
     mode: "0755"
   loop:
     - "{{ configure_jellyfin_base_dir }}"
+    - "{{ configure_jellyfin_base_dir }}/jellyfin"
+    - "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
+    - "{{ configure_jellyfin_base_dir }}/data"
+    - "{{ configure_jellyfin_base_dir }}/cache"
+    - "{{ configure_jellyfin_base_dir }}/config"
+    - "{{ configure_jellyfin_base_dir }}/log"
     - "{{ configure_jellyfin_ffmpeg_dir }}"
 
-- name: Download and extract jellyfin
-  ansible.builtin.unarchive:
-    src: "{{ configure_jellyfin_url }}"
-    dest: "{{ configure_jellyfin_base_dir }}"
-    remote_src: true
+# - name: Download and extract jellyfin
+#   ansible.builtin.unarchive:
+#     src: "{{ configure_jellyfin_url }}"
+#     dest: "{{ configure_jellyfin_base_dir }}/jellyfin"
+#     remote_src: true
+#     extra_opts:
+#       - --strip-components=1
 
-- name: Download and extract jellyfin-ffmpeg
+- name: Download and extract jellyfin-web
   ansible.builtin.unarchive:
-    src: "{{ configure_jellyfin_ffmpeg_url }}"
-    dest: "{{ configure_jellyfin_ffmpeg_dir }}"
+    src: "{{ configure_jellyfin_web_url }}"
+    dest: "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
     remote_src: true
+    extra_opts:
+      - --strip-components=1
+
+# - name: Download and extract jellyfin-ffmpeg
+#   ansible.builtin.unarchive:
+#     src: "{{ configure_jellyfin_ffmpeg_url }}"
+#     dest: "{{ configure_jellyfin_ffmpeg_dir }}"
+#     remote_src: true
 
 - name: Copy service helper script
   ansible.builtin.template:
@@ -28,7 +49,7 @@
     dest: "{{ configure_jellyfin_base_dir }}/startjellyfin.sh"
     owner: root
     group: root
-    mode: "0664"
+    mode: "0774"
 
 - name: Set Jellyfin permissions
   ansible.builtin.file:
