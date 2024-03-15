@@ -9,6 +9,9 @@
   with_items:
     - configs
     - configs/qbittorrent
+    - configs/config
+    - configs/watch
+    - configs/gluetun
     - downloads
     - downloads/torrent
 
