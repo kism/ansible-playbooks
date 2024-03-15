@@ -1,10 +1,11 @@
 [Unit]
 Description=qBittorrent service with docker compose
-Requires=docker.service
+PartOf=docker.service
 After=docker.service
 
 [Service]
 Type=oneshot
+RemainAfterExit=true
 WorkingDirectory={{ configure_docker_qbittorrent_base_dir }}/configs/qbittorrent
 ExecStart=/usr/bin/docker compose up -d --remove-orphans
 ExecStop=/usr/bin/docker compose down
