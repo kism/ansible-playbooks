@@ -25,7 +25,7 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_sabnzbd_base_dir }}/configs/radarr/config:/config
+      - {{ configure_docker_sabnzbd_base_dir }}/configs/sonarr/config:/config
       - {{ configure_docker_sabnzbd_base_dir }}/downloads/tv:/tv #optional
       - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads #optional
     ports:
