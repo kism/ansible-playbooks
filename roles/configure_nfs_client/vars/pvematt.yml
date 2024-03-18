@@ -1,0 +1,7 @@
+---
+configure_nfs_client_remote: "pvewill.kg.lan"
+configure_nfs_client_mounts:
+  - Beatrix
+  - Quina
+  - Quale
+  - Steiner

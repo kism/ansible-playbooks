@@ -1,0 +1,7 @@
+---
+configure_nfs_client_remote: "pvematt.kg.lan"
+configure_nfs_client_mounts:
+  - Amarant
+  - Freya
+  - Garnet
+  - Vivi

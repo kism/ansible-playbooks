@@ -1,0 +1,19 @@
+---
+- name: Install NFS server
+  ansible.builtin.apt:
+    name: nfs-kernel-server
+    state: present
+
+- name: Copy nfs server config to /etc/exports
+  ansible.builtin.copy:
+    src: "files/exports{{ ansible_hostname }}"
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: "0660"
+
+- name: Enable and start NFS service
+  ansible.builtin.systemd_service:
+    service: nfs-kernel-server
+    enabled: true
+    state: started

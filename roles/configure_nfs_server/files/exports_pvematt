@@ -1,0 +1,4 @@
+/srv/Amarant yoho.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+/srv/Garnet yoho.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+/srv/Freya yoho.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+/srv/Vivi yoho.kg.lan(rw,sync,no_subtree_check,no_root_squash)

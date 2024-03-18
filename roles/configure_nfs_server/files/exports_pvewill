@@ -1,0 +1,4 @@
+/srv/Beatrix kismnas.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+/srv/Quina kismnas.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+/srv/Quale kismnas.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+/srv/Steiner kismnas.kg.lan(rw,sync,no_subtree_check,no_root_squash)
