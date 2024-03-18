@@ -34,7 +34,7 @@ services:
       - WEBUI_PORT=8080
     volumes:
       - {{ configure_docker_qbittorrent_base_dir }}/configs/qbittorrent/config:/config
-      - {{ configure_docker_qbittorrent_base_dir }}/qbittorrent/watch:/watch
+      - {{ configure_docker_qbittorrent_base_dir }}/configs/qbittorrent/watch:/watch
       - {{ configure_docker_qbittorrent_base_dir }}/downloads/torrent:/downloads
     restart: unless-stopped
     depends_on:
