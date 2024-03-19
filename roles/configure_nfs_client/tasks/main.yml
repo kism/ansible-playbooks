@@ -17,18 +17,18 @@
 
 - name: Create directories
   ansible.builtin.file:
-    path: "/mnt/{{ item }}"
+    path: "/mnt/{{ item.key }}"
     state: directory
     owner: nobody
     group: nogroup
     mode: "0655"
-  loop: "{{ configure_nfs_client_mounts }}"
+  loop: "{{ systemsetup | dict2items }}"
 
 - name: Mount Partitions
   ansible.posix.mount:
-    path: "/mnt/{{ item }}"
-    src: "{{ configure_nfs_client_remote }}"
+    path: "/mnt/{{ item.key }}"
+    src: "{{ item.value }}"
     fstype: nfs
     opts: "vers=3,tcp,rsize=32768,wsize=32768,timeo=10,soft,intr"
     state: mounted
-  loop: "{{ configure_nfs_client_mounts }}"
+  loop: "{{ systemsetup | dict2items }}"

@@ -1,5 +1,9 @@
 ---
 configure_nfs_client_mounts:
+  Amarant: pvematt.kg.lan
+  Freya: pvematt.kg.lan
+  Garnet: pvematt.kg.lan
+  Vivi: pvematt.kg.lan
   Beatrix: pvewill.kg.lan
   Steiner: pvewill.kg.lan
   Quina: pvewill.kg.lan
