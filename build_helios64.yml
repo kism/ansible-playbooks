@@ -23,8 +23,8 @@
     # - configure_concept_baremetal
     # - configure_concept_sd_rootfs
     - configure_samba
-    - configure_docker_qbittorrent
-    - configure_docker_sabnzbd
+    # - configure_docker_qbittorrent
+    # - configure_docker_sabnzbd
 
 
     # Host Specific
