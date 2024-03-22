@@ -1,0 +1,47 @@
+---
+- name: Create ffmpreg directory
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: /opt/ffmpeg
+    state: directory
+    owner: root
+    group: root
+    mode: "0775"
+
+- name: Change ownership on /opt/ffmpeg
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: /opt/ffmpeg
+    recurse: true
+    owner: root
+    group: root
+
+- name: Grab ffmpeg aarch64
+  ansible.builtin.unarchive:
+    src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz
+    dest: /opt/ffmpeg
+    extra_opts: [--strip-components=1]
+    remote_src: true
+  when: ansible_architecture == 'aarch64'
+
+- name: Grab ffmpeg amd64
+  ansible.builtin.unarchive:
+    src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
+    dest: /opt/ffmpeg
+    extra_opts: [--strip-components=1]
+    remote_src: true
+  when: ansible_architecture == 'x86_64'
+
+- name: Create symbolic links to make sites available
+  ansible.builtin.file:
+    src: /opt/ffmpeg/{{ item }}
+    dest: /usr/bin/{{ item }}
+    owner: root
+    group: root
+    state: link
+  loop:
+    - ffmpeg
+    - ffprobe
+    - qt-faststart

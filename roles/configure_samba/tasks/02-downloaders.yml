@@ -1,0 +1,20 @@
+---
+- name: Non better place, Install fun downloaders
+  community.general.pipx:
+    name: "{{ item }}"
+    state: install
+  become: true
+  become_user: kism
+  loop:
+    - internetarchive
+    - yt-dlp
+
+- name: Non better place, Upgrade fun downloaders
+  community.general.pipx:
+    name: "{{ item }}"
+    state: upgrade
+  become: true
+  become_user: kism
+  loop:
+    - internetarchive
+    - yt-dlp
