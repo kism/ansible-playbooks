@@ -17,3 +17,8 @@
     service: nfs-kernel-server
     enabled: true
     state: started
+
+- name: Export the shares
+  ansible.builtin.command:
+    cmd: exportfs -rav
+  changed_when: true
