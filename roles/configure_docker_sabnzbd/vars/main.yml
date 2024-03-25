@@ -1,2 +1,4 @@
 ---
-configure_docker_sabnzbd_base_dir: /mnt/Quina
+configure_docker_sabnzbd_base_dir: /srv/Quina
+configure_docker_sabnzbd_tv_dir: /mnt/Garnet/Video/TV Series
+configure_docker_sabnzbd_movies_dir: /mnt/Vivi/Video/Movies

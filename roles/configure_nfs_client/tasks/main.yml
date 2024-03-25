@@ -29,6 +29,6 @@
     path: "/mnt/{{ item.key }}"
     src: "{{ item.value }}"
     fstype: nfs
-    opts: "vers=3,tcp,timeo=10,soft,intr"
+    # opts: "vers=3,tcp,timeo=600,soft,intr"
     state: mounted
   loop: "{{ systemsetup | dict2items }}"
