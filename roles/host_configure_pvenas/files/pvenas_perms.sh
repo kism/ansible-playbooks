@@ -60,10 +60,10 @@ find /srv/Garnet  -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Vivi    -mindepth 1 -type d -exec chmod g+s {} +
 
 ## Recursively set perms on subfolders of all content mounts
-find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
+find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
+find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
+find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
+find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
 
 # Misc
 
