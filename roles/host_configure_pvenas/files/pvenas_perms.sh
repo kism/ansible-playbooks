@@ -17,8 +17,8 @@ chmod u=rwX,g=rX,o=rX /srv/Amarant
 chmod u=rwX,g=rX,o=rX /srv/Freya
 chmod u=rwX,g=rX,o=rX /srv/Garnet
 chmod u=rwX,g=rX,o=rX /srv/Vivi
-chmod u=rwX,g=rX,o=rX /srv/Eiko # only touched by snapraid
-chmod u=rwX,g=rX,o=rX /srv/Zidane # only touched by snapraid
+chmod u=rwX,g=,o= /srv/Eiko # only touched by snapraid
+chmod u=rwX,g=,o= /srv/Zidane # only touched by snapraid
 
 ## Set Owners
 chown kism:content_public /srv/Amarant
@@ -66,10 +66,10 @@ find /srv/Garnet  -type f -exec chmod u-s,g-s,o-s {} +
 find /srv/Vivi    -type f -exec chmod u-s,g-s,o-s {} +
 
 ## Recursively set perms on subfolders of all content mounts
-find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o-wrx {} +
-find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o-wrx {} +
-find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o-wrx {} +
-find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o-wrx {} +
+find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
+find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
+find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
+find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
 
 # Misc
 
