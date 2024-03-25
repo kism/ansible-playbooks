@@ -8,7 +8,7 @@ setfacl --remove-all --recursive /srv/Vivi
 setfacl --remove-all --recursive /srv/Eiko
 setfacl --remove-all --recursive /srv/Zidane
 
-## Let everyone get to the hard drive partitions
+## Let everyone get to the hard drive partitions, no group write to prevent files getting created directly in them
 chown root:root /srv
 chmod u=rwX,g=rX,o=rX /srv
 chmod g-s /srv
@@ -53,17 +53,23 @@ chown -R kism:content_private /srv/Vivi/Pictures
 chown -R kism:content_public  /srv/Vivi/ps2smb
 chown -R kism:content_public  /srv/Vivi/Video
 
-## Set setgid to directories recursively
+## Find all dirs, set setguid
 find /srv/Amarant -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Freya   -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Garnet  -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Vivi    -mindepth 1 -type d -exec chmod g+s {} +
 
+## Find all files, remove all special bits
+find /srv/Amarant -type f -exec chmod u-s,g-s,o-s {} +
+find /srv/Freya   -type f -exec chmod u-s,g-s,o-s {} +
+find /srv/Garnet  -type f -exec chmod u-s,g-s,o-s {} +
+find /srv/Vivi    -type f -exec chmod u-s,g-s,o-s {} +
+
 ## Recursively set perms on subfolders of all content mounts
-find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
-find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
-find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
-find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rsX,o-wrx {} +
+find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
+find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
+find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
+find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
 
 # Misc
 
