@@ -13,7 +13,7 @@
     - /srv/Quale
     - /srv/Quina
 
-- name: Mount up device by label
+- name: Mount partitions by label
   ansible.posix.mount:
     path: /srv/{{ item }}
     src: LABEL={{ item }}
@@ -25,12 +25,12 @@
     - Beatrix
     - Quale
 
-- name: Mount up device by label
+- name: Mount partitions by uuid (Better with btrfs)
   ansible.posix.mount:
     path: /srv/Quina
     src: UUID=4054a595-ff86-4e6e-9bb4-d9b07ae1a7ef
-    fstype: ext4
-    opts: "rw,nofail,relatime"
+    fstype: btrfs
+    opts: "defaults,nofail,autodefrag"
     state: mounted
 
 - name: Copy perms script

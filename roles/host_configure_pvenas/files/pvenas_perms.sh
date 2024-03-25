@@ -21,10 +21,10 @@ chmod u=rwX,g=,o= /srv/Eiko # only touched by snapraid
 chmod u=rwX,g=,o= /srv/Zidane # only touched by snapraid
 
 ## Set Owners
-chown kism:content_public /srv/Amarant
-chown kism:content_public /srv/Freya
-chown kism:content_public /srv/Garnet
-chown kism:content_public /srv/Vivi
+chown root:root /srv/Amarant
+chown root:root /srv/Freya
+chown root:root /srv/Garnet
+chown root:root /srv/Vivi
 chown root:root /srv/Eiko # only touched by snapraid
 chown root:root /srv/Zidane # only touched by snapraid
 

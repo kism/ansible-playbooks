@@ -12,7 +12,7 @@ services:
       - 6881:6881/udp # qBittorrent listening port/udp
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
-      - OPENVPN_USER={{ mullvad_user }}
+      - OPENVPN_USER={{ secret_mullvad_user }}
       - SERVER_CITIES=Singapore
       - FIREWALL_VPN_INPUT_PORTS=6881
       - PUID=1086

@@ -15,16 +15,16 @@ chmod u=rwX,g=rX,o=rX /srv/Quale
 chmod u=rwX,g=rX,o=rX /srv/Steiner
 
 ## Set Owners
-chown kism:content_public /srv/Quina
-chown kism:content_public /srv/Quale
-chown kism:content_public /srv/Steiner
+chown root:root /srv/Quina
+chown root:root /srv/Quale
+chown root:root /srv/Steiner
 
 # Subfolders
 
 ## Set Permissions for Content
 chown -R kism:content_private /srv/Quina/z
 chown -R qbtuser:qbtuser /srv/Quina/downloads
-chown -R kism:content_private /srv/Quina/configs
+chown -R qbtuser:qbtuser /srv/Quina/configs
 
 ## Find all dirs, set setguid
 find /srv/Quina    -mindepth 1 -type d -exec chmod g+s {} +
