@@ -37,9 +37,9 @@ find /srv/Quale   -type f -exec chmod u-s,g-s,o-s {} +
 find /srv/Steiner -type f -exec chmod u-s,g-s,o-s {} +
 
 ## Recursively set perms on subfolders of all content mounts
-find /srv/Quina   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Quale   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Steiner -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
+find /srv/Quina   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o-wrx {} +
+find /srv/Quale   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o-wrx {} +
+find /srv/Steiner -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o-wrx {} +
 
 # Misc
 
