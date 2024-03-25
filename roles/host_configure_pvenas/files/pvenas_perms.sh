@@ -13,10 +13,10 @@ chown root:root /srv
 chmod u=rwX,g=rX,o=rX /srv
 chmod g-s /srv
 chmod g-s /srv/*
-chmod u=rwX,g=rwX,o=rX /srv/Amarant
-chmod u=rwX,g=rwX,o=rX /srv/Freya
-chmod u=rwX,g=rwX,o=rX /srv/Garnet
-chmod u=rwX,g=rwX,o=rX /srv/Vivi
+chmod u=rwX,g=rX,o=rX /srv/Amarant
+chmod u=rwX,g=rX,o=rX /srv/Freya
+chmod u=rwX,g=rX,o=rX /srv/Garnet
+chmod u=rwX,g=rX,o=rX /srv/Vivi
 chmod u=rwX,g=rX,o=rX /srv/Eiko # only touched by snapraid
 chmod u=rwX,g=rX,o=rX /srv/Zidane # only touched by snapraid
 
