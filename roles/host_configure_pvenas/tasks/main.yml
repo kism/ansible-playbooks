@@ -90,13 +90,6 @@
     group: root
     mode: "0700"
 
-- name: Copy midnight commander script
-  ansible.builtin.copy:
-    src: files/pvenas_mc.sh
-    dest: /root/mc.sh
-    owner: root
-    group: root
-    mode: "0700"
 
 - name: Copy perms script
   ansible.builtin.copy:
