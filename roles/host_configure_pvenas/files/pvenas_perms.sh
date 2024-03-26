@@ -8,23 +8,23 @@ setfacl --remove-all --recursive /srv/Vivi
 setfacl --remove-all --recursive /srv/Eiko
 setfacl --remove-all --recursive /srv/Zidane
 
-## Let everyone get to the hard drive partitions
+## Let everyone get to the hard drive partitions, no group write to prevent files getting created directly in them
 chown root:root /srv
 chmod u=rwX,g=rX,o=rX /srv
 chmod g-s /srv
 chmod g-s /srv/*
-chmod u=rwX,g=rwX,o=rX /srv/Amarant
-chmod u=rwX,g=rwX,o=rX /srv/Freya
-chmod u=rwX,g=rwX,o=rX /srv/Garnet
-chmod u=rwX,g=rwX,o=rX /srv/Vivi
-chmod u=rwX,g=rX,o=rX /srv/Eiko # only touched by snapraid
-chmod u=rwX,g=rX,o=rX /srv/Zidane # only touched by snapraid
+chmod u=rwX,g=rX,o=rX /srv/Amarant
+chmod u=rwX,g=rX,o=rX /srv/Freya
+chmod u=rwX,g=rX,o=rX /srv/Garnet
+chmod u=rwX,g=rX,o=rX /srv/Vivi
+chmod u=rwX,g=,o= /srv/Eiko # only touched by snapraid
+chmod u=rwX,g=,o= /srv/Zidane # only touched by snapraid
 
 ## Set Owners
-chown kism:content_public /srv/Amarant
-chown kism:content_public /srv/Freya
-chown kism:content_public /srv/Garnet
-chown kism:content_public /srv/Vivi
+chown root:root /srv/Amarant
+chown root:root /srv/Freya
+chown root:root /srv/Garnet
+chown root:root /srv/Vivi
 chown root:root /srv/Eiko # only touched by snapraid
 chown root:root /srv/Zidane # only touched by snapraid
 
@@ -53,17 +53,23 @@ chown -R kism:content_private /srv/Vivi/Pictures
 chown -R kism:content_public  /srv/Vivi/ps2smb
 chown -R kism:content_public  /srv/Vivi/Video
 
-## Set setgid to directories recursively
+## Find all dirs, set setguid
 find /srv/Amarant -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Freya   -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Garnet  -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Vivi    -mindepth 1 -type d -exec chmod g+s {} +
 
+## Find all files, remove all special bits
+find /srv/Amarant -type f -exec chmod u-s,g-s,o-s {} +
+find /srv/Freya   -type f -exec chmod u-s,g-s,o-s {} +
+find /srv/Garnet  -type f -exec chmod u-s,g-s,o-s {} +
+find /srv/Vivi    -type f -exec chmod u-s,g-s,o-s {} +
+
 ## Recursively set perms on subfolders of all content mounts
-find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
-find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rX,o-wrx {} +
+find /srv/Amarant -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
+find /srv/Freya   -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
+find /srv/Garnet  -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
+find /srv/Vivi    -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
 
 # Misc
 

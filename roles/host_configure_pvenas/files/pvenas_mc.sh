@@ -1,1 +1,0 @@
-cd /mnt/qbt; sudo --user kism mc /srv; cd ~

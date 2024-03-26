@@ -12,6 +12,8 @@
 - name: Add directories for HDDs
   ansible.builtin.file:
     path: "{{ item }}"
+    owner: root
+    group: root
     state: directory
     mode: "0755"
   loop:
@@ -28,6 +30,7 @@
     path: /srv/{{ item }}
     src: LABEL={{ item }}
     fstype: ext4
+    opts: "rw,nofail,relatime"
     state: mounted
   loop:
     - Zidane
@@ -87,13 +90,6 @@
     group: root
     mode: "0700"
 
-- name: Copy midnight commander script
-  ansible.builtin.copy:
-    src: files/pvenas_mc.sh
-    dest: /root/mc.sh
-    owner: root
-    group: root
-    mode: "0700"
 
 - name: Copy perms script
   ansible.builtin.copy:

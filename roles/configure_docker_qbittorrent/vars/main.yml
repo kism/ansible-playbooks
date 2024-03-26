@@ -1,2 +1,2 @@
 ---
-configure_docker_qbittorrent_base_dir: /mnt/Quina
+configure_docker_qbittorrent_base_dir: /srv/Quina

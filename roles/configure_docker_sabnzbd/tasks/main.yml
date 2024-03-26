@@ -18,13 +18,11 @@
     - downloads/usenet
     - downloads/usenet/complete
     - downloads/usenet/incomplete
-    - downloads/tv
-    - downloads/movies
 
 - name: Copy docker-compose.yml
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
-    dest: /mnt/Quina/configs/sabnzbd/docker-compose.yml
+    dest: "{{ configure_docker_sabnzbd_base_dir }}/configs/sabnzbd/docker-compose.yml"
     mode: "0660"
     owner: qbtuser
     group: qbtuser
