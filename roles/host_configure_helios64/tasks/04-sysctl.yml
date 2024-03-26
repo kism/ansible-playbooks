@@ -1,7 +1,8 @@
+---
 - name: Reboot on Kernel Panic
   ansible.builtin.copy:
     dest: /etc/sysctl.d/99-kernelpanic.conf
-    content: "kernel.panic = 10"
+    content: kernel.panic = 10
     owner: root
     group: root
     mode: "0644"

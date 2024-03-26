@@ -6,8 +6,8 @@
     owner: root
     group: root
   loop:
-    - "/opt"
-    - "/etc/opt"
+    - /opt
+    - /etc/opt
 
 - name: Create folders
   ansible.builtin.file:
@@ -22,8 +22,8 @@
     - "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
     - "{{ configure_jellyfin_base_dir }}/data"
     - "{{ configure_jellyfin_base_dir }}/cache"
-    - "/etc/opt/jellyfin"
-    - "/var/log/jellyfin"
+    - /etc/opt/jellyfin
+    - /var/log/jellyfin
     - "{{ configure_jellyfin_ffmpeg_dir }}"
 
 - name: Create a file if it doesn't exist
@@ -60,7 +60,7 @@
 
     - name: Download and extract jellyfin
       ansible.builtin.unarchive:
-        src: "https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_{{ configure_jellyfin_version }}_linux-amd64.tar.gz"
+        src: https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_{{ configure_jellyfin_version }}_linux-amd64.tar.gz
         dest: "{{ configure_jellyfin_base_dir }}/jellyfin"
         remote_src: true
         extra_opts:
@@ -68,7 +68,7 @@
 
     - name: Download and extract jellyfin-web
       ansible.builtin.unarchive:
-        src: "https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-web_{{ configure_jellyfin_version }}_portable.tar.gz"
+        src: https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-web_{{ configure_jellyfin_version }}_portable.tar.gz
         dest: "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
         remote_src: true
         extra_opts:
@@ -100,7 +100,7 @@
   block:
     - name: Download and extract jellyfin-ffmpeg
       ansible.builtin.unarchive:
-        src: "https://github.com/jellyfin/jellyfin-ffmpeg/releases/download/v{{ configure_jellyfin_ffmpeg_version }}/jellyfin-ffmpeg_{{ configure_jellyfin_ffmpeg_version }}_portable_linux64-gpl.tar.xz" # yamllint disable-line rule:line-length
+        src: https://github.com/jellyfin/jellyfin-ffmpeg/releases/download/v{{ configure_jellyfin_ffmpeg_version }}/jellyfin-ffmpeg_{{ configure_jellyfin_ffmpeg_version }}_portable_linux64-gpl.tar.xz # yamllint disable-line rule:line-length
         dest: "{{ configure_jellyfin_ffmpeg_dir }}"
         remote_src: true
 

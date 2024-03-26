@@ -1,6 +1,5 @@
 {
   "workbench.colorTheme": "paddy-citadel",
-  "ansible.python.interpreterPath": "/home/codespace/.local/share/virtualenvs/ansible-playbooks-0Mj6vStz/bin/python",
 	// Specify default formatters
 	"[ansible]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -11,5 +10,6 @@
 	// Needed for ansible-lint to trigger for roles
 	"files.associations": {
         "*.yml": "ansible"
-    }
+	},
+	"ansible.python.interpreterPath": "~/.local/share/virtualenvs/ansible-playbooks-0Mj6vStz/bin/python"
 }

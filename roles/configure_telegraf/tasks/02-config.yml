@@ -1,0 +1,38 @@
+---
+- name: Setup telegraf hosts
+  when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'apt'
+  block:
+    - name: Copy common telegraf config
+      ansible.builtin.copy:
+        src: files/common_influxdb.conf
+        dest: /etc/telegraf/telegraf.d/common_influxdb.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+    - name: Setup telegraf conf
+      ansible.builtin.lineinfile:
+        path: /etc/telegraf/telegraf.d/common_influxdb.conf
+        regexp: "token = "
+        line: token = "{{ secret_influxdb_telegraf_write }}"
+        state: present
+      notify:
+        - Restart telegraf
+
+    - name: Copy host telegraf config
+      ansible.builtin.copy:
+        src: files/hostconfigs/{{ inventory_hostname }}.conf
+        dest: /etc/telegraf/telegraf.d/{{ inventory_hostname }}.conf
+        owner: telegraf
+        group: telegraf
+        mode: "600"
+      notify:
+        - Restart telegraf
+
+    - name: Start and enable telegraf service
+      ansible.builtin.systemd_service:
+        name: telegraf
+        state: started
+        enabled: true

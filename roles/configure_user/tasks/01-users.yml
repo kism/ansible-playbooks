@@ -1,0 +1,53 @@
+---
+- name: Set root password
+  ansible.builtin.user:
+    name: root
+    password: "{{ secret_root_password_hash }}"
+
+- name: Add the user 'kism' with a bash shell
+  ansible.builtin.user:
+    name: kism
+    password: "{{ secret_kism_password_hash }}"
+    uid: 1089
+    shell: /bin/bash
+  when: ansible_facts["env"]["SUDO_USER"] is not defined or ansible_facts["env"]["SUDO_USER"] != "kism"
+
+- name: Set authorized keys taken from url using lookup
+  ansible.posix.authorized_key:
+    user: kism
+    state: present
+    exclusive: true
+    key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
+
+# Misc non root users
+- name: Add the user 'backup_svc' with a bash shell
+  ansible.builtin.user:
+    name: backup_svc
+    uid: 1087
+    # gid: 1087
+    shell: /bin/bash
+    append: true
+
+- name: Add the user 'qbtuser' with a bash shell
+  ansible.builtin.user:
+    name: qbtuser
+    uid: 1086
+    # gid: 1086
+    shell: /bin/bash
+    append: true
+
+- name: Add the user 'lanprivate' with a bash shell
+  ansible.builtin.user:
+    name: lanprivate
+    uid: 1085
+    # gid: 1085
+    shell: /usr/sbin/nologin
+    append: true
+
+- name: Add the user 'lanuser' with a bash shell
+  ansible.builtin.user:
+    name: lanuser
+    uid: 1084
+    # gid: 1084
+    shell: /usr/sbin/nologin
+    append: true

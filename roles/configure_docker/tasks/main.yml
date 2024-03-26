@@ -1,8 +1,11 @@
 ---
 - name: Install packages APT
-  ansible.builtin.include_tasks: _apt.yml
+  ansible.builtin.include_tasks: "01-apt.yml"
   when: ansible_pkg_mgr == 'apt'
 
 - name: Install packages DNF
-  ansible.builtin.include_tasks: _dnf.yml
+  ansible.builtin.include_tasks: "01-dnf.yml"
   when: ansible_pkg_mgr == 'yum' or ansible_pkg_mgr == 'dnf'
+
+- name: Add telegraf user to docker group
+  ansible.builtin.include_tasks: "02-telegraf.yml"

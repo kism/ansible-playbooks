@@ -13,11 +13,11 @@
 
 - name: Include vars for host
   ansible.builtin.include_vars:
-    dir: "vars/{{ ansible_hostname }}.yml"
+    dir: vars/{{ ansible_hostname }}.yml
 
 - name: Create directories
   ansible.builtin.file:
-    path: "/mnt/{{ item.key }}"
+    path: /mnt/{{ item.key }}
     state: directory
     owner: nobody
     group: nogroup
@@ -26,9 +26,9 @@
 
 - name: Mount Partitions
   ansible.posix.mount:
-    path: "/mnt/{{ item.key }}"
+    path: /mnt/{{ item.key }}
     src: "{{ item.value }}"
     fstype: nfs
-    opts: "vers=3,tcp,rsize=32768,wsize=32768,timeo=10,soft,intr"
+    opts: vers=3,tcp,rsize=32768,wsize=32768,timeo=10,soft,intr
     state: mounted
   loop: "{{ systemsetup | dict2items }}"

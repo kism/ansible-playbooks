@@ -1,0 +1,53 @@
+---
+# Create Groups
+- name: Ensure group "kgadmins" exists
+  ansible.builtin.group:
+    name: kgadmins
+    gid: 1099
+    state: present
+
+- name: Ensure group "content_private" exists
+  ansible.builtin.group:
+    name: content_private
+    gid: 1098
+    state: present
+
+- name: Ensure group "content_public" exists
+  ansible.builtin.group:
+    name: content_public
+    gid: 1097
+    state: present
+
+# Add users to groups
+- name: Adding existing user 'kism' to groups
+  ansible.builtin.user:
+    name: kism
+    groups: kgadmins, content_private, content_public, backup_svc, qbtuser
+    append: true
+
+- name: Adding existing user 'lanprivate' account to groups
+  ansible.builtin.user:
+    name: lanprivate
+    groups: content_private, content_public
+    append: true
+
+- name: Adding existing user 'lanuser' account to groups
+  ansible.builtin.user:
+    name: lanuser
+    groups: content_public
+    append: true
+
+- name: Adding existing user 'qbtuser' to groups
+  ansible.builtin.user:
+    name: kism
+    groups: content_private, content_public
+    append: true
+
+# Sudoers rules
+- name: Copy the kgadmins sudoers rule
+  ansible.builtin.copy:
+    src: files/sudoers_kgadmins
+    dest: /etc/sudoers.d/kgadmins
+    owner: root
+    group: root
+    mode: "0640"
