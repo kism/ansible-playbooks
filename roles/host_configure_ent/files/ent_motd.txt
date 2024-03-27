@@ -109,10 +109,11 @@
 
    +----------------------------------------------------------------------+
    | kg.lan hosts:                                                        |
-   |  ent    | SSH Gateway           autismfactory | Factorio Server      |
-   |  qbt    | qBittorrent           helios64      | Helios64 NAS         |
-   |  ifdb   | InfluxDB / Grafana    dpshub        | Your Windows 11 PC   |
-   |  graf   | Grafana Dashboard     kpbp          | Your Manjaro Laptop  |
-   |  pve    | Proxmox KVM Manager                                        |
-   |  cert   | Smallstep CA                                               |
+   |  ent     | SSH Gateway                                               |
+   |  yoho    | qbt, sab, rad, son                                        |
+   |  ifdb    | InfluxDB / Grafana                                        |
+   |  graf    | Grafana Dashboard                                         |
+   |  pvewill | Proxmox, snapraid                                         |
+   |  pvematt | Proxmox, btfrs                                            |
+   |  rproxy  | Reverse Proxy                                             |
    +----------------------------------------------------------------------+

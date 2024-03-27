@@ -22,5 +22,5 @@
     # Purpose specific
     - configure_nginx
 
-    # Host Specific
-    - host_configure_grafana
+    # Application Specific
+    - configure_grafana

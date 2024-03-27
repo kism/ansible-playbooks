@@ -26,11 +26,6 @@ ansible-vault encrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ```
 
-## Todo
-* nfs
-* directory (glauth)
-
-
 do later
 
 ```bash
