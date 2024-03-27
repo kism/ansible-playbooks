@@ -22,4 +22,4 @@
     # Purpose specific
 
     # Application Specific
-    - host_configure_influxdb2
+    - configure_influxdb2
