@@ -8,23 +8,23 @@
 
   roles:
     # Standard server onboarding
-    # - configure_package_manager
-    # - configure_server_packages
-    # - configure_user
-    # - configure_directories
-    # - configure_sshd
-    # - configure_locale
-    # - configure_telegraf
-    # - configure_firewall
-    # - configure_ca_trust
-    # - configure_motd
+    - configure_package_manager
+    - configure_server_packages
+    - configure_user
+    - configure_directories
+    - configure_sshd
+    - configure_locale
+    - configure_telegraf
+    - configure_firewall
+    - configure_ca_trust
+    - configure_motd
 
     # # Purpose specific
-    # - configure_concept_baremetal
-    # - configure_concept_sd_rootfs
-    # - configure_samba
+    - configure_concept_baremetal
+    - configure_concept_sd_rootfs
+    - configure_samba
     - configure_docker_qbittorrent
-    # - configure_docker_sabnzbd
+    - configure_docker_sabnzbd
 
     # Host Specific
-    # - host_configure_helios64
+    - host_configure_helios64
