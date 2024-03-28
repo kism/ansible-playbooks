@@ -1,0 +1,28 @@
+---
+- name: Set root password
+  ansible.builtin.user:
+    name: root
+    password: "{{ secret_root_password_hash }}"
+
+- name: Add the user for me {{ configure_users_myuser.value.name }}
+  ansible.builtin.user:
+    name: "{{ configure_users_myuser['name'] }}"
+    password: "{{ secret_kism_password_hash }}"
+    uid: "{{ configure_users_myuser['uid'] }}"
+    shell: "{{ configure_users_myuser['shell'] }}"
+  when: ansible_facts["env"]["SUDO_USER"] is not defined or ansible_facts["env"]["SUDO_USER"] != configure_users_myuser["name"]
+
+- name: Set authorized keys taken from url using lookup
+  ansible.posix.authorized_key:
+    user: kism
+    state: present
+    exclusive: true
+    key: "{{ lookup('url', 'https://github.com/kism.keys', split_lines=False) }}"
+
+- name: Add service accounts
+  ansible.builtin.user:
+    name: "{{ item.key }}"
+    uid: "{{ item.value.uid }}"
+    shell: "{{ item.value.shell }}"
+    append: false
+  with_dict: "{{ configure_users_service }}"

@@ -1,0 +1,18 @@
+configure_users_myuser:
+  name: kism
+  uid: 1089
+  shell: /usr/sbin/nologin
+
+configure_users_service:
+  backup_svc:
+    uid: 1087
+    shell: /usr/sbin/nologin
+  qbtuser:
+    uid: 1087
+    shell: /usr/sbin/nologin
+  lanprivate:
+    uid: 1086
+    shell: /usr/sbin/nologin
+  lanuser:
+    uid: 1084
+    shell: /usr/sbin/nologin

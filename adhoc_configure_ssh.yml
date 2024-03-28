@@ -5,4 +5,4 @@
   become: true
   roles:
     # General Onboards
-    - configure_user
+    - configure_users

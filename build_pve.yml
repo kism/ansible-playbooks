@@ -8,7 +8,7 @@
     # Standard server onboarding
     - configure_package_manager
     - configure_server_packages
-    - configure_user
+    - configure_users
     - configure_directories
     - configure_sshd
     - configure_locale
