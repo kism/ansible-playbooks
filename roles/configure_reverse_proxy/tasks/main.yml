@@ -50,7 +50,7 @@
     mode: "0660"
   notify:
     - Restart nginx
-  loop: "{{ host_configure_rproxy_nginxconfigs }}"
+  loop: "{{ configure_reverse_proxy_nginxconfigs }}"
 
 - name: Create symbolic links to make sites available
   ansible.builtin.file:
@@ -61,7 +61,7 @@
     state: link
   notify:
     - Restart nginx
-  loop: "{{ host_configure_rproxy_nginxconfigs }}"
+  loop: "{{ configure_reverse_proxy_nginxconfigs }}"
 
 - name: Copy ip whitelist
   ansible.builtin.template:

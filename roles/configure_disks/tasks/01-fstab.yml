@@ -14,7 +14,7 @@
     group: root
     state: directory
     mode: "0755"
-  loop: "{{ host_disks_ext4 }}"
+  loop: "{{ configure_disks_ext4 }}"
 
 - name: Add directories for HDDs (btrfs list)
   ansible.builtin.file:
@@ -23,7 +23,7 @@
     group: root
     state: directory
     mode: "0755"
-  with_items: "{{ host_disks_btrfs }}"
+  with_items: "{{ configure_disks_btrfs }}"
 
 - name: Mount partitions by label (ext4)
   ansible.posix.mount:
@@ -32,7 +32,7 @@
     fstype: ext4
     opts: "rw,nofail,relatime"
     state: mounted
-  loop: "{{ host_disks_ext4 }}"
+  loop: "{{ configure_disks_ext4 }}"
 
 - name: Mount partitions by uuid (btrfs)
   ansible.posix.mount:
@@ -41,7 +41,7 @@
     fstype: btrfs
     opts: "defaults,nofail,autodefrag"
     state: mounted
-  with_items: "{{ host_disks_btrfs }}"
+  with_items: "{{ configure_disks_btrfs }}"
 
 - name: Copy perms script
   ansible.builtin.copy:

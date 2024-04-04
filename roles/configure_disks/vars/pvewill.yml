@@ -1,5 +1,5 @@
 ---
-host_disks_ext4:
+configure_disks_ext4:
   - Zidane
   - Vivi
   - Garnet

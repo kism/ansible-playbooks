@@ -30,6 +30,7 @@ todo
 
 * check files after that risky merge
 * virtualisation check
+* fix ent domain, do domains everywhere
 
 
 
