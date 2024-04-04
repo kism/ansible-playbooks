@@ -26,6 +26,13 @@ ansible-vault encrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ```
 
+todo
+
+* check files after that risky merge
+* virtualisation check
+
+
+
 do later
 
 ```bash
