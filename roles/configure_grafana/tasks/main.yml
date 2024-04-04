@@ -1,6 +1,35 @@
 ---
-- name: Samba Setup
-  ansible.builtin.include_tasks: "01-grafana.yml"
+- name: Copy repo file to yum.repos.d
+  ansible.builtin.copy:
+    src: files/grafana.repo
+    dest: /etc/yum.repos.d/grafana.repo
+    owner: root
+    group: root
+    mode: "0644"
 
-- name: Reminders
-  ansible.builtin.include_tasks: "02-nginx.yml"
+- name: Import Grafana GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpm.grafana.com/gpg.key
+
+- name: Install Grafana
+  ansible.builtin.dnf:
+    name: grafana
+    state: present
+
+- name: Start and enable Grafana service
+  ansible.builtin.systemd_service:
+    name: grafana-server
+    enabled: true
+    state: started
+
+- name: Allow Grafana and nginx through firewalld
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    zone: public
+    permanent: true
+    state: enabled
+  loop:
+    - grafana
+  notify:
+    - Restart firewalld

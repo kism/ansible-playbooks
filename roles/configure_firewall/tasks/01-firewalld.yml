@@ -1,21 +1,9 @@
 ---
-- name: Setup basic Firewalld on dnf based hosts
-  when: ansible_pkg_mgr == 'dnf'
-  block:
-    - name: Install firewalld
-      ansible.builtin.dnf:
-        name:
-          - firewalld
-        state: present
-
-- name: Setup basic Firewalld on dnf based hosts
-  when: ansible_pkg_mgr == 'apt'
-  block:
-    - name: Install firewalld
-      ansible.builtin.apt:
-        name:
-          - firewalld
-        state: present
+- name: Install firewalld
+  ansible.builtin.package:
+    name:
+      - firewalld
+    state: present
 
 - name: Remove cockpit from firewall config
   ansible.posix.firewalld:

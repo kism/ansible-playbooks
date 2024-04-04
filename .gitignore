@@ -2,3 +2,4 @@
 *.asc
 secrets.yml
 secrets*.yml
+*.out

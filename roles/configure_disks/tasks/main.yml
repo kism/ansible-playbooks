@@ -1,0 +1,6 @@
+---
+- name: Include vars for host
+  ansible.builtin.include_vars: vars/{{ ansible_hostname }}.yml
+
+- name: Include tasks for fstab
+  ansible.builtin.include_tasks: 01-fstab.yml

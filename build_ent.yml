@@ -21,6 +21,4 @@
 
     # Purpose specific
     - configure_fail2ban
-
-    # Host Specific
-    - host_configure_ent
+    - configure_jumpbox

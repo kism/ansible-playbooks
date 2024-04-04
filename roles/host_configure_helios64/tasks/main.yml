@@ -3,10 +3,6 @@
   ansible.builtin.include_tasks:
     file: "01-fancontrol.yml"
 
-# - name: Include hd-idle
-#   ansible.builtin.include_tasks:
-#     file: "02-hd-idle.yml"
-
 # - name: Include Networking config
 #   ansible.builtin.include_tasks:
 #     file: "03-network.yml"
@@ -15,9 +11,9 @@
   ansible.builtin.include_tasks:
     file: "04-sysctl.yml"
 
-- name: Include mount tasks
-  ansible.builtin.include_tasks:
-    file: "05-mounts.yml"
+# - name: Include mount tasks
+#   ansible.builtin.include_tasks:
+#     file: "05-mounts.yml"
 
 - name: Include reminders
   ansible.builtin.include_tasks:

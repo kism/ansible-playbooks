@@ -1,0 +1,141 @@
+---
+- name: Install fedoraproject epel
+  ansible.builtin.dnf:
+    name: https://download-ib01.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+    state: present
+
+# makecache maybe
+
+- name: Install Packages
+  ansible.builtin.dnf:
+    name:
+      - nginx
+      - certbot
+      - python3-certbot-dns-cloudflare
+      - fail2ban
+    state: installed
+
+- name: Copy nginx conf
+  ansible.builtin.copy:
+    src: "files/conf/{{ ansible_hostname }}/nginx-rproxy.conf"
+    dest: /etc/nginx/nginx.conf
+    mode: "0660"
+  notify:
+    - Restart nginx
+
+- name: Remove file (delete file)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  tags:
+    - skip_ansible_lint
+  loop:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+# is this bad?
+- name: Copy nginx site confs
+  ansible.builtin.copy:
+    src: files/conf/{{ ansible_hostnname }}/{{ item }}
+    dest: /etc/nginx/sites-available/
+    mode: "0660"
+  notify:
+    - Restart nginx
+  loop: "{{ host_configure_rproxy_nginxconfigs }}"
+
+- name: Create symbolic links to make sites available
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{ item }}
+    dest: /etc/nginx/sites-enabled/{{ item }}
+    owner: root
+    group: root
+    state: link
+  notify:
+    - Restart nginx
+  loop: "{{ host_configure_rproxy_nginxconfigs }}"
+
+- name: Copy ip whitelist
+  ansible.builtin.template:
+    src: templates/ipwhitelist.conf.j2
+    dest: /etc/nginx/ipwhitelist.conf
+    owner: nginx
+    group: nginx
+    mode: "0644"
+  notify:
+    - Restart nginx
+
+- name: Copy nginx index.html
+  ansible.builtin.copy:
+    src: files/nginx-rproxy-index.html
+    dest: /usr/share/nginx/html/index.html
+    mode: "0664"
+  notify:
+    - Restart nginx
+
+- name: Create pki directory if it does not exist
+  ansible.builtin.file:
+    path: /usr/share/nginx/html/pki
+    state: directory
+    mode: "0755"
+
+- name: Enable crond
+  ansible.builtin.systemd_service:
+    name: crond
+    enabled: true
+    state: started
+
+- name: Set cloudflare key
+  ansible.builtin.copy:
+    content: dns_cloudflare_api_token = {{ secret_cloudflare_api_dns }}
+    dest: /root/.cloudflare.ini
+    mode: "0600"
+    owner: root
+    group: root
+
+- name: Remove Let's Encrypt directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/letsencrypt/live
+    - /etc/letsencrypt/archive
+    - /etc/letsencrypt/renewal
+
+- name: Initial certbot config
+  become: true
+  ansible.builtin.command:
+    cmd: >
+      certbot certonly
+      --agree-tos
+      --email={{ secret_email }}
+      -v
+      --non-interactive
+      --post-hook "service nginx reload"
+      --dns-cloudflare
+      --dns-cloudflare-credentials /root/.cloudflare.ini
+      -d kierangee.au,*.kierangee.au
+  register: command_output
+  tags:
+    - skip_ansible_lint
+
+- name: Force restart nginx
+  ansible.builtin.systemd_service:
+    name: nginx
+    enabled: true
+    state: restarted
+
+- name: Set certbot cron job
+  ansible.builtin.cron:
+    name: Try refresh Certificates
+    minute: "0"
+    hour: "4"
+    job: certbot renew"

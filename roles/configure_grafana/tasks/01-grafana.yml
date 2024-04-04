@@ -32,8 +32,6 @@
     permanent: true
     state: enabled
   loop:
-    - https
-    - http
     - grafana
   notify:
     - Restart firewalld

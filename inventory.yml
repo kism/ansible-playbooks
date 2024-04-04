@@ -4,9 +4,6 @@ all:
     ent:
       ansible_host: ent.kg.lan
       timezone: awst
-    # pve:
-    #   ansible_host: pve.kg.lan
-    #   timezone: awst
     pvenas:
       ansible_host: pvenas.kg.lan
       timezone: awst
@@ -28,18 +25,11 @@ all:
     podc:
       ansible_host: podc.kg.lan
       timezone: awst
-    # podc-test:
-    #   ansible_host: test.podc.kg.lan
-    #   timezone: awst
-    # qbt:
-    #   ansible_host: qbt.kg.lan
-    #   timezone: awst
+
     helios64:
       ansible_host: helios64.ira.mil.ie
       timezone: awst
-# podc-dr:
-#   ansible_host: dr.podc.kg.lan
-#   timezone: awst
+
 
 # Server Type
 proxmoxvms:

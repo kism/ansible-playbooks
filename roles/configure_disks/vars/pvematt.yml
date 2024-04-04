@@ -1,0 +1,8 @@
+---
+host_disks_ext4:
+  - Steiner
+  - Beatrix
+  - Quale
+
+host_disks_btrfs:
+  Quina: 4054a595-ff86-4e6e-9bb4-d9b07ae1a7ef

@@ -20,7 +20,4 @@
     - configure_motd
 
     # Purpose specific
-    - configure_nginx
-
-    # Application Specific
     - configure_grafana

@@ -6,7 +6,7 @@
 
 - name: Copy nfs server config to /etc/exports
   ansible.builtin.copy:
-    src: files/exports{{ ansible_hostname }}
+    src: "files/conf/{{ ansible_hostname }}/exports"
     dest: /etc/exports
     owner: root
     group: root

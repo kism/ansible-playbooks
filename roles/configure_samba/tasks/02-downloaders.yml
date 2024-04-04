@@ -18,3 +18,9 @@
   loop:
     - internetarchive
     - yt-dlp
+
+- name: Installrsync dnf
+  ansible.builtin.package:
+    name:
+      - rsync
+    state: present

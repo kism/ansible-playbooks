@@ -1,13 +1,13 @@
 ---
-# - name: Install packages APT
-#   ansible.builtin.include_tasks: _apt.yml
-#   when: ansible_pkg_mgr == 'apt'
+- name: Init APT
+  ansible.builtin.include_tasks: _apt.yml
+  when: ansible_pkg_mgr == 'apt'
 
-- name: Install packages DNF
+- name: Init DNF
   ansible.builtin.include_tasks: _dnf.yml
   when: ansible_pkg_mgr == 'dnf'
 
-- name: Install packages Pacman
+- name: Init Pacman
   ansible.builtin.include_tasks: _pacman.yml
   when: ansible_pkg_mgr == 'pacman'
 

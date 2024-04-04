@@ -20,26 +20,11 @@
     - skip_ansible_lint
   when: ansible_selinux is defined and ansible_selinux != False and ansible_selinux.status == 'enabled'
 
-- name: Install nginx dnf
-  ansible.builtin.dnf:
-    name:
-      - nginx
-    state: present
-  when: ansible_pkg_mgr == 'dnf'
-
-- name: Install nginx yum
-  ansible.builtin.dnf:
-    name:
-      - nginx
-    state: present
-  when: ansible_pkg_mgr == 'yum'
-
 - name: Install nginx
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - nginx
     state: present
-  when: ansible_pkg_mgr == 'apt'
 
 - name: Nginx enabled and running
   ansible.builtin.systemd_service:
@@ -58,4 +43,3 @@
     - https
   notify:
     - Restart firewalld
-  when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'yum'

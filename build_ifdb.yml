@@ -20,6 +20,4 @@
     - configure_motd
 
     # Purpose specific
-
-    # Application Specific
     - configure_influxdb2

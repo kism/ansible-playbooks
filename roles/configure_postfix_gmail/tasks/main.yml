@@ -3,21 +3,11 @@
 # https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3
 
 - name: Install dependancies apt
-  ansible.builtin.apt:
+  ansible.builtin.package:
     pkg:
       - libsasl2-modules
       - mailutils
     state: present
-  when: ansible_pkg_mgr == 'apt'
-  notify: Restart postfix
-
-- name: Install dependancies dnf
-  ansible.builtin.apt:
-    pkg:
-      - libsasl2-modules
-      - mailutils
-    state: present
-  when: ansible_pkg_mgr == 'dnf'
   notify: Restart postfix
 
 - name: Creating a file with content

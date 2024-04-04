@@ -1,0 +1,34 @@
+---
+# This can be a role maybe
+- name: Install SnapRAID apt
+  ansible.builtin.apt:
+    name: snapraid
+    state: present
+
+- name: Install SnapRAID dnf
+  ansible.builtin.dnf:
+    name: snapraid
+    state: present
+
+- name: Copy SnapRAID conf
+  ansible.builtin.copy:
+    src: "files/conf/{{ ansible_hostname }}/snapraid.conf"
+    dest: /etc/snapraid.conf
+    owner: root
+    group: root
+    mode: "644"
+
+- name: Copy SnapRAID helper https://gist.github.com/bfg100k/87a1bbccf4f15d963ff7
+  ansible.builtin.copy:
+    src: files/snapraid_helper.sh
+    dest: /opt/scripts/snapraid_helper.sh
+    owner: root
+    group: root
+    mode: "700"
+
+- name: Run SnapRAID script
+  ansible.builtin.cron:
+    name: Run snapraid script
+    minute: "0"
+    hour: "09"
+    job: /opt/scripts/snapraid_helper.sh

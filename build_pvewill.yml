@@ -1,0 +1,24 @@
+---
+- name: Setup Proxmox Host pve
+  hosts: pvewill
+  gather_facts: true
+  become: true
+
+  roles:
+    # Standard server onboarding
+    - configure_package_manager
+    - configure_server_packages
+    - configure_users
+    - configure_directories
+    - configure_sshd
+    - configure_locale
+    - configure_telegraf
+    - configure_firewall
+    - configure_ca_trust
+    - configure_motd
+
+    # Purpose specific
+    - configure_concept_baremetal
+    - configure_proxmox
+    - configure_postfix_gmail
+    - configure_disks

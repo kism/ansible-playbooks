@@ -1,18 +1,6 @@
 ---
-- name: Install packages
-  ansible.builtin.apt:
-    install_recommends: false
-    pkg:
-      - nvme-cli
-      - lm-sensors
-    state: present
+- name: Include Telegraf Tasks
+  ansible.builtin.include_tasks: 01-telegraf.yml
 
-- name: Copy the telefraf sudoers rule proxmox hosts
-  ansible.builtin.copy:
-    src: files/sudoers_telegraf
-    dest: /etc/sudoers.d/telegraf
-    owner: root
-    group: root
-    mode: "0640"
-  notify:
-    - Restart telegraf
+- name: Include HDD Tasks
+  ansible.builtin.include_tasks: 02-hdd.yml

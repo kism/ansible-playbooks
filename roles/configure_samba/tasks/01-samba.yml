@@ -3,7 +3,6 @@
   ansible.builtin.dnf:
     name:
       - samba
-      - rsync
       - wsdd
       - avahi
     state: present
@@ -14,7 +13,6 @@
     name:
       - samba
       - samba-vfs-modules
-      - rsync
       # - wsdd # not in bullseye
       - avahi-daemon
     state: present
@@ -26,7 +24,7 @@
       - samba
       - samba-vfs-modules
       - rsync
-      - wsdd # not in bullseye
+      - wsdd
       - avahi-daemon
     state: present
   when: ansible_pkg_mgr == 'apt' and ansible_distribution_release != 'bullseye'
@@ -41,7 +39,7 @@
 
 - name: Copy smb config
   ansible.builtin.copy:
-    src: files/{{ ansible_hostname }}_smb.conf
+    src: files/conf/{{ ansible_hostname }}_smb.conf
     dest: /etc/samba/smb.conf
     owner: root
     group: root

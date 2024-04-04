@@ -1,4 +1,13 @@
 ---
+- name: Check that vars are defined
+  hosts: rproxy
+  gather_facts: false
+  tasks:
+    - name: Check that vars are defined
+      ansible.builtin.assert:
+        that:
+          - secret_email is defined
+
 - name: Setup rproxy, reverse proxy
   hosts: rproxy
   gather_facts: true
@@ -21,6 +30,4 @@
     - configure_fail2ban
     - configure_nginx
     - configure_allowlistapp
-
-    # Host Specific
-    - host_configure_rproxy
+    - configure_reverse_proxy
