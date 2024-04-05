@@ -87,9 +87,15 @@
         msg:
           - >-
             {{ "Same as previous... " -}}
-            {{ "God I have no idea if " -}}
-            {{ "this is useful " -}}
-            {{ "for anything." }}
+            {{ "Bit weird " -}}
+            But ansible-lint doesnt
+            {{- " get mad with it. " -}}
+            The hyphens in the jinja eliminate
+            {{- "" -}}
+            {{  "the whitespace on each side" }}
+            {{ "Without them, there will space" }}
+            {{ "space added" }}
+            {{  "¯\_(ツ)_/¯" }}
           - >-
             {{ "https://johnvansickle.com/" -}}
             {{ "ffmpeg/" -}}
