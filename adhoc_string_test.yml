@@ -25,11 +25,11 @@
 
     - name: Print out multiline entry (multi line string)
       ansible.builtin.debug:
-        msg: Behaves weird since any special yml characters will be interpreted
-          Can't use a colon ":" without quotes (Quotes are literal).
-          It doesnt like the first character of the first line having quotes
-          Can't start line with a hypen "-"
-          Don't use
+        msg:
+          "Make sure to start and end block with quotes,
+          will combine the lines with a space.
+          No newline at the end.
+          Generally using '>-' is better"
 
     - name: Print out multiline entry (list)
       ansible.builtin.debug:
