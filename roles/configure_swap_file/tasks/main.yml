@@ -31,7 +31,9 @@
 
 - name: Check if swap is active
   ansible.builtin.shell:
-    cmd: swapon --show | grep -q '/swapfile'
+    cmd: |
+      set -o pipefail
+      swapon --show | grep -q '/swapfile'
   register: swap_status
   changed_when: false
   failed_when: false
