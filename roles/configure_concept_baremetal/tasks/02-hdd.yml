@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: Figure out if a Seagate Hard Drive is attached
   ansible.builtin.set_fact:
     configure_concept_baremetal_found_seagate: true
@@ -12,7 +11,10 @@
   block:
     - name: Download openSeaChest
       ansible.builtin.unarchive:
-        src: https://github.com/Seagate/openSeaChest/releases/download/v{{ configure_concept_baremetal_openseachest_version }}/openSeaChest-v{{ configure_concept_baremetal_openseachest_version }}-linux-{{ ansible_architecture }}-manylinux.tar.xz
+        src:
+          "https://github.com/Seagate/openSeaChest/releases/download/\
+          v{{ configure_concept_baremetal_openseachest_version }}/\
+          openSeaChest-v{{ configure_concept_baremetal_openseachest_version }}-linux-{{ ansible_architecture }}-manylinux.tar.xz"
         dest: /opt/
         mode: "0755"
         remote_src: true
@@ -81,12 +83,18 @@
 # Install hd-idle
 - name: Install hd-idle AMD64
   ansible.builtin.apt:
-    deb: "https://github.com/adelolmo/hd-idle/releases/download/v{{ configure_concept_baremetal_hdidle_version }}/hd-idle_{{ configure_concept_baremetal_hdidle_version }}_amd64.deb"
+    deb:
+      "https://github.com/adelolmo/hd-idle/releases/download/\
+      v{{ configure_concept_baremetal_hdidle_version }}/\
+      hd-idle_{{ configure_concept_baremetal_hdidle_version }}_amd64.deb"
   when: ansible_architecture == 'x86_64' and ansible_pkg_mgr == 'apt'
 
 - name: Install hd-idle AMR64
   ansible.builtin.apt:
-    deb: "https://github.com/adelolmo/hd-idle/releases/download/v{{ configure_concept_baremetal_hdidle_version }}/hd-idle_{{ configure_concept_baremetal_hdidle_version }}_arm64.deb"
+    deb:
+      "https://github.com/adelolmo/hd-idle/releases/download/
+      v{{ configure_concept_baremetal_hdidle_version }}/
+      hd-idle_{{ configure_concept_baremetal_hdidle_version }}_arm64.deb"
   when: ansible_architecture == 'aarch64' and ansible_pkg_mgr == 'apt'
 
 - name: Install some hdd related packages

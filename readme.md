@@ -28,10 +28,33 @@ ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 
 todo
 
-* check files after that risky merge
-* virtualisation check
+* virtualisation check??
 * fix ent domain, do domains everywhere
+* reminders role
+* replace instances of `ansible_architecture == '` with map
 
+```yaml
+vars:
+    arch_map: # uname (ansible), whatever ffmpeg uses
+        x86_64: amd64
+        aarch64: arm64
+        armv6l: armel
+        armv7l: armel
+        armv8l: armel
+    ffmpeg_arch: ""
+
+tasks:
+- name: Get ffmpeg_arch
+    block:
+    - name: Set target arch per map if possible
+        ansible.builtin.set_fact:
+        ffmpeg_arch: "{{  arch_map[ansible_architecture] }}"
+
+    rescue:
+    - name: Set default ffmpeg_arch
+        ansible.builtin.set_fact:
+        ffmpeg_arch: "{{ ansible_architecture }}"
+```
 
 
 do later

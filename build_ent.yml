@@ -3,9 +3,6 @@
   hosts: ent
   gather_facts: true
   become: true
-  vars:
-    service_account: kism
-
   roles:
     # Standard server onboarding
     - configure_package_manager

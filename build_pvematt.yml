@@ -3,7 +3,6 @@
   hosts: pvenas
   gather_facts: true
   become: true
-
   roles:
     # Standard server onboarding
     - configure_package_manager

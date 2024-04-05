@@ -14,8 +14,6 @@
   hosts: yoho
   gather_facts: true
   become: true
-  vars:
-    service_account: kism
 
   roles:
     # Standard server onboarding

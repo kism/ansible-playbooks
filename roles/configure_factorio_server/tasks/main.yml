@@ -1,5 +1,5 @@
 ---
-# yamllint disable rule:line-length
+
 
 - name: Copy Factorio service
   ansible.builtin.copy:

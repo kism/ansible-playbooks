@@ -1,5 +1,5 @@
 ---
-# yamllint disable rule:line-length
+
 - name: Copy file with owner and permission, using symbolic representation
   ansible.builtin.copy:
     src: files/influxdb.repo
@@ -43,8 +43,15 @@
 - name: Initial influxdb config
   become: true
   ansible.builtin.command:
-    cmd: influx setup -u {{ secret_influxdb_admin_username }} -p {{ secret_influxdb_admin_password }} -t {{ secret_influxdb_admin_token }} -o "kg lan" -b "Telegraf
-      Main" -host https://influxdb2.kierangee.au:443 -f
+    cmd: >-
+      influx setup
+      -u {{ secret_influxdb_admin_username }}
+      -p {{ secret_influxdb_admin_password }}
+      -t {{ secret_influxdb_admin_token }}
+      -o "kg lan"
+      -b "Telegraf Main"
+      -host https://influxdb2.kierangee.au:443
+      -f
   register: command_output
   failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
   tags:
