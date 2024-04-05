@@ -1,18 +1,44 @@
+---
 configure_users_myuser:
-  name: kism
-  uid: 1089
-  shell: /usr/sbin/nologin
+  linux_username: kism
+  ssh_keys_url: https://github.com/kism.keys
 
-configure_users_service:
+configure_users_users:
+  kism:
+    uid: 1089
+    shell: /usr/sbin/nologin
+    groups:
+      - kgadmins
+      - content_private
+      - content_public
+      - backup_svc
+      - qbtuser
   backup_svc:
     uid: 1087
     shell: /usr/sbin/nologin
+    groups:
   qbtuser:
     uid: 1087
     shell: /usr/sbin/nologin
+    groups:
+      - content_private
+      - content_public
   lanprivate:
     uid: 1086
     shell: /usr/sbin/nologin
+    groups:
+      - content_private
+      - content_public
   lanuser:
     uid: 1084
     shell: /usr/sbin/nologin
+    groups:
+      - content_public
+
+configure_users_groups:
+  kgadmins:
+    gid: 1099
+  content_private:
+    gid: 1098
+  content_public:
+    gid: 1097
