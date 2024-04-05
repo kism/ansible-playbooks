@@ -75,6 +75,8 @@
           - "Combines lines into one line \
             without spaces \
             useful for URLs"
+          - "ansible-lint --fix may \
+            mess with this."
           - "https://johnvansickle.com/\
             ffmpeg/\
             releases/\
