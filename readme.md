@@ -32,6 +32,7 @@ todo
 * fix ent domain, do domains everywhere
 * reminders role
 * configure vs install roles
+* prettier config?
 * replace instances of `ansible_architecture == '` with map
 
 ```yaml
