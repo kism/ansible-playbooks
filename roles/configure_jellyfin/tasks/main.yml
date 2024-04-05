@@ -100,8 +100,7 @@
   block:
     - name: Download and extract jellyfin-ffmpeg
       ansible.builtin.unarchive:
-        src:
-          "https://github.com/jellyfin/jellyfin-ffmpeg/releases/download/\
+        src: "https://github.com/jellyfin/jellyfin-ffmpeg/releases/download/\
           v{{ configure_jellyfin_ffmpeg_version }}/\
           jellyfin-ffmpeg_{{ configure_jellyfin_ffmpeg_version }}_portable_linux64-gpl.tar.xz"
         dest: "{{ configure_jellyfin_ffmpeg_dir }}"

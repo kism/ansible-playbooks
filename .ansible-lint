@@ -1,19 +1,18 @@
 ---
 exclude_paths:
   - .github/
+  - adhoc_string_test.yml
 
-# write_list
-# everything from: https://ansible.readthedocs.io/projects/lint/autofix/ except yaml
-# everything from: https://ansible.readthedocs.io/projects/lint/rules/yaml/ except ???
+# write_list, avoid using the 'jinja' rule as it breaks multiline jinja, see: adhoc_string_test.yml
+# everything from: https://ansible.readthedocs.io/projects/lint/autofix/ except jinja, doesn't work though
 # write_list:
-#   - command-instead-of-shell
-#   - deprecated-local-action
-#   - fqcn
-#   - jinja
-#   - key-order
-#   - name
-#   - no-free-form
-#   - no-jinja-when
-#   - no-log-password
-#   - partial-become
-#   - yaml
+  # - command-instead-of-shell
+  # - deprecated-local-action
+  # - fqcn
+  # - key-order
+  # - name
+  # - no-free-form
+  # - no-jinja-when
+  # # - no-log-password # not in my version ???
+  # - partial-become
+  # - yaml
