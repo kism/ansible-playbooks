@@ -1,9 +1,5 @@
 # Kieran's Ansible Playbooks
 
-* change shell to command in mosts cases???
-* better ffmpeg install
-* make username kism a variable
-
 Install collections
 
 ```bash
@@ -28,6 +24,8 @@ ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 
 todo
 
+* better ffmpeg install
+* make username kism a variable
 * virtualisation check??
 * fix ent domain, do domains everywhere
 * configure vs install roles
