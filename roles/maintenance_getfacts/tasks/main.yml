@@ -1,7 +1,13 @@
 ---
-- name: Collect facts
+- name: Gather facts
   ansible.builtin.setup:
 
-- name: Print all available facts
+- name: Set debug mode
+  ansible.builtin.set_fact:
+    maintenance_getfacts_print_debug: "{{ print_debug }}"
+  when: print_debug is defined
+
+- name: Print facts
   ansible.builtin.debug:
-    var: ansible_facts
+    msg: "{{ ansible_facts }}"
+  when: maintenance_getfacts_print_debug

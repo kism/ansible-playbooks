@@ -1,6 +1,6 @@
 ---
 - name: Include Telegraf Tasks
-  ansible.builtin.include_tasks: 01-telegraf.yml
+  ansible.builtin.include_tasks: "01-telegraf.yml"
 
 - name: Include HDD Tasks
-  ansible.builtin.include_tasks: 02-hdd.yml
+  ansible.builtin.include_tasks: "02-hdd.yml"

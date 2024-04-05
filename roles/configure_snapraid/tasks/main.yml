@@ -12,7 +12,7 @@
 
 - name: Copy SnapRAID conf
   ansible.builtin.copy:
-    src: "files/conf/{{ ansible_hostname }}/snapraid.conf"
+    src: files/conf/{{ ansible_hostname }}/snapraid.conf
     dest: /etc/snapraid.conf
     owner: root
     group: root

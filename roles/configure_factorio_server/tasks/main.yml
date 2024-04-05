@@ -1,6 +1,4 @@
 ---
-
-
 - name: Copy Factorio service
   ansible.builtin.copy:
     src: systemd/system/factorio.service

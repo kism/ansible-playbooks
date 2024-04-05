@@ -9,7 +9,7 @@
 
 - name: Add directories for HDDs (ext4 list)
   ansible.builtin.file:
-    path: "/srv/{{ item }}"
+    path: /srv/{{ item }}
     owner: root
     group: root
     state: directory
@@ -18,7 +18,7 @@
 
 - name: Add directories for HDDs (btrfs list)
   ansible.builtin.file:
-    path: "/srv/{{ item.key }}"
+    path: /srv/{{ item.key }}
     owner: root
     group: root
     state: directory
@@ -30,7 +30,7 @@
     path: /srv/{{ item }}
     src: LABEL={{ item }}
     fstype: ext4
-    opts: "rw,nofail,relatime"
+    opts: rw,nofail,relatime
     state: mounted
   loop: "{{ configure_disks_ext4 }}"
 
@@ -39,7 +39,7 @@
     path: /srv/{{ item.key }}
     src: UUID={{ item.value }}
     fstype: btrfs
-    opts: "defaults,nofail,autodefrag"
+    opts: defaults,nofail,autodefrag
     state: mounted
   with_items: "{{ configure_disks_btrfs }}"
 
