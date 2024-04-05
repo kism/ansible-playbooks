@@ -1,0 +1,95 @@
+---
+- name: Test String Behavioura
+  hosts: localhost
+  gather_facts: true
+  vars:
+    arch_map: # uname (ansible), whatever ffmpeg uses
+      x86_64: amd64
+      aarch64: arm64
+      armv6l: armel
+      armv7l: armel
+      armv8l: armel
+    ffmpeg_arch: ""
+
+  tasks:
+    - name: Get ffmpeg_arch
+      block:
+        - name: Set target arch per map if possible
+          ansible.builtin.set_fact:
+            ffmpeg_arch: "{{  arch_map[ansible_architecture] }}"
+
+      rescue:
+        - name: Set default ffmpeg_arch
+          ansible.builtin.set_fact:
+            ffmpeg_arch: "{{ ansible_architecture }}"
+
+    - name: Print out multiline entry (multi line string)
+      ansible.builtin.debug:
+        msg: Behaves weird since any special yml characters will be interpreted
+          Can't use a colon ":" without quotes (Quotes are literal).
+          It doesnt like the first character of the first line having quotes
+          Can't start line with a hypen "-"
+          Don't use
+
+    - name: Print out multiline entry (list)
+      ansible.builtin.debug:
+        msg:
+          - This
+          - is
+          - a
+          - list
+
+    - name: Print out multiline entry ">"
+      ansible.builtin.debug:
+        msg: >
+          Newline in yaml will be replaced with a space
+          there will be a newline at the end.
+
+    - name: Print out multiline entry ">-"
+      ansible.builtin.debug:
+        msg:
+          - >-
+            Newline in yaml will be replaced with a space
+            no newline at the end, useful for commands.
+          - >-
+            wget
+            https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ ffmpeg_arch }}-static.tar.xz
+            --directory-prefix
+            /tmp
+
+    - name: Print out multiline entry "|"
+      ansible.builtin.debug:
+        msg: |
+          Newline in yaml will persist
+          there will be a newline at the end.
+
+    - name: Print out multiline entry "|-"
+      ansible.builtin.debug:
+        msg: |-
+          Newline in yaml will persist
+          there will be no newline at the end.
+
+    - name: Print out multiline entry (Block in quotes, "\" after every line)
+      ansible.builtin.debug:
+        msg:
+          - "Combines lines into one line \
+            without spaces \
+            useful for URLs"
+          - "https://johnvansickle.com/\
+            ffmpeg/\
+            releases/\
+            ffmpeg-release-{{ ffmpeg_arch }}-static.tar.xz"
+
+    - name: Print out multiline entry ">-" w/wild jinja2
+      ansible.builtin.debug:
+        msg:
+          - >-
+            {{ "Same as previous... " -}}
+            {{ "God I have no idea if " -}}
+            {{ "this is useful " -}}
+            {{ "for anything." }}
+          - >-
+            {{ "https://johnvansickle.com/" -}}
+            {{ "ffmpeg/" -}}
+            {{ "releases/" -}}
+            {{ "ffmpeg-release-" + ffmpeg_arch + "-static.tar.xz" }}
