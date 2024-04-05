@@ -1,20 +1,22 @@
 ---
-- name: fallocate
+- name: Check if swap file exists
+  ansible.builtin.stat:
+    path: /swapfile
+  register: file_stat
+
+- name: Pre-allocate disk space
   become: true
   ansible.builtin.command:
     cmd: fallocate -l 1G /swapfile
-  register: command_output
   ignore_errors: true
-  tags:
-    - skip_ansible_lint
+  register: command_output
+  changed_when: not file_stat.stat.exists and command_output.rc == 0
 
-- name: dd
+- name: Zero out file
   become: true
   ansible.builtin.command:
-    cmd: if=/dev/zero of=/swapfile bs=1024 count=1048576
-  register: command_output
-  tags:
-    - skip_ansible_lint
+    cmd: dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+  changed_when: true
 
 - name: Set perms
   ansible.builtin.file:
@@ -26,19 +28,12 @@
   become: true
   ansible.builtin.command:
     cmd: mkswap /swapfile
-  ignore_errors: true
-  register: command_output
-  tags:
-    - skip_ansible_lint
+  changed_when: true
 
 - name: swapon
   become: true
   ansible.builtin.command:
     cmd: swapon /swapfile
-  ignore_errors: true
-  register: command_output
-  tags:
-    - skip_ansible_lint
 
 - name: Mount swap proper
   ansible.posix.mount:
