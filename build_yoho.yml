@@ -32,3 +32,6 @@
     - configure_samba
     - configure_docker_qbittorrent
     - configure_docker_sabnzbd
+
+    # Reminders
+    - print_reminders

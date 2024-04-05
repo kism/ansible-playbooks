@@ -30,8 +30,8 @@ todo
 
 * virtualisation check??
 * fix ent domain, do domains everywhere
-* reminders role
 * configure vs install roles
+* role that includes roles for the first section meta_something
 * prettier config?
 * replace instances of `ansible_architecture == '` with map
 

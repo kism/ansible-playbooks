@@ -1,5 +1,5 @@
 ---
-- name: Setup Proxmox Host pve
+- name: Setup Proxmox Host pvewill
   hosts: pvenas
   gather_facts: true
   become: true
@@ -17,7 +17,10 @@
     # - configure_motd
 
     # # Purpose specific
-    - configure_concept_baremetal
+    # - configure_concept_baremetal
     # - configure_proxmox
     # - configure_postfix_gmail
     # - configure_disks
+
+      # Reminders
+      - print_reminders

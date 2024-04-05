@@ -37,3 +37,6 @@
     # - {
     #     role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets,
     #   }
+
+    # Reminders
+    - print_reminders

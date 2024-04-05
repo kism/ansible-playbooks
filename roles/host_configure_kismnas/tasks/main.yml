@@ -1,3 +1,0 @@
----
-- name: Reminders
-  ansible.builtin.include_tasks: "01-reminders.yml"

@@ -21,3 +21,6 @@
     - configure_proxmox
     - configure_postfix_gmail
     - configure_disks
+
+    # Reminders
+    - print_reminders

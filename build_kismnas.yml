@@ -20,5 +20,5 @@
     - configure_samba
     - configure_jellyfin
 
-    # Host Specific
-    - host_configure_kismnas
+    # Reminders
+    - print_reminders

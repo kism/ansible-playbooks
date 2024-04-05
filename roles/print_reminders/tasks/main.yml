@@ -1,0 +1,10 @@
+- name: Read contents of a local file
+  delegate_to: localhost
+  become: false
+  ansible.builtin.stat:
+    path: "{{ role_path }}/tasks/hosts/{{ ansible_hostname }}.yml"
+  register: host_tasks_file
+
+- name: Any reminders for this host?
+  ansible.builtin.include_tasks: "hosts/{{ ansible_hostname }}.yml"
+  when: host_tasks_file.stat.exists

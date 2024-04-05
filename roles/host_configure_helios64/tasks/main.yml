@@ -15,6 +15,6 @@
 #   ansible.builtin.include_tasks:
 #     file: "05-mounts.yml"
 
-- name: Include reminders
-  ansible.builtin.include_tasks:
-    file: "06-reminders.yml"
+# - name: Include reminders
+#   ansible.builtin.include_tasks:
+#     file: "06-reminders.yml"

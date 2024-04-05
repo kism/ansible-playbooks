@@ -19,3 +19,6 @@
     # Purpose specific
     - configure_fail2ban
     - configure_jumpbox
+
+    # Reminders
+    - print_reminders
