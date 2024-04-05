@@ -24,13 +24,13 @@
     state: file
     mode: "0600"
 
-- name: mkswap
+- name: Run mkswap
   become: true
   ansible.builtin.command:
     cmd: mkswap /swapfile
   changed_when: true
 
-- name: swapon
+- name: Run swapon
   become: true
   ansible.builtin.command:
     cmd: swapon /swapfile
