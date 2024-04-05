@@ -92,9 +92,9 @@
             {{- " get mad with it. " -}}
             The hyphens in the jinja eliminate
             {{- "" -}}
-            {{  "the whitespace on each side" }}
-            {{ "Without them, there will space" }}
-            {{ "space added" }}
+            {{  "the whitespace on each side. " -}}
+            {{ "Without them, there will be a space" }}
+            {{ "added" }}
             {{  "¯\_(ツ)_/¯" }}
           - >-
             {{ "https://johnvansickle.com/" -}}
