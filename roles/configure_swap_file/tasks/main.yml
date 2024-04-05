@@ -1,4 +1,9 @@
 ---
+- name: Check if fallocate package is installed # it really should be
+  ansible.builtin.package:
+    name: util-linux
+    state: present
+
 - name: Check if swap file exists
   ansible.builtin.stat:
     path: /swapfile
@@ -7,16 +12,10 @@
 - name: Pre-allocate disk space
   become: true
   ansible.builtin.command:
-    cmd: fallocate -l 1G /swapfile
+    cmd: fallocate -l {{ configure_swap_file_size }} /swapfile
   ignore_errors: true
   register: command_output
   changed_when: not file_stat.stat.exists and command_output.rc == 0
-
-- name: Zero out file
-  become: true
-  ansible.builtin.command:
-    cmd: dd if=/dev/zero of=/swapfile bs=1024 count=1048576
-  changed_when: true
 
 - name: Set perms
   ansible.builtin.file:
@@ -30,10 +29,20 @@
     cmd: mkswap /swapfile
   changed_when: true
 
+- name: Check if swap is active
+  ansible.builtin.shell:
+    cmd: swapon --show | grep -q '/swapfile'
+  register: swap_status
+  changed_when: false
+  failed_when: false
+
 - name: Run swapon
   become: true
   ansible.builtin.command:
     cmd: swapon /swapfile
+  register: command_output
+  changed_when: swap_status.rc != 0
+  failed_when: command_output.rc != 0
 
 - name: Mount swap proper
   ansible.posix.mount:

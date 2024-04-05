@@ -1,0 +1,3 @@
+---
+# Ex: 1G, 100M, 2.5G might even work, think `ll -h` human readable file sizes
+configure_swap_file_size: 1G

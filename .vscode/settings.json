@@ -11,5 +11,5 @@
 	"files.associations": {
 		"*.yml": "ansible"
 	},
-	"ansible.python.interpreterPath": "/home/codespace/.local/share/virtualenvs/ansible-playbooks-0Mj6vStz/bin/python"
+	"ansible.python.interpreterPath": "/Users/kism/.local/share/virtualenvs/ansible-playbooks-LuepbgPB/bin/python3"
 }
