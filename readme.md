@@ -25,8 +25,9 @@ ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 todo
 
 * better ffmpeg install
+* separate out sab
 * make username kism a variable
-* virtualisation check??
+* virtualisation check?? use baremetal group
 * fix ent domain, do domains everywhere
 * configure vs install roles
 * role that includes roles for the first section meta_something
