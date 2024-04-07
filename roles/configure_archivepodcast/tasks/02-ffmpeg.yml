@@ -31,7 +31,7 @@
 
 - name: Grab ffmpeg aarch64
   ansible.builtin.unarchive:
-    src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ congigure_archivepodcast_ffmpeg_arch }}-static.tar.xz
+    src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ configure_archivepodcast_ffmpeg_arch }}-static.tar.xz
     dest: /opt/ffmpeg
     extra_opts: [--strip-components=1]
     remote_src: true
