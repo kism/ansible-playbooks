@@ -40,7 +40,17 @@
   become_user: kism
   ansible.builtin.command:
     cmd: zsh -c ". ~/.zshrc; antigen update; antigen reset"
-  register: command_output
+  changed_when: false # Handled by the next task
+
+- name: Check if zsh has changed
+  become: true
+  become_user: kism
+  ansible.builtin.find:
+    paths: "~/.antigen/bundles"
+    age: 1m
+    recurse: true
+  register: modified_files
+  changed_when: modified_files.files | length > 0
 
 - name: Change my shell to zsh
   become: true

@@ -11,3 +11,21 @@
   ansible.builtin.debug:
     msg: "{{ ansible_facts }}"
   when: maintenance_getfacts_print_debug
+
+- name: Get user info
+  ansible.builtin.getent:
+    database: passwd
+
+- name: Print user facts
+  ansible.builtin.debug:
+    msg: "{{ ansible_facts.getent_passwd }}"
+  when: maintenance_getfacts_print_debug
+
+- name: Get group info
+  ansible.builtin.getent:
+    database: group
+
+- name: Print group facts
+  ansible.builtin.debug:
+    msg: "{{ ansible_facts.getent_group }}"
+  when: maintenance_getfacts_print_debug

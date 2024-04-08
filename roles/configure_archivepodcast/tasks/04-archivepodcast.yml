@@ -58,7 +58,7 @@
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
-  changed_when: false # This command only matters if another task has changed files
+  changed_when: true # This command only matters if another task has changed files
 
 - name: Copy archivepodcast config
   become: true

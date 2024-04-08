@@ -6,7 +6,10 @@
     owner: root
     group: root
     mode: "0444"
+  register: cert_copy
 
 - name: Update CA Certs Debian
   ansible.builtin.command:
     cmd: update-ca-certificates
+  when: cert_copy is changed
+  changed_when: true

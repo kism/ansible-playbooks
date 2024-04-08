@@ -2,8 +2,13 @@
 - name: Check if docker group exists
   ansible.builtin.command: getent group docker
   register: docker_group_check
-  changed_when: false
+  changed_when: false # Just getting info
   failed_when: false # Next task checks RC
+
+- name: Get root user info
+  ansible.builtin.getent:
+    database: passwd
+    key: telegraf
 
 - name: Add user to docker group
   ansible.builtin.user:

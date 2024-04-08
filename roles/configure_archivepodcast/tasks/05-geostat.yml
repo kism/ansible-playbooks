@@ -60,10 +60,12 @@
 - name: Move mmdb to correct location
   ansible.builtin.shell:
     cmd: cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat
+  changed_when: true # Inferred from geoip database
 
 - name: Remove geostat folder
   ansible.builtin.shell:
     cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
+  changed_when: true # Inferred from geoip database
 
 - name: Create shell
   ansible.builtin.shell:
