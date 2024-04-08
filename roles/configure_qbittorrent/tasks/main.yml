@@ -2,7 +2,7 @@
 - name: Install qBittorrent
   ansible.builtin.apt:
     package: qbittorrent-nox
-    state: latest
+    state: present
 
 - name: Copy qBittorrent service
   ansible.builtin.copy:

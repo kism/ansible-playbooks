@@ -1,7 +1,5 @@
 ---
 - name: Install pip apt
-  become: true
-  become_user: root
   ansible.builtin.package:
     name:
       - python3-pip
@@ -12,18 +10,15 @@
     name: pipenv
 
 - name: Create allowlistapp directory
-  become: true
-  become_user: root
   ansible.builtin.file:
     path: /opt/allowlistapp
     state: directory
-    owner: nginx
+    recurse: true
+    owner: root
     group: nginx
-    mode: "0700"
+    mode: u=rwx,g=rX,o=
 
 - name: Attempt to change ownership on /opt/allowlistapp
-  become: true
-  become_user: root
   ansible.builtin.file:
     path: /opt/allowlistapp
     recurse: true
@@ -40,16 +35,12 @@
     version: main
   notify: Restart allowlistapp
 
-- name: git config allowlistapp
-  become: true
-  become_user: nginx
-  ansible.builtin.shell:
-    cmd: git config --global --add safe.directory /opt/allowlistapp
-
+- name: Git config allowlistapp
+  community.general.git_config:
+    name: safe.directory
+    value: /opt/allowlistapp
 
 - name: Run pipenv install
-  become: true
-  become_user: nginx
   ansible.builtin.command:
     cmd: /usr/local/bin/pipenv install
     chdir: /opt/allowlistapp
@@ -58,7 +49,7 @@
 
 - name: Run pipenv sync
   become: true
-  become_user: nginx
+  become_user: root
   ansible.builtin.command:
     cmd: /usr/local/bin/pipenv sync
     chdir: /opt/allowlistapp

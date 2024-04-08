@@ -3,14 +3,14 @@
   become: true
   become_user: kism
   ansible.builtin.shell:
-    cmd: curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
-  register: command_output
-  changed_when: command_output.rc == 0
+    cmd: |
+      set -o pipefail
+      curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
 
 - name: Ensure that bash is setup correctly for root
   become: true
   become_user: root
   ansible.builtin.shell:
-    cmd: curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
-  register: command_output
-  changed_when: command_output.rc == 0
+    cmd: |
+      set -o pipefail
+      curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash

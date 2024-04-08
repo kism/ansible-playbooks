@@ -15,8 +15,8 @@
   when: ansible_selinux is defined and not ansible_selinux and ansible_selinux.status == 'enabled'
 
 - name: Fix selinux
-  ansible.builtin.command: restorecon -Rv /
-  when: ansible_selinux is defined and ansible_selinux != False and ansible_selinux.status == 'enabled'
+  ansible.builtin.command: restorecon -Rv / # TODO this sucks
+  when: ansible_selinux is defined and not ansible_selinux False and ansible_selinux.status == 'enabled'
 
 - name: Install nginx
   ansible.builtin.package:

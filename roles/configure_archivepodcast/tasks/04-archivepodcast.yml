@@ -1,7 +1,5 @@
 ---
 - name: Install pip apt
-  become: true
-  become_user: root
   ansible.builtin.package:
     name:
       - python3-pip
@@ -12,27 +10,22 @@
     name: pipenv
 
 - name: Create archivepodcast directory
-  become: true
-  become_user: root
   ansible.builtin.file:
     path: /opt/archivepodcast
     state: directory
-    owner: podcasto
+    recurse: true
+    owner: root
     group: podcasto
     mode: "0700"
 
 - name: Attempt to change ownership on /opt/archivepodcast
-  become: true
-  become_user: root
   ansible.builtin.file:
     path: /opt/archivepodcast
-    recurse: true
-    owner: podcasto
+    owner: root
     group: podcasto
+    mode: u=rwx,g=rX,o=
 
 - name: Clone archivepodcast
-  become: true
-  become_user: podcasto
   ansible.builtin.git:
     repo: https://github.com/kism/archivepodcast
     dest: /opt/archivepodcast
@@ -40,11 +33,10 @@
     version: master
   notify: Restart archivepodcast
 
-- name: git config archivepodcast
-  become: true
-  become_user: podcasto
-  ansible.builtin.command:
-    cmd: git config --global --add safe.directory /opt/archivepodcast
+- name: Git config allowlistapp
+  community.general.git_config:
+    name: safe.directory
+    value: /opt/archivepodcast
 
 - name: Run pipenv install
   become: true
@@ -70,12 +62,10 @@
   ansible.builtin.copy:
     src: files/{{ ansible_host }}.json
     dest: /opt/archivepodcast/settings.json
-    mode: "0600"
+    mode: "0660"
   notify: Restart archivepodcast # One day this will be reload...
 
 - name: Create archivepodcast log file
-  become: true
-  become_user: root
   ansible.builtin.file:
     path: /var/log/archivepodcast.log
     state: touch
@@ -86,8 +76,6 @@
   changed_when: false
 
 - name: Copy systemd service
-  become: true
-  become_user: root
   ansible.builtin.copy:
     src: files/archivepodcast.service
     dest: /etc/systemd/system/archivepodcast.service
@@ -97,8 +85,6 @@
   notify: Restart archivepodcast
 
 - name: Enable systemd service
-  become: true
-  become_user: root
   ansible.builtin.systemd_service:
     name: archivepodcast.service
     enabled: true
@@ -107,8 +93,6 @@
     masked: false
 
 - name: Copy archivepodcast logrotate
-  become: true
-  become_user: root
   ansible.builtin.copy:
     src: files/archivepodcast_logrotate
     dest: /etc/logrotate.d/archivepodcast

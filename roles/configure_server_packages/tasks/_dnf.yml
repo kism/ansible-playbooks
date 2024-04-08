@@ -17,4 +17,3 @@
     state: present
   failed_when: false # Happy for this to partly fail, some systems can't get all of these
   loop: "{{ configure_server_packages_to_install }}"
-

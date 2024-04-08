@@ -11,6 +11,7 @@
       ansible.builtin.dnf:
         name: "*"
         state: latest
+        update_only: true
 
 - name: Update apt packages
   when: ansible_pkg_mgr == 'apt'

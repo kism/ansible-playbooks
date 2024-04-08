@@ -1,17 +1,17 @@
 ---
 - name: Create geostat directory
-  become: true
-  become_user: root
   ansible.builtin.file:
     path: /opt/geostat
     state: directory
-    owner: podcasto
+    recurse: true
+    owner: root
     group: podcasto
-    mode: "0755"
+    mode: u=rwx,g=rX,o=
 
-- name: Fix git lmao
-  ansible.builtin.command:
-    cmd: git config --global --add safe.directory /opt/geostat
+- name: Git config allowlistapp
+  community.general.git_config:
+    name: safe.directory
+    value: /opt/geostat
 
 - name: Clone geostat
   ansible.builtin.git:
@@ -28,7 +28,7 @@
   ansible.builtin.copy:
     src: files/geostat_settings.ini
     dest: /opt/geostat/settings.ini
-    mode: "600"
+    mode: "0660"
   notify: Restart geostat
 
 - name: Setup geostat influx token
@@ -57,11 +57,11 @@
   notify:
     - Restart geostat
 
-- name: move mmdb to correct location
+- name: Move mmdb to correct location
   ansible.builtin.shell:
     cmd: cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat
 
-- name: remove geostat folder
+- name: Remove geostat folder
   ansible.builtin.shell:
     cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
 
@@ -79,8 +79,6 @@
   notify: Restart geostat
 
 - name: Change ownership on /opt/geostat and /var/log/nginx
-  become: true
-  become_user: root
   ansible.builtin.file:
     path: "{{ item }}"
     recurse: true
@@ -91,8 +89,6 @@
     - /var/log/nginx
 
 - name: Copy systemd service
-  become: true
-  become_user: root
   ansible.builtin.copy:
     src: files/geostat.service
     dest: /etc/systemd/system/geostat.service
@@ -102,8 +98,6 @@
   notify: Restart geostat
 
 - name: Enable systemd service
-  become: true
-  become_user: root
   ansible.builtin.systemd_service:
     name: geostat.service
     enabled: true
@@ -113,8 +107,6 @@
   notify: Restart geostat
 
 - name: Copy nginx logrotate
-  become: true
-  become_user: root
   ansible.builtin.copy:
     src: files/nginx_logrotate
     dest: /etc/logrotate.d/nginx
