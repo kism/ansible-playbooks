@@ -22,5 +22,5 @@
     # - configure_postfix_gmail
     # - configure_disks
 
-      # Reminders
-      - print_reminders
+    # Reminders
+    - print_reminders

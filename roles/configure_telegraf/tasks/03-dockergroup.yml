@@ -3,7 +3,7 @@
   ansible.builtin.command: getent group docker
   register: docker_group_check
   changed_when: false
-  ignore_errors: true
+  failed_when: false # Next task checks RC
 
 - name: Add user to docker group
   ansible.builtin.user:

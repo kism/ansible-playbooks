@@ -1,11 +1,4 @@
 ---
-- name: Remove old telegraf key
-  ansible.builtin.command:
-    cmd: rpm --erase gpg-pubkey-2582e0c5-56099b04
-  ignore_errors: true
-  tags:
-    - skip_ansible_lint
-
 - name: Copy over influxdb repo
   ansible.builtin.copy:
     src: files/influxdb.repo

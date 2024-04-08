@@ -13,7 +13,6 @@
   become: true
   ansible.builtin.command:
     cmd: fallocate -l {{ configure_swap_file_size }} /swapfile
-  ignore_errors: true
   register: command_output
   changed_when: not file_stat.stat.exists and command_output.rc == 0
 
