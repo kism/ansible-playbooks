@@ -128,7 +128,7 @@
   ansible.builtin.find:
     paths: "/etc/letsencrypt/live/kierangee.au"
     age: 30s
-    recurse: no
+    recurse: false
   register: modified_files
   changed_when: modified_files.files | length > 0
 

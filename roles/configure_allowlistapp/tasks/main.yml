@@ -56,6 +56,10 @@
   notify: Restart allowlistapp
   changed_when: true
 
+- name: Fix selinux
+  ansible.builtin.command: restorecon -Rv /opt/archivepodcast
+  changed_when: false # This command only matters if another task has changed files
+
 - name: Copy systemd service
   become: true
   become_user: root
