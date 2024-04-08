@@ -1,0 +1,20 @@
+---
+configure_users_dotfiles:
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.bash_profile
+    dest: ~/.bash_profile
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.bashrc
+    dest: ~/.bashrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.inputrc
+    dest: ~/.inputrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.tmux.conf
+    dest: ~/.tmux.conf
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.vimrc
+    dest: ~/.vimrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/htoprc
+    dest: ~/.config/htop/htoprc
+
+configure_users_dotfiles_tmux_regex:
+  - regexp: green
+    replace: red
+  - regexp: colour10
+    replace: colour9

@@ -1,0 +1,8 @@
+---
+- name: Copy dotfiles per vars
+  become: true
+  become_user: "{{ loop_user }}"
+  ansible.builtin.get_url:
+    url: "{{ item['url'] }}"
+    dest: "{{ item['dest'] }}"
+  loop: configure_users_dotfiles

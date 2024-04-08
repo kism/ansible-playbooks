@@ -1,16 +1,22 @@
 ---
-- name: Ensure that bash is setup correctly for kism
-  become: true
-  become_user: kism
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
+- name: Include dotfiles vars
+  ansible.builtin.include_vars:
+    src: vars/dotfiles.yml
 
-- name: Ensure that bash is setup correctly for root
+- name: Include dotfiles tasks, loop for each user
+  ansible.builtin.include_tasks:
+    src: tasks/03a-dotfiles-download.yml
+  loop:
+    - kism
+    - root
+  loop_control:
+    loop_var: loop_user
+
+- name: Replace some values in tmux.conf for root
   become: true
   become_user: root
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
+  ansible.builtin.replace:
+    path: ~/.tmux.conf
+    regexp: "{{ item['regexp'] }}"
+    replace: "{{ item['replace'] }}"
+  loop: "{{ configure_users_dotfiles_tmux_regex }}"

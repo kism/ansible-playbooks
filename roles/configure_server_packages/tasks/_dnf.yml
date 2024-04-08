@@ -3,7 +3,7 @@
   ansible.builtin.dnf:
     name: "*"
     state: latest
-  when: ansible_pkg_mgr == 'dnf'
+    update_only: true
 
 - name: Remove packages that I want to avoid
   ansible.builtin.dnf:

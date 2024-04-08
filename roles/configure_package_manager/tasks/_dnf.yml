@@ -1,14 +1,10 @@
 ---
-- name: Update DNF Cache
-  ansible.builtin.dnf:
-    update_cache: true
-    state: present
-
 - name: Enable epel
   ansible.builtin.dnf:
     name: epel-release
     state: present
-  register: epel
+  notify: Update dnf Cache
+  when: ansible_distribution != "OracleLinux"
 
 - name: Add repo for oracle linux
   ansible.builtin.yum_repository:
@@ -19,16 +15,5 @@
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
     gpgcheck: true
     enabled: true
+  notify: Update dnf Cache
   when: ansible_distribution == "OracleLinux" and ansible_distribution_major_version == "9"
-  register: epel
-
-- name: Update DNF Cache w/epel enabled
-  ansible.builtin.dnf:
-    update_cache: true
-    state: present
-  when: epel.changed
-
-- name: Upgrade packages
-  ansible.builtin.dnf:
-    update_only: true
-    state: present

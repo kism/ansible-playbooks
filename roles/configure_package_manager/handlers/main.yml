@@ -1,0 +1,4 @@
+- name: Update dnf Cache
+  ansible.builtin.dnf:
+    update_cache: true
+    state: present

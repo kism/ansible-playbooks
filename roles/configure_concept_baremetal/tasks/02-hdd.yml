@@ -73,6 +73,7 @@
       ansible.builtin.set_fact:
         mans_found: "{{ mans_found.files | map(attribute='path') | map('basename') | list }}"
 
+    # Do you need to remove broken symlinks, I dont think so...
     - name: Create symbolic links for openSeaChest man pages
       ansible.builtin.file:
         src: /opt/openseachest/man/man8/{{ item }}
@@ -82,7 +83,6 @@
         state: link
       loop: "{{ mans_found }}"
 
-# Do you need to remove broken symlinks, I dont think so...
 
 # Install hd-idle
 - name: Get hd-idle_arch
@@ -92,14 +92,19 @@
       hdidle_arch: "{{  configure_concept_baremetal_arch_map[ansible_architecture] }}"
 
   rescue:
-    - name: Set default ffmpeg_arch
+    - name: Set default hdidle_arch
       ansible.builtin.set_fact:
       hdidle_arch: "{{ ansible_architecture }}"
 
-- name: Install hd-idle AMD64
+- name: Install hd-idle
   ansible.builtin.apt:
-    deb: https://github.com/adelolmo/hd-idle/releases/download/v{{ configure_concept_baremetal_hdidle_version }}/hd-idle_{{ configure_concept_baremetal_hdidle_version
-      }}_{{ hdidle_arch }}.deb
+    deb: |-
+      https://github.com/adelolmo/hd-idle/releases/download/v
+      {{- configure_concept_baremetal_hdidle_version -}}
+      /hd-idle_
+      {{- configure_concept_baremetal_hdidle_version -}}
+      _
+      {{ hdidle_arch }}.deb
 
 - name: Install some hdd related packages
   ansible.builtin.apt:
