@@ -24,7 +24,6 @@ ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 
 ## todo
 
-* better ffmpeg install
 * separate out sab
 * make username kism a variable
 * virtualisation check?? use baremetal group
@@ -32,6 +31,7 @@ ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 * configure vs install roles
 * role that includes roles for the first section meta_something
 * prettier config?
+* use that dumb way of breaking up urls
 * replace instances of `ansible_architecture == '` with map
 
 ```yaml

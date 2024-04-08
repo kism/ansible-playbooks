@@ -2,3 +2,6 @@
 configure_concept_baremetal_found_seagate: false
 configure_concept_baremetal_openseachest_version: 23.12
 configure_concept_baremetal_hdidle_version: 1.21
+configure_concept_baremetal_arch_map: # uname (ansible), whatever ffmpeg uses
+    x86_64: amd64
+    aarch64: arm64
