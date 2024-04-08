@@ -82,10 +82,10 @@
             releases/\
             ffmpeg-release-{{ ffmpeg_arch }}-static.tar.xz"
 
-    - name: Print out multiline entry ">-" w/wild jinja2
+    - name: Print out multiline entry ">-" or "|-" w/wild jinja2
       ansible.builtin.debug:
         msg:
-          - >-
+          - |-
             {{ "Same as previous... " -}}
             {{ "Bit weird " -}}
             But ansible-lint doesnt
@@ -93,10 +93,16 @@
             The hyphens in the jinja eliminate
             {{- "" -}}
             {{  "the whitespace on each side. " -}}
-            {{ "Without them, there will be a space" }}
-            {{ "added" }}
+            {{ "Without them, there will be a newline " }}
+            {{ " added" }}
             {{  "¯\_(ツ)_/¯" }}
           - >-
+            {{ "If you use '>-' it will work too " -}}
+            {{ "But the linter sometimes won't like it for some reason... " }}
+            {{- "" -}}
+            {{ '{{- "" -}}' }}
+            {{ " in particular" }}
+          - |-
             {{ "https://johnvansickle.com/" -}}
             {{ "ffmpeg/" -}}
             {{ "releases/" -}}

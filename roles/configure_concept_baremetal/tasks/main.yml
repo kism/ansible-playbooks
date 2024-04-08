@@ -1,6 +1,10 @@
 ---
 - name: Include Telegraf Tasks
   ansible.builtin.include_tasks: "01-telegraf.yml"
+  tags:
+    - baremetal
+  when: "'baremetal' in group_names"
 
 - name: Include HDD Tasks
   ansible.builtin.include_tasks: "02-hdd.yml"
+  when: "'baremetal' in group_names"
