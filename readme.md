@@ -35,7 +35,6 @@ skip_ansible_lint
 * separate out sab
 * separate out more configs
 * make username kism a variable
-* virtualisation check?? use baremetal group
 * fix ent domain, do domains everywhere
 * configure vs install roles
 * role that includes roles for the first section meta_something
