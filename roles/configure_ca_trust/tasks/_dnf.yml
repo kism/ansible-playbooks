@@ -11,5 +11,3 @@
   become: true
   ansible.builtin.command:
     cmd: update-ca-trust
-  tags:
-    - skip_ansible_lint

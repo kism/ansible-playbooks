@@ -19,8 +19,6 @@
       --server https://cert.kg.lan/acme/acme/directory
   register: certbot_output
   # failed_when: false
-  tags:
-    - skip_ansible_lint
 
 - name: Copy the cert post renewell script
   ansible.builtin.copy:

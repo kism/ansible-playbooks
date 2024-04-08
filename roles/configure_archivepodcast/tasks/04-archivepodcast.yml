@@ -45,8 +45,6 @@
   become_user: podcasto
   ansible.builtin.command:
     cmd: git config --global --add safe.directory /opt/archivepodcast
-  tags:
-    - skip_ansible_lint
 
 - name: Run pipenv install
   become: true

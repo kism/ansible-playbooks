@@ -16,5 +16,3 @@
       -v -n --nginx
       -d {{ secret_domain }}
   register: command_output
-  tags:
-    - skip_ansible_lint

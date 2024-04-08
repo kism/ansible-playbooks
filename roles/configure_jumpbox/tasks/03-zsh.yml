@@ -41,8 +41,6 @@
   ansible.builtin.command:
     cmd: zsh -c ". ~/.zshrc; antigen update; antigen reset"
   register: command_output
-  tags:
-    - skip_ansible_lint
 
 - name: Change my shell to zsh
   become: true

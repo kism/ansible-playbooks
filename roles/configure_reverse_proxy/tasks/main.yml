@@ -27,8 +27,6 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
-  tags:
-    - skip_ansible_lint
   loop:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
@@ -124,8 +122,6 @@
       --dns-cloudflare-credentials /root/.cloudflare.ini
       -d kierangee.au,*.kierangee.au
   register: command_output
-  tags:
-    - skip_ansible_lint
 
 - name: Force restart nginx
   ansible.builtin.systemd_service:

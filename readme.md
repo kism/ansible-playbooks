@@ -22,6 +22,14 @@ ansible-vault encrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ```
 
+## Code quality searches
+
+```text
+failed_when: false
+ignore_errors: true
+skip_ansible_lint
+```
+
 ## todo
 
 * separate out sab
@@ -32,31 +40,6 @@ ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 * role that includes roles for the first section meta_something
 * prettier config?
 * use that dumb way of breaking up urls
-* replace instances of `ansible_architecture == '` with map
-
-```yaml
-vars:
-    arch_map: # uname (ansible), whatever ffmpeg uses
-        x86_64: amd64
-        aarch64: arm64
-        armv6l: armel
-        armv7l: armel
-        armv8l: armel
-    ffmpeg_arch: ""
-
-tasks:
-- name: Get ffmpeg_arch
-    block:
-    - name: Set target arch per map if possible
-        ansible.builtin.set_fact:
-        ffmpeg_arch: "{{  arch_map[ansible_architecture] }}"
-
-    rescue:
-    - name: Set default ffmpeg_arch
-        ansible.builtin.set_fact:
-        ffmpeg_arch: "{{ ansible_architecture }}"
-```
-
 
 do later
 

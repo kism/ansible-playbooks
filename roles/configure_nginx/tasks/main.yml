@@ -16,8 +16,6 @@
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /
-  tags:
-    - skip_ansible_lint
   when: ansible_selinux is defined and ansible_selinux != False and ansible_selinux.status == 'enabled'
 
 - name: Install nginx

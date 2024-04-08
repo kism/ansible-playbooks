@@ -3,8 +3,6 @@
   ansible.builtin.apt:
     package: qbittorrent-nox
     state: latest
-  tags:
-    - skip_ansible_lint
 
 - name: Copy qBittorrent service
   ansible.builtin.copy:

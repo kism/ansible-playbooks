@@ -12,8 +12,6 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
-  tags:
-    - skip_ansible_lint
   loop:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled

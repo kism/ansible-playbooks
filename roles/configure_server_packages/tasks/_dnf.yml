@@ -4,8 +4,6 @@
     name: "*"
     state: latest
   when: ansible_pkg_mgr == 'dnf'
-  tags:
-    - skip_ansible_lint
 
 - name: Remove packages that I want to avoid
   ansible.builtin.dnf:

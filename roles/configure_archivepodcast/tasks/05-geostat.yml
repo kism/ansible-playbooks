@@ -12,8 +12,6 @@
 - name: Fix git lmao
   ansible.builtin.command:
     cmd: git config --global --add safe.directory /opt/geostat
-  tags:
-    - skip_ansible_lint
 
 - name: Clone geostat
   ansible.builtin.git:
@@ -62,22 +60,16 @@
 - name: move mmdb to correct location
   ansible.builtin.shell:
     cmd: cp $(find /opt/geostat -type d -name 'GeoLite2-City_*')/GeoLite2-City.mmdb /opt/geostat
-  tags:
-    - skip_ansible_lint
 
 - name: remove geostat folder
   ansible.builtin.shell:
     cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
-  tags:
-    - skip_ansible_lint
 
 - name: Create shell
   ansible.builtin.shell:
     cmd: cd /opt/geostat/ ; python3 -m venv env
   register: command_output
   changed_when: false
-  tags:
-    - skip_ansible_lint
 
 - name: Install geostat depends into the specified (virtualenv), inheriting globally installed modules
   ansible.builtin.pip:

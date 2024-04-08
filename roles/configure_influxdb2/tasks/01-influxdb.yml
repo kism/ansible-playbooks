@@ -53,5 +53,3 @@
       -f
   register: command_output
   failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
-  tags:
-    - skip_ansible_lint

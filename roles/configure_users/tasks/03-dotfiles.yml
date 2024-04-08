@@ -6,8 +6,6 @@
     cmd: curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
   register: command_output
   changed_when: command_output.rc == 0
-  tags:
-    - skip_ansible_lint
 
 - name: Ensure that bash is setup correctly for root
   become: true
@@ -16,5 +14,3 @@
     cmd: curl --silent https://raw.githubusercontent.com/kism/dotfiles-simple/master/setup.sh | bash
   register: command_output
   changed_when: command_output.rc == 0
-  tags:
-    - skip_ansible_lint

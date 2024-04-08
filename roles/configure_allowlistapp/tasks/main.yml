@@ -45,8 +45,7 @@
   become_user: nginx
   ansible.builtin.shell:
     cmd: git config --global --add safe.directory /opt/allowlistapp
-  tags:
-    - skip_ansible_lint
+
 
 - name: Run pipenv install
   become: true
