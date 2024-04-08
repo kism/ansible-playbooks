@@ -112,7 +112,7 @@
           /jellyfin-ffmpeg_
           {{- configure_jellyfin_ffmpeg_version -}}
           _portable_linux64-gpl.tar.xz
-          dest: "{{ configure_jellyfin_ffmpeg_dir }}"
+        dest: "{{ configure_jellyfin_ffmpeg_dir }}"
         remote_src: true
 
     - name: Write version file
