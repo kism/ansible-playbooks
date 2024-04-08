@@ -11,10 +11,14 @@
   block:
     - name: Download openSeaChest
       ansible.builtin.unarchive:
-        src:
-          "https://github.com/Seagate/openSeaChest/releases/download/\
-          v{{ configure_concept_baremetal_openseachest_version }}/\
-          openSeaChest-v{{ configure_concept_baremetal_openseachest_version }}-linux-{{ ansible_architecture }}-manylinux.tar.xz"
+        src: |-
+          "https://github.com/Seagate/openSeaChest/releases/download/v
+          {{- configure_concept_baremetal_openseachest_version -}}
+          openSeaChest-v
+          {{- configure_concept_baremetal_openseachest_version -}}
+          -linux-
+          {{- ansible_architecture -}}
+          -manylinux.tar.xz"
         dest: /opt/
         mode: "0755"
         remote_src: true

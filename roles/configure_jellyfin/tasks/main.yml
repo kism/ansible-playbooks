@@ -60,7 +60,10 @@
 
     - name: Download and extract jellyfin
       ansible.builtin.unarchive:
-        src: https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_{{ configure_jellyfin_version }}_linux-amd64.tar.gz
+        src: |-
+          https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_
+          {{- configure_jellyfin_version -}}
+          _linux-amd64.tar.gz
         dest: "{{ configure_jellyfin_base_dir }}/jellyfin"
         remote_src: true
         extra_opts:
@@ -68,7 +71,10 @@
 
     - name: Download and extract jellyfin-web
       ansible.builtin.unarchive:
-        src: https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-web_{{ configure_jellyfin_version }}_portable.tar.gz
+        src: |-
+          https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-web_
+          {{- configure_jellyfin_version -}}
+          _portable.tar.gz
         dest: "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
         remote_src: true
         extra_opts:
