@@ -6,11 +6,4 @@
     owner: root
     group: root
     mode: "0444"
-  register: cert_copy
-
-- name: Update CA Certs Oracle Linux
-  become: true
-  ansible.builtin.command:
-    cmd: update-ca-trust
-  when: cert_copy is changed
-  changed_when: true
+  notify: Update CA certs dnf

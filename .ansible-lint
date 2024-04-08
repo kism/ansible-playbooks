@@ -2,6 +2,10 @@
 exclude_paths:
   - .github/
   - adhoc_string_test.yml
+  - .vscode
+  - init
+  - ansible-lint
+  - yaml-lint.yml
 # write_list, avoid using the 'jinja' rule as it breaks multiline jinja, see: adhoc_string_test.yml
 # everything from: https://ansible.readthedocs.io/projects/lint/autofix/ except jinja, doesn't work though
 # write_list:

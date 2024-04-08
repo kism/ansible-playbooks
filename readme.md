@@ -33,6 +33,7 @@ skip_ansible_lint
 ## todo
 
 * separate out sab
+* separate out more configs
 * make username kism a variable
 * virtualisation check?? use baremetal group
 * fix ent domain, do domains everywhere

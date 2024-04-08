@@ -5,4 +5,7 @@
   ansible.builtin.get_url:
     url: "{{ item['url'] }}"
     dest: "{{ item['dest'] }}"
+    owner: "{{ loop_user }}"
+    group: "{{ loop_user }}"
+    mode: "0660"
   loop: configure_users_dotfiles
