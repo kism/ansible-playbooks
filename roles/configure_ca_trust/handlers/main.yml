@@ -4,10 +4,10 @@
   ansible.builtin.command:
     cmd: update-ca-trust
   when: cert_copy is changed
-  changed_when: true
+  changed_when: true # This runs when there is a change
 
 - name: Update CA certs apt
   ansible.builtin.command:
     cmd: update-ca-certificates
   when: cert_copy is changed
-  changed_when: true
+  changed_when: true # This runs when there is a change

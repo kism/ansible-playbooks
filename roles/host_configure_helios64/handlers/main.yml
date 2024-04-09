@@ -7,4 +7,4 @@
 - name: Apply netplan
   ansible.builtin.command:
     cmd: netplan apply
-  changed_when: true
+  changed_when: true # This only runs if there is a config change

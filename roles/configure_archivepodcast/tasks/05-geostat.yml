@@ -65,11 +65,12 @@
     cmd: rm -rf $(find /opt/geostat -type d -name 'GeoLite2-City_*')
   changed_when: true # Inferred from geoip database
 
-- name: Create shell
-  ansible.builtin.shell:
-    cmd: cd /opt/geostat/ ; python3 -m venv env
+- name: Create venv
+  ansible.builtin.cmd:
+    chdir: /opt/geostat/
+    cmd: python3 -m venv env
   register: command_output
-  changed_when: false
+  changed_when: true # TODO
 
 - name: Install geostat depends into the specified (virtualenv), inheriting globally installed modules
   ansible.builtin.pip:

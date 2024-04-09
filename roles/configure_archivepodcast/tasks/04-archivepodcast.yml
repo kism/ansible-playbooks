@@ -38,14 +38,14 @@
     name: safe.directory
     value: /opt/archivepodcast
 
-- name: Run pipenv install
-  become: true
-  become_user: podcasto
-  ansible.builtin.command:
-    cmd: /usr/local/bin/pipenv install
-    chdir: /opt/archivepodcast
-  notify: Restart archivepodcast
-  changed_when: true
+# - name: Run pipenv install
+#   become: true
+#   become_user: podcasto
+#   ansible.builtin.command:
+#     cmd: /usr/local/bin/pipenv install
+#     chdir: /opt/archivepodcast
+#   notify: Restart archivepodcast
+#   changed_when: true # Safe assumption
 
 - name: Run pipenv sync
   become: true
@@ -54,7 +54,7 @@
     cmd: /usr/local/bin/pipenv sync
     chdir: /opt/archivepodcast
   notify: Restart archivepodcast
-  changed_when: true
+  changed_when: true # Safe assumption
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
@@ -77,7 +77,6 @@
     group: podcasto
     mode: "0664"
   notify: Restart archivepodcast
-  changed_when: false
 
 - name: Copy systemd service
   ansible.builtin.copy:
