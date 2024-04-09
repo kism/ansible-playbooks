@@ -1,10 +1,9 @@
 ---
-- name: Baremetal Hosts Only, Include Telegraf Tasks
-  ansible.builtin.include_tasks: "01-telegraf.yml"
-  tags:
-    - baremetal
+- name: Baremetal Hosts only block
   when: "'baremetal' in group_names"
+  block:
+    - name: Include baremetal Telegraf config tasks
+      ansible.builtin.include_tasks: "01-telegraf.yml"
 
-- name: Baremetal Hosts Only, Include HDD Tasks
-  ansible.builtin.include_tasks: "02-hdd.yml"
-  when: "'baremetal' in group_names"
+    - name: Include HDD/fstab tasks
+      ansible.builtin.include_tasks: "02-hdd.yml"
