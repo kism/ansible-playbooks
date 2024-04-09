@@ -1,11 +1,10 @@
 ---
 - name: Include dotfiles vars
   ansible.builtin.include_vars:
-    src: vars/dotfiles.yml
+    file: vars/dotfiles.yml
 
 - name: Include dotfiles tasks, loop for each user
-  ansible.builtin.include_tasks:
-    src: tasks/03a-dotfiles-download.yml
+  ansible.builtin.include_tasks: "03a-dotfiles-download.yml"
   loop:
     - kism
     - root
