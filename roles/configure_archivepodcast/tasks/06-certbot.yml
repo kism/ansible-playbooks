@@ -20,7 +20,7 @@
 
 - name: Check if certs have changed
   ansible.builtin.find:
-    paths: "/etc/letsencrypt/live/{{ secret_domain }}"
+    paths: /etc/letsencrypt/live/{{ secret_domain }}
     age: 30s
     recurse: false
   register: modified_files

@@ -22,12 +22,11 @@
 
 - name: Check if certs have changed
   ansible.builtin.find:
-    paths: "/etc/letsencrypt/live/{{ ansible_host }}"
+    paths: /etc/letsencrypt/live/{{ ansible_host }}
     age: 15s
     recurse: false
   register: modified_files
   changed_when: modified_files.files | length > 0
-
 
 - name: Copy the cert post renewell script
   ansible.builtin.copy:

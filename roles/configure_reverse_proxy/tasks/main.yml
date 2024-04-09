@@ -126,7 +126,7 @@
 
 - name: Check if certs have changed
   ansible.builtin.find:
-    paths: "/etc/letsencrypt/live/kierangee.au"
+    paths: /etc/letsencrypt/live/kierangee.au
     age: 30s
     recurse: false
   register: modified_files

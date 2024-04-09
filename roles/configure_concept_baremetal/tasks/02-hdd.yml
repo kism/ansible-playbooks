@@ -83,7 +83,6 @@
         state: link
       loop: "{{ mans_found }}"
 
-
 # Install hd-idle
 - name: Get hd-idle_arch
   block:
