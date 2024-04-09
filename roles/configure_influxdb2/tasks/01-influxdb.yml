@@ -53,3 +53,4 @@
       -f
   register: command_output
   failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
+  changed_when: command_output.rc == 0
