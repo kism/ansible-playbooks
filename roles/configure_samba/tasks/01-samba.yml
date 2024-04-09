@@ -79,13 +79,6 @@
     - avahi-daemon
   when: ansible_distribution == 'Debian' and ansible_distribution_release | lower  == 'bullseye' # Debian Bullseye
 
-- name: Set public as default policy
-  ansible.builtin.command:
-    cmd: firewall-cmd --set-default-zone=public
-  notify:
-    - Restart firewalld
-  tags: skip_ansible_lint # No way to do this in the module
-
 - name: Allow samba and wsdd through firewalld
   ansible.posix.firewalld:
     service: "{{ item }}"
