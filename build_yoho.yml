@@ -7,8 +7,7 @@
       ansible.builtin.assert:
         that:
           - secret_mullvad_user is defined
-          - secret_root_password_hash
-          - secret_kism_password_hash
+          - secret_myuser_password_hash
 
 - name: Setup ent jumpbox
   hosts: yoho

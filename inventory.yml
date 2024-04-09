@@ -25,7 +25,6 @@ all:
     podc:
       ansible_host: podc.kg.lan
       timezone: awst
-
     helios64:
       ansible_host: helios64.ira.mil.ie
       timezone: awst
@@ -41,7 +40,6 @@ proxmoxvms:
 publiccloudvms:
   hosts:
     podc:
-    # podc-test:
 baremetal:
   hosts:
     pve:
