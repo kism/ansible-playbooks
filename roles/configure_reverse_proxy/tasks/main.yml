@@ -111,7 +111,7 @@
 - name: Initial certbot config
   become: true
   ansible.builtin.command:
-    cmd: >
+    cmd: >-
       certbot certonly
       --agree-tos
       --email={{ secret_email }}
