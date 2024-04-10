@@ -20,7 +20,7 @@
 - name: De-Armor Docker GPG key
   ansible.builtin.shell:
     cmd: gpg --dearmor < /tmp/docker.gpg > /etc/apt/keyrings/docker.gpg
-  changed_when: true
+  changed_when: true # Force the current key here every time
 
 - name: Add Docker repository x86_64
   ansible.builtin.apt_repository:

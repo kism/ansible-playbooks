@@ -22,7 +22,9 @@ ansible-vault encrypt ../archivepodcastsecrets/secrets* --vault-password-file=/t
 ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
 ```
 
-## Code quality searches
+## Code Quality
+
+### Code quality searches
 
 ```text
 failed_when: false
@@ -30,17 +32,24 @@ ignore_errors: true
 skip_ansible_lint
 ```
 
+### Good style things to do
+
+* Comment every one of those code quality searches when used
+* Comment ever changed_when
+* No hardcoded domain names, dns names
+* Use creates/removes in ansible.builtin.cmd
+* Use argv in ansible.builtin.cmd
+
+
 ## todo
 
 * separate out sab
-* use creates/removes for ansible.builtin.command
-* Use argv for multiline commands?
 * separate out more configs
 * fix ent domain, do domains everywhere
 * configure vs install roles
 * role that includes roles for the first section meta_something
 * prettier config?
-* use that dumb way of breaking up urls
+* changed_when when using pipenv?
 
 do later
 
