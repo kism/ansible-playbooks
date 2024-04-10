@@ -51,6 +51,7 @@
           - >-
             Newline in yaml will be replaced with a space
             no newline at the end, useful for commands.
+            Though for ansible.builtin.command, use argv:
           - >-
             wget
             https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ ffmpeg_arch }}-static.tar.xz
