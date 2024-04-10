@@ -1,9 +1,4 @@
 ---
-- name: Set root password
-  ansible.builtin.user:
-    name: root
-    password: "{{ secret_root_password_hash }}"
-
 - name: Add user accounts
   become: true
   become_user: root
@@ -14,6 +9,14 @@
     shell: "{{ item.value.shell }}"
     append: false
   with_dict: "{{ configure_users_service }}"
+
+- name: Set password passwords
+  ansible.builtin.user:
+    name: "{{ item.key }}"
+    password: "{{ item.value }}"
+  loop:
+    - kism: "{{ secret_myuser_password_hash }}"
+    - root: "{{ secret_root_password_hash }}"
 
 - name: Set authorized keys for {{ configure_users_myuser }}
   ansible.posix.authorized_key:

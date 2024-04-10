@@ -66,7 +66,7 @@
   changed_when: true # Inferred from geoip database
 
 - name: Create venv
-  ansible.builtin.cmd:
+  ansible.builtin.command:
     chdir: /opt/geostat/
     cmd: python3 -m venv env
   register: command_output

@@ -33,10 +33,9 @@ skip_ansible_lint
 ## todo
 
 * separate out sab
-* use creates for ansible.builtin.command
-* Use argv for multiline commands
+* use creates/removes for ansible.builtin.command
+* Use argv for multiline commands?
 * separate out more configs
-* make username kism a variable
 * fix ent domain, do domains everywhere
 * configure vs install roles
 * role that includes roles for the first section meta_something

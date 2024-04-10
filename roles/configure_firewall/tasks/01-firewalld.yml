@@ -15,7 +15,7 @@
 - name: Set public as default policy
   ansible.builtin.lineinfile:
     path: /etc/firewalld/firewalld.conf
-    regexp: '^DefaultZone='
+    regexp: ^DefaultZone=
     line: DefaultZone=public
   notify:
     - Restart firewalld
