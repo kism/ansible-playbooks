@@ -62,6 +62,9 @@ skip_ansible_lint
 * separate out more configs
 * fix ent domain, do domains everywhere
 * rename configure_directories
+* maintenance_get_facts
+* maintenance_get_users
+
 
 do later
 

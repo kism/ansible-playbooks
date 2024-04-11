@@ -10,25 +10,45 @@
 - name: Debug block to print facts and vars
   when: maintenance_getfacts_print_debug
   block:
-    - name: Print facts
-      ansible.builtin.debug:
-        msg: "{{ ansible_facts }}"
-
     - name: Get user info
       ansible.builtin.getent:
         database: passwd
 
-    - name: Print user facts
-      ansible.builtin.debug:
-        msg: "{{ ansible_facts.getent_passwd }}"
+    # ansible_facts.getent_passwd remains the same, these vars are weird
+    - name: Transform user info
+      ansible.builtin.set_fact:
+        getent_passwd: "{{ getent_passwd | combine ({ item.key: item.value | join (', ') }) }}"
+      no_log: true
+      loop: "{{ getent_passwd | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
 
     - name: Get group info
       ansible.builtin.getent:
         database: group
 
+    # ansible_facts.getent_group remains the same, these vars are weird
+    - name: Transform group info
+      ansible.builtin.set_fact:
+        getent_group: "{{ getent_group | combine ({ item.key: item.value | join (', ') }) }}"
+      no_log: true
+      loop: "{{ getent_group | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
+
+    # Start printing
+
+    - name: Print facts
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts }}"
+
+    - name: Print user facts
+      ansible.builtin.debug:
+        msg: "{{ getent_passwd }}"
+
     - name: Print group facts
       ansible.builtin.debug:
-        msg: "{{ ansible_facts.getent_group }}"
+        msg: "{{ getent_group }}"
 
     - name: Print the usual culperates
       ansible.builtin.debug:
