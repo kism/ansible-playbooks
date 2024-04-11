@@ -2,7 +2,7 @@
 # MOTD, bash config
 - name: Copy motd file
   ansible.builtin.copy:
-    src: files/conf/{{ ansible_hostname }}/motd.txt
+    src: files/hosts/{{ ansible_hostname }}/motd.txt
     dest: /etc/motd
     owner: root
     group: root

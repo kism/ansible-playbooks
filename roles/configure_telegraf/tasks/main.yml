@@ -4,7 +4,7 @@
   block:
     - name: Copy common telegraf config
       ansible.builtin.copy:
-        src: files/conf/_common_influxdb.conf
+        src: files/hosts/_common_influxdb.conf
         dest: /etc/telegraf/telegraf.d/common_influxdb.conf
         owner: telegraf
         group: telegraf
@@ -23,7 +23,7 @@
 
     - name: Copy host telegraf config
       ansible.builtin.copy:
-        src: files/conf/{{ inventory_hostname }}.conf
+        src: files/hosts/{{ inventory_hostname }}.conf
         dest: /etc/telegraf/telegraf.d/{{ inventory_hostname }}.conf
         owner: telegraf
         group: telegraf

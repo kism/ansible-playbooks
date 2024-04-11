@@ -25,7 +25,7 @@
 
 - name: Copy archivepodcast config
   ansible.builtin.copy:
-    src: configs/influxpingscan/conf/{{ ansible_hostname }}/ifdb_settings.ini
+    src: configs/influxpingscan/hosts/{{ ansible_hostname }}/ifdb_settings.ini
     dest: /opt/influxpingscan/settings.ini
     mode: "600"
 

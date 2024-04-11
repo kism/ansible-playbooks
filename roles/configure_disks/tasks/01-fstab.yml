@@ -45,7 +45,7 @@
 
 - name: Copy perms script
   ansible.builtin.copy:
-    src: files/conf/{{ ansible_hostname }}/perms.sh
+    src: files/hosts/{{ ansible_hostname }}/perms.sh
     dest: /root/perms.sh
     owner: root
     group: root

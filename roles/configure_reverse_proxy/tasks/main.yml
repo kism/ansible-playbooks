@@ -17,7 +17,7 @@
 
 - name: Copy nginx conf
   ansible.builtin.copy:
-    src: files/conf/{{ ansible_hostname }}/nginx-rproxy.conf
+    src: files/hosts/{{ ansible_hostname }}/nginx-rproxy.conf
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
@@ -43,7 +43,7 @@
 # is this bad?
 - name: Copy nginx site confs
   ansible.builtin.copy:
-    src: files/conf/{{ ansible_hostnname }}/{{ item }}
+    src: files/hosts/{{ ansible_hostnname }}/{{ item }}
     dest: /etc/nginx/sites-available/
     mode: "0660"
   notify:
