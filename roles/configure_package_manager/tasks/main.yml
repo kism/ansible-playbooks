@@ -1,14 +1,14 @@
 ---
 - name: Init APT
-  ansible.builtin.include_tasks: _apt.yml
+  ansible.builtin.include_tasks: 01-apt.yml
   when: ansible_pkg_mgr == 'apt'
 
 - name: Init DNF
-  ansible.builtin.include_tasks: _dnf.yml
+  ansible.builtin.include_tasks: 01-dnf.yml
   when: ansible_pkg_mgr == 'dnf'
 
 - name: Init Pacman
-  ansible.builtin.include_tasks: _pacman.yml
+  ansible.builtin.include_tasks: 01-pacman.yml
   when: ansible_pkg_mgr == 'pacman'
 
 # - name: Install packages Brew 🍺

@@ -1,4 +1,0 @@
----
-- name: Reminders
-  ansible.builtin.debug:
-    msg: Your fridge is running, better catch it

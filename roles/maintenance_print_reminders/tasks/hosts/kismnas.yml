@@ -1,11 +1,5 @@
 ---
-- name: Reminder
-  ansible.builtin.debug:
-    msg:
-      - Add samba users manually
-      - smbpasswd -a kism
-
-- name: Reminder
+- name: Reminder, proxmox lxc mounts
   ansible.builtin.debug:
     msg:
       - Add mounts via pvenas

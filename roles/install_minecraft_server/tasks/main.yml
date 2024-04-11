@@ -1,4 +1,9 @@
 ---
-- name: Not done
-  ansible.builtin.debug:
-    msg: lol role not done
+- name: Setup Java
+  ansible.builtin.include_tasks: "01-java.yml"
+
+- name: Setup firewall
+  ansible.builtin.include_tasks: "02-firewall.yml"
+
+- name: Setup folders
+  ansible.builtin.include_tasks: "03-folders.yml"

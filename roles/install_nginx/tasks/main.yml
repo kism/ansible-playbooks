@@ -1,6 +1,4 @@
 ---
-# selinux not enabled by default on debian, TODO do better
-
 - name: Enable SELinux
   ansible.posix.selinux:
     policy: targeted
@@ -13,10 +11,6 @@
     state: true
     persistent: true
   when: ansible_selinux is defined and not ansible_selinux and ansible_selinux.status == 'enabled'
-
-# - name: Fix selinux
-#   ansible.builtin.command: restorecon -Rv / # THIS SUCKS
-#   when: ansible_selinux is defined and not ansible_selinux False and ansible_selinux.status == 'enabled'
 
 - name: Install nginx
   ansible.builtin.package:
