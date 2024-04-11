@@ -35,21 +35,12 @@
 
 - name: Setup pipenv environment
   ansible.builtin.command:
-    cmd: /usr/local/bin/pipenv install
-    chdir: /opt/influxpingscan
-  notify: Restart archivepodcast
-  become: true
-  become_user: influxdb
-  changed_when: true
-
-- name: Setup pipenv environment
-  ansible.builtin.command:
     cmd: /usr/local/bin/pipenv sync
     chdir: /opt/influxpingscan
   notify: Restart archivepodcast
   become: true
   become_user: influxdb
-  changed_when: true
+  changed_when: true # Safe assumption, no way to know
 
 - name: Set influxdb token
   ansible.builtin.lineinfile:

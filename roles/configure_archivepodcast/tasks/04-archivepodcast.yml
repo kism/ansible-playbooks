@@ -38,15 +38,6 @@
     name: safe.directory
     value: /opt/archivepodcast
 
-# - name: Run pipenv install
-#   become: true
-#   become_user: podcasto
-#   ansible.builtin.command:
-#     cmd: /usr/local/bin/pipenv install
-#     chdir: /opt/archivepodcast
-#   notify: Restart archivepodcast
-#   changed_when: true # Safe assumption
-
 - name: Run pipenv sync
   become: true
   become_user: podcasto
@@ -54,7 +45,7 @@
     cmd: /usr/local/bin/pipenv sync
     chdir: /opt/archivepodcast
   notify: Restart archivepodcast
-  changed_when: true # Safe assumption
+  changed_when: true # Safe assumption, no way to know
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast

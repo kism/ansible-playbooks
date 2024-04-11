@@ -40,13 +40,6 @@
     name: safe.directory
     value: /opt/allowlistapp
 
-# - name: Run pipenv install
-#   ansible.builtin.command:
-#     cmd: /usr/local/bin/pipenv install
-#     chdir: /opt/allowlistapp
-#   notify: Restart allowlistapp
-#   changed_when: true # Safe assumption
-
 - name: Run pipenv sync
   become: true
   become_user: root
@@ -54,7 +47,7 @@
     cmd: /usr/local/bin/pipenv sync
     chdir: /opt/allowlistapp
   notify: Restart allowlistapp
-  changed_when: true # Safe assumption
+  changed_when: true # Safe assumption, no way to know
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
