@@ -41,7 +41,7 @@ skip_ansible_lint
 * Use argv in ansible.builtin.cmd
 
 
-## todo
+## TODO
 
 * separate out sab
 * separate out more configs
@@ -50,6 +50,7 @@ skip_ansible_lint
 * role that includes roles for the first section meta_something
 * prettier config?
 * changed_when when using pipenv?
+* remove conf dirs
 
 do later
 
