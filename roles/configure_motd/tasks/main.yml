@@ -1,8 +1,19 @@
 ---
-- name: MOTD Ubuntu
-  ansible.builtin.include_tasks: _apt.yml
-  when: ansible_pkg_mgr == 'apt'
 
-- name: MOTD Redhat
-  ansible.builtin.include_tasks: _dnf.yml
-  when: ansible_pkg_mgr == 'dnf'
+- name: Check if /etc/update-motd.d exists
+  ansible.builtin.stat:
+    path: /etc/update-motd.d
+  register: update_motd_found
+
+- name: Set MOTD /etc/update-motd.d
+  ansible.builtin.include_tasks: update_motd.yml
+  when: update_motd_found.stat.exists
+
+- name: Check if /etc/motd.d exists
+  ansible.builtin.stat:
+    path: /etc/motd.d
+  register: motd_found
+
+- name: Set MOTD /etc/motd.d
+  ansible.builtin.include_tasks: motd.yml
+  when: motd_found.stat.exists

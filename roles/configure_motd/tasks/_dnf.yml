@@ -1,5 +1,0 @@
----
-# Not implemented
-- name: Not implemented
-  ansible.builtin.debug:
-    msg: Not implemented

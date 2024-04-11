@@ -39,15 +39,28 @@ skip_ansible_lint
 * No hardcoded domain names, dns names
 * Use creates/removes in ansible.builtin.cmd
 * Use argv in ansible.builtin.cmd
+* Naming:
 
+| Role Prefix  | What it do                                                         |
+|--------------|--------------------------------------------------------------------|
+| configure_   | (Install and) configure a specific thing                           |
+| install_     | Install a specific thing, generally can't be configured in ansible |
+| uninstall_   | Remove a specific application or package                           |
+| maintenance_ | No changes, other than patching                                    |
+| meta_        | roles that only include roles                                      |
+
+| Playbook Prefix | What it mean                                        |
+|-----------------|-----------------------------------------------------|
+| adhoc_          | Reference or adhoc playbooks, often don't keep them |
+| audit_          | Playbooks that get the state of VMs                 |
+| build_          | Build a VM                                          |
+| maintenance_    | No changes, other than patching                     |
 
 ## TODO
 
 * separate out sab
 * separate out more configs
 * fix ent domain, do domains everywhere
-* configure vs install roles
-* role that includes roles for the first section meta_something
 
 do later
 

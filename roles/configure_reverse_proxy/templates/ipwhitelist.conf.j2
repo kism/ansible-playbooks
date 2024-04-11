@@ -1,4 +1,3 @@
-allow {{ secret_public_ip1 }};
-allow {{ secret_local_ip_range1 }};
-allow {{ secret_local_ip_range2 }};
+{% for entry in secret_ip_addresses %}allow {{ entry }};
+{% endfor %}
 deny all;

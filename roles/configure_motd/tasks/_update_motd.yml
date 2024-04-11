@@ -1,0 +1,10 @@
+---
+- name: Remove cockpit motd
+  ansible.builtin.file:
+    path: /etc/motd.d/cockpit
+    state: absent
+
+# Not implemented
+- name: Not implemented
+  ansible.builtin.debug:
+    msg: Not implemented

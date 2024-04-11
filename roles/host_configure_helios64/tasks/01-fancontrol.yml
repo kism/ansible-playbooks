@@ -1,7 +1,0 @@
----
-- name: Configure fancontrol
-  ansible.builtin.lineinfile:
-    path: /etc/fancontrol
-    regexp: ^FCTEMPS=
-    line: FCTEMPS=/dev/fan-p6/pwm1=/dev/thermal-board/temp1_input /dev/fan-p7/pwm1=/dev/thermal-board/temp1_input
-  notify: Restart fancontrol

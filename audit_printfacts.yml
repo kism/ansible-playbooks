@@ -5,14 +5,3 @@
     print_debug: true
   roles:
     - maintenance_getfacts
-  tasks:
-    - name: Print some other vars
-      ansible.builtin.debug:
-        msg:
-          - "ansible_hostname:                   {{ ansible_hostname }}"
-          - "ansible_distribution_file_variety:  {{ ansible_distribution_file_variety }}"
-          - "ansible_distribution:               {{ ansible_distribution }}"
-          - "ansible_distribution_major_version: {{ ansible_distribution_major_version }}"
-          - "ansible_distribution_release:       {{ ansible_distribution_release }}"
-          - "ansible_architecture:               {{ ansible_architecture }}"
-          - "ansible_pkg_mgr:                    {{ ansible_pkg_mgr }}"

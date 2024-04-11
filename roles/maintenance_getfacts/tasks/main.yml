@@ -2,30 +2,41 @@
 - name: Gather facts
   ansible.builtin.setup:
 
-- name: Set debug mode
+- name: Set debug mode to value of print_debug if its defined
   ansible.builtin.set_fact:
     maintenance_getfacts_print_debug: "{{ print_debug }}"
   when: print_debug is defined
 
-- name: Print facts
-  ansible.builtin.debug:
-    msg: "{{ ansible_facts }}"
+- name: Debug block to print facts and vars
   when: maintenance_getfacts_print_debug
+  block:
+    - name: Print facts
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts }}"
 
-- name: Get user info
-  ansible.builtin.getent:
-    database: passwd
+    - name: Get user info
+      ansible.builtin.getent:
+        database: passwd
 
-- name: Print user facts
-  ansible.builtin.debug:
-    msg: "{{ ansible_facts.getent_passwd }}"
-  when: maintenance_getfacts_print_debug
+    - name: Print user facts
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts.getent_passwd }}"
 
-- name: Get group info
-  ansible.builtin.getent:
-    database: group
+    - name: Get group info
+      ansible.builtin.getent:
+        database: group
 
-- name: Print group facts
-  ansible.builtin.debug:
-    msg: "{{ ansible_facts.getent_group }}"
-  when: maintenance_getfacts_print_debug
+    - name: Print group facts
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts.getent_group }}"
+
+    - name: Print the usual culperates
+      ansible.builtin.debug:
+        msg:
+          - "ansible_hostname:                   {{ ansible_hostname }}"
+          - "ansible_distribution_file_variety:  {{ ansible_distribution_file_variety }}"
+          - "ansible_distribution:               {{ ansible_distribution }}"
+          - "ansible_distribution_major_version: {{ ansible_distribution_major_version }}"
+          - "ansible_distribution_release:       {{ ansible_distribution_release }}"
+          - "ansible_architecture:               {{ ansible_architecture }}"
+          - "ansible_pkg_mgr:                    {{ ansible_pkg_mgr }}"
