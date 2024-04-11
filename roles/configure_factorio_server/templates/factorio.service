@@ -4,7 +4,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/opt/factorio/bin/x64/factorio --start-server /opt/factorio/saves/main.zip --server-settings /opt/factorio/data/server-settings.json
+ExecStart=/opt/factorio/bin/x64/factorio --start-server {{ install_factorio_server_save }} --server-settings {{ install_factorio_server_settings }}
 User=factorio
 Group=factorio
 Restart=always

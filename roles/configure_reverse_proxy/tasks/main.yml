@@ -4,8 +4,6 @@
     name: https://download-ib01.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
     state: present
 
-# makecache maybe
-
 - name: Install Packages
   ansible.builtin.dnf:
     name:
@@ -17,7 +15,7 @@
 
 - name: Copy nginx conf
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/nginx-rproxy.conf
+    src: files/hosts/{{ ansible_hostname }}/nginx.conf
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
@@ -40,15 +38,16 @@
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
 
-# is this bad?
+# Suffix any files you don't want at the minute with .bak
 - name: Copy nginx site confs
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostnname }}/{{ item }}
+    src: "{{ item }}"
     dest: /etc/nginx/sites-available/
     mode: "0660"
+  with_fileglob:
+    - files/hosts/{{ ansible_hostnname }}/sites-available/*.conf
   notify:
     - Reload nginx
-  loop: "{{ configure_reverse_proxy_nginxconfigs }}"
 
 - name: Create symbolic links to make sites available
   ansible.builtin.file:
@@ -71,9 +70,9 @@
   notify:
     - Reload nginx
 
-- name: Copy nginx index.html
+- name: Copy index.html
   ansible.builtin.copy:
-    src: files/nginx-rproxy-index.html
+    src: files/hosts/{{ ansible_hostnname }}index.html
     dest: /usr/share/nginx/html/index.html
     mode: "0664"
   notify:

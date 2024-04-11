@@ -7,3 +7,7 @@
 
 - name: Run downloaders install tasks
   ansible.builtin.include_tasks: "03-ffmpeg.yml"
+
+- name: Add reminder to list
+  ansible.builtin.set_fact:
+    reminder_list: "{{ reminder_list + ['Add samba users manually: smbpasswd -a <linux username>'] }}"

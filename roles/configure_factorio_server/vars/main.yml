@@ -1,0 +1,4 @@
+---
+configure_factorio_server_version: 1.1.74
+configure_factorio_server_save: /opt/factorio/saves/main.zip
+configure_factorio_server_settings: /opt/factorio/data/server-settings.json

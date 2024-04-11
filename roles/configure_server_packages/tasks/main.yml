@@ -1,8 +1,8 @@
 ---
 - name: Install DNF Packages
-  ansible.builtin.include_tasks: 01-dnf.yml
+  ansible.builtin.include_tasks: "01-dnf.yml"
   when: ansible_pkg_mgr == 'dnf'
 
 - name: Install APT Packages
-  ansible.builtin.include_tasks: 01-apt.yml
+  ansible.builtin.include_tasks: "01-apt.yml"
   when: ansible_pkg_mgr == 'apt'

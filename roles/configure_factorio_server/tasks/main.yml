@@ -46,3 +46,7 @@
     recurse: true
     owner: factorio
     group: factorio
+
+- name: Add reminder to list
+  ansible.builtin.set_fact:
+    reminder_list: "{{ reminder_list + ['Copy a save and a config to: ' ~ install_factorio_server_save ~ ' and ' ~ install_factorio_server_settings ] }}"

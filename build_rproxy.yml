@@ -8,7 +8,7 @@
     - meta_onboard_server
 
     # Purpose specific
-    - install_nginx
+    - configure_nginx
     - configure_fail2ban
     - configure_reverse_proxy
     - configure_allowlistapp
