@@ -18,7 +18,7 @@
     # Name:Password:UserID:PrincipleGroup:Gecos:HomeDirectory:Shell
     - name: Transform user info
       ansible.builtin.set_fact:
-        getent_passwd: "{{ getent_passwd | combine ({ item.key: item.value | join (':') }) }}"
+        getent_passwd: "{{ getent_passwd | combine({item.key: item.value | join(':')}) }}"
       no_log: true
       loop: "{{ getent_passwd | dict2items }}"
       loop_control:
@@ -32,7 +32,7 @@
     # Name:Password:ID:User1,User2,...,Usern
     - name: Transform group info
       ansible.builtin.set_fact:
-        getent_group: "{{ getent_group | combine ({ item.key: item.value | join (':') }) }}"
+        getent_group: "{{ getent_group | combine({item.key: item.value | join(':')}) }}"
       no_log: true
       loop: "{{ getent_group | dict2items }}"
       loop_control:
