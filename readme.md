@@ -48,9 +48,6 @@ skip_ansible_lint
 * fix ent domain, do domains everywhere
 * configure vs install roles
 * role that includes roles for the first section meta_something
-* prettier config?
-* changed_when when using pipenv?
-* remove conf dirs
 
 do later
 

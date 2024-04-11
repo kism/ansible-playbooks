@@ -4,6 +4,11 @@
     path: /etc/pve
   register: pve_status
 
-- name: Run sshd setup on non-pve hosts
-  ansible.builtin.include_tasks: "01-firewalld.yml"
+- name: Run firewalld setup on non-pve hosts
   when: not pve_status.stat.exists
+  block:
+    - name: Remove ufw if it exists
+      ansible.builtin.include_tasks: "01-remove-ufw.yml"
+
+    - name: Install and configure firewalld
+      ansible.builtin.include_tasks: "02-firewalld.yml"

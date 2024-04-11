@@ -1,31 +1,12 @@
 ---
-- name: Check that vars are defined
-  hosts: yoho
-  gather_facts: false
-  tasks:
-    - name: Check that vars are defined
-      ansible.builtin.assert:
-        that:
-          - secret_mullvad_user is defined
-          - secret_myuser_password_hash
-
 - name: Setup ent jumpbox
   hosts: yoho
   gather_facts: true
   become: true
 
   roles:
-    # Standard server onboarding
-    - configure_package_manager
-    - configure_server_packages
-    - configure_users
-    - configure_directories
-    - configure_sshd
-    - configure_locale
-    - configure_telegraf
-    - configure_firewall
-    - configure_ca_trust
-    - configure_motd
+    # Onboard Server
+    - meta_onboard_server
 
     # Purpose specific
     - configure_samba
@@ -33,4 +14,4 @@
     - configure_docker_sabnzbd
 
     # Reminders
-    - print_reminders
+    - maintenance_print_reminders

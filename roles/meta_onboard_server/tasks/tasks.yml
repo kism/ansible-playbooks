@@ -1,0 +1,16 @@
+---
+- name: Include server onboarding roles...
+  ansible.builtin.include_role:
+    name: "{{ item }}"
+  loop:
+    - uninstall_snap
+    - configure_package_manager
+    - configure_server_packages
+    - configure_users
+    - configure_directories
+    - configure_sshd
+    - configure_locale
+    - configure_telegraf
+    - configure_firewall
+    - configure_ca_trust
+    - configure_motd
