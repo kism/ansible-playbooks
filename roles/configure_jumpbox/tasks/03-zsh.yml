@@ -11,7 +11,7 @@
   become: true
   become_user: kism
   ansible.builtin.file:
-    path: ~/.antigen
+    path: '{{ user_home }}/.antigen'
     state: directory
     owner: kism
     group: kism
@@ -22,7 +22,7 @@
   become_user: kism
   ansible.builtin.get_url:
     url: https://git.io/antigen
-    dest: ~/.antigen/antigen.zsh
+    dest: '{{ user_home }}/.antigen/antigen.zsh'
     owner: kism
     group: kism
     mode: "0770"
@@ -39,14 +39,14 @@
   become: true
   become_user: kism
   ansible.builtin.command:
-    cmd: zsh -c ". ~/.zshrc; antigen update; antigen reset"
+    cmd: 'zsh -c ". {{ user_home }}/.zshrc; antigen update; antigen reset"'
   changed_when: false # Handled by the next task
 
 - name: Check if zsh has changed
   become: true
   become_user: kism
   ansible.builtin.find:
-    paths: ~/.antigen/bundles
+    paths: '{{ user_home }}/.antigen/bundles'
     age: 1m
     recurse: true
   register: modified_files
