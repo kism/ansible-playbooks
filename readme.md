@@ -17,9 +17,9 @@ Run
 ## Vault
 
 ```bash
-echo password > /tmp/ansiblevaultpassword
-ansible-vault encrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
-ansible-vault decrypt ../archivepodcastsecrets/secrets* --vault-password-file=/tmp/ansiblevaultpassword
+touch /tmp/ansiblevaultpassword && chmod 600 /tmp/ansiblevaultpassword && echo password > /tmp/ansiblevaultpassword
+ansible-vault encrypt ../archivepodcastsecrets/secrets* # No need for --vault-password-file=/tmp/ansiblevaultpassword since its in config
+ansible-vault decrypt ../archivepodcastsecrets/secrets*
 ```
 
 ## Code Quality
