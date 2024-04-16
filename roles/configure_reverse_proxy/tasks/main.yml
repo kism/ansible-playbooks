@@ -49,16 +49,22 @@
   notify:
     - Reload nginx
 
+- name: Build list of nginx configs
+  ansible.builtin.find:
+    paths: "/etc/nginx/sites-available/"
+    file_type: file
+  register: config_files_found
+
 - name: Create symbolic links to make sites available
   ansible.builtin.file:
-    src: /etc/nginx/sites-available/{{ item }}
-    dest: /etc/nginx/sites-enabled/{{ item }}
+    src: /etc/nginx/sites-available/{{ item.path | basename }}
+    dest: /etc/nginx/sites-enabled/{{ item.path | basename }}
     owner: root
     group: root
     state: link
   notify:
     - Reload nginx
-  loop: "{{ configure_reverse_proxy_nginxconfigs }}"
+  loop: "{{ config_files_found.files }}"
 
 - name: Copy ip whitelist
   ansible.builtin.template:
