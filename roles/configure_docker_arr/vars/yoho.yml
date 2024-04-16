@@ -1,0 +1,4 @@
+---
+configure_docker_arr_base_dir: /srv/Quina
+configure_docker_arr_tv_dir: /mnt/Garnet/Video/TV Series
+configure_docker_arr_movies_dir: /mnt/Vivi/Video/Movies

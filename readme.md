@@ -60,8 +60,7 @@ skip_ansible_lint
 
 * separate out sab
 * separate out more configs
-
-
+* set permissions on unmounted directories
 
 do later
 

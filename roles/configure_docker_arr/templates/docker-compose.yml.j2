@@ -1,0 +1,42 @@
+---
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Etc/UTC
+    volumes:
+      - {{ configure_docker_sabnzbd_base_dir }}/configs/sonarr/config:/config
+      - {{ configure_docker_sabnzbd_tv_dir }}:/tv
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    networks:
+      net-sabnzbd:
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Etc/UTC
+    volumes:
+      - {{ configure_docker_sabnzbd_base_dir }}/configs/radarr/config:/config
+      - {{ configure_docker_sabnzbd_movies_dir }}:/movies
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    networks:
+      net-sabnzbd:
+
+networks:
+  net-sabnzbd:
+    driver_opts:
+      com.docker.network.bridge.name: br-sabnzbd
+
+# https://github.com/aetaric/checkrr

@@ -1,0 +1,16 @@
+[Unit]
+Description=SABnzbd service with docker compose
+PartOf=docker.service
+Requires=remote-fs.target
+After=docker.service,remote-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory={{ configure_docker_sabnzbd_base_dir }}/configs/arr
+#ExecStart=/usr/bin/docker compose up --remove-orphans
+ExecStart=/usr/bin/docker compose up -d --remove-orphans
+ExecStop=/usr/bin/docker compose down
+
+[Install]
+WantedBy=multi-user.target
