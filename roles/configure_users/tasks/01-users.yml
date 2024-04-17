@@ -8,14 +8,14 @@
     append: false
   with_dict: "{{ configure_users_users }}"
 
-- name: Set  passwords
+- name: Set passwords
   ansible.builtin.user:
     name: "{{ item.key }}"
     password: "{{ item.value }}"
     create_home: true
-  loop:
-    - kism: "{{ secret_myuser_password_hash }}"
-    - root: "{{ secret_root_password_hash }}"
+  with_dict:
+    kism: "{{ secret_myuser_password_hash }}"
+    root: "{{ secret_root_password_hash }}"
 
 - name: Set authorized keys for {{ configure_users_myuser }}
   ansible.posix.authorized_key:
