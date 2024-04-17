@@ -61,6 +61,10 @@ skip_ansible_lint
 * separate out sab
 * separate out more configs
 * set permissions on unmounted directories
+* Proxmox
+* Proxmox `pct push`
+* Proxmox Set IP address, MAC in DNS, DHCP in opnsense
+* Proxmox grab lxc https://images.linuxcontainers.org/
 
 do later
 
