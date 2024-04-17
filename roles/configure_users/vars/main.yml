@@ -18,13 +18,13 @@ configure_users_users:
     shell: /usr/sbin/nologin
     groups:
   qbtuser:
-    uid: 1087
+    uid: 1086
     shell: /usr/sbin/nologin
     groups:
       - content_private
       - content_public
   lanprivate:
-    uid: 1086
+    uid: 1085
     shell: /usr/sbin/nologin
     groups:
       - content_private

@@ -1,19 +1,18 @@
 ---
 - name: Add user accounts
-  become: true
-  become_user: root
-  become_method: ansible.builtin.su
   ansible.builtin.user:
     name: "{{ item.key }}"
     uid: "{{ item.value.uid }}"
     shell: "{{ item.value.shell }}"
+    create_home: false
     append: false
-  with_dict: "{{ configure_users_service }}"
+  with_dict: "{{ configure_users_users }}"
 
-- name: Set password passwords
+- name: Set  passwords
   ansible.builtin.user:
     name: "{{ item.key }}"
     password: "{{ item.value }}"
+    create_home: true
   loop:
     - kism: "{{ secret_myuser_password_hash }}"
     - root: "{{ secret_root_password_hash }}"

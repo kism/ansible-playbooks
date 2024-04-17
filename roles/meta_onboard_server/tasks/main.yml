@@ -5,9 +5,9 @@
   loop_control:
     loop_var: item_role
   loop:
-    - configure_package_manager
-    - uninstall_snap
-    - configure_server_packages
+    # - configure_package_manager
+    # - uninstall_snap
+    # - configure_server_packages
     - configure_users
     - configure_directories
     - configure_sshd
