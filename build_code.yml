@@ -1,0 +1,11 @@
+---
+- name: Setup code vscode server
+  hosts: code
+  gather_facts: true
+  become: true
+  roles:
+    # Onboard Server
+    - meta_onboard_server
+
+    # Reminders
+    - maintenance_print_reminders

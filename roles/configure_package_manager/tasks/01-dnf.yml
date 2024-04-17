@@ -9,11 +9,11 @@
 - name: Add repo for oracle linux
   ansible.builtin.yum_repository:
     name: ol9_developer_EPEL
-    description: Oracle Linux $releasever EPEL Packages for Development ($basearch)
-    file: oracle-epel-ol9
-    baseurl: https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/developer/EPEL/$basearch/
+    description: Oracle Linux {{ ansible_distribution_major_version }} EPEL Packages for Development ({{ ansible_architecture }})
+    file: oracle-epel-ol{{ ansible_distribution_major_version }}
+    baseurl: https://yum.oracle.com/repo/OracleLinux/OL{{ ansible_distribution_major_version }}/developer/EPEL/{{ ansible_architecture }}/
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
     gpgcheck: true
     enabled: true
   notify: Update dnf Cache
-  when: ansible_distribution == "OracleLinux" and ansible_distribution_major_version == "9"
+  when: ansible_distribution == "OracleLinux"

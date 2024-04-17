@@ -29,7 +29,9 @@ all:
     helios64:
       ansible_host: helios64.ira.mil.ie
       timezone: awst
-
+    code:
+      ansible_host: code.ira.mil.ie
+      timezone: awst
 # Server Type
 proxmoxvms:
   hosts:

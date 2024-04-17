@@ -1,19 +1,19 @@
 ---
-- name: Stop the Snapd service
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: If service is found, stop and disable
   ansible.builtin.systemd_service:
     name: snapd
     state: stopped
-
-- name: Disable the Snapd service
-  ansible.builtin.systemd_service:
-    name: snapd
     enabled: false
+  when: ansible_facts.services['snapd.service'] is defined
 
 - name: Uninstall Snap packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - snapd
     - snap-confine
     - snap-core
@@ -23,7 +23,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /var/cache/snapd
     - /var/lib/snapd
     - /var/snap
@@ -32,6 +32,6 @@
   ansible.builtin.file:
     path: /usr/bin/{{ item }}
     state: absent
-  with_items:
+  loop:
     - snap
     - snapctl

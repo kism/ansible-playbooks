@@ -2,6 +2,9 @@
 - name: Gather facts
   ansible.builtin.setup:
 
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
 - name: Get user info
   ansible.builtin.getent:
     database: passwd

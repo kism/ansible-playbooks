@@ -14,3 +14,4 @@
 - name: Print reminders for roles, built on 'reminder_list' first defined in inventory/group_vars/all.yml
   ansible.builtin.debug:
     msg: ⚠️{{ reminder_list }}
+  when: reminder_list | length > 0

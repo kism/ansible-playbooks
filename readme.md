@@ -65,6 +65,7 @@ skip_ansible_lint
 * Proxmox `pct push`
 * Proxmox Set IP address, MAC in DNS, DHCP in opnsense
 * Proxmox grab lxc https://images.linuxcontainers.org/
+* Unmount, chmod, remount disks to ensure perms
 
 do later
 
