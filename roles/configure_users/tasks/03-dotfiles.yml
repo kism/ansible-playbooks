@@ -3,6 +3,10 @@
   ansible.builtin.include_vars:
     file: vars/dotfiles.yml
 
+- name: Get user info facts
+  ansible.builtin.getent:
+    database: passwd
+
 - name: Include dotfiles tasks, loop for each user
   ansible.builtin.include_tasks: "03a-dotfiles-download.yml"
   loop:

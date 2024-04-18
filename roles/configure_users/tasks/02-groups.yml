@@ -2,14 +2,14 @@
 - name: Ensure groups exist
   ansible.builtin.group:
     name: "{{ item.key }}"
-    gid: "{{ item.gid.value }}"
+    gid: "{{ item.value.gid }}"
     state: present
   with_dict: "{{ configure_users_groups }}"
 
 - name: Adding users to groups
   ansible.builtin.user:
     name: "{{ item.key }}"
-    groups: "{{ item.groups }}"
+    groups: "{{ item.value.groups }}"
     append: true
   with_dict: "{{ configure_users_users }}"
 

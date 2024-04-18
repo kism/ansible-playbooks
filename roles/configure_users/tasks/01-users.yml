@@ -8,7 +8,7 @@
     append: false
   with_dict: "{{ configure_users_users }}"
 
-- name: Set passwords
+- name: Set passwords for login accounts
   ansible.builtin.user:
     name: "{{ item.key }}"
     password: "{{ item.value }}"
@@ -22,4 +22,4 @@
     user: "{{ configure_users_myuser.linux_username }}"
     state: present
     exclusive: true
-    key: "{{ lookup('url', ssh_keys_url, split_lines=False) }}"
+    key: "{{ lookup('url', configure_users_myuser.ssh_keys_url, split_lines=False) }}"
