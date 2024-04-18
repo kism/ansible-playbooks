@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "ansible-playbooks"
+description = "Kieran's ansible playbooks, for his homelab"
+authors = ["Kieran Gee <kieran.lost.the.game@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ansible = "*"
+ansible-lint = { version = "*", markers = "platform_system != 'Windows'" }
+pywinrm = "*"
