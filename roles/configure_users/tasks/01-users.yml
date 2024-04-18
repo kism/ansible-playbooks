@@ -3,7 +3,7 @@
   ansible.builtin.user:
     name: "{{ item.key }}"
     uid: "{{ item.value.uid }}"
-    shell: "{{ item.value.shell }}"
+    shell: "{{ item.value.shell }}" # These could be an issue depending on install location
     create_home: false
     append: false
   with_dict: "{{ configure_users_users }}"
