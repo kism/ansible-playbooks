@@ -27,7 +27,7 @@
         state: install
 
     - name: Ensure poetry folder
-      community.general.file:
+      ansible.builtin.file:
         path: '{{ item }}'
         state: directory
         mode: 750
