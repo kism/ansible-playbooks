@@ -66,6 +66,9 @@ skip_ansible_lint
 * Proxmox Set IP address, MAC in DNS, DHCP in opnsense
 * Proxmox grab lxc https://images.linuxcontainers.org/
 * Unmount, chmod, remount disks to ensure perms
+* Do true config.d telegraf, only base config in the configure_telegraf role
+  * Do an adhoc clean of all telegraf.d directories
+* GNU stow for dotfiles
 
 do later
 
