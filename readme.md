@@ -69,7 +69,7 @@ skip_ansible_lint
 * Do true config.d telegraf, only base config in the configure_telegraf role
   * Do an adhoc clean of all telegraf.d directories
 * GNU stow for dotfiles
-* pipx package patching
+* meta role check, separate out var
 
 do later
 

@@ -32,8 +32,9 @@
 
     - name: Clone repos, if they don't exist? TODO
       ansible.builtin.git:
-        repo: 'https://github.com/kism/{{ item }}'
-        dest: ~/src/{{ item }}
+        repo: 'https://github.com/kism/{{ item }}.git'
+        dest: '~/src/{{ item }}'
+        single_branch: true
         version: main
       loop:
         - dotfiles
