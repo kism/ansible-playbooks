@@ -5,7 +5,7 @@
   become: true
   roles:
     # Onboard Server
-    # - meta_onboard_server
+    - meta_onboard_server
 
     # Purpose Specific
     - configure_vs_code_remote
