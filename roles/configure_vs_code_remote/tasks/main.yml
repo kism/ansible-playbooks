@@ -21,10 +21,24 @@
         state: touch
         mode: "0640"
 
-    - name: Install pipenv
+    - name: Install poetry
       community.general.pipx:
         name: poetry
         state: install
+
+    - name: Ensure poetry folder
+      community.general.file:
+        path: '{{ item }}'
+        state: directory
+        mode: 750
+      loop:
+        - ~/.config
+        - ~/.config/pypoetry
+
+    - name: Copy poetry config
+      community.general.copy:
+        src: files/config.toml
+        dest: ~/.config/pypoetry/config.toml
 
     - name: Add reminder to list
       ansible.builtin.set_fact:

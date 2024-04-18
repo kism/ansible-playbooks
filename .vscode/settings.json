@@ -7,9 +7,14 @@
 	"[python]": {
 		"editor.defaultFormatter": "ms-python.black-formatter"
 	},
+	"[markdown]": {
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true
+	},
 	// Needed for ansible-lint to trigger for roles
 	"files.associations": {
-		"*.yml": "ansible"
+		"*.yml": "ansible",
+		"*.yaml": "ansible",
 	},
-	"ansible.python.interpreterPath": "/Users/kism/.local/share/virtualenvs/ansible-playbooks-LuepbgPB/bin/python3"
+	"ansible.python.interpreterPath": "/home/kism/src/ansible-playbooks/.venv/bin/python"
 }

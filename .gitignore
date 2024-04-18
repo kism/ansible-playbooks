@@ -1,5 +1,5 @@
-
 *.asc
 secrets.yml
 secrets*.yml
 *.log
+.venv/
