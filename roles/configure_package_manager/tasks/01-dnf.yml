@@ -1,25 +1,18 @@
 ---
+- name: Update DNF Cache
+  ansible.builtin.dnf:
+    update_cache: true
+    state: installed
+
 - name: Enable epel
   ansible.builtin.dnf:
     name: epel-release
     state: present
   notify: Update dnf Cache
-  when: ansible_distribution != "OracleLinux"
 
 - name: Oracle Linux Block
   when: ansible_distribution == "OracleLinux"
   block:
-    - name: Add epel repo for oracle linux
-      ansible.builtin.yum_repository:
-        name: ol9_developer_EPEL
-        description: Oracle Linux {{ ansible_distribution_major_version }} EPEL Packages for Development ({{ ansible_architecture }})
-        file: oracle-epel-ol{{ ansible_distribution_major_version }}
-        baseurl: https://yum.oracle.com/repo/OracleLinux/OL{{ ansible_distribution_major_version }}/developer/EPEL/{{ ansible_architecture }}/
-        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
-        gpgcheck: true
-        enabled: true
-      notify: Update dnf Cache
-
     - name: Add AppStream repo for oracle linux
       ansible.builtin.yum_repository:
         name: ol9_appstream
