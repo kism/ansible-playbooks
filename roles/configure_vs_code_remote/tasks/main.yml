@@ -1,0 +1,29 @@
+---
+- name: Install zsh
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
+- name: Set shell
+  ansible.builtin.user:
+    name: kism
+    shell: /usr/bin/zsh
+
+- name: Block to run as user
+  become: true
+  become_user: kism
+  block:
+    - name: Ensure that src folder exists
+      ansible.builtin.file:
+        path: "~/src"
+        state: directory
+        mode: "0700"
+
+    - name: Clone repos, if they don't exist
+      ansible.builtin.git:
+        repo: 'https://github.com/kism/{{ item }}'
+        dest: ~/src/{{ item }}
+        version: main
+      loop:
+        - dotfiles
+        - "ansible-playbooks"
