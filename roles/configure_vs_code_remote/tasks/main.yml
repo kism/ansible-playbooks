@@ -36,7 +36,7 @@
         - ~/.config/pypoetry
 
     - name: Copy poetry config
-      community.general.copy:
+      ansible.builtin.copy:
         src: files/config.toml
         dest: ~/.config/pypoetry/config.toml
 
