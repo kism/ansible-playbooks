@@ -70,6 +70,9 @@ skip_ansible_lint
   * Do an adhoc clean of all telegraf.d directories
 * GNU stow for dotfiles
 * meta role check, separate out var
+* github gpg key
+* fix github actions lint
+* get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
 
 do later
 
