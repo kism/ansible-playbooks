@@ -30,7 +30,7 @@
       ansible.builtin.file:
         path: '{{ item }}'
         state: directory
-        mode: 750
+        mode: '0750'
       loop:
         - ~/.config
         - ~/.config/pypoetry
@@ -39,6 +39,7 @@
       ansible.builtin.copy:
         src: files/config.toml
         dest: ~/.config/pypoetry/config.toml
+        mode: "0640"
 
     - name: Add reminder to list
       ansible.builtin.set_fact:
