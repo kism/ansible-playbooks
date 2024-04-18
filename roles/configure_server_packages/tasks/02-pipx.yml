@@ -1,6 +1,0 @@
----
-- name: Non better place, pipx packages
-  become: true
-  become_user: kism
-  community.general.pipx:
-    state: upgrade_all

@@ -31,6 +31,8 @@
   register: pipx_check
 
 - name: Install update pipx packages
+  become: true
+  become_user: kism
   community.general.pipx:
     state: upgrade_all
   when: pipx_check.stat.exists

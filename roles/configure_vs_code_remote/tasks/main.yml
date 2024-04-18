@@ -13,6 +13,12 @@
   become: true
   become_user: kism
   block:
+    - name: Set default zsh config
+      ansible.builtin.file:
+        path: ~/.zshrc
+        state: touch
+        mode: "0640"
+
     - name: Install pipenv
       community.general.pipx:
         name: pipenv
@@ -24,7 +30,7 @@
         state: directory
         mode: "0700"
 
-    - name: Clone repos, if they don't exist
+    - name: Clone repos, if they don't exist? TODO
       ansible.builtin.git:
         repo: 'https://github.com/kism/{{ item }}'
         dest: ~/src/{{ item }}
