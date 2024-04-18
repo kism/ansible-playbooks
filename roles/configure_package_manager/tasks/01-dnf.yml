@@ -6,7 +6,6 @@
   notify: Update dnf Cache
   when: ansible_distribution != "OracleLinux"
 
-
 - name: Oracle Linux Block
   when: ansible_distribution == "OracleLinux"
   block:
