@@ -1,7 +1,7 @@
 ---
 - name: Get the user's home directory
   ansible.builtin.set_fact:
-    user_home: '{{ getent_passwd[loop_user][4] }}'
+    user_home: "{{ getent_passwd[loop_user][4] }}"
 
 - name: Create folder structure
   become: true
@@ -10,7 +10,7 @@
     path: "{{ (user_home + '/' + item['dest']) | dirname }}"
     state: directory
     mode: "0700"
-  loop: '{{ configure_users_dotfiles }}'
+  loop: "{{ configure_users_dotfiles }}"
 
 - name: Copy dotfiles per vars
   become: true
@@ -21,4 +21,4 @@
     owner: "{{ loop_user }}"
     group: "{{ loop_user }}"
     mode: "0660"
-  loop: '{{ configure_users_dotfiles }}'
+  loop: "{{ configure_users_dotfiles }}"

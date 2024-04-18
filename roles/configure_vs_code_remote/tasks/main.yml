@@ -1,7 +1,9 @@
 ---
-- name: Install zsh
+- name: Install zsh, modern python
   ansible.builtin.package:
-    name: zsh
+    name:
+      - zsh
+      - python3.11
     state: present
 
 - name: Set shell
@@ -21,21 +23,25 @@
 
     - name: Install pipenv
       community.general.pipx:
-        name: pipenv
+        name: poetry
         state: install
+
+    - name: Add reminder to list
+      ansible.builtin.set_fact:
+        reminder_list: "{{ reminder_list + ['You do not setup poetry autocomplete for zsh yet'] }}"
 
     - name: Ensure that src folder exists
       ansible.builtin.file:
-        path: "~/src"
+        path: ~/src
         state: directory
         mode: "0700"
 
     - name: Clone repos, if they don't exist? TODO
       ansible.builtin.git:
-        repo: 'https://github.com/kism/{{ item }}.git'
-        dest: '~/src/{{ item }}'
+        repo: https://github.com/kism/{{ item }}.git
+        dest: ~/src/{{ item }}
         single_branch: true
         version: main
       loop:
         - dotfiles
-        - "ansible-playbooks"
+        - ansible-playbooks

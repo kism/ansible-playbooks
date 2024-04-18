@@ -51,7 +51,7 @@
 
 - name: Build list of nginx configs
   ansible.builtin.find:
-    paths: "/etc/nginx/sites-available/"
+    paths: /etc/nginx/sites-available/
     file_type: file
   register: config_files_found
 
