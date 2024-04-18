@@ -1,38 +1,15 @@
 ---
-- name: Setup telegraf hosts
-  when: ansible_pkg_mgr == 'dnf' or ansible_pkg_mgr == 'apt'
-  block:
-    - name: Copy common telegraf config
-      ansible.builtin.copy:
-        src: files/hosts/_common_influxdb.conf
-        dest: /etc/telegraf/telegraf.d/common_influxdb.conf
-        owner: telegraf
-        group: telegraf
-        mode: "600"
-      notify:
-        - Restart telegraf
+- name: Include tasks, Debian
+  ansible.builtin.include_tasks: "01-debian.yml"
+  when: ansible_distribution == 'Debian'
 
-    - name: Setup telegraf conf
-      ansible.builtin.lineinfile:
-        path: /etc/telegraf/telegraf.d/common_influxdb.conf
-        regexp: "token = "
-        line: token = "{{ secret_influxdb_telegraf_write }}"
-        state: present
-      notify:
-        - Restart telegraf
+- name: Include tasks, dnf base hosts
+  ansible.builtin.include_tasks: "01-dnf.yml"
+  when: ansible_pkg_mgr == 'dnf'
 
-    - name: Copy host telegraf config
-      ansible.builtin.copy:
-        src: files/hosts/{{ inventory_hostname }}.conf
-        dest: /etc/telegraf/telegraf.d/{{ inventory_hostname }}.conf
-        owner: telegraf
-        group: telegraf
-        mode: "600"
-      notify:
-        - Restart telegraf
+- name: Include tasks, Ubuntu
+  ansible.builtin.include_tasks: "01-ubuntu.yml"
+  when: ansible_distribution == 'Ubuntu'
 
-    - name: Start and enable telegraf service
-      ansible.builtin.systemd_service:
-        name: telegraf
-        state: started
-        enabled: true
+- name: Include tasks, telegraf config
+  ansible.builtin.include_tasks: "02-config.yml"

@@ -23,7 +23,7 @@
 
     - name: Copy host telegraf config
       ansible.builtin.copy:
-        src: files/hostconfigs/{{ inventory_hostname }}.conf
+        src: files/hosts/{{ inventory_hostname }}.conf
         dest: /etc/telegraf/telegraf.d/{{ inventory_hostname }}.conf
         owner: telegraf
         group: telegraf
