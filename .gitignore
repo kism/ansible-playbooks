@@ -2,4 +2,8 @@
 secrets.yml
 secrets*.yml
 *.log
+*.tmp
+*.tmp.json
+*.tmp.yaml
+*.tmp.yml
 .venv/

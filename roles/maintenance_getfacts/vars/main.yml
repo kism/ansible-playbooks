@@ -1,0 +1,2 @@
+---
+maintenance_getfacts_debug_file: "z_facts_{{ ansible_host }}.tmp.yml"
