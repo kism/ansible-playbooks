@@ -34,7 +34,7 @@
     - name: Put facts in a nice yaml
       ansible.builtin.copy:
         dest: "{{ maintenance_getfacts_debug_file }}"
-        content: "{{ debug_yaml_output | to_yaml }}"
+        content: "{{ debug_yaml_output | to_yaml(default_flow_style=False) }}"
         mode: "0660"
 
     - name: Prepend to make valid yml file
