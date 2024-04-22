@@ -64,7 +64,7 @@ skip_ansible_lint
 * Proxmox
 * Proxmox `pct push`
 * Proxmox Set IP address, MAC in DNS, DHCP in opnsense
-* Proxmox grab lxc https://images.linuxcontainers.org/
+* Proxmox grab lxc <https://images.linuxcontainers.org/>
 * Unmount, chmod, remount disks to ensure perms
 * Do true config.d telegraf, only base config in the configure_telegraf role
   * Do an adhoc clean of all telegraf.d directories
@@ -73,6 +73,8 @@ skip_ansible_lint
 * github gpg key
 * fix github actions lint
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
+* with_community.general.filetree
+* better fan control on the aliexpress board
 
 do later
 
