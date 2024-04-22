@@ -75,6 +75,7 @@ skip_ansible_lint
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
 * with_community.general.filetree
 * better fan control on the aliexpress board
+* setup proxmox repos
 
 do later
 

@@ -5,8 +5,11 @@ all:
       ansible_host: ent.kg.lan
       timezone: awst
       duckdns_domain: kism
-    pvenas:
-      ansible_host: pvenas.kg.lan
+    pvewill:
+      ansible_host: pvewill.kg.lan
+      timezone: awst
+    pvematt:
+      ansible_host: pvematt.kg.lan
       timezone: awst
     ifdb:
       ansible_host: ifdb.kg.lan
@@ -45,6 +48,6 @@ publiccloudvms:
     podc:
 baremetal:
   hosts:
-    pve:
-    pvenas:
+    pvewill:
+    pvematt:
     cert:
