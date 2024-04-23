@@ -10,16 +10,18 @@ Running on macos
 `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
 
 Run
-`ansible-playbook build_ent.yml -i inventory.yml --user ansible_svc -e @../archivepodcastsecrets/secrets.yml --vault-password-file=/tmp/ansiblevaultpassword`
+`ansible-playbook build_ent.yml -i inventory.yml --user ansible_svc -e @../ansible-playbooks-secrets/secrets.yml --vault-password-file=/tmp/ansiblevaultpassword`
 
-`ansible-playbook build_podc-test.yml -i inventory.yml --user ansible_svc -e @../archivepodcastsecrets/secrets.yml -e @../archivepodcastsecrets/secrets_podc-test.yml --vault-password-file=/tmp/ansiblevaultpassword`
+`ansible-playbook build_podc-test.yml -i inventory.yml --user ansible_svc -e @../ansible-playbooks-secrets/secrets.yml -e @../ansible-playbooks-secrets/secrets_podc-test.yml --vault-password-file=/tmp/ansiblevaultpassword`
 
 ## Vault
 
+No need for `--vault-password-file=/tmp/ansiblevaultpassword` since its in config
+
 ```bash
 touch /tmp/ansiblevaultpassword && chmod 600 /tmp/ansiblevaultpassword && echo password > /tmp/ansiblevaultpassword
-ansible-vault encrypt ../archivepodcastsecrets/secrets* # No need for --vault-password-file=/tmp/ansiblevaultpassword since its in config
-ansible-vault decrypt ../archivepodcastsecrets/secrets*
+ansible-vault encrypt ../ansible-playbooks-secrets/secrets*
+ansible-vault decrypt ../ansible-playbooks-secrets/secrets*
 ```
 
 ## Code Quality
@@ -63,13 +65,13 @@ skip_ansible_lint
 * Use argv in ansible.builtin.cmd
 * Naming:
 
-| Role Prefix  | What it do                                                         |
-|--------------|--------------------------------------------------------------------|
-| configure_   | (Install and) configure a specific thing                           |
-| install_     | Install a specific thing, generally can't be configured in ansible |
-| uninstall_   | Remove a specific application or package                           |
-| maintenance_ | No changes, other than patching                                    |
-| meta_        | roles that only include roles                                      |
+| Role Prefix        | What it do                                                         |
+|--------------------|--------------------------------------------------------------------|
+| configure_         | (Install and) configure a specific thing                           |
+| configure_service_ | (Install and) configure something that will be/run as a service    |
+| uninstall_         | Remove a specific application or package                           |
+| maintenance_       | No changes, other than patching                                    |
+| meta_              | roles that only include roles                                      |
 
 | Playbook Prefix | What it mean                                        |
 |-----------------|-----------------------------------------------------|
