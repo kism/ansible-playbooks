@@ -25,5 +25,12 @@ curl -s https://github.com/kism.keys > /home/$account/.ssh/authorized_keys
 chown -R $account:$account /home/$account
 chmod 700 /home/$account/.ssh
 chmod 600 /home/$account/.ssh/authorized_keys
-systemctl enable sshd
-systemctl start sshd
+
+# Enable and start ssh server
+if [ -h /etc/systemd/system/sshd.service ]; then
+    systemctl enable ssh.service
+    systemctl start ssh.service
+else
+    systemctl enable sshd.service
+    systemctl start sshd.service
+fi

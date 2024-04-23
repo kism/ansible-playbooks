@@ -19,7 +19,10 @@
 
 - name: Set authorized keys for {{ configure_users_myuser }}
   ansible.posix.authorized_key:
-    user: "{{ configure_users_myuser.linux_username }}"
+    user: '{{ item }}'
     state: present
     exclusive: true
     key: "{{ lookup('url', configure_users_myuser.ssh_keys_url, split_lines=False) }}"
+  loop:
+    - "{{ configure_users_myuser.linux_username }}"
+    - ansible_svc

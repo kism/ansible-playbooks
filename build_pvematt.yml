@@ -11,7 +11,7 @@
     - configure_concept_baremetal
     - configure_proxmox
     - configure_postfix_gmail
-    - configure_disks
+    # - configure_disks
 
     # Reminders
     - maintenance_print_reminders
