@@ -3,11 +3,11 @@
   block:
     - name: Fix pacman part 1
       ansible.builtin.command: pacman-key --init
-      changed_when: true
+      changed_when: true # Safe assumption
 
     - name: Fix pacman part 2
       ansible.builtin.command: pacman-key --populate
-      changed_when: true
+      changed_when: true # Safe assumption
 
     - name: Install packages for pacman
       community.general.pacman:
@@ -17,7 +17,7 @@
   rescue:
     - name: Fix pacman part 3
       ansible.builtin.command: pacman-key --refresh-keys
-      changed_when: true
+      changed_when: true # Safe assumption
 
     - name: Install packages for pacman
       community.general.pacman:

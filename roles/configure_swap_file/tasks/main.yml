@@ -24,7 +24,7 @@
 - name: Run mkswap
   ansible.builtin.command:
     cmd: mkswap /swapfile
-  changed_when: true
+  changed_when: true # Safe assumption
 
 - name: Check if swap is active
   ansible.builtin.shell:

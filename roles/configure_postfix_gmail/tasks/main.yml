@@ -15,12 +15,13 @@
     dest: /etc/postfix/sasl_passwd
     content: smtp.gmail.com {{ secret_notification_email }}:{{ secret_notification_email_password }}
     mode: "0600"
+  register: copy_sasl_passwd
   notify: Restart postfix
 
 - name: Generate postmap config
   ansible.builtin.command:
     cmd: postmap hash:/etc/postfix/sasl_passwd
-  changed_when: true
+  changed_when: copy_sasl_passwd.changed
   notify: Restart postfix
 
 - name: Insert Postfix Config

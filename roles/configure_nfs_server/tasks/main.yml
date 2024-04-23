@@ -9,6 +9,7 @@
     src: files/hosts/{{ ansible_hostname }}/exports
     dest: /etc/exports
     mode: "0660"
+  register: copy_nfs_exports
 
 - name: Enable and start NFS service
   ansible.builtin.systemd_service:
@@ -19,4 +20,4 @@
 - name: Export the shares
   ansible.builtin.command:
     cmd: exportfs -rav
-  changed_when: true
+  changed_when: copy_nfs_exports.changed

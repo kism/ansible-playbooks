@@ -27,14 +27,23 @@ ansible-vault decrypt ../archivepodcastsecrets/secrets*
 ### Code quality searches
 
 ```text
-failed_when: false
-ignore_errors: true
-skip_ansible_lint
 ```
 
-Regex
+Searches for vscode to find code quality issues that don't get caught by ansible-lint
 
 ```text
+# failed_when: false without a comment
+failed_when: false[^#]*$
+
+# changed_when: true, false without a comment
+changed_when: \b(?:true|false)\b[^#]*$
+
+# ignore_errors in any context
+ignore_errors:
+
+# skip_ansible_lint in any context
+skip_ansible_lint
+
 # Unecessary become true by itself
 ^.*become: true.*$\n.*\..*\..*:
 
@@ -90,6 +99,7 @@ Regex
 * better fan control on the aliexpress board
 * setup proxmox repos
 * setup cert
+* symlink secrets?
 
 do later
 
