@@ -14,7 +14,7 @@
     # Purpose specific, required for switchover
     - configure_archivepodcast
     # - {
-    #     role: ../archivepodcastsecrets/roles/linux-setup-concept-archivepodcast-secrets,
+    #     role: ../ansible-playbooks-secrets/roles/linux-setup-concept-archivepodcast-secrets,
     #   }
 
     # Reminders
