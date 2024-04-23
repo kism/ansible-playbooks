@@ -38,7 +38,6 @@
     state: restarted
 
 - name: Initial influxdb config
-  become: true
   ansible.builtin.command:
     cmd: >-
       influx setup

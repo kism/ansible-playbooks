@@ -7,7 +7,6 @@
     state: present
 
 - name: Initial certbot config
-  become: true
   ansible.builtin.command:
     cmd: >-
       certbot

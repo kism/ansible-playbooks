@@ -10,7 +10,6 @@
   register: file_stat
 
 - name: Pre-allocate disk space
-  become: true
   ansible.builtin.command:
     cmd: fallocate -l {{ configure_swap_file_size }} /swapfile
   register: command_output
@@ -23,7 +22,6 @@
     mode: "0600"
 
 - name: Run mkswap
-  become: true
   ansible.builtin.command:
     cmd: mkswap /swapfile
   changed_when: true
@@ -38,7 +36,6 @@
   failed_when: false # Just gets info
 
 - name: Run swapon
-  become: true
   ansible.builtin.command:
     cmd: swapon /swapfile
   register: command_output

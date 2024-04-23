@@ -32,6 +32,19 @@ ignore_errors: true
 skip_ansible_lint
 ```
 
+Regex
+
+```text
+# Unecessary become true by itself
+^.*become: true.*$\n.*\..*\..*:
+
+# Unecessary chown/chgrp
+^.*become: true$.*$\n^.*become_user: root.*$
+
+# Unecessary chown/chgrp
+^.*owner: root$.*$\n^.*group: root.*$
+```
+
 ### Good style things to do
 
 * Comment every one of those code quality searches when used

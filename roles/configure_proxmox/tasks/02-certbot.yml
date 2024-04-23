@@ -6,7 +6,6 @@
     state: present
 
 - name: Grab initial acme cert
-  become: true
   ansible.builtin.command:
     cmd: >-
       certbot certonly

@@ -1,6 +1,5 @@
 ---
 - name: Check if update-motd package is installed
-  become: true
   ansible.builtin.stat:
     path: /etc/update-motd.d
   register: dir_to_check

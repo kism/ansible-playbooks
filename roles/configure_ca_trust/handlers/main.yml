@@ -1,6 +1,5 @@
 ---
 - name: Update CA certs dnf
-  become: true
   ansible.builtin.command:
     cmd: update-ca-trust
   when: cert_copy is changed
