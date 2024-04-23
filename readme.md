@@ -76,6 +76,7 @@ skip_ansible_lint
 * with_community.general.filetree
 * better fan control on the aliexpress board
 * setup proxmox repos
+* setup cert
 
 do later
 
