@@ -1,8 +1,13 @@
 ---
 
-- name: Include tasks to configure Proxmox repos
-  ansible.builtin.include_tasks: 01-repos.yml
+- name: Check if /etc/pve exists
+  ansible.builtin.stat:
+    path: /etc/pve
+  register: pve_status
 
+- name: Assert that /etc/pve exists
+  ansible.builtin.assert:
+    that: pve_status.stat.exists
 
 - name: Include tasks to configure Proxmox repos
   ansible.builtin.include_tasks: 01-repos.yml
