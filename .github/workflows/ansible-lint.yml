@@ -17,5 +17,8 @@ jobs:
       - name: Install Ansible-Galaxy Requirements
         run: ansible-galaxy collection install -r requirements.yml
 
+      - name: Remove the password file config entry, ERROR! The vault password file <> was not found
+        run: sed -i '/vault_password_file=/d' ansible.cfg
+
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main # or version tag instead of 'main'
