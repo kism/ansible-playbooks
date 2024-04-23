@@ -3,8 +3,6 @@
   ansible.builtin.get_url:
     url: https://repos.influxdata.com/influxdata-archive.key
     dest: /etc/apt/keyrings/influxdata-archive.key
-    owner: root
-    group: root
     mode: "0644"
 
 - name: Add Telegraf repository Ubuntu amd64

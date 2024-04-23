@@ -3,8 +3,6 @@
   ansible.builtin.copy:
     src: files/influxdb.repo
     dest: /etc/yum.repos.d/influxdb.repo
-    owner: root
-    group: root
     mode: "644"
 
 - name: Import InfluxDB GPG key

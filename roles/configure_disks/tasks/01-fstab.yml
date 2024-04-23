@@ -2,16 +2,12 @@
 - name: Ensure /srv
   ansible.builtin.file:
     path: /srv
-    owner: root
-    group: root
     state: directory
     mode: "0755"
 
 - name: Add directories for HDDs (ext4 list)
   ansible.builtin.file:
     path: /srv/{{ item }}
-    owner: root
-    group: root
     state: directory
     mode: "0700"
   loop: "{{ configure_disks_ext4 }}"
@@ -19,8 +15,6 @@
 - name: Add directories for HDDs (btrfs list)
   ansible.builtin.file:
     path: /srv/{{ item.key }}
-    owner: root
-    group: root
     state: directory
     mode: "0755"
   with_items: "{{ configure_disks_btrfs }}"
@@ -47,6 +41,4 @@
   ansible.builtin.copy:
     src: files/hosts/{{ ansible_hostname }}/perms.sh
     dest: /root/perms.sh
-    owner: root
-    group: root
     mode: "0700"

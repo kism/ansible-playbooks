@@ -32,8 +32,6 @@
   ansible.builtin.copy:
     src: files/proxmox_renewcerts.sh
     dest: /opt/scripts/proxmox_renewcerts.sh
-    owner: root
-    group: root
     mode: "0744"
 
 - name: Replace hostname in renew

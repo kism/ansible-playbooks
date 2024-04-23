@@ -3,16 +3,9 @@
   ansible.builtin.file:
     path: /opt/influxpingscan
     state: directory
-    owner: influxdb
+    owner: root
     group: influxdb
     mode: "0700"
-
-- name: Attempt to change ownership on /opt/influxpingscan
-  ansible.builtin.file:
-    path: /opt/influxpingscan
-    recurse: true
-    owner: influxdb
-    group: influxdb
 
 - name: Clone archivepodcast
   ansible.builtin.git:
@@ -20,14 +13,21 @@
     dest: /opt/influxpingscan
     single_branch: true
     version: master
-  become: true
-  become_user: influxdb
+
+- name: Change ownership on /opt/influxpingscan
+  ansible.builtin.file:
+    path: /opt/influxpingscan
+    recurse: true
+    owner: root
+    group: influxdb
 
 - name: Copy archivepodcast config
   ansible.builtin.copy:
     src: configs/influxpingscan/hosts/{{ ansible_hostname }}/ifdb_settings.ini
     dest: /opt/influxpingscan/settings.ini
-    mode: "600"
+    owner: root
+    group: influxdb
+    mode: "640"
 
 - name: Install pipenv python package
   ansible.builtin.pip:

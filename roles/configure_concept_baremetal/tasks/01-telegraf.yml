@@ -11,8 +11,6 @@
   ansible.builtin.copy:
     src: files/sudoers_telegraf
     dest: /etc/sudoers.d/telegraf
-    owner: root
-    group: root
     mode: "0640"
   notify:
     - Restart telegraf

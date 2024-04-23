@@ -33,8 +33,6 @@
         remote_src: true
         src: /opt/openSeaChest-v{{ configure_concept_baremetal_openseachest_version }}-linux-{{ ansible_architecture }}-manylinux/
         dest: /opt/openseachest
-        owner: root
-        group: root
         mode: "0755"
 
     - name: Remove openSeaChest
@@ -57,8 +55,6 @@
       ansible.builtin.file:
         src: /opt/openseachest/{{ item }}
         dest: /usr/local/sbin/{{ item }}
-        owner: root
-        group: root
         state: link
       loop: "{{ bins_found }}"
 
@@ -78,8 +74,6 @@
       ansible.builtin.file:
         src: /opt/openseachest/man/man8/{{ item }}
         dest: /usr/share/man/man8/{{ item }}
-        owner: root
-        group: root
         state: link
       loop: "{{ mans_found }}"
 
@@ -130,6 +124,4 @@
   ansible.builtin.copy:
     src: files/checksmart.sh
     dest: /root/checksmart.sh
-    owner: root
-    group: root
     mode: "0700"

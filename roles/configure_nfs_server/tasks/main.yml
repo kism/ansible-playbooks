@@ -8,8 +8,6 @@
   ansible.builtin.copy:
     src: files/hosts/{{ ansible_hostname }}/exports
     dest: /etc/exports
-    owner: root
-    group: root
     mode: "0660"
 
 - name: Enable and start NFS service

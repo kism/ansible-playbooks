@@ -16,8 +16,6 @@
     loop_var: loop_user
 
 - name: Replace some values in tmux.conf for root
-  become: true
-  become_user: root
   ansible.builtin.replace:
     path: "{{ user_home }}/.tmux.conf"
     regexp: "{{ item['regexp'] }}"

@@ -9,7 +9,7 @@
     - internetarchive
     - yt-dlp
 
-- name: Installrsync dnf
+- name: Install rsync
   ansible.builtin.package:
     name:
       - rsync

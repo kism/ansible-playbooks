@@ -39,6 +39,4 @@
   ansible.builtin.copy:
     src: configs/sudoers/factorio
     dest: /etc/sudoers.d/factorio
-    owner: root
-    group: root
     mode: "0640"

@@ -14,16 +14,12 @@
   ansible.builtin.copy:
     src: files/hosts/{{ ansible_hostname }}/snapraid.conf
     dest: /etc/snapraid.conf
-    owner: root
-    group: root
     mode: "644"
 
 - name: Copy SnapRAID helper https://gist.github.com/bfg100k/87a1bbccf4f15d963ff7
   ansible.builtin.copy:
     src: files/snapraid_helper.sh
     dest: /opt/scripts/snapraid_helper.sh
-    owner: root
-    group: root
     mode: "700"
 
 - name: Run SnapRAID script

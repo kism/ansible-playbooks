@@ -3,7 +3,5 @@
   ansible.builtin.copy:
     src: files/kglan_root.cer
     dest: /usr/local/share/ca-certificates/kglan_root.crt
-    owner: root
-    group: root
     mode: "0444"
   nofify: Update CA certs apt

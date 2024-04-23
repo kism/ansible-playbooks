@@ -16,8 +16,6 @@
   ansible.builtin.template:
     src: templates/duck.sh.j2
     dest: /opt/duckdns/duck.sh
-    owner: root
-    group: root
     mode: "0774"
 
 - name: Set duckdns cron job
@@ -30,6 +28,4 @@
   ansible.builtin.copy:
     dest: /opt/duckdns/ducktoken
     mode: "0600"
-    owner: root
-    group: root
     content: "{{ secret_duckdns }}"

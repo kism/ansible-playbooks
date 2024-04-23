@@ -41,8 +41,6 @@
     value: /opt/allowlistapp
 
 - name: Run pipenv sync
-  become: true
-  become_user: root
   ansible.builtin.command:
     cmd: /usr/local/bin/pipenv sync
     chdir: /opt/allowlistapp
@@ -54,19 +52,13 @@
   changed_when: true # This command only matters if another task has changed files
 
 - name: Copy systemd service
-  become: true
-  become_user: root
   ansible.builtin.copy:
     src: files/allowlistapp.service
     dest: /etc/systemd/system/allowlistapp.service
-    owner: root
-    group: root
     mode: "0644"
   notify: Restart allowlistapp
 
 - name: Enable systemd service
-  become: true
-  become_user: root
   ansible.builtin.systemd_service:
     name: allowlistapp.service
     enabled: true
@@ -75,8 +67,6 @@
     masked: false
 
 - name: Add sudoers rule
-  become: true
-  become_user: root
   community.general.sudoers:
     name: nginx-allowlistapp
     user: nginx

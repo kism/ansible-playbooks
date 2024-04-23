@@ -13,8 +13,6 @@
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
     dest: /tmp/docker.gpg
-    owner: root
-    group: root
     mode: "0644"
 
 - name: De-Armor Docker GPG key

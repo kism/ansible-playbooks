@@ -3,8 +3,6 @@
   ansible.builtin.file:
     path: "{{ item }}"
     mode: "0755"
-    owner: root
-    group: root
   loop:
     - /opt
     - /etc/opt
@@ -127,8 +125,6 @@
   ansible.builtin.template:
     src: templates/startjellyfin.sh.j2
     dest: "{{ configure_jellyfin_base_dir }}/startjellyfin.sh"
-    owner: root
-    group: root
     mode: "0774"
 
 - name: Set Jellyfin permissions
@@ -143,8 +139,6 @@
   ansible.builtin.template:
     src: templates/jellyfin.service.j2
     dest: /etc/systemd/system/jellyfin.service
-    owner: root
-    group: root
     mode: "0664"
 
 - name: Enable and start service

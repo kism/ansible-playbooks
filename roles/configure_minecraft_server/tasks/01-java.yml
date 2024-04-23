@@ -3,8 +3,6 @@
   ansible.builtin.copy:
     src: repos_dnf/adoptium.repo
     dest: /etc/yum.repos.d/adoptium.repo
-    owner: root
-    group: root
     mode: "0664"
 
 - name: Import Adoptium GPG key

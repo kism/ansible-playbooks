@@ -48,6 +48,4 @@
   ansible.builtin.copy:
     src: files/
     dest: /etc/firewalld/services
-    owner: root
-    group: root
     mode: "0644"

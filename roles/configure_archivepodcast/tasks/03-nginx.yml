@@ -37,8 +37,6 @@
   ansible.builtin.file:
     src: /etc/nginx/sites-available/nginx-archivepodcast.conf
     dest: /etc/nginx/sites-enabled/nginx-archivepodcast.conf
-    owner: root
-    group: root
     state: link
   notify:
     - Restart nginx

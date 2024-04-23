@@ -33,16 +33,12 @@
   ansible.builtin.copy:
     src: files/dfree_pool_min.sh
     dest: /opt/scripts/dfree_pool_min
-    owner: root
-    group: root
     mode: "0775"
 
 - name: Copy smb config
   ansible.builtin.copy:
     src: files/hosts/{{ ansible_hostname }}_smb.conf
     dest: /etc/samba/smb.conf
-    owner: root
-    group: root
     mode: "0744"
   notify:
     - Restart smbd
@@ -51,8 +47,6 @@
   ansible.builtin.copy:
     src: files/avahi_smb.xml
     dest: /etc/avahi/services/smb.service
-    owner: root
-    group: root
     mode: "0744"
   notify:
     - Restart avahi

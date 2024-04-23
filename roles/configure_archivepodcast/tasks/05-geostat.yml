@@ -93,8 +93,6 @@
   ansible.builtin.copy:
     src: files/geostat.service
     dest: /etc/systemd/system/geostat.service
-    owner: root
-    group: root
     mode: "0644"
   notify: Restart geostat
 
@@ -111,8 +109,6 @@
   ansible.builtin.copy:
     src: files/nginx_logrotate
     dest: /etc/logrotate.d/nginx
-    owner: root
-    group: root
     mode: "0644"
   notify: Restart logrotate
 

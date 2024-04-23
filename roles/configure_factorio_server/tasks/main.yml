@@ -3,8 +3,6 @@
   ansible.builtin.copy:
     src: systemd/system/factorio.service
     dest: /etc/systemd/system/factorio.service
-    owner: root
-    group: root
     mode: "0644"
 
 - name: Enable factorio service, don't start it yet

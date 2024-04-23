@@ -47,18 +47,20 @@
   notify: Restart archivepodcast
   changed_when: true # Safe assumption, no way to know
 
+- name: Copy archivepodcast config
+  ansible.builtin.copy:
+    src: files/{{ ansible_host }}.json
+    dest: /opt/archivepodcast/settings.json
+    owner: podcasto
+    group: root
+    mode: "0660"
+  notify: Restart archivepodcast # One day this will be reload...
+
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
   changed_when: true # This command only matters if another task has changed files
 
-- name: Copy archivepodcast config
-  become: true
-  become_user: podcasto
-  ansible.builtin.copy:
-    src: files/{{ ansible_host }}.json
-    dest: /opt/archivepodcast/settings.json
-    mode: "0660"
-  notify: Restart archivepodcast # One day this will be reload...
+
 
 - name: Create archivepodcast log file
   ansible.builtin.file:
@@ -73,8 +75,6 @@
   ansible.builtin.copy:
     src: files/archivepodcast.service
     dest: /etc/systemd/system/archivepodcast.service
-    owner: root
-    group: root
     mode: "0644"
   notify: Restart archivepodcast
 
@@ -90,7 +90,5 @@
   ansible.builtin.copy:
     src: files/archivepodcast_logrotate
     dest: /etc/logrotate.d/archivepodcast
-    owner: root
-    group: root
     mode: "0644"
   notify: Restart logrotate

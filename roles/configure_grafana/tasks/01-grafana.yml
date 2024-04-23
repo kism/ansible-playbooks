@@ -3,8 +3,6 @@
   ansible.builtin.copy:
     src: files/grafana.repo
     dest: /etc/yum.repos.d/grafana.repo
-    owner: root
-    group: root
     mode: "0644"
 
 - name: Import Grafana GPG key

@@ -59,8 +59,6 @@
   ansible.builtin.file:
     src: /etc/nginx/sites-available/{{ item.path | basename }}
     dest: /etc/nginx/sites-enabled/{{ item.path | basename }}
-    owner: root
-    group: root
     state: link
   notify:
     - Reload nginx
@@ -101,8 +99,6 @@
     content: dns_cloudflare_api_token = {{ secret_cloudflare_api_dns }}
     dest: /root/.cloudflare.ini
     mode: "0600"
-    owner: root
-    group: root
 
 - name: Remove Let's Encrypt directories
   ansible.builtin.file:
