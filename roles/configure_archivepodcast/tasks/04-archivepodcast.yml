@@ -60,8 +60,6 @@
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
   changed_when: true # This command only matters if another task has changed files
 
-
-
 - name: Create archivepodcast log file
   ansible.builtin.file:
     path: /var/log/archivepodcast.log
