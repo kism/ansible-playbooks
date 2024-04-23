@@ -1,0 +1,24 @@
+---
+- name: Remove enterprise repos
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/pve-enterprise.list
+    - /etc/apt/sources.list.d/ceph.list
+
+- name: Add no-subscription PVE repo
+  ansible.builtin.apt_repository:
+    repo: deb http://download.proxmox.com/debian/pve {{ ansible_distribution | lower }} pve-no-subscription
+    filename: pve-no-subscription
+    state: present
+
+- name: Make script directory
+  ansible.builtin.file:
+    path: /opt/scripts/pve-nag-buster
+    mode: "0600"
+
+- name: Download & Run the Proxmox Nagbuster script from github, verify the checksum
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/install.sh
+    dest: /opt/scripts/
