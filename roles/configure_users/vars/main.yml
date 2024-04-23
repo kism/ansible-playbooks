@@ -13,6 +13,10 @@ configure_users_users:
       - content_public
       - backup_svc
       - qbtuser
+  ansible_svc:
+    uid: 1088
+    shell: /usr/bin/bash
+    groups: kgadmins
   backup_svc:
     uid: 1087
     shell: /usr/sbin/nologin
