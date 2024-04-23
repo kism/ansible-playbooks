@@ -18,7 +18,29 @@
     path: /opt/scripts/pve-nag-buster
     mode: "0600"
 
-- name: Download & Run the Proxmox Nagbuster script from github, verify the checksum
+- name: Check if pve-nag-buster has been used before (hook)
+  ansible.builtin.stat:
+    path: /etc/apt/apt.conf.d/86pve-nags
+  register: pve_nag_buster_hook
+
+- name: Check if pve-nag-buster has been used before (script)
+  ansible.builtin.stat:
+    path: /usr/share/pve-nag-buster.sh
+  register: pve_nag_buster_script
+
+- name: Download the pve-nag-buster script
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/install.sh
-    dest: /opt/scripts/
+    url: '{{ item.url }}'
+    dest: /opt/scripts/install.sh
+    checksum: "sha256:{{ item.sha256sum }}"
+    mode: "0700"
+  loop:
+    - url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/install.sh
+      sha256sum: e5ef33c6899c8131ee6c48b9707ff5b906dbe6a822ee7f4231fa24153a881983
+    - url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/pve-nag-buster.sh
+      sha256sum: 204cba8478efbb078d03c045be2d6d407acd3de967e58bbc0777ccbcf3bd50b1
+
+- name: Run the pve-nag-buster script
+  ansible.builtin.command:
+    cmd: /opt/scripts/install.sh --offline
+  changed_when: not pve_nag_buster_hook.stat.exists or not pve_nag_buster_script.stat.exists
