@@ -29,9 +29,6 @@ all:
     podc:
       ansible_host: podc.kg.lan
       timezone: awst
-    helios64:
-      ansible_host: helios64.ira.mil.ie
-      timezone: awst
     code:
       ansible_host: code.ira.mil.ie
       timezone: awst
@@ -43,6 +40,7 @@ proxmoxvms:
     ent:
     kismnas:
     rproxy:
+    code:
 publiccloudvms:
   hosts:
     podc:

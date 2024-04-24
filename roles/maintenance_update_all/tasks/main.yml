@@ -1,38 +1,12 @@
 ---
-- name: Update dnf packages
-  when: ansible_pkg_mgr == 'dnf'
-  block:
-    - name: Update DNF Cache
-      ansible.builtin.dnf:
-        update_cache: true
-        state: installed
-
-    - name: Update dnf packages
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
-        update_only: true
-
-- name: Update apt packages
-  when: ansible_pkg_mgr == 'apt'
-  block:
-    - name: Update APT database
-      ansible.builtin.apt:
-        update_cache: true
-
-    - name: Update apt packages
-      ansible.builtin.apt:
-        upgrade: true
-        autoremove: true
+- name: Run appropiate update routine for package manager
+  ansible.builtin.include_tasks: 01-{{ ansible_pkg_mgr }}.yml
 
 - name: Check if pipx is installed
   ansible.builtin.stat:
     path: /usr/local/bin/pipx # Adjust the path based on your installation
   register: pipx_check
 
-- name: Install update pipx packages
-  become: true
-  become_user: kism
-  community.general.pipx:
-    state: upgrade_all
+- name: Run pipx update routine if needed
+  ansible.builtin.include_tasks: 02-pipx.yml
   when: pipx_check.stat.exists

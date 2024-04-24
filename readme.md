@@ -54,6 +54,9 @@ skip_ansible_lint
 
 # Unecessary chown/chgrp
 ^.*owner: root$.*$\n^.*group: root.*$
+
+# Commented out tasks and such
+# - name
 ```
 
 ### Good style things to do
@@ -103,6 +106,8 @@ skip_ansible_lint
 * setup cert
 * symlink secrets?
 * generate motd
+* better download all for dotfiles
+* jinja2 better "{ var }" vs ({{ var }})
 
 do later
 

@@ -1,14 +1,51 @@
 ---
 - name: Include dotfiles vars
+  run_once: true
+  delegate_to: localhost
   ansible.builtin.include_vars:
     file: vars/dotfiles.yml
 
 - name: Get user info facts
   ansible.builtin.getent:
     database: passwd
+  no_log: true
 
-- name: Include dotfiles tasks, loop for each user
-  ansible.builtin.include_tasks: "03a-dotfiles-download.yml"
+- name: Local user block to download dotfiles
+  delegate_to: localhost
+  become: false
+  run_once: true
+  block:
+    - name: Set fact for dotfile download location
+      ansible.builtin.set_fact:
+        dotfiles_temp_folder: "/tmp/{{ lookup('ansible.builtin.env', 'USER') }}/ansible/dotfiles"
+
+    - name: Remove dotfiles_temp_folder folder if exists
+      ansible.builtin.file:
+        path: "{{ dotfiles_temp_folder }}"
+        state: absent
+
+    - name: Create folder on local machine to download dotfiles to
+      ansible.builtin.file:
+        path: '{{ dotfiles_temp_folder }}'
+        state: directory
+        mode: "0700"
+
+    - name: Create folders for dotfiles structure
+      ansible.builtin.file:
+        path: "{{ (dotfiles_temp_folder + '/' + (item['home_dest']) | dirname) }}"
+        state: directory
+        mode: "0700"
+      loop: "{{ configure_users_dotfiles }}"
+
+    - name: Download dotfiles per vars to tmp folder
+      ansible.builtin.get_url:
+        url: "{{ item['url'] }}"
+        dest: "{{ dotfiles_temp_folder }}/{{ item['home_dest'] }}"
+        mode: "0600"
+      loop: "{{ configure_users_dotfiles }}"
+
+- name: Copy dotfiles taks, run for each user # Is this needed?
+  ansible.builtin.include_tasks: "03a-dotfiles-copy.yml"
   loop:
     - kism
     - root

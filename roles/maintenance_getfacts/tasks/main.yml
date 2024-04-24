@@ -46,6 +46,7 @@
 - name: Print the usual culperates
   ansible.builtin.debug:
     msg:
+      - '# Host #'
       - "ansible_hostname:                   {{ ansible_hostname }}"
       - "ansible_distribution_file_variety:  {{ ansible_distribution_file_variety }}"
       - "ansible_distribution:               {{ ansible_distribution }}"
@@ -53,3 +54,12 @@
       - "ansible_distribution_release:       {{ ansible_distribution_release }}"
       - "ansible_architecture:               {{ ansible_architecture }}"
       - "ansible_pkg_mgr:                    {{ ansible_pkg_mgr }}"
+      - '# Runner #'
+      - "env HOME:                           {{ lookup('ansible.builtin.env', 'HOME') }}"
+      - "env USER:                           {{ lookup('ansible.builtin.env', 'USER') }}"
+      - "env PWD:                            {{ lookup('ansible.builtin.env', 'PWD') }}"
+      - "ansible_config_file:                {{ ansible_config_file }}"
+      - "playbook_dir:                       {{ playbook_dir }}"
+      - "role_path:                          {{ role_path }}"
+      - "inventory_file:                     {{ inventory_file }}"
+      - "ansible_search_path:                {{ ansible_search_path }}"

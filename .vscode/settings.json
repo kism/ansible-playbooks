@@ -16,5 +16,5 @@
 		"*.yml": "ansible",
 		"*.yaml": "ansible",
 	},
-	"ansible.python.interpreterPath": "./.venv/bin/python"
+	"ansible.python.interpreterPath": "/home/kism/src/ansible-playbooks/.venv/bin/python"
 }

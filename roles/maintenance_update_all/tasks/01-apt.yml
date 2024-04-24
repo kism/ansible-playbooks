@@ -1,0 +1,13 @@
+---
+- name: Update APT database
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Update apt packages
+  ansible.builtin.apt:
+    upgrade: true
+    autoremove: true
+  register: apt_update
+
+- debug:
+    msg: '{{ apt_update }}'
