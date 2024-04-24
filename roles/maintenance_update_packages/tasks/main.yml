@@ -10,3 +10,13 @@
 - name: Run pipx update routine if needed
   ansible.builtin.include_tasks: 02-pipx.yml
   when: pipx_check.stat.exists
+
+- name: Append diff variable to file
+  delegate_to: localhost
+  become: false
+  ansible.builtin.lineinfile:
+    path: '{{ inventory_dir }}/log_packages_diff.txt'
+    create: true
+    line: "{{ ansible_hostname }}: {{ patching_packages_changed }}"
+    insertafter: EOF
+    mode: "0600"

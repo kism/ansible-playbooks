@@ -106,7 +106,7 @@ skip_ansible_lint
 * setup cert
 * symlink secrets?
 * generate motd
-* better download all for dotfiles
+* even better download all for dotfiles?
 * jinja2 better "{ var }" vs ({{ var }})
 
 do later

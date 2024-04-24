@@ -54,6 +54,8 @@
       - "ansible_distribution_release:       {{ ansible_distribution_release }}"
       - "ansible_architecture:               {{ ansible_architecture }}"
       - "ansible_pkg_mgr:                    {{ ansible_pkg_mgr }}"
+      - "inventory_hostname:                 {{ inventory_hostname }}"
+      - "inventory_hostname_short:           {{ inventory_hostname_short }}"
       - '# Runner #'
       - "env HOME:                           {{ lookup('ansible.builtin.env', 'HOME') }}"
       - "env USER:                           {{ lookup('ansible.builtin.env', 'USER') }}"
@@ -61,5 +63,6 @@
       - "ansible_config_file:                {{ ansible_config_file }}"
       - "playbook_dir:                       {{ playbook_dir }}"
       - "role_path:                          {{ role_path }}"
+      - "inventory_dir:                      {{ inventory_dir }}"
       - "inventory_file:                     {{ inventory_file }}"
       - "ansible_search_path:                {{ ansible_search_path }}"

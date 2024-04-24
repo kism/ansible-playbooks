@@ -1,0 +1,29 @@
+---
+- name: Update DNF Cache, list updates
+  ansible.builtin.dnf:
+    update_cache: true
+    list: updates
+  register: dnf_packages_to_upgrade_before
+
+- name: Wip update list to get changed
+  ansible.builtin.debug: # WIP: nevra: 0:telegraf-1.30.2-1.aarch64
+    msg: '{{ dnf_packages_to_upgrade_before }}'
+
+- name: Update dnf packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_only: true
+  register: dnf_update
+
+- name: Get only installed # WIP telegraf-1.30.2-1.aarch64
+  ansible.builtin.set_fact:
+    patching_packages_changed: "{{ dnf_update.results | select('match', '^Installed: ') | map('regex_replace', '^Installed: ', '') | list }}"
+
+
+- name: Set fact for patching_packages_changed
+  ansible.builtin.set_fact:
+    patching_packages_changed: "{{ patching_packages_changed | to_yaml(default_flow_style=False) }}"
+
+# - debug:
+#     msg: '{{ patching_packages_changed }}'
