@@ -10,6 +10,7 @@
         "redhat.vscode-yaml",
         "samuelcolvin.jinjahtml",
         "vscode-icons-team.vscode-icons",
-        "yile-ou.paddy-color-theme"
+        "yile-ou.paddy-color-theme",
+        "github.vscode-github-actions"
     ]
 }

@@ -102,6 +102,7 @@ skip_ansible_lint
 * setup proxmox repos
 * setup cert
 * symlink secrets?
+* generate motd
 
 do later
 
