@@ -1,8 +1,4 @@
 ---
-- name: Update APT
-  ansible.builtin.apt:
-    upgrade: full
-
 - name: Gather package facts
   ansible.builtin.package_facts:
     manager: auto

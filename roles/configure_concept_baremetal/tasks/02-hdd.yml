@@ -14,7 +14,7 @@
         src: |-
           "https://github.com/Seagate/openSeaChest/releases/download/v
           {{- configure_concept_baremetal_openseachest_version -}}
-          openSeaChest-v
+          /openSeaChest-v
           {{- configure_concept_baremetal_openseachest_version -}}
           -linux-
           {{- ansible_architecture -}}
@@ -46,6 +46,9 @@
         file_type: file
         depth: 0
       register: bins_found
+
+    - debug:
+        msg: "{{ bins_found }}"
 
     - name: Extract bin filenames
       ansible.builtin.set_fact:
@@ -82,12 +85,12 @@
   block:
     - name: Set target arch per map if possible
       ansible.builtin.set_fact:
-      hdidle_arch: "{{  configure_concept_baremetal_arch_map[ansible_architecture] }}"
+        hdidle_arch: "{{  configure_concept_baremetal_arch_map[ansible_architecture] }}"
 
   rescue:
     - name: Set default hdidle_arch
       ansible.builtin.set_fact:
-      hdidle_arch: "{{ ansible_architecture }}"
+        hdidle_arch: "{{ ansible_architecture }}"
 
 - name: Install hd-idle
   ansible.builtin.apt:

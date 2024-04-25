@@ -5,13 +5,22 @@
       - zsh
     state: present
 
+- name: Get user info facts
+  ansible.builtin.getent:
+    database: passwd
+    key: kism
+  no_log: true
+
+- debug:
+    msg: '{{ getent_passwd }}'
+
 - name: Block to run as my user
   become: true
   become_user: kism
   block:
     - name: Create antigen folder
       ansible.builtin.file:
-        path: "/home/kism/.antigen"
+        path: "{{ getent_passwd['kism'][4] }}/.antigen"
         state: directory
         owner: kism
         group: kism
@@ -20,7 +29,7 @@
     - name: Download antigen
       ansible.builtin.get_url:
         url: https://git.io/antigen
-        dest: "/home/kism/.antigen/antigen.zsh"
+        dest: "{{ getent_passwd['kism'][4] }}/.antigen/antigen.zsh"
         owner: kism
         group: kism
         mode: "0770"
@@ -28,19 +37,19 @@
     - name: Copy bash config
       ansible.builtin.copy:
         src: files/jumpbox.zshrc
-        dest: /home/kism/.zshrc
+        dest: '{{ getent_passwd["kism"][4] }}/.zshrc'
         owner: kism
         group: kism
         mode: "0644"
 
     - name: Setup zsh
       ansible.builtin.command:
-        cmd: zsh -c ". /home/kism/.zshrc; antigen update; antigen reset"
+        cmd: zsh -c ". {{ getent_passwd['kism'][4] }}/.zshrc; antigen update; antigen reset"
       changed_when: false # Handled by the next task
 
     - name: Check if zsh has changed
       ansible.builtin.find:
-        paths: "/home/kism/.antigen/bundles"
+        paths: "{{ getent_passwd['kism'][4] }}/.antigen/bundles"
         age: 1m
         recurse: true
       register: modified_files

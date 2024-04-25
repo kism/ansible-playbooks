@@ -100,16 +100,16 @@ skip_ansible_lint
 * github gpg key
 * fix github actions lint
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
-* with_community.general.filetree
 * better fan control on the aliexpress board
-* setup proxmox repos
 * setup cert
-* symlink secrets?
 * generate motd
 * even better download all for dotfiles?
 * jinja2 better "{ var }" vs ({{ var }})
 * check getfacts multiple hosts
 * fun log folder
+* update landing page
+* fix pve certbot
+* workstation setup
 
 do later
 

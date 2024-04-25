@@ -6,6 +6,7 @@
 
   roles:
     # Onboard Server
+    - meta_include_secrets
     - meta_onboard_server
 
     # Purpose specific

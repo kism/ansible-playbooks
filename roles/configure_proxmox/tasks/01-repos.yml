@@ -7,15 +7,16 @@
     - /etc/apt/sources.list.d/pve-enterprise.list
     - /etc/apt/sources.list.d/ceph.list
 
-- name: Add no-subscription PVE repo
-  ansible.builtin.apt_repository:
-    repo: deb http://download.proxmox.com/debian/pve {{ ansible_distribution | lower }} pve-no-subscription
-    filename: pve-no-subscription
-    state: present
+# - name: Add no-subscription PVE repo # Handled by the script in a sec
+#   ansible.builtin.apt_repository:
+#     repo: deb http://download.proxmox.com/debian/pve {{ ansible_distribution | lower }} pve-no-subscription
+#     filename: pve-no-subscription
+#     state: present
 
 - name: Make script directory
   ansible.builtin.file:
     path: /opt/scripts/pve-nag-buster
+    state: directory
     mode: "0600"
 
 - name: Check if pve-nag-buster has been used before (hook)

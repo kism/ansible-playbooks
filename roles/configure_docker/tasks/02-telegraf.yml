@@ -5,7 +5,7 @@
   changed_when: false # Just getting info
   failed_when: false # Next task checks RC
 
-- name: Get root user info
+- name: Get telegraf user info ???
   ansible.builtin.getent:
     database: passwd
     key: telegraf
