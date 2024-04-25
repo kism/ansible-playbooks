@@ -46,7 +46,7 @@
       register: modified_files
       changed_when: modified_files.files | length > 0
 
-    - name: Change my shell to zsh
-      ansible.builtin.user:
-        name: kism
-        shell: /bin/zsh
+- name: Change my shell to zsh
+  ansible.builtin.user:
+    name: kism
+    shell: /bin/zsh
