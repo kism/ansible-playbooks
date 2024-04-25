@@ -11,7 +11,7 @@
   block:
     - name: Create antigen folder
       ansible.builtin.file:
-        path: "{{ user_home }}/.antigen"
+        path: "/home/kism/.antigen"
         state: directory
         owner: kism
         group: kism
@@ -20,7 +20,7 @@
     - name: Download antigen
       ansible.builtin.get_url:
         url: https://git.io/antigen
-        dest: "{{ user_home }}/.antigen/antigen.zsh"
+        dest: "/home/kism/.antigen/antigen.zsh"
         owner: kism
         group: kism
         mode: "0770"
@@ -35,12 +35,12 @@
 
     - name: Setup zsh
       ansible.builtin.command:
-        cmd: zsh -c ". {{ user_home }}/.zshrc; antigen update; antigen reset"
+        cmd: zsh -c ". /home/kism/.zshrc; antigen update; antigen reset"
       changed_when: false # Handled by the next task
 
     - name: Check if zsh has changed
       ansible.builtin.find:
-        paths: "{{ user_home }}/.antigen/bundles"
+        paths: "/home/kism/.antigen/bundles"
         age: 1m
         recurse: true
       register: modified_files
