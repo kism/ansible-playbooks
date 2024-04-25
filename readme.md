@@ -108,6 +108,8 @@ skip_ansible_lint
 * generate motd
 * even better download all for dotfiles?
 * jinja2 better "{ var }" vs ({{ var }})
+* check getfacts multiple hosts
+* fun log folder
 
 do later
 
