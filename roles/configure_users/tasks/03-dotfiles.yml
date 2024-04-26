@@ -17,7 +17,7 @@
   block:
     - name: Set fact for dotfile download location
       ansible.builtin.set_fact:
-        dotfiles_temp_folder: "/tmp/{{ lookup('ansible.builtin.env', 'USER') }}/ansible/dotfiles"
+        dotfiles_temp_folder: /tmp/{{ lookup('ansible.builtin.env', 'USER') }}/ansible/dotfiles
 
     - name: Remove dotfiles_temp_folder folder if exists
       ansible.builtin.file:
@@ -26,7 +26,7 @@
 
     - name: Create folder on local machine to download dotfiles to
       ansible.builtin.file:
-        path: '{{ dotfiles_temp_folder }}'
+        path: "{{ dotfiles_temp_folder }}"
         state: directory
         mode: "0700"
 

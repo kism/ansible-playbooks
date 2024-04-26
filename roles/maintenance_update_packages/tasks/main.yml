@@ -1,6 +1,6 @@
 ---
 - name: Run appropiate update routine for package manager
-  ansible.builtin.include_tasks: 01-{{ ansible_pkg_mgr }}.yml
+  ansible.builtin.include_tasks: "01-{{ ansible_pkg_mgr }}.yml"
 
 - name: Check if pipx is installed
   ansible.builtin.stat:
@@ -8,14 +8,14 @@
   register: pipx_check
 
 - name: Run pipx update routine if needed
-  ansible.builtin.include_tasks: 02-pipx.yml
+  ansible.builtin.include_tasks: "02-pipx.yml"
   when: pipx_check.stat.exists
 
 - name: Append diff variable to file # Can we do a wild combine() here?
   delegate_to: localhost
   become: false
   ansible.builtin.lineinfile:
-    path: '{{ inventory_dir }}/z_{{ ansible_date_time.iso8601 }}_log_packages_diff.tmp'
+    path: "{{ inventory_dir }}/z_{{ ansible_date_time.iso8601 }}_log_packages_diff.tmp"
     create: true
     line: "{{ ansible_hostname }}: {{ patching_packages_changed }}"
     insertafter: EOF

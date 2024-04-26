@@ -1,7 +1,7 @@
 ---
 - name: Remove enterprise repos
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: "{{ item }}"
     state: absent
   loop:
     - /etc/apt/sources.list.d/pve-enterprise.list
@@ -31,9 +31,9 @@
 
 - name: Download the pve-nag-buster script
   ansible.builtin.get_url:
-    url: '{{ item.url }}'
+    url: "{{ item.url }}"
     dest: /opt/scripts/install.sh
-    checksum: "sha256:{{ item.sha256sum }}"
+    checksum: sha256:{{ item.sha256sum }}
     mode: "0700"
   loop:
     - url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/install.sh

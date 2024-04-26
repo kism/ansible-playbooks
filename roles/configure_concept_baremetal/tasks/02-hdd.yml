@@ -11,7 +11,7 @@
   block:
     - name: Download openSeaChest
       ansible.builtin.unarchive:
-        src: >-
+        src: |-
           https://github.com/Seagate/openSeaChest/releases/download/v
           {{- configure_concept_baremetal_openseachest_version -}}
           /openSeaChest-v
@@ -91,7 +91,7 @@
 
 - name: Install hd-idle
   ansible.builtin.apt:
-    deb: >-
+    deb: |-
       https://github.com/adelolmo/hd-idle/releases/download/v
       {{- configure_concept_baremetal_hdidle_version -}}
       /hd-idle_

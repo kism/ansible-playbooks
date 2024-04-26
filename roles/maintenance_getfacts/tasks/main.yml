@@ -52,7 +52,7 @@
 - name: Print the usual culperates
   ansible.builtin.debug:
     msg:
-      - '# Host #'
+      - "# Host #"
       - "ansible_hostname:                   {{ ansible_hostname }}"
       - "ansible_distribution_file_variety:  {{ ansible_distribution_file_variety }}"
       - "ansible_distribution:               {{ ansible_distribution }}"
@@ -62,7 +62,7 @@
       - "ansible_pkg_mgr:                    {{ ansible_pkg_mgr }}"
       - "inventory_hostname:                 {{ inventory_hostname }}"
       - "inventory_hostname_short:           {{ inventory_hostname_short }}"
-      - '# Runner #'
+      - "# Runner #"
       - "env HOME:                           {{ lookup('ansible.builtin.env', 'HOME') }}"
       - "env USER:                           {{ lookup('ansible.builtin.env', 'USER') }}"
       - "env PWD:                            {{ lookup('ansible.builtin.env', 'PWD') }}"

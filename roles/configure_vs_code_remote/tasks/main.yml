@@ -28,9 +28,9 @@
 
     - name: Ensure poetry folder
       ansible.builtin.file:
-        path: '{{ item }}'
+        path: "{{ item }}"
         state: directory
-        mode: '0750'
+        mode: "0750"
       loop:
         - ~/.config
         - ~/.config/pypoetry

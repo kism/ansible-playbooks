@@ -11,9 +11,6 @@
     key: kism
   no_log: true
 
-- debug:
-    msg: '{{ getent_passwd }}'
-
 - name: Block to run as my user
   become: true
   become_user: kism

@@ -110,6 +110,7 @@ skip_ansible_lint
 * update landing page
 * fix pve certbot
 * workstation setup
+* pull docker, do updates docker compose
 
 do later
 
