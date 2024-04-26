@@ -1,4 +1,7 @@
 ---
+- name: Run pending handlers now, for the sake of having reminders at the end of the play
+  ansible.builtin.meta: flush_handlers
+
 - name: Read contents of a local file
   delegate_to: localhost
   become: false

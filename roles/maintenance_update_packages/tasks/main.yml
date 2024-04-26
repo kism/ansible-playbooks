@@ -15,7 +15,7 @@
   delegate_to: localhost
   become: false
   ansible.builtin.lineinfile:
-    path: '{{ inventory_dir }}/log_packages_diff.txt'
+    path: '{{ inventory_dir }}/z_{{ ansible_date_time.iso8601 }}_log_packages_diff.tmp'
     create: true
     line: "{{ ansible_hostname }}: {{ patching_packages_changed }}"
     insertafter: EOF

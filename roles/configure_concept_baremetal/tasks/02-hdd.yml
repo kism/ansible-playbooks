@@ -11,14 +11,14 @@
   block:
     - name: Download openSeaChest
       ansible.builtin.unarchive:
-        src: |-
-          "https://github.com/Seagate/openSeaChest/releases/download/v
+        src: >-
+          https://github.com/Seagate/openSeaChest/releases/download/v
           {{- configure_concept_baremetal_openseachest_version -}}
           /openSeaChest-v
           {{- configure_concept_baremetal_openseachest_version -}}
           -linux-
           {{- ansible_architecture -}}
-          -manylinux.tar.xz"
+          -manylinux.tar.xz
         dest: /opt/
         mode: "0755"
         remote_src: true
@@ -47,19 +47,16 @@
         depth: 0
       register: bins_found
 
-    - debug:
-        msg: "{{ bins_found }}"
-
     - name: Extract bin filenames
       ansible.builtin.set_fact:
-        bins_found: "{{ bins_found.files | map(attribute='path') | map('basename') | list }}"
+        bins_found_list: "{{ bins_found.files | map(attribute='path') | map('basename') | list }}"
 
     - name: Create symbolic links for openSeaChest bins
       ansible.builtin.file:
         src: /opt/openseachest/{{ item }}
         dest: /usr/local/sbin/{{ item }}
         state: link
-      loop: "{{ bins_found }}"
+      loop: "{{ bins_found_list }}"
 
     - name: Make list of man files
       ansible.builtin.find:
@@ -78,14 +75,14 @@
         src: /opt/openseachest/man/man8/{{ item }}
         dest: /usr/share/man/man8/{{ item }}
         state: link
-      loop: "{{ mans_found }}"
+      loop: "{{ bins_found_list }}"
 
 # Install hd-idle
 - name: Get hd-idle_arch
   block:
     - name: Set target arch per map if possible
       ansible.builtin.set_fact:
-        hdidle_arch: "{{  configure_concept_baremetal_arch_map[ansible_architecture] }}"
+        hdidle_arch: "{{ configure_concept_baremetal_arch_map[ansible_architecture] }}"
 
   rescue:
     - name: Set default hdidle_arch
@@ -94,13 +91,13 @@
 
 - name: Install hd-idle
   ansible.builtin.apt:
-    deb: |-
+    deb: >-
       https://github.com/adelolmo/hd-idle/releases/download/v
       {{- configure_concept_baremetal_hdidle_version -}}
       /hd-idle_
       {{- configure_concept_baremetal_hdidle_version -}}
       _
-      {{ hdidle_arch }}.deb
+      {{- hdidle_arch -}}.deb
 
 - name: Install some hdd related packages
   ansible.builtin.apt:

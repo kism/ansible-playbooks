@@ -8,3 +8,9 @@ secrets*.yml
 *.tmp.log
 *.tmp.out
 .venv/
+*.deb
+*.rpm
+*.xz
+*.gz
+*.tar
+*.zip
