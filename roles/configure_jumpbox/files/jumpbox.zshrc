@@ -28,7 +28,7 @@ alias cgrep='grep --color=always -e "^" -e'
 alias youtube-dl='yt-dlp -o "%(upload_date)s %(title)s [%(id)s].%(ext)s"'
 
 # SSH
-eval `ssh-agent` && ssh-add
+eval `ssh-agent` 2>&1 > /dev/null && ssh-add > /dev/null 2>&1
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then

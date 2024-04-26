@@ -1,4 +1,9 @@
 ---
+- name: Remove old repo files
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d
+    state: absent
+
 - name: Remove unofficial packages
   ansible.builtin.apt:
     pkg:
@@ -12,19 +17,14 @@
 - name: Copy over apt key Ubuntu
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
-    dest: /tmp/docker.gpg
+    dest: /etc/apt/keyrings/docker.asc
     mode: "0644"
-
-- name: De-Armor Docker GPG key
-  ansible.builtin.shell:
-    cmd: gpg --dearmor < /tmp/docker.gpg > /etc/apt/keyrings/docker.gpg
-  changed_when: true # Force the current key here every time
 
 - name: Add Docker repository x86_64
   ansible.builtin.apt_repository:
-    repo: >
+    repo: >-
       deb
-      [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg]
+      [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc]
       https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }}
       stable
     filename: docker
@@ -33,18 +33,19 @@
 
 - name: Add Docker repository arm64
   ansible.builtin.apt_repository:
-    repo: >
+    repo: >-
       deb
-      [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg]
+      [arch=arm64 signed-by=/etc/apt/keyrings/docker.asc]
       https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }}
       stable
     filename: docker
     state: present
-  when: ansible_architecture == "arm64" or ansible_architecture == "aarch64"
+  when: ansible_architecture == "aarch64"
 
 - name: Install docker package apt
   ansible.builtin.apt:
     install_recommends: false
+    update_cache: true
     pkg:
       - docker-ce
       - docker-ce-cli
@@ -52,9 +53,4 @@
       - docker-buildx-plugin
       - docker-compose-plugin
     state: present
-
-- name: Start docker service
-  ansible.builtin.systemd_service:
-    service: docker
-    state: started
-    enabled: true
+  notify: Start docker service

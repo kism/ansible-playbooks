@@ -4,9 +4,7 @@
     src: files/kglan_root.cer
     dest: /usr/local/share/ca-certificates/kglan_root.crt
     mode: "0444"
-  # notify: Update CA certs apt
+  notify: Update CA certs apt
 
-- name: Update CA certs apt # Dodo handlers lmao
-  ansible.builtin.command:
-    cmd: update-ca-certificates
-  changed_when: true # This runs when there is a change
+- name: Run pending handlers now
+  ansible.builtin.meta: flush_handlers

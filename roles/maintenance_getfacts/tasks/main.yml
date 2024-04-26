@@ -1,17 +1,23 @@
 ---
-- name: Gather facts
-  ansible.builtin.setup:
+- name: Debug block chuck vars into a file
+  no_log: true
+  block:
+    - name: Gather facts
+      ansible.builtin.setup:
 
-- name: Populate service facts
-  ansible.builtin.service_facts:
+    - name: Populate service facts
+      ansible.builtin.service_facts:
 
-- name: Get user info
-  ansible.builtin.getent:
-    database: passwd
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
 
-- name: Get group info
-  ansible.builtin.getent:
-    database: group
+    - name: Get user info
+      ansible.builtin.getent:
+        database: passwd
+
+    - name: Get group info
+      ansible.builtin.getent:
+        database: group
 
 - name: Set debug mode to value of print_debug if its defined
   ansible.builtin.set_fact:
