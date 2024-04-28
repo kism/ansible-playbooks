@@ -41,6 +41,10 @@ proxmoxvms:
     kismnas:
     rproxy:
     code:
+proxmoxhosts:
+  hosts:
+    pvewill:
+    pvematt:
 publiccloudvms:
   hosts:
     podc:

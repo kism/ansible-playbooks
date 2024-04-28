@@ -8,12 +8,12 @@
     - meta_include_secrets
     - meta_onboard_server
 
-    # Purpose specific
-    - configure_proxmox
-    - configure_concept_baremetal
-    - configure_postfix_gmail
-    # - configure_disks
+    # # Purpose specific
+    # - configure_proxmox
+    # - configure_concept_baremetal
+    # - configure_postfix_gmail
+    # # - configure_disks
 
-    # Reminders
-    - maintenance_update_packages
-    - maintenance_print_reminders
+    # # Reminders
+    # - maintenance_update_packages
+    # - maintenance_print_reminders

@@ -22,8 +22,8 @@
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
     dest: "{{ configure_docker_sabnzbd_base_dir }}/configs/sabnzbd/docker-compose.yml"
-    mode: "0660"
-    owner: qbtuser
+    mode: "0640"
+    owner: root
     group: qbtuser
 
 - name: Allow sabnzbd through firewalld

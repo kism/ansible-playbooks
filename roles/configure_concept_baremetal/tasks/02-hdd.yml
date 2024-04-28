@@ -67,7 +67,7 @@
 
     - name: Extract man filenames
       ansible.builtin.set_fact:
-        mans_found: "{{ mans_found.files | map(attribute='path') | map('basename') | list }}"
+        mans_found_list: "{{ mans_found.files | map(attribute='path') | map('basename') | list }}"
 
     # Do you need to remove broken symlinks, I dont think so...
     - name: Create symbolic links for openSeaChest man pages
@@ -75,7 +75,7 @@
         src: /opt/openseachest/man/man8/{{ item }}
         dest: /usr/share/man/man8/{{ item }}
         state: link
-      loop: "{{ bins_found_list }}"
+      loop: "{{ mans_found_list }}"
 
 # Install hd-idle
 - name: Get hd-idle_arch

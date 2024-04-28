@@ -33,7 +33,7 @@
     dest: /opt/scripts/proxmox_renewcerts.sh
     mode: "0744"
 
-- name: Replace hostname in renew
+- name: Replace hostname in renew # Do template
   ansible.builtin.replace:
     path: /opt/scripts/proxmox_renewcerts.sh
     regexp: HOSTNAME

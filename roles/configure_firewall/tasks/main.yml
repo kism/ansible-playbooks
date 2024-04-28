@@ -5,7 +5,7 @@
   register: pve_status
 
 - name: Run firewalld setup on non-pve hosts
-  when: not pve_status.stat.exists
+  when: not pve_status.stat.exists and 'proxmoxhosts' not in group_names # make double sure
   block:
     - name: Remove ufw if it exists
       ansible.builtin.include_tasks: "01-remove-ufw.yml"
