@@ -1,4 +1,9 @@
 ---
+
+- file:
+    path: /etc/default/wsdd
+    state: touch
+
 - name: Install packages for samba dnf
   ansible.builtin.dnf:
     name:
