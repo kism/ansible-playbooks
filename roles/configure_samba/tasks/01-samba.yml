@@ -57,10 +57,10 @@
     enabled: true
     state: started
   loop:
-    - smbd
+    - smb
     - wsdd
     - avahi-daemon
-  when: ansible_distribution == 'Oracle Linux'
+  when: ansible_pkg_mgr == 'dnf'
 
 
 - name: Start and enable services ubuntu/bullseye
