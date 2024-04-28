@@ -17,7 +17,7 @@ jobs:
       - name: Install Ansible-Galaxy Requirements
         run: ansible-galaxy collection install -r requirements.yml
 
-      - name: Temp
+      - name: Temp remove configure_archivepodcast_secrets role
         run: sed -i '/- configure_archivepodcast_secrets/d' build_podc.yml && cat build_podc.yml
 
       - name: Remove the password file config entry, ERROR! The vault password file <> was not found

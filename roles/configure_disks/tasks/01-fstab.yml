@@ -5,37 +5,43 @@
     state: directory
     mode: "0755"
 
-- name: Add directories for HDDs (ext4 list)
-  ansible.builtin.file:
-    path: /srv/{{ item }}
-    state: directory
-    mode: "0700"
-  loop: "{{ configure_disks_ext4 }}"
+- name: BTRFS List
+  when: configure_disks_ext4 is defined
+  block:
+    - name: Add directories for HDDs (ext4 list)
+      ansible.builtin.file:
+        path: /srv/{{ item }}
+        state: directory
+        mode: "0700"
+      loop: "{{ configure_disks_ext4 }}"
 
-- name: Add directories for HDDs (btrfs list)
-  ansible.builtin.file:
-    path: /srv/{{ item.key }}
-    state: directory
-    mode: "0755"
-  with_items: "{{ configure_disks_btrfs }}"
+    - name: Mount partitions by label (ext4)
+      ansible.posix.mount:
+        path: /srv/{{ item }}
+        src: LABEL={{ item }}
+        fstype: ext4
+        opts: rw,nofail,relatime
+        state: mounted
+      loop: "{{ configure_disks_ext4 }}"
 
-- name: Mount partitions by label (ext4)
-  ansible.posix.mount:
-    path: /srv/{{ item }}
-    src: LABEL={{ item }}
-    fstype: ext4
-    opts: rw,nofail,relatime
-    state: mounted
-  loop: "{{ configure_disks_ext4 }}"
+- name: BTRFS List
+  when: configure_disks_btrfs is defined
+  block:
+    - name: Add directories for HDDs (btrfs list)
+      ansible.builtin.file:
+        path: /srv/{{ item.key }}
+        state: directory
+        mode: "0755"
+      with_dict: "{{ configure_disks_btrfs }}"
 
-- name: Mount partitions by uuid (btrfs)
-  ansible.posix.mount:
-    path: /srv/{{ item.key }}
-    src: UUID={{ item.value }}
-    fstype: btrfs
-    opts: defaults,nofail,autodefrag
-    state: mounted
-  with_items: "{{ configure_disks_btrfs }}"
+    - name: Mount partitions by uuid (btrfs)
+      ansible.posix.mount:
+        path: /srv/{{ item.key }}
+        src: UUID={{ item.value }}
+        fstype: btrfs
+        opts: defaults,nofail,autodefrag
+        state: mounted
+      with_dict: "{{ configure_disks_btrfs }}"
 
 - name: Copy perms script
   ansible.builtin.copy:

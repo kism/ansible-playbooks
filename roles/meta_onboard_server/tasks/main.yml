@@ -5,14 +5,14 @@
   loop_control:
     loop_var: item_role
   loop:
-    # - configure_package_manager
-    # - uninstall_snap
-    # - configure_server_packages
-    # - configure_users
-    # - configure_directories
-    # - configure_sshd
-    # - configure_locale
-    # - configure_telegraf
+    - configure_package_manager
+    - uninstall_snap
+    - configure_server_packages
+    - configure_users
+    - configure_directories
+    - configure_sshd
+    - configure_locale
+    - configure_telegraf
     - configure_firewall
-    # - configure_ca_trust
-    # - configure_motd
+    - configure_ca_trust
+    - configure_motd

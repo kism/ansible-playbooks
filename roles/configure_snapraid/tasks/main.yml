@@ -1,12 +1,7 @@
 ---
 # This can be a role maybe
 - name: Install SnapRAID apt
-  ansible.builtin.apt:
-    name: snapraid
-    state: present
-
-- name: Install SnapRAID dnf
-  ansible.builtin.dnf:
+  ansible.builtin.package:
     name: snapraid
     state: present
 
