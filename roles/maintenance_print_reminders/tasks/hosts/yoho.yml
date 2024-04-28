@@ -1,0 +1,6 @@
+---
+- name: Reminder, proxmox lxc mounts
+  ansible.builtin.debug:
+    msg:
+      - Add mounts via pvewill
+      - pct set 102 -mp0 /srv/Garnet,mp=/srv/Garnet

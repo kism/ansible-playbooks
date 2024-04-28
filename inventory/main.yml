@@ -30,7 +30,10 @@ all:
       ansible_host: podc.kg.lan
       timezone: awst
     code:
-      ansible_host: code.ira.mil.ie
+      ansible_host: code.kg.lan
+      timezone: awst
+    yoho:
+      ansible_host: yoho.kg.lan
       timezone: awst
 # Server Type
 proxmoxvms:
@@ -41,6 +44,7 @@ proxmoxvms:
     kismnas:
     rproxy:
     code:
+    yoho:
 proxmoxhosts:
   hosts:
     pvewill:

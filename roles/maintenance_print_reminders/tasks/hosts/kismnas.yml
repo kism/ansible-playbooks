@@ -2,7 +2,7 @@
 - name: Reminder, proxmox lxc mounts
   ansible.builtin.debug:
     msg:
-      - Add mounts via pvenas
+      - Add mounts via pvematt
       - pct set 102 -mp0 /srv/Amarant,mp=/srv/Amarant
       - pct set 102 -mp1 /srv/Garnet,mp=/srv/Garnet
       - pct set 102 -mp2 /srv/Freya,mp=/srv/Freya

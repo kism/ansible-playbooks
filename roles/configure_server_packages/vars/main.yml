@@ -15,7 +15,6 @@ configure_server_packages_to_install:
   - vim
   - wget
   - gnupg2
-  - firewalld
   - pipx
   - which
   - cmartix

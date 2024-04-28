@@ -37,7 +37,7 @@
 
 - name: Copy smb config
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}_smb.conf
+    src: files/hosts/{{ ansible_hostname }}/smb.conf
     dest: /etc/samba/smb.conf
     mode: "0744"
   notify:

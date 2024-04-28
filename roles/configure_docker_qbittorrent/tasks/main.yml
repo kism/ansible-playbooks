@@ -1,4 +1,7 @@
 ---
+- name: Include vars for host
+  ansible.builtin.include_vars: vars/{{ ansible_hostname }}.yml
+
 - name: Create folder structure
   ansible.builtin.file:
     path: "{{ configure_docker_qbittorrent_base_dir }}/{{ item }}"
