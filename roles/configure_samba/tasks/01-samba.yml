@@ -51,7 +51,7 @@
   notify:
     - Restart avahi
 
-- name: Start and enable services
+- name: Start and enable services oracle Linux
   ansible.builtin.systemd_service:
     name: "{{ item }}"
     enabled: true
@@ -60,7 +60,19 @@
     - smbd
     - wsdd
     - avahi-daemon
-  when: ansible_distribution != 'Debian' or (ansible_distribution == 'Debian' and ansible_distribution_release | lower != 'bullseye') # Debian Bullseye
+  when: ansible_distribution == 'Oracle Linux'
+
+
+- name: Start and enable services ubuntu/bullseye
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - smbd
+    - wsdd
+    - avahi-daemon
+  when: ansible_distribution == 'Ubuntu' or (ansible_distribution == 'Debian' and ansible_distribution_release | lower != 'bullseye') # Debian Bullseye
 
 - name: Start and enable services bullseye
   ansible.builtin.systemd_service:
