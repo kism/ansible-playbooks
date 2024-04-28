@@ -21,7 +21,7 @@ jobs:
         run: sed -i '/configure_archivepodcast_secrets\s*=/d' build_podc.yml && cat build_podc.yml
 
       - name: Remove the password file config entry, ERROR! The vault password file <> was not found
-        run: sed -i '/vault_password_file\s*=/d' ansible.cfg && cat ansible.cfg
+        run: sed -i '/^.*vault_password_file\s*=/d' ansible.cfg && cat ansible.cfg
 
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main # or version tag instead of 'main'
