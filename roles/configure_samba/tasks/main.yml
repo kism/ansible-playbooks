@@ -1,9 +1,12 @@
 ---
 - name: Run samba install tasks
-  ansible.builtin.include_tasks: "01-samba.yml"
+  ansible.builtin.include_tasks: "01-samba-common.yml"
+
+- name: Run samba install tasks
+  ansible.builtin.include_tasks: "02-samba-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"
 
 - name: Run ffmpeg install tasks
-  ansible.builtin.include_tasks: "02-downloaders.yml"
+  ansible.builtin.include_tasks: "03-downloaders.yml"
 
 - name: Add reminder to list
   ansible.builtin.set_fact:

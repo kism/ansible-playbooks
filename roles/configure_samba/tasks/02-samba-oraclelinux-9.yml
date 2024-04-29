@@ -1,0 +1,31 @@
+---
+- name: Install packages for samba dnf
+  ansible.builtin.dnf:
+    name:
+      - samba
+      - wsdd
+      - avahi
+    state: present
+
+- name: Start and enable services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - smb
+    - wsdd
+    - avahi-daemon
+
+- name: Allow samba and wsdd through firewalld
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld
+  loop:
+    - samba
+    - wsdd
+    - mdns

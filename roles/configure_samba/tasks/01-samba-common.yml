@@ -1,0 +1,28 @@
+---
+- name: Create wsdd env file
+  ansible.builtin.file:
+    path: /etc/default/wsdd
+    state: touch
+    mode: "0644"
+
+- name: Copy dfree script
+  ansible.builtin.copy:
+    src: files/dfree_pool_min.sh
+    dest: /opt/scripts/dfree_pool_min
+    mode: "0775"
+
+- name: Copy smb config
+  ansible.builtin.copy:
+    src: files/hosts/{{ ansible_hostname }}/smb.conf
+    dest: /etc/samba/smb.conf
+    mode: "0744"
+  notify:
+    - Restart smbd
+
+- name: Copy avahi config
+  ansible.builtin.copy:
+    src: files/avahi_smb.xml
+    dest: /etc/avahi/services/smb.service
+    mode: "0744"
+  notify:
+    - Restart avahi
