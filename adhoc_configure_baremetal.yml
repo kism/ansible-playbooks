@@ -1,0 +1,7 @@
+---
+- name: Configure baremetal real quick
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - configure_concept_baremetal

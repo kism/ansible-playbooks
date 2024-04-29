@@ -1,5 +1,5 @@
 ---
-- name: Test String Behavioura
+- name: Configure users adhoc
   hosts: all
   # remote_user: kism
   become: true

@@ -7,3 +7,6 @@
 
     - name: Include HDD/fstab tasks
       ansible.builtin.include_tasks: "02-hdd.yml"
+
+    - name: Kernel tasks
+      ansible.builtin.include_tasks: "03-kernel.yml"

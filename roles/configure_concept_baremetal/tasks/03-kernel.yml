@@ -1,0 +1,19 @@
+---
+- name: Disable non-required networking modules
+  community.general.modprobe:
+    name:
+      - atm
+      - dccp
+      - sctp
+      - rds
+      - tipc
+    state: absent
+
+- name: Blacklist modules I dont care about
+  community.general.kernel_blacklist:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - bluetooth
+    - btusb
+    - iwlwifi
