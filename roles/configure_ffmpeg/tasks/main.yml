@@ -3,12 +3,12 @@
   block:
     - name: Set target arch per map if possible
       ansible.builtin.set_fact:
-      ffmpeg_arch: "{{  configure_ffmpeg_arch_map[ansible_architecture] }}"
+        ffmpeg_arch: "{{  configure_ffmpeg_arch_map[ansible_architecture] }}"
 
   rescue:
     - name: Set default ffmpeg_arch
       ansible.builtin.set_fact:
-      ffmpeg_arch: "{{ ansible_architecture }}"
+        ffmpeg_arch: "{{ ansible_architecture }}"
 
 - name: Create ffmpreg directory
   ansible.builtin.file:

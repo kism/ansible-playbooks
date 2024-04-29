@@ -9,7 +9,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - {{ configure_docker_sabnzbd_base_dir }}/configs/sonarr/config:/config
-      - {{ configure_docker_sabnzbd_tv_dir }}:/tv
+      - {{ configure_docker_arr_tv_dir }}:/tv
       - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
     ports:
       - 8989:8989
@@ -26,7 +26,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - {{ configure_docker_sabnzbd_base_dir }}/configs/radarr/config:/config
-      - {{ configure_docker_sabnzbd_movies_dir }}:/movies
+      - {{ configure_docker_arr_movies_dir }}:/movies
       - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
     ports:
       - 7878:7878

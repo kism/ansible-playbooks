@@ -111,6 +111,7 @@ skip_ansible_lint
 * fix pve certbot
 * workstation setup
 * pull docker, do updates docker compose
+* ssh only from home network pve
 
 do later
 

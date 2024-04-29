@@ -1,5 +1,5 @@
 ---
-- name: Not implemented
-  ansible.builtin.fail:
-    msg: You havent setup docker for dnf systems yet Kieran
-  when: true
+- name: Install "Docker"
+  ansible.builtin.dnf:
+    name: podman-docker
+    state: installed
