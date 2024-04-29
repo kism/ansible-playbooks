@@ -4,11 +4,6 @@
     manager: auto
   register: package_facts
 
-- name: Disable ufw
-  community.general.ufw:
-    state: disabled
-  when: "'ufw' in package_facts.ansible_facts.packages"
-
 - name: Remove packages that I want to avoid
   ansible.builtin.apt:
     name: "{{ item }}"

@@ -2,8 +2,8 @@
 - name: User Setup
   ansible.builtin.include_tasks: "01-user.yml"
 
-- name: FFmpeg Setup
-  ansible.builtin.include_tasks: "02-ffmpeg.yml"
+# - name: FFmpeg Setup
+#   ansible.builtin.include_tasks: "02-ffmpeg.yml"
 
 - name: Nginx setup # Required for switchover
   ansible.builtin.include_tasks: "03-nginx.yml"

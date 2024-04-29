@@ -1,19 +1,9 @@
 ---
-# no separate vars folder since this needs to be copypasted to archivepodcast and samba
-- name: Variable for ffmpeg arch congigure_archivepodcast_arch_map
-  ansible.builtin.set_fact:
-    ffmpeg_arch_map: # uname (ansible), whatever ffmpeg uses
-      x86_64: amd64
-      aarch64: arm64
-      armv6l: armel
-      armv7l: armel
-      armv8l: armel
-
 - name: Get ffmpeg_arch
   block:
     - name: Set target arch per map if possible
       ansible.builtin.set_fact:
-      ffmpeg_arch: "{{  ffmpeg_arch_map[ansible_architecture] }}"
+      ffmpeg_arch: "{{  configure_ffmpeg_arch_map[ansible_architecture] }}"
 
   rescue:
     - name: Set default ffmpeg_arch

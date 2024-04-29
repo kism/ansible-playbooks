@@ -18,6 +18,7 @@ configure_server_packages_to_install:
   - pipx
   - which
   - cmartix
+  - rsync
 
 configure_server_packages_to_remove:
   - cockpit
@@ -25,4 +26,3 @@ configure_server_packages_to_remove:
   - libwayland-client
   - libX11
   - xorg-x11-server-Xorg
-  - ufw
