@@ -5,15 +5,15 @@
   become: true
   roles:
     # Onboard Server
-    - meta_include_secrets
+    # - meta_include_secrets
     # - meta_onboard_server
 
-    # Purpose specific
-    # - configure_samba
-    - configure_docker
-    - configure_docker_qbittorrent
-    - configure_docker_sabnzbd
-    - configure_docker_arr
+    # # Purpose specific
+    - configure_samba
+    # - configure_docker
+    # - configure_docker_qbittorrent
+    # - configure_docker_sabnzbd
+    # - configure_docker_arr
 
-    # Reminders
-    - maintenance_print_reminders
+    # # Reminders
+    # - maintenance_print_reminders

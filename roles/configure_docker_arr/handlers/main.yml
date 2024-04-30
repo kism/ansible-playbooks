@@ -1,8 +1,17 @@
 ---
 - name: Restart docker
-  ansible.builtin.systemd_service:
-    name: docker
-    state: reloaded
+  block:
+    - name: Restart docker (docker)
+      ansible.builtin.systemd_service:
+        name: docker
+        state: reloaded
+      when: ansible_pkg_mgr == 'apt'
+
+    - name: Restart docker (podman)
+      ansible.builtin.systemd_service:
+        name: podman
+        state: reloaded
+      when: ansible_pkg_mgr == 'dnf'
 
 - name: Reload systemd
   ansible.builtin.systemd_service:

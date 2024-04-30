@@ -56,7 +56,11 @@ skip_ansible_lint
 ^.*owner: root$.*$\n^.*group: root.*$
 
 # Commented out tasks and such
-# - name
+\# - name
+
+# Tasks with same name
+<no regex yet>
+
 ```
 
 ### Good style things to do
