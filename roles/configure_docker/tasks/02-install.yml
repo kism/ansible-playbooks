@@ -1,0 +1,17 @@
+---
+- name: Install docker packages
+  ansible.builtin.package:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+  notify: Restart docker service
+
+- name: Start docker service
+  ansible.builtin.systemd_service:
+    service: docker
+    enabled: true
+  notify: Restart docker service

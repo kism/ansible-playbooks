@@ -26,6 +26,10 @@
     owner: root
     group: qbtuser
 
+- name: Pull images for docker-compose
+  community.docker.docker_compose_v2_pull:
+    project_src: "{{ configure_docker_sabnzbd_base_dir }}/configs/sabnzbd/"
+
 - name: Allow sabnzbd through firewalld
   ansible.posix.firewalld:
     service: sabnzbd

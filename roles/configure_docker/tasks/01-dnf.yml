@@ -1,5 +1,18 @@
 ---
-- name: Install "Docker"
+- name: Remove podman packages
   ansible.builtin.dnf:
-    name: podman-docker
-    state: installed
+    name:
+      - podman-docker
+      - podman
+      - podman-compose
+    state: absent
+
+- name: Add Docker Repo
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: "0644"
+
+- name: Update DNF Cache
+  ansible.builtin.dnf:
+    update_cache: true

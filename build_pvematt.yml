@@ -4,8 +4,11 @@
   gather_facts: true
   become: true
   roles:
-    # Onboard Server
+    # Preflight
     - meta_include_secrets
+
+    # Onboard Server
+
     # - meta_onboard_server
 
     # Purpose specific

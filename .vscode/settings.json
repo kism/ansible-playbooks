@@ -1,20 +1,26 @@
 {
-	"workbench.colorTheme": "paddy-citadel",
-	// Specify default formatters
-	"[ansible]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[python]": {
-		"editor.defaultFormatter": "ms-python.black-formatter"
-	},
-	"[markdown]": {
-		"editor.formatOnSave": true,
-		"editor.formatOnPaste": true
-	},
-	// Needed for ansible-lint to trigger for roles
-	"files.associations": {
-		"*.yml": "ansible",
-		"*.yaml": "ansible",
-	},
-	"ansible.python.interpreterPath": "/home/kism/src/ansible-playbooks/.venv/bin/python"
+  "workbench.colorTheme": "paddy-citadel",
+  // Specify default formatters
+  "[ansible]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jinja-yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+  // Needed for ansible-lint to trigger for roles
+  "files.associations": {
+    "*.yml": "ansible",
+    "*.yaml": "ansible",
+    ".ansible-lint": "yaml",
+    ".ansible-lint.yml": "yaml",
+    "*.md.j2": "markdown"
+  },
+  "ansible.python.interpreterPath": "/home/kism/src/ansible-playbooks/.venv/bin/python"
 }

@@ -3,7 +3,6 @@
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
         "ms-python.black-formatter",
-        "ms-python.pylint",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "redhat.ansible",
@@ -11,6 +10,7 @@
         "samuelcolvin.jinjahtml",
         "vscode-icons-team.vscode-icons",
         "yile-ou.paddy-color-theme",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "charliermarsh.ruff"
     ]
-}
+}s

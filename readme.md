@@ -10,13 +10,13 @@ Running on macos
 `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
 
 Run
-`ansible-playbook build_ent.yml -i inventory.yml --user ansible_svc -e @../ansible-playbooks-secrets/secrets.yml --vault-password-file=/tmp/ansiblevaultpassword`
-
-`ansible-playbook build_podc-test.yml -i inventory.yml --user ansible_svc -e @../ansible-playbooks-secrets/secrets.yml -e @../ansible-playbooks-secrets/secrets_podc-test.yml --vault-password-file=/tmp/ansiblevaultpassword`
+`ansible-playbook build_ent.yml -i inventory.yml`
 
 ## Vault
 
 No need for `--vault-password-file=/tmp/ansiblevaultpassword` since its in config
+
+Ensure the secrets repo is cloned
 
 ```bash
 touch /tmp/ansiblevaultpassword && chmod 600 /tmp/ansiblevaultpassword && echo password > /tmp/ansiblevaultpassword
@@ -116,6 +116,7 @@ skip_ansible_lint
 * workstation setup
 * pull docker, do updates docker compose
 * ssh only from home network pve
+* firewall pve
 
 do later
 

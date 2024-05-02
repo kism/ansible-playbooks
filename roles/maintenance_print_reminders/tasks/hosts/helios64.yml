@@ -1,4 +1,4 @@
 ---
 - name: Reminder, this host sucks
   ansible.builtin.debug:
-    msg: Your Helios64 will kernel panic every second day
+    msg: ⚠️ Your Helios64 will kernel panic every second day

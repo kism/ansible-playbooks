@@ -15,7 +15,7 @@ services:
       - 8989:8989
     restart: unless-stopped
     networks:
-      net-sabnzbd:
+      net-arr:
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -32,11 +32,11 @@ services:
       - 7878:7878
     restart: unless-stopped
     networks:
-      net-sabnzbd:
+      net-arr:
 
 networks:
-  net-sabnzbd:
+  net-arr:
     driver_opts:
-      com.docker.network.bridge.name: br-sabnzbd
+      com.docker.network.bridge.name: br-arr
 
 # https://github.com/aetaric/checkrr

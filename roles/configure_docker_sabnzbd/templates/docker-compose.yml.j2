@@ -9,10 +9,15 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ configure_docker_sabnzbd_base_dir }}/configs/sabnzbd/config:/config
-      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads #optional
-      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/incomplete:/incomplete-downloads #optional
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
+      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/incomplete:/incomplete-downloads
     ports:
       - 8081:8080
     networks:
       net-sabnzbd:
     restart: unless-stopped
+
+networks:
+  net-sabnzbd:
+    driver_opts:
+      com.docker.network.bridge.name: br-sabnzbd
