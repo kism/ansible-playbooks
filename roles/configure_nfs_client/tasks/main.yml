@@ -27,7 +27,7 @@
 - name: Mount Partitions
   ansible.posix.mount:
     path: /mnt/{{ item.key }}
-    src: "{{ item.value }}:/{{ item.key }}"
+    src: "{{ item.value }}:/srv/{{ item.key }}"
     fstype: nfs
     # opts: "vers=3,tcp,timeo=600,soft,intr"
     state: mounted
