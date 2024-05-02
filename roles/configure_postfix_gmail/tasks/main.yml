@@ -50,7 +50,7 @@
 
 # # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
-# myhostname=pvenas.kg.lan
+# myhostname=hostname.kg.lan
 
 # smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
 # biff = no

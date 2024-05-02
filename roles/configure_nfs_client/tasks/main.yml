@@ -13,7 +13,7 @@
 
 - name: Include vars for host
   ansible.builtin.include_vars:
-    dir: vars/{{ ansible_hostname }}.yml
+    file: 'vars/{{ ansible_hostname }}.yml'
 
 - name: Create directories
   ansible.builtin.file:
@@ -22,13 +22,13 @@
     owner: nobody
     group: nogroup
     mode: "0655"
-  with_dict: "{{ systemsetup }}"
+  with_dict: "{{ configure_nfs_client_mounts }}"
 
 - name: Mount Partitions
   ansible.posix.mount:
     path: /mnt/{{ item.key }}
-    src: "{{ item.value }}"
+    src: "{{ item.value }}:/{{ item.key }}"
     fstype: nfs
     # opts: "vers=3,tcp,timeo=600,soft,intr"
     state: mounted
-  with_dict: "{{ systemsetup }}"
+  with_dict: "{{ configure_nfs_client_mounts }}"

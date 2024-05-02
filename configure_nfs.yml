@@ -1,0 +1,15 @@
+---
+- name: Setup Proxmox hosts for NFS
+  hosts: proxmoxhosts
+  gather_facts: true
+  become: true
+  roles:
+    # Preflight
+    - meta_include_secrets
+
+    # Purpose specific
+    - configure_nfs_server
+    - configure_nfs_client
+
+    # Reminders
+    - maintenance_print_reminders

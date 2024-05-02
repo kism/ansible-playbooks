@@ -1,5 +1,5 @@
 ---
-- name: Setup Proxmox Host pvenas
+- name: Setup Proxmox Host pvewill
   hosts: pvewill
   gather_facts: true
   become: true
@@ -15,8 +15,6 @@
     - configure_concept_baremetal
     - configure_postfix_gmail
     - configure_disks
-    - configure_nfs_server
-    - configure_nfs_client
     # No snapraid....
 
     # Reminders
