@@ -1,0 +1,6 @@
+---
+- name: Copy the cert post renewell script
+  ansible.builtin.copy:
+    src: files/vzdump.conf
+    dest: /etc/vzdump.conf
+    mode: "0644"
