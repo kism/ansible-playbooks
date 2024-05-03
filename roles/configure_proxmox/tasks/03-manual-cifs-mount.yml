@@ -1,0 +1,40 @@
+---
+- name: Write backup_svc_password file
+  ansible.builtin.copy:
+    dest: "/root/.backup_svc_password"
+    content: |-
+      username=backup_svc
+      password={{ secret_backup_svc_password }}
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Mount CIFS block
+  block:
+    - name: Mount the CIFS directory
+      ansible.posix.mount:
+        fstype: cifs
+        src: "//kismnas.kg.lan/KiSMNAS"
+        opts: "credentials=/root/.backup_svc_password,rw"
+        state: mounted
+        name: "/mnt/kismnas_backup_svc"
+        passno: 0
+      timeout: 10
+
+  rescue:
+    - name: Mount the CIFS directory
+      ansible.posix.mount:
+        fstype: cifs
+        src: "//kismnas.kg.lan/KiSMNAS"
+        opts: "credentials=/root/.backup_svc_password,rw"
+        state: present
+        name: "/mnt/pve/kismnas"
+        passno: 0
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: 'Couldnt mount backups cifs share, just adding to fstab'
+
+    - name: Add reminder to list
+      ansible.builtin.set_fact:
+        reminder_list: "{{ reminder_list + ['Proxmox mounts are in fstab, but couldnt be mounted, check kismnas'] }}"

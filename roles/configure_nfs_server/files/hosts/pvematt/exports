@@ -1,4 +1,5 @@
 /srv/Amarant/backups pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+/srv/Amarant/backups pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
 /srv/Amarant pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
 /srv/Garnet pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
 /srv/Freya pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
