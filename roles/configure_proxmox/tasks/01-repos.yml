@@ -1,18 +1,4 @@
 ---
-- name: Remove enterprise repos
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/apt/sources.list.d/pve-enterprise.list
-    - /etc/apt/sources.list.d/ceph.list
-
-# - name: Add no-subscription PVE repo # Handled by the script in a sec
-#   ansible.builtin.apt_repository:
-#     repo: deb http://download.proxmox.com/debian/pve {{ ansible_distribution | lower }} pve-no-subscription
-#     filename: pve-no-subscription
-#     state: present
-
 - name: Make script directory
   ansible.builtin.file:
     path: /opt/scripts/pve-nag-buster
@@ -38,7 +24,7 @@
   register: configure_proxmox_nagbuster_replace_files
   loop: "{{ configure_proxmox_nagbuster_files }}"
 
-- name: Run the pve-nag-buster script
+- name: Run pve-nag-buster script to configure repos and remove nag
   ansible.builtin.command:
     cmd: /opt/scripts/pve-nag-buster/install.sh --offline
   changed_when: not pve_nag_buster_hook.stat.exists or
