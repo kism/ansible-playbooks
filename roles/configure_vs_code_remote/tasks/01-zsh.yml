@@ -1,0 +1,18 @@
+---
+- name: Install zsh, modern python
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
+- name: Set shell
+  ansible.builtin.user:
+    name: kism
+    shell: /usr/bin/zsh
+
+- name: Set default zsh config
+  become: true
+  become_user: kism
+  ansible.builtin.file:
+    path: ~/.zshrc
+    state: touch
+    mode: "0640"

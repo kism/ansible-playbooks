@@ -32,6 +32,7 @@ all:
     code:
       ansible_host: code.kg.lan
       timezone: awst
+      ansible_python_interpreter: /usr/bin/python3.9
     yoho:
       ansible_host: yoho.kg.lan
       timezone: awst

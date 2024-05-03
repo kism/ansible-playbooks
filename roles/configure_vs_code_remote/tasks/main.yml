@@ -1,62 +1,21 @@
 ---
-- name: Install zsh, modern python
-  ansible.builtin.package:
-    name:
-      - zsh
-      - python3.11
-    state: present
+- name: Include zsh tasks
+  ansible.builtin.include_tasks: 01-zsh.yml
 
-- name: Set shell
-  ansible.builtin.user:
-    name: kism
-    shell: /usr/bin/zsh
+- name: Include zsh tasks
+  ansible.builtin.include_tasks: 02-python.yml
 
-- name: Block to run as user
-  become: true
-  become_user: kism
-  block:
-    - name: Set default zsh config
-      ansible.builtin.file:
-        path: ~/.zshrc
-        state: touch
-        mode: "0640"
+- name: Include zsh tasks
+  ansible.builtin.include_tasks: 03-powershell.yml
 
-    - name: Install poetry
-      community.general.pipx:
-        name: poetry
-        state: install
-
-    - name: Ensure poetry folder
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        mode: "0750"
-      loop:
-        - ~/.config
-        - ~/.config/pypoetry
-
-    - name: Copy poetry config
-      ansible.builtin.copy:
-        src: files/config.toml
-        dest: ~/.config/pypoetry/config.toml
-        mode: "0640"
-
-    - name: Add reminder to list
-      ansible.builtin.set_fact:
-        reminder_list: "{{ reminder_list + ['You do not setup poetry autocomplete for zsh yet'] }}"
-
-    - name: Ensure that src folder exists
-      ansible.builtin.file:
-        path: ~/src
-        state: directory
-        mode: "0700"
-
-    - name: Clone repos, if they don't exist? TODO
-      ansible.builtin.git:
-        repo: https://github.com/kism/{{ item }}.git
-        dest: ~/src/{{ item }}
-        single_branch: true
-        version: main
-      loop:
-        - dotfiles
-        - ansible-playbooks
+- name: Clone repos, if they don't exist? TODO
+  ansible.builtin.git:
+    repo: https://github.com/kism/{{ item }}.git
+    dest: ~/src/{{ item }}
+    single_branch: true
+    version: main
+  loop:
+    - dotfiles
+    - ansible-playbooks
+    - kism-ansible-audit
+    - archivepodcast

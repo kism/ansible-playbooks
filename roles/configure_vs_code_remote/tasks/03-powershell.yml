@@ -1,0 +1,25 @@
+---
+- name: Setup powershell DNF block
+  when: ansible_pkg_mgr == 'dnf'
+  block:
+    - name: Setup Microsoft repo DNF
+      ansible.builtin.dnf:
+        name: https://packages.microsoft.com/config/rhel/{{ ansible_distribution_major_version }}/packages-microsoft-prod.rpm
+        disable_gpg_check: true
+
+    - name: Install powershell
+      ansible.builtin.dnf:
+        name: powershell
+        state: present
+
+- name: Setup powershell APT block
+  when: ansible_pkg_mgr == 'apt'
+  block:
+    - name: Setup Microsoft repo APT
+      ansible.builtin.apt:
+        name: https://packages.microsoft.com/config/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/packages-microsoft-prod.deb
+
+    - name: Install powershell
+      ansible.builtin.apt:
+        name: powershell
+        state: present

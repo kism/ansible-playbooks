@@ -2,7 +2,8 @@
   "workbench.colorTheme": "paddy-citadel",
   // Specify default formatters
   "[ansible]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "files.insertFinalNewline": true
   },
   "[jinja-yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

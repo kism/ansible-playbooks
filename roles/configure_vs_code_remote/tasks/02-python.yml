@@ -1,0 +1,35 @@
+---
+- name: Install zsh, modern python
+  ansible.builtin.package:
+    name: python3.11
+    state: present
+
+- name: Block to run as user
+  become: true
+  become_user: kism
+  block:
+    - name: Install poetry
+      community.general.pipx:
+        name: poetry
+        state: install
+
+    - name: Ensure poetry folder
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0750"
+      loop:
+        - ~/.config
+        - ~/.config/pypoetry
+
+    - name: Copy poetry config
+      ansible.builtin.copy:
+        src: files/config.toml
+        dest: ~/.config/pypoetry/config.toml
+        mode: "0640"
+
+    - name: Ensure that src folder exists
+      ansible.builtin.file:
+        path: ~/src
+        state: directory
+        mode: "0700"
