@@ -4,15 +4,15 @@
   gather_facts: true
   become: true
   roles:
-    # # Preflight
+    # Preflight
     - meta_include_secrets
 
-    # # Onboard Server
-    # - meta_onboard_server
+    # Onboard Server
+    - meta_onboard_server
 
-    # # Purpose specific
-    # - configure_nginx
-    # - configure_fail2ban
+    # Purpose specific
+    - configure_nginx
+    - configure_fail2ban
     - configure_reverse_proxy
     - configure_allowlistapp
 

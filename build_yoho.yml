@@ -8,7 +8,7 @@
     - meta_include_secrets
 
     # Onboard Server
-    # - meta_onboard_server
+    - meta_onboard_server
 
     # # Purpose specific
     - configure_samba

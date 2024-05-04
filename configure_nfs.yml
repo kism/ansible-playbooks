@@ -7,8 +7,6 @@
     # Preflight
     - meta_include_secrets
 
-    - configure_proxmox
-
     # Purpose specific
     - configure_nfs_server
     - configure_nfs_client
