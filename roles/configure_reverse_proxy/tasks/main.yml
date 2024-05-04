@@ -8,6 +8,14 @@
       - fail2ban
     state: installed
 
+- name: Create per-vhost logging directory
+  ansible.builtin.file:
+    path: "/var/log/nginx/vhosts/"
+    state: directory
+    mode: "0750"
+    owner: root
+    group: nginx
+
 - name: Copy nginx conf
   ansible.builtin.copy:
     src: files/hosts/{{ ansible_hostname }}/nginx.conf
@@ -40,7 +48,7 @@
     dest: /etc/nginx/sites-available/
     mode: "0660"
   with_fileglob:
-    - 'files/hosts/{{ ansible_hostname }}/sites-available/*.conf'
+    - "files/hosts/{{ ansible_hostname }}/sites-available/*.conf"
   notify:
     - Reload nginx
 
@@ -58,16 +66,6 @@
   notify:
     - Reload nginx
   loop: "{{ config_files_found.files }}"
-
-# - name: Copy ip whitelist
-#   ansible.builtin.template:
-#     src: templates/ipwhitelist.conf.j2
-#     dest: /etc/nginx/ipwhitelist.conf
-#     owner: nginx
-#     group: nginx
-#     mode: "0644"
-#   notify:
-#     - Reload nginx
 
 - name: Copy index.html
   ansible.builtin.copy:
@@ -95,15 +93,6 @@
     dest: /root/.cloudflare.ini
     mode: "0600"
 
-- name: Remove Let's Encrypt directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/letsencrypt/live
-    - /etc/letsencrypt/archive
-    - /etc/letsencrypt/renewal
-
 - name: Initial certbot config
   ansible.builtin.command:
     cmd: >-
@@ -118,6 +107,7 @@
       -d kierangee.au,*.kierangee.au
   register: command_output
   changed_when: false # Handled in next task
+  failed_when: command_output.rc != 0 and not "too many certificates" in command_output.stderr
 
 - name: Check if certs have changed
   ansible.builtin.find:

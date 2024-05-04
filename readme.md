@@ -111,12 +111,12 @@ skip_ansible_lint
 * jinja2 better "{ var }" vs ({{ var }})
 * check getfacts multiple hosts
 * fun log folder
-* update landing page
 * fix pve certbot
 * workstation setup
 * pull docker, do updates docker compose
 * ssh only from home network pve
 * firewall pve
+* better logging for docker-compose
 
 do later
 

@@ -13,17 +13,9 @@
   ansible.builtin.file:
     path: /opt/allowlistapp
     state: directory
-    recurse: true
     owner: root
     group: nginx
-    mode: u=rwx,g=rX,o=
-
-- name: Attempt to change ownership on /opt/allowlistapp
-  ansible.builtin.file:
-    path: /opt/allowlistapp
-    recurse: true
-    owner: nginx
-    group: nginx
+    mode: u=rwX,g=rwX,o=
 
 - name: Clone allowlistapp
   become: true
