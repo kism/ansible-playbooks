@@ -116,6 +116,8 @@ skip_ansible_lint
 * ssh only from home network pve
 * firewall pve
 * better logging for docker-compose
+* put arr configs on disk
+* put arr log configs
 
 do later
 
