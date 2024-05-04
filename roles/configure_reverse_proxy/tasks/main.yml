@@ -1,9 +1,4 @@
 ---
-- name: Install fedoraproject epel
-  ansible.builtin.dnf:
-    name: https://download-ib01.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-    state: present
-
 - name: Install Packages
   ansible.builtin.dnf:
     name:
@@ -45,7 +40,7 @@
     dest: /etc/nginx/sites-available/
     mode: "0660"
   with_fileglob:
-    - files/hosts/{{ ansible_hostnname }}/sites-available/*.conf
+    - 'files/hosts/{{ ansible_hostname }}/sites-available/*.conf'
   notify:
     - Reload nginx
 
@@ -64,19 +59,19 @@
     - Reload nginx
   loop: "{{ config_files_found.files }}"
 
-- name: Copy ip whitelist
-  ansible.builtin.template:
-    src: templates/ipwhitelist.conf.j2
-    dest: /etc/nginx/ipwhitelist.conf
-    owner: nginx
-    group: nginx
-    mode: "0644"
-  notify:
-    - Reload nginx
+# - name: Copy ip whitelist
+#   ansible.builtin.template:
+#     src: templates/ipwhitelist.conf.j2
+#     dest: /etc/nginx/ipwhitelist.conf
+#     owner: nginx
+#     group: nginx
+#     mode: "0644"
+#   notify:
+#     - Reload nginx
 
 - name: Copy index.html
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostnname }}index.html
+    src: files/hosts/{{ ansible_hostname }}/index.html
     dest: /usr/share/nginx/html/index.html
     mode: "0664"
   notify:

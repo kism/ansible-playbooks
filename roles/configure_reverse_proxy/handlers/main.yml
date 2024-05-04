@@ -3,7 +3,8 @@
   ansible.builtin.systemd_service:
     name: firewalld
     state: restarted
-- name: Restart nginx
+
+- name: Reload nginx
   ansible.builtin.systemd_service:
     name: nginx
     state: reloaded
