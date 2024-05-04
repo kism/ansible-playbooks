@@ -89,7 +89,6 @@ skip_ansible_lint
 
 ## TODO
 
-* separate out sab
 * separate out more configs
 * set permissions on unmounted directories
 * Proxmox
