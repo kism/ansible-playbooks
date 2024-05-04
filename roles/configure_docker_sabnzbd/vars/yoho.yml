@@ -1,3 +1,3 @@
 ---
 configure_docker_sabnzbd_downloads_base_dir: /srv/Quina/downloads
-configure_docker_sabnzbd_settings_base_dir: /opt/
+configure_docker_sabnzbd_settings_base_dir: /opt

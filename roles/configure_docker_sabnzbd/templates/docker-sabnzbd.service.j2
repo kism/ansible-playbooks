@@ -1,8 +1,7 @@
 [Unit]
 Description=SABnzbd service with docker compose
 PartOf=docker.service
-Requires=remote-fs.target
-After=docker.service,remote-fs.target
+After=docker.service
 
 [Service]
 Type=oneshot
