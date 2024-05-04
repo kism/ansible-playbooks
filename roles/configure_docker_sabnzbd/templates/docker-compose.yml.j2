@@ -8,9 +8,9 @@ services:
       - PGID=1086
       - TZ=Australia/Perth
     volumes:
-      - {{ configure_docker_sabnzbd_base_dir }}/configs/sabnzbd/config:/config
-      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
-      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/incomplete:/incomplete-downloads
+      - {{ configure_docker_sabnzbd_settings_base_dir }}/sabnzbd/config:/config
+      - {{ configure_docker_sabnzbd_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ configure_docker_sabnzbd_downloads_base_dir }}/usenet/incomplete:/incomplete-downloads
     ports:
       - 8081:8080
     networks:

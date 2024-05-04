@@ -8,9 +8,9 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_sabnzbd_base_dir }}/configs/sonarr/config:/config
+      - {{ configure_docker_arr_settings_base_dir }}/sonarr/config:/config
       - {{ configure_docker_arr_tv_dir }}:/tv
-      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
+      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -25,9 +25,9 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_sabnzbd_base_dir }}/configs/radarr/config:/config
+      - {{ configure_docker_arr_settings_base_dir }}/radarr/config:/config
       - {{ configure_docker_arr_movies_dir }}:/movies
-      - {{ configure_docker_sabnzbd_base_dir }}/downloads/usenet/complete:/downloads
+      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped

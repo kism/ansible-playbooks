@@ -1,2 +1,3 @@
 ---
-configure_docker_qbittorrent_base_dir: /srv/Quina
+configure_docker_qbittorrent_downloads_base_dir: /srv/Quina/downloads
+configure_docker_qbittorrent_settings_base_dir: /opt/

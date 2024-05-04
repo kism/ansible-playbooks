@@ -18,10 +18,11 @@ services:
       - PGID=1086
       - TZ=Australia/Perth
     volumes:
-      - {{ configure_docker_qbittorrent_base_dir }}/configs/gluetun:/config
+      - {{ configure_docker_qbittorrent_settings_base_dir }}/gluetun:/config
     networks:
       net-gluetun:
-    restart: unless-stopped
+    restart: on-failure:5
+
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -32,9 +33,10 @@ services:
       - TZ=Australia/Perth
       - WEBUI_PORT=8080
     volumes:
-      - {{ configure_docker_qbittorrent_base_dir }}/configs/qbittorrent/config:/config
-      - {{ configure_docker_qbittorrent_base_dir }}/configs/qbittorrent/watch:/watch
-      - {{ configure_docker_qbittorrent_base_dir }}/downloads/torrent:/downloads
+      - {{ configure_docker_qbittorrent_settings_base_dir }}qbittorrent/config:/config
+      - {{ configure_docker_qbittorrent_settings_base_dir }}/qbittorrent/watch:/watch
+      - {{ configure_docker_qbittorrent_downloads_base_dir }}/torrent:/downloads
+      - /var/log/qbittorrent:/config/log
     restart: unless-stopped
     depends_on:
       gluetun:

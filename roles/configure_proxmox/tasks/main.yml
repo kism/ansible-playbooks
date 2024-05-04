@@ -11,8 +11,5 @@
 - name: Include tasks to configure Proxmox repos
   ansible.builtin.include_tasks: "01-repos.yml"
 
-# - name: Include tasks to configure Proxmox certbot config
-#   ansible.builtin.include_tasks: 02-certbot.yml
-
 - name: Include tasks to configure Proxmox certbot config
-  ansible.builtin.include_tasks: 03-vzdump.yml
+  ansible.builtin.include_tasks: 02-vzdump.yml
