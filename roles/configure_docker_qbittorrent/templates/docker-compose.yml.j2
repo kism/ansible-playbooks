@@ -21,7 +21,7 @@ services:
       - {{ configure_docker_qbittorrent_settings_base_dir }}/gluetun:/config
     networks:
       net-gluetun:
-    restart: on-failure:5
+    restart: always
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
