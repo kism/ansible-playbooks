@@ -15,6 +15,9 @@
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
   },
+  "[properties]": {
+    "editor.tabSize": 2
+  } ,
   // Needed for ansible-lint to trigger for roles
   "files.associations": {
     "*.yml": "ansible",
