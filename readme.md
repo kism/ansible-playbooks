@@ -115,6 +115,7 @@ skip_ansible_lint
 * pull docker, do updates docker compose
 * ssh only from home network pve
 * firewall pve
+* audit files named *telegraf.yml
 
 do later
 

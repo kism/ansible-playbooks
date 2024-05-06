@@ -13,3 +13,8 @@
 
 - name: Include tasks, telegraf config
   ansible.builtin.include_tasks: "02-config.yml"
+
+- name: Include tasks, telegraf inputs configs
+  ansible.builtin.include_tasks: "{{ item }}"
+  with_fileglob:
+    - "tasks/telegraf_inputs/*"

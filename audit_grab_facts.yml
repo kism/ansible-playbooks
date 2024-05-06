@@ -1,7 +1,8 @@
 ---
 - name: Print ansible facts
   hosts: all
+  gather_facts: false
   vars:
     print_debug: true
   roles:
-    - maintenance_getfacts
+    - maintenance_gather_facts

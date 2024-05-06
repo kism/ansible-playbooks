@@ -1,0 +1,3 @@
+---
+maintenance_gather_facts_facts_debug_file: logs/{{ inventory_hostname }}_facts.yml
+maintenance_gather_facts_vars_debug_file: logs/{{ inventory_hostname }}_vars.yml
