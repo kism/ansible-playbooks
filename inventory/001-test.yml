@@ -9,7 +9,7 @@ all:
     new_vms:
       hosts:
         KGTEST:
-
           ansible_host: "{{ new_server_ip_address }}"
-
-          ct_target_node: pvewill
+          proxmox_vm_id: 199
+          proxmox_target_node: pvewill
+          proxmox_guest_mac_address: AA:BB:AA:BB:AA:BB
