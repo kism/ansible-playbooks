@@ -1,8 +1,0 @@
----
-- name: Install packages
-  ansible.builtin.apt:
-    install_recommends: false
-    pkg:
-      - nvme-cli
-      - lm-sensors
-    state: present

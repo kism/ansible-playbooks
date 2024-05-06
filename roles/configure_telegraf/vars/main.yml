@@ -1,19 +1,21 @@
 ---
 configure_telegraf_service_allowlist:
-  - geostat
-  - archivepodcast
-  - fail2ban*
-  - grafana*
-  - influxdb*
+  - geostat.service
+  - archivepodcast.service
+  - fail2ban.service
+  - grafana-server.service
+  - influxdb.service
   - pve-container*
   - pve-cluster*
   - pve-firewall*
   - pvedaemon.service
   - pveproxy.service
   - pvescheduler.service
-  - smb*
-  - step-ca
-  - sshd
-  - firewalld
-  - nginx*
-  - docker
+  - smb.service
+  - smbd.service
+  - step-ca.service
+  - sshd.service
+  - firewalld.service
+  - nginx.service
+  - docker.service
+  - allowlistapp.service

@@ -1,4 +1,13 @@
 ---
+- name: Install packages
+  ansible.builtin.apt:
+    install_recommends: false
+    pkg:
+      - nvme-cli
+      - lm-sensors
+    state: present
+
+
 - name: Figure out if a Seagate Hard Drive is attached
   ansible.builtin.set_fact:
     configure_concept_baremetal_found_seagate: true

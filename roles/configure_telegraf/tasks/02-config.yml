@@ -1,7 +1,7 @@
 ---
 - name: Copy host telegraf config
   ansible.builtin.template:
-    src: templates/10-influxdb-output.conf.j2
+    src: templates/telegraf.d/10-influxdb-output.conf.j2
     dest: /etc/telegraf/telegraf.d/10-influxdb-output.conf
     owner: root
     group: telegraf
@@ -14,3 +14,10 @@
     name: telegraf
     state: started
     enabled: true
+
+- name: Remove old config (TODO FIXME)
+  ansible.builtin.file:
+    path: /etc/telegraf/telegraf.d/{{ inventory_hostname }}.conf
+    state: absent
+  notify:
+    - Restart telegraf

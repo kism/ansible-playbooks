@@ -1,10 +1,10 @@
 ---
 - name: Block for baremetal hosts
-  when: ansible_facts['virtualization_role'] == host
+  when: ansible_facts['virtualization_role'] == 'host'
   block:
     - name: Copy files that are related to baremetal hosts
       ansible.builtin.copy:
-        src: files/telegraf/20-disks.conf
+        src: files/telegraf.d/20-disks.conf
         dest: /etc/telegraf/telegraf.d/20-disks.conf
         mode: "0644"
         owner: root
