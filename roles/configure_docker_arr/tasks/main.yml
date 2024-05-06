@@ -11,10 +11,16 @@
     group: qbtuser
   with_items:
     - arr
-    - radarr
-    - radarr/config
-    - sonarr
-    - sonarr/config
+    - radarr-main
+    - radarr-main/config
+    - radarr-hq
+    - radarr-hq/config
+    - radarr-documentary
+    - radarr-documentary/config
+    - sonarr-main
+    - sonarr-main/config
+    - sonarr-documentary
+    - sonarr-documentary/config
 
 - name: Create downloads folder structure
   ansible.builtin.file:

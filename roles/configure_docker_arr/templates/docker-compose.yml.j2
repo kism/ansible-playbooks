@@ -1,38 +1,94 @@
 ---
 services:
+  # Sonarrs
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
-    container_name: sonarr
+    container_name: sonarr-main
     environment:
       - PUID=1086
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_arr_settings_base_dir }}/sonarr/config:/config
+      - {{ configure_docker_arr_settings_base_dir }}/sonarr-main/config:/config
       - {{ configure_docker_arr_tv_dir }}:/tv
       - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
-      - 8989:8989
+      - 10000:8989
+    restart: unless-stopped
+    networks:
+      net-arr:
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr-documentary
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Etc/UTC
+    volumes:
+      - {{ configure_docker_arr_settings_base_dir }}/sonarr-documentary/config:/config
+      - {{ configure_docker_arr_tv_documentary_dir }}:/tv
+      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+    ports:
+      - 10002:8989
+    restart: unless-stopped
+    networks:
+      net-arr:
+
+  # Radarrs
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr-main
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Etc/UTC
+    volumes:
+      - {{ configure_docker_arr_settings_base_dir }}/radarr-main/config:/config
+      - {{ configure_docker_arr_movies_dir }}:/movies
+      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+    ports:
+      - 11000:7878
     restart: unless-stopped
     networks:
       net-arr:
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
+    container_name: radarr-hq
     environment:
       - PUID=1086
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_arr_settings_base_dir }}/radarr/config:/config
-      - {{ configure_docker_arr_movies_dir }}:/movies
+      - {{ configure_docker_arr_settings_base_dir }}/radarr-hq/config:/config
+      - {{ configure_docker_arr_movies_hq_dir }}:/movies
       - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
-      - 7878:7878
+      - 11001:7878
     restart: unless-stopped
     networks:
       net-arr:
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr-documentary
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Etc/UTC
+    volumes:
+      - {{ configure_docker_arr_settings_base_dir }}/radarr-documentary/config:/config
+      - {{ configure_docker_arr_movies_documentary_dir }}:/movies
+      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+    ports:
+      - 11002:8878
+    restart: unless-stopped
+    networks:
+      net-arr:
+
+  # Misc
+
 
 networks:
   net-arr:
@@ -40,3 +96,4 @@ networks:
       com.docker.network.bridge.name: br-arr
 
 # https://github.com/aetaric/checkrr
+# https://github.com/santiagosayshey/Profilarr/tree/main

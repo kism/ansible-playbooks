@@ -2,5 +2,6 @@
 <service>
   <short>Sonarr</short>
   <description>Sonarr is a PVR for Usenet and BitTorrent users.</description>
-  <port protocol="tcp" port="7878"/>
+  <port protocol="tcp" port="10000"/>
+  <port protocol="tcp" port="10002"/>
 </service>
