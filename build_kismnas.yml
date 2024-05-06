@@ -14,5 +14,6 @@
     - configure_samba
     - configure_jellyfin
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders

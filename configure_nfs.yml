@@ -11,5 +11,6 @@
     - configure_nfs_server
     - configure_nfs_client
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders

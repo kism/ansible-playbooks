@@ -1,5 +1,5 @@
 ---
-- name: Setup Proxmox hosts for NFS
+- name: Setup telegraf on all hosts
   hosts: all
   gather_facts: true
   become: true
@@ -10,5 +10,6 @@
     # Purpose specific
     - configure_telegraf
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders

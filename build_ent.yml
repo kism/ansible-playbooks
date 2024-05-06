@@ -14,5 +14,6 @@
     - configure_fail2ban
     - configure_jumpbox
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders

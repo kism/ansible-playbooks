@@ -11,10 +11,25 @@
   ansible.builtin.include_tasks: "01-ubuntu.yml"
   when: ansible_distribution == 'Ubuntu'
 
-- name: Include tasks, telegraf config
-  ansible.builtin.include_tasks: "02-config.yml"
+- name: Enable telegraf service
+  ansible.builtin.systemd_service:
+    name: telegraf
+    enabled: true
+  notify:
+    - Restart telegraf
 
-- name: Include tasks, telegraf inputs configs
+# - ansible.builtin.file:
+#     path: /etc/telegraf/telegraf.d/
+#     state: absent
+
+# - ansible.builtin.file:
+#     path: /etc/telegraf/telegraf.d/
+#     state: directory
+#     owner: root
+#     group: telegraf
+#     mode: "0750"
+
+- name: Include tasks, telegraf configs
   ansible.builtin.include_tasks: "{{ item }}"
   with_fileglob:
-    - "tasks/telegraf_inputs/*"
+    - "tasks/telegraf_config/*"

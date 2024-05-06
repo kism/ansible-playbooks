@@ -1,0 +1,16 @@
+---
+- name: Check if /etc/pve exists
+  ansible.builtin.stat:
+    path: /etc/pve
+  register: pve_status
+
+- name: "Copy telegraf config: input, systemd_units (scopes for proxmox)"
+  ansible.builtin.copy:
+    src: files/telegraf.d/20-proxmox.conf
+    dest: /etc/telegraf/telegraf.d/20-proxmox.conf
+    mode: "0644"
+    owner: root
+    group: telegraf
+  when: pve_status.stat.exists and 'proxmoxhosts' in group_names # make double sure
+  notify:
+    - Restart telegraf

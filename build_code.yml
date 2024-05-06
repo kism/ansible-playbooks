@@ -13,5 +13,6 @@
     # Purpose Specific
     - configure_vs_code_remote
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders

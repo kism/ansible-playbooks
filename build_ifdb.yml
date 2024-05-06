@@ -13,5 +13,6 @@
     # Purpose specific
     - configure_influxdb2
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders

@@ -1,0 +1,20 @@
+---
+- name: "Copy telegraf config: output, influxdb"
+  ansible.builtin.template:
+    src: templates/telegraf.d/10-influxdb-output.conf.j2
+    dest: /etc/telegraf/telegraf.d/10-influxdb-output.conf
+    owner: root
+    group: telegraf
+    mode: "640"
+  notify:
+    - Restart telegraf
+
+- name: "Copy telegraf config: input, common"
+  ansible.builtin.copy:
+    src: files/telegraf.d/15-telegraf-common.conf
+    dest: /etc/telegraf/telegraf.d/15-telegraf-common.conf
+    mode: "0644"
+    owner: root
+    group: telegraf
+  notify:
+    - Restart telegraf

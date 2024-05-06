@@ -16,5 +16,6 @@
     - configure_reverse_proxy
     - configure_allowlistapp
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders

@@ -19,5 +19,6 @@
     - configure_archivepodcast
     - configure_archivepodcast_secrets
 
-    # Reminders
+    # End
+    - configure_telegraf
     - maintenance_print_reminders
