@@ -1,0 +1,19 @@
+---
+- name: Block for creating a new VM
+  delegate_to: localhost
+  become: false
+  block:
+    - name: Create new container with minimal options
+      delegate_to: localhost
+      community.general.proxmox:
+        vmid: 199
+        node: '{{ ct_target_node }}'
+        api_user: root@pam
+        api_token_id: "{{ secret_proxmox_token_id }}"
+        api_token_secret: "{{ secret_proxmox_token_secret }}"
+        api_host: "pvewill"
+        pubkey: "{{ lookup('ansible.builtin.url', 'https://github.com/kism.keys', split_lines=False) }}"
+        hostname: '{{ inventory_hostname | lower }}'
+        ostemplate: 'local:vztmpl/rootfs.tar.xz'
+        storage: local-lvm
+        # netif: '{"net0":"name=eth0,gw=192.168.0.1,ip=192.168.0.2/24,bridge=vmbr0"}'

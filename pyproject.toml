@@ -10,3 +10,4 @@ python = "^3.11"
 ansible = "*"
 ansible-lint = { version = "*", markers = "platform_system != 'Windows'" }
 pywinrm = "*"
+proxmoxer = "^2.0.1"

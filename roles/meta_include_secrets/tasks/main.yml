@@ -1,5 +1,6 @@
 ---
 - name: Include secrets
+  delegate_to: localhost
   run_once: true
   ansible.builtin.include_vars: "{{ playbook_dir }}/../ansible-playbooks-secrets/secrets.yml"
   no_log: true

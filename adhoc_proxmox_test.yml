@@ -1,0 +1,12 @@
+---
+- name: Test create proxmox ct
+  hosts: new_vms
+  gather_facts: false
+  become: false
+  roles:
+    # Preflight
+    - meta_include_secrets
+
+    # Create Server
+    # https://docs.ansible.com/ansible/latest/collections/community/general/proxmox_module.html
+    - create_proxmox_ct
