@@ -16,13 +16,22 @@
   notify:
     - Restart telegraf
 
-- name: "Copy telegraf config: input, docker"
-  ansible.builtin.copy:
-    src: files/telegraf.d/20-docker.conf
-    dest: /etc/telegraf/telegraf.d/20-docker.conf
-    mode: "0644"
-    owner: root
-    group: telegraf
+- name: Docker block
   when: ansible_facts['services']['docker.service'] is defined
-  notify:
-    - Restart telegraf
+  block:
+    - name: "Copy telegraf config: input, docker"
+      ansible.builtin.copy:
+        src: files/telegraf.d/20-docker.conf
+        dest: /etc/telegraf/telegraf.d/20-docker.conf
+        mode: "0644"
+        owner: root
+        group: telegraf
+
+      notify:
+        - Restart telegraf
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: telegraf
+        groups: docker
+        append: true

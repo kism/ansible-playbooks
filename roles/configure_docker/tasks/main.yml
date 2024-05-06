@@ -9,6 +9,3 @@
 
 - name: Install packages
   ansible.builtin.include_tasks: "02-install.yml"
-
-- name: Add telegraf user to docker group
-  ansible.builtin.include_tasks: "03-telegraf.yml"
