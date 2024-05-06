@@ -1,0 +1,19 @@
+---
+configure_telegraf_service_allowlist:
+  - geostat
+  - archivepodcast
+  - fail2ban*
+  - grafana*
+  - influxdb*
+  - pve-container*
+  - pve-cluster*
+  - pve-firewall*
+  - pvedaemon.service
+  - pveproxy.service
+  - pvescheduler.service
+  - smb*
+  - step-ca
+  - sshd
+  - firewalld
+  - nginx*
+  - docker

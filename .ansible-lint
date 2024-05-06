@@ -4,6 +4,7 @@ exclude_paths:
   - .github/
   - .vscode
   - init/
+  - logs/*
   - .ansible-lint
   - .yaml-lint.yml
   - adhoc_string_test.yml

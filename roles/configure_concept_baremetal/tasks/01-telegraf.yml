@@ -6,11 +6,3 @@
       - nvme-cli
       - lm-sensors
     state: present
-
-- name: Copy the telefraf sudoers rule proxmox hosts
-  ansible.builtin.copy:
-    src: files/sudoers_telegraf
-    dest: /etc/sudoers.d/telegraf
-    mode: "0640"
-  notify:
-    - Restart telegraf

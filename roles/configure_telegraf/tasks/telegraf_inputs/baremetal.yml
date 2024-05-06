@@ -1,0 +1,27 @@
+---
+- name: Block for baremetal hosts
+  when: ansible_facts['virtualization_role'] == host
+  block:
+    - name: Copy files that are related to baremetal hosts
+      ansible.builtin.copy:
+        src: files/telegraf/20-disks.conf
+        dest: /etc/telegraf/telegraf.d/20-disks.conf
+        mode: "0644"
+        owner: root
+        group: telegraf
+      notify:
+        - Restart telegraf
+
+    - name: Install packages
+      ansible.builtin.apt:
+        install_recommends: false
+        pkg:
+          - nvme-cli
+          - lm-sensors
+        state: present
+
+    - name: Copy the telegraf sudoers rule proxmox hosts
+      ansible.builtin.copy:
+        src: files/sudoers_telegraf_disk
+        dest: /etc/sudoers.d/telegraf_disk
+        mode: "0640"

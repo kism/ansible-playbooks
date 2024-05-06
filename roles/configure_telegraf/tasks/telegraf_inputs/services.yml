@@ -1,0 +1,23 @@
+---
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Get list of services we want to monitor, that are on the host
+  ansible.builtin.set_fact:
+    common_services: "{{ configure_telegraf_services | intersect(ansible_facts.services.keys()) }}"
+
+- name: Copy files that are related to baremetal hosts
+  ansible.builtin.template:
+    src: templates/telegraf.d/20-services.conf.j2
+    dest: /etc/telegraf/telegraf.d/20-services.conf
+    mode: "0644"
+    owner: root
+    group: telegraf
+
+- name: Copy docker if the service is running
+  ansible.builtin.copy:
+    src: files/telegraf.d/20-docker.conf
+    dest: /etc/telegraf/telegraf.d/20-docker.conf
+    mode: "0644"
+    owner: root
+    group: telegraf
