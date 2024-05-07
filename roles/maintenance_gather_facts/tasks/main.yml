@@ -22,9 +22,9 @@
       ansible.builtin.getent:
         database: group
 
-    - name: Get ec2 instance facts
-      amazon.aws.ec2_metadata_facts:
-      failed_when: false # Easier than checking if the host is an ec2 instance
+    # - name: Get ec2 instance facts
+    #   amazon.aws.ec2_metadata_facts:
+    #   failed_when: false # Easier than checking if the host is an ec2 instance
 
 - name: Debug block chuck vars into a file
   become: false
