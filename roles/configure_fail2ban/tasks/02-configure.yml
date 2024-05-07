@@ -6,15 +6,15 @@
 
 - name: Copy filters
   ansible.builtin.copy:
-    src: files/filter/nginx-kism.conf
+    src: files/filter.d/nginx-kism.conf
     dest: /etc/fail2ban/filter.d/nginx-kism.conf
     mode: "0640"
   notify: Restart fail2ban
   when: nginx_status["status"]["LoadState"] != "not-found"
 
 - name: Copy jail
-  ansible.builtin.copy:
-    src: files/jail/nginx-kism.conf
+  ansible.builtin.template:
+    src: templates/jail.d/nginx-kism.conf.j2
     dest: /etc/fail2ban/jail.d/nginx-kism.conf
     mode: "0644"
   notify: Restart fail2ban
@@ -22,7 +22,7 @@
 
 - name: Copy jail
   ansible.builtin.template:
-    src: files/jail/sshd.conf.j2
+    src: templates/jail.d/sshd.conf.j2
     dest: /etc/fail2ban/jail.d/sshd.conf
     mode: "0644"
   notify: Restart fail2ban

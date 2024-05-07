@@ -1,7 +1,7 @@
 ---
 services:
   # Sonarrs
-  sonarr:
+  sonarr-main:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr-main
     environment:
@@ -18,7 +18,7 @@ services:
     networks:
       net-arr:
 
-  sonarr:
+  sonarr-documentary:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr-documentary
     environment:
@@ -36,7 +36,7 @@ services:
       net-arr:
 
   # Radarrs
-  radarr:
+  radarr-main:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr-main
     environment:
@@ -53,7 +53,7 @@ services:
     networks:
       net-arr:
 
-  radarr:
+  radarr-hq:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr-hq
     environment:
@@ -70,7 +70,7 @@ services:
     networks:
       net-arr:
 
-  radarr:
+  radarr-documentary:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr-documentary
     environment:
@@ -82,7 +82,7 @@ services:
       - {{ configure_docker_arr_movies_documentary_dir }}:/movies
       - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
-      - 11002:8878
+      - 11002:7878
     restart: unless-stopped
     networks:
       net-arr:
