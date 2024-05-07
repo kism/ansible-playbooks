@@ -10,7 +10,9 @@ services:
       - TZ=Etc/UTC
     volumes:
       - {{ configure_docker_arr_settings_base_dir }}/sonarr-main/config:/config
-      - {{ configure_docker_arr_tv_dir }}:/tv
+{% for key, value in configure_docker_arr_tv_dirs.items() %}
+      - {{ value + ":/tv/" + key }}
+{% endfor %}
       - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 10000:8989

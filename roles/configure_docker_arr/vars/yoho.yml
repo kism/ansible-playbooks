@@ -1,7 +1,9 @@
 ---
 configure_docker_arr_downloads_base_dir: /srv/Quina/downloads
 configure_docker_arr_settings_base_dir: /opt
-configure_docker_arr_tv_dir: /mnt/Garnet/Video/TV Series
+configure_docker_arr_tv_dirs:
+  garnet: /mnt/Garnet/Video/Series
+  vivi: /mnt/Vivi/Video/Series
 configure_docker_arr_movies_dir: /mnt/Vivi/Video/Movies
 configure_docker_arr_tv_documentary_dir: /mnt/Amarant/Video/Documentary Series
 configure_docker_arr_movies_hq_dir: /mnt/Vivi/Video/Movies HQ
