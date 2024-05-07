@@ -9,16 +9,5 @@ exclude_paths:
   - .yaml-lint.yml
   - adhoc_string_test.yml
 
-# write_list, avoid using the 'jinja' rule as it breaks multiline jinja, see: adhoc_string_test.yml
-# everything from: https://ansible.readthedocs.io/projects/lint/autofix/ except jinja, doesn't work though
-# write_list:
-# - command-instead-of-shell
-# - deprecated-local-action
-# - fqcn
-# - key-order
-# - name
-# - no-free-form
-# - no-jinja-when
-# # - no-log-password # not in my version ???
-# - partial-become
-# - yaml
+skip_list:
+  - yaml[comments-indentation]
