@@ -31,7 +31,8 @@ chown -R qbtuser:qbtuser /srv/Quina/configs
 
 echo -- Finds
 
-echo - Find all dirs, set setguidfind /srv/Quina    -mindepth 1 -type d -exec chmod g+s {} +
+echo - Find all dirs, set setguidfind
+find /srv/Quina    -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Quale    -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Steiner  -mindepth 1 -type d -exec chmod g+s {} +
 

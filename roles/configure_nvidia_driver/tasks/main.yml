@@ -1,0 +1,51 @@
+---
+# https://jocke.no/2022/02/23/plex-gpu-transcoding-in-docker-on-lxc-on-proxmox/
+- name: Block for vm host
+  when: ansible_facts['virtualization_role'] == 'host'
+  block:
+    - name: Copy nouveau blocklist
+      ansible.builtin.copy:
+        src: files/blocklist-nouveau.conf
+        dest: /etc/modprobe.d/blocklist-nouveau.conf
+        mode: "0600"
+      register: blocklist_copy
+
+    - name: Run Initramfs update
+      ansible.builtin.command:
+        cmd: update-initramfs -u
+      changed_when: blocklist_copy.changed
+
+    - name: Install packages
+      ansible.builtin.package:
+        name: '{{ item }}'
+        state: present
+      loop:
+        - build-essential
+        - proxmox-headers-{{ ansible_facts['kernel'] }}
+
+- name: Download driver to local folder
+  run_once: true
+  delegate_to: localhost
+  become: false
+  ansible.builtin.get_url:
+    url: https://us.download.nvidia.com/XFree86/Linux-x86_64/550.78/NVIDIA-Linux-x86_64-550.78.run
+    dest: /tmp/ansible/NVIDIA-Linux-x86_64-550.78.run
+    mode: '0660'
+
+- name: Copy nouveau blocklist
+  ansible.builtin.copy:
+    src: /tmp/ansible/NVIDIA-Linux-x86_64-550.78.run
+    dest: /tmp/NVIDIA-Linux-x86_64-550.78.run
+    mode: '0744'
+
+# - name: Set to load nvidia modules into the kernel
+#   ansible.builtin.copy:
+#     src: files/nvidia-modules.conf
+#     dest: /etc/modules-load.d/blocklist-nouveau.conf
+#     mode: "0600"
+
+# - name: Set to load nvidia modules into the kernel
+#   ansible.builtin.copy:
+#     src: files/70-nvidia.rules
+#     dest: /etc/udev/rules.d/70-nvidia.rules
+#     mode: "0600"
