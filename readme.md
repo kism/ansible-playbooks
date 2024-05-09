@@ -97,15 +97,13 @@ skip_ansible_lint
 * Proxmox grab lxc <https://images.linuxcontainers.org/>
 * Unmount, chmod, remount disks to ensure perms
 * GNU stow for dotfiles
-* meta role check, separate out var
 * github gpg key
 * fix github actions lint
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
-* better fan control on the aliexpress board
+* better fan control on the aliexpress board???
 * setup cert
 * workstation setup
-* ssh only from home network pve
-* firewall pve
+* firewall pve???
 
 do later
 

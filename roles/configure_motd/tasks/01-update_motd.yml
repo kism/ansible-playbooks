@@ -1,5 +1,0 @@
----
-- name: Remove cockpit motd
-  ansible.builtin.file:
-    path: /etc/motd.d/cockpit
-    state: absent
