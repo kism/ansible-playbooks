@@ -1,4 +1,5 @@
 ---
+# update-motd.d
 - name: Check if /etc/update-motd.d exists
   ansible.builtin.stat:
     path: /etc/update-motd.d
@@ -8,11 +9,24 @@
   ansible.builtin.include_tasks: "01-update_motd.yml"
   when: update_motd_found.stat.exists
 
+
+# motd.d
 - name: Check if /etc/motd.d exists
   ansible.builtin.stat:
     path: /etc/motd.d
-  register: motd_found
+  register: motdd_found
 
 - name: Set MOTD /etc/motd.d
+  ansible.builtin.include_tasks: "01-motdd.yml"
+  when: motdd_found.stat.exists
+
+# motd
+
+- name: Check if /etc/motd exists
+  ansible.builtin.stat:
+    path: /etc/motd
+  register: motd_found
+
+- name: Set MOTD /etc/motd
   ansible.builtin.include_tasks: "01-motd.yml"
-  when: motd_found.stat.exists
+  when: motd_found.stat.exists and not update_motd_found.stat.exists

@@ -103,14 +103,7 @@ skip_ansible_lint
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
 * better fan control on the aliexpress board
 * setup cert
-* generate motd
-* even better download all for dotfiles?
-* jinja2 better "{ var }" vs ({{ var }})
-* check getfacts multiple hosts
-* fun log folder
-* fix pve certbot
 * workstation setup
-* pull docker, do updates docker compose
 * ssh only from home network pve
 * firewall pve
 

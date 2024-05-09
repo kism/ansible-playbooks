@@ -1,4 +1,5 @@
 ---
+# This should be host vars probably
 configure_docker_arr_downloads_base_dir: /srv/Quina/downloads
 configure_docker_arr_settings_base_dir: /opt
 configure_docker_arr_tv_dirs:

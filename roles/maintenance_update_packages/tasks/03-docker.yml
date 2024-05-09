@@ -1,0 +1,14 @@
+---
+- name: Docker compose block
+  when: docker_compose_paths is defined
+  block:
+    - name: Take down docker compose
+      community.docker.docker_compose:
+        project_src: "{{ item }}"
+        state: absent
+      loop: "{{ docker_compose_paths }}"
+
+    - name: Pull images for docker-compose
+      community.docker.docker_compose_v2_pull:
+        project_src: "{{ item }}"
+      loop: "{{ docker_compose_paths }}"

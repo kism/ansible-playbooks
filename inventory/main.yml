@@ -3,39 +3,54 @@ all:
   hosts:
     ent:
       ansible_host: ent.kg.lan
+      ansible_host_description: Jumpbox
       timezone: awst
       duckdns_domain: kism
     pvewill:
       ansible_host: pvewill.kg.lan
+      ansible_host_description: Proxmox
       timezone: awst
     pvematt:
       ansible_host: pvematt.kg.lan
+      ansible_host_description: Proxmox
       timezone: awst
     ifdb:
       ansible_host: ifdb.kg.lan
+      ansible_host_description: InfluxDB2
       timezone: awst
     graf:
       ansible_host: graf.kg.lan
+      ansible_host_description: Grafana
       timezone: awst
     cert:
       ansible_host: cert.kg.lan
+      ansible_host_description: Certificate Authority
       timezone: utc
     kismnas:
       ansible_host: kismnas.kg.lan
+      ansible_host_description: Network Attached Storage
       timezone: awst
     rproxy:
       ansible_host: rproxy.kg.lan
+      ansible_host_description: Reverse Proxy
       timezone: awst
     podc:
       ansible_host: podc.kg.lan
+      ansible_host_description: Podcast Archive
       timezone: awst
     code:
       ansible_host: code.kg.lan
+      ansible_host_description: VSCode Remote
       timezone: awst
       ansible_python_interpreter: /usr/bin/python3.9
     yoho:
       ansible_host: yoho.kg.lan
+      ansible_host_description: No one knows
       timezone: awst
+      docker_compose_paths:
+        - /opt/arr
+        - /opt/sabnzbd
+        - /opt/qbittorrent
 # Server Type
 proxmoxvms:
   hosts:
