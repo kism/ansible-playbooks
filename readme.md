@@ -3,7 +3,7 @@
 Install collections
 
 ```bash
-ansible-galaxy collection install -r requirements.yml --upgrade
+ansible-galaxy collection install -r collections/requirements.yml --upgrade
 ```
 
 Running on macos
