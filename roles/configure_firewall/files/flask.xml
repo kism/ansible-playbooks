@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Flask</short>
+  <description>Flask is a popular web framework for Python</description>
+  <port protocol="tcp" port="5000" />
+</service>
