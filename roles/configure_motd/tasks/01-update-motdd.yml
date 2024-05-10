@@ -19,6 +19,7 @@
         mode: '0444'
       loop:
         - /etc/update-motd.d/10-help-text
+        - /etc/update-motd.d/10-help-text.dpkg-dist
         - /etc/update-motd.d/10-uname
         - /etc/update-motd.d/50-motd-news
         - /etc/update-motd.d/50-landscape-sysinfo
