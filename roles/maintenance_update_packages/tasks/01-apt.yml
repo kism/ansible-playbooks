@@ -35,12 +35,10 @@
 
 - name: Set fact for patching_packages_changed
   ansible.builtin.set_fact:
-    patching_packages_changed: "{{ patching_packages_changed | combine({'apt_packages_upgraded': apt_packages_upgraded, 'apt_packages_not_upgraded': apt_packages_not_upgraded})
-      }}"
+    patching_packages_changed:
+      host: "{{ ansible_hostname }}"
+      packages: "{{ patching_packages_changed | combine({'apt_packages_upgraded': apt_packages_upgraded, 'apt_packages_not_upgraded': apt_packages_not_upgraded}) }}"
 
 - name: Format as yml
   ansible.builtin.set_fact:
     patching_packages_changed: "{{ patching_packages_changed | to_yaml(default_flow_style=False) }}"
-
-# - debug:
-#     msg: '{{ patching_packages_changed }}'

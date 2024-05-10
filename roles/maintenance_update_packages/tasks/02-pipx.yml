@@ -1,6 +1,15 @@
 ---
-- name: Install update pipx packages
-  become: true
-  become_user: kism
-  community.general.pipx:
-    state: upgrade_all
+
+- name: Check if pipx is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/pipx # Adjust the path based on your installation
+  register: pipx_check
+
+- name: Run pipx update routine if needed
+  when: pipx_check.stat.exists
+  block:
+    - name: Install update pipx packages
+      become: true
+      become_user: kism
+      community.general.pipx:
+        state: upgrade_all
