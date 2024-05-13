@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=nginx
 WorkingDirectory=/opt/allowlistapp
-ExecStart=/usr/local/bin/pipenv run python allowlistapp.py --webaddress 127.0.0.1 --config settings.json
+ExecStart=/usr/local/bin/poetry run flask --app allowlist run
 Restart=always
 
 [Install]

@@ -108,6 +108,7 @@
   register: command_output
   changed_when: false # Handled in next task
   failed_when: command_output.rc != 0 and not "too many certificates" in command_output.stderr
+  notify: Reload nginx
 
 - name: Check if certs have changed
   ansible.builtin.find:
@@ -116,12 +117,7 @@
     recurse: false
   register: modified_files
   changed_when: modified_files.files | length > 0
-
-- name: Force Reload nginx
-  ansible.builtin.systemd_service:
-    name: nginx
-    enabled: true
-    state: restarted
+  notify: Reload nginx
 
 - name: Set certbot cron job
   ansible.builtin.cron:
