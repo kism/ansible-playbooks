@@ -4,5 +4,5 @@
     dest: "/etc/motd"
     content: |-
       {{ ansible_host }}, {{ ansible_host_description }}.
-      Unauthorised access is forbidden
+      Unauthorised access is forbidden.
     mode: "0644"
