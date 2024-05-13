@@ -15,7 +15,7 @@ jobs:
         run: sudo apt-get install ansible -y
 
       - name: Install Ansible-Galaxy Requirements
-        run: ansible-galaxy collection install -r requirements.yml
+        run: ansible-galaxy collection install -r collections/requirements.yml
 
       - name: Temp remove configure_archivepodcast_secrets role
         run: sed -i '/- configure_archivepodcast_secrets/d' build_podc.yml && cat build_podc.yml
