@@ -1,16 +1,16 @@
 ---
 configure_users_dotfiles:
-  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.bash_profile
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/main/.bash_profile
     home_dest: .bash_profile
-  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.bashrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/main/.bashrc
     home_dest: .bashrc
-  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.inputrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/main/.inputrc
     home_dest: .inputrc
-  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.tmux.conf
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/main/.tmux.conf
     home_dest: .tmux.conf
-  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.vimrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/main/.vimrc
     home_dest: .vimrc
-  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/master/.config/htop/htoprc
+  - url: https://raw.githubusercontent.com/kism/dotfiles-simple/main/.config/htop/htoprc
     home_dest: .config/htop/htoprc
 
 configure_users_dotfiles_tmux_regex:
