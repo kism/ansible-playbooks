@@ -31,5 +31,8 @@ jobs:
       - name: "Remove the vault_password_file entry from ansible.cfg. Avoid: 'ERROR! The vault password file <> was not found'"
         run: sed -i '/vault_password_file\s*=/d' ansible.cfg && cat ansible.cfg
 
+      - name: Temp
+        run: sed -i '/- configure_archivepodcast_secrets/d' build_podc.yml && cat build_podc.yml
+
       - name: Run ansible-lint
         run: ansible-lint

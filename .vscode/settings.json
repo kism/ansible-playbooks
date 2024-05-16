@@ -8,16 +8,14 @@
   "[jinja-yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
-  },
+
   "[markdown]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
   },
   "[properties]": {
     "editor.tabSize": 2
-  } ,
+  },
   // Needed for ansible-lint to trigger for roles
   "files.associations": {
     "*.yml": "ansible",
