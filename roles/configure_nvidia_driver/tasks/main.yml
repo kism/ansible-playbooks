@@ -1,51 +1,96 @@
 ---
 # https://jocke.no/2022/02/23/plex-gpu-transcoding-in-docker-on-lxc-on-proxmox/
-- name: Block for vm host
-  when: ansible_facts['virtualization_role'] == 'host'
-  block:
-    - name: Copy nouveau blocklist
-      ansible.builtin.copy:
-        src: files/blocklist-nouveau.conf
-        dest: /etc/modprobe.d/blocklist-nouveau.conf
-        mode: "0600"
-      register: blocklist_copy
 
+- name: Check if nouveau is loaded
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      lsmod | grep ^nouveau
+  changed_when: false # Just getting info
+  failed_when: false # Just getting info
+  register: nouveau_loaded
+
+- name: Copy nouveau blocklist
+  ansible.builtin.copy:
+    src: files/blocklist-nouveau.conf
+    dest: /etc/modprobe.d/blocklist-nouveau.conf
+    mode: "0600"
+  register: blocklist_copy
+
+- name: Restart guest
+  when: nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'guest'
+  ansible.builtin.reboot:
+
+- name: Block for vm host
+  when: nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'host'
+  block:
     - name: Run Initramfs update
       ansible.builtin.command:
         cmd: update-initramfs -u
       changed_when: blocklist_copy.changed
 
-    - name: Install packages
-      ansible.builtin.package:
-        name: '{{ item }}'
-        state: present
-      loop:
-        - build-essential
-        - proxmox-headers-{{ ansible_facts['kernel'] }}
+    - name: Reboot
+      ansible.builtin.reboot:
+
+- name: Wait for everything to come back
+  ansible.builtin.wait_for_connection:
+    timeout: 600
+
+- name: Ensure folder exists
+  delegate_to: localhost
+  run_once: true
+  become: true
+  ansible.builtin.file:
+    path: "/tmp/ansible/"
+    state: directory
+    mode: "0777"
 
 - name: Download driver to local folder
   run_once: true
   delegate_to: localhost
   become: false
   ansible.builtin.get_url:
-    url: https://us.download.nvidia.com/XFree86/Linux-x86_64/550.78/NVIDIA-Linux-x86_64-550.78.run
-    dest: /tmp/ansible/NVIDIA-Linux-x86_64-550.78.run
-    mode: '0660'
+    url: "{{ configure_nvidia_driver_url }}/{{ configure_nvidia_driver_version }}/{{ configure_nvidia_driver_file_name }}"
+    dest: "/tmp/ansible/{{ configure_nvidia_driver_file_name }}"
+    checksum: "sha256:{{ configure_nvidia_driver_checksum }}"
+    mode: "0660"
 
-- name: Copy nouveau blocklist
+- name: Copy driver to target
   ansible.builtin.copy:
-    src: /tmp/ansible/NVIDIA-Linux-x86_64-550.78.run
-    dest: /tmp/NVIDIA-Linux-x86_64-550.78.run
-    mode: '0744'
+    src: "/tmp/ansible/{{ configure_nvidia_driver_file_name }}"
+    dest: "/tmp/{{ configure_nvidia_driver_file_name }}"
+    mode: "0744"
 
-# - name: Set to load nvidia modules into the kernel
-#   ansible.builtin.copy:
-#     src: files/nvidia-modules.conf
-#     dest: /etc/modules-load.d/blocklist-nouveau.conf
-#     mode: "0600"
+- name: Block for vm host
+  when: ansible_facts['virtualization_role'] == 'host'
+  block:
+    - name: Install packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - build-essential
+        - proxmox-headers-{{ ansible_facts['kernel'] }}
 
-# - name: Set to load nvidia modules into the kernel
-#   ansible.builtin.copy:
-#     src: files/70-nvidia.rules
-#     dest: /etc/udev/rules.d/70-nvidia.rules
-#     mode: "0600"
+    - name: Run the installer silently for host
+      ansible.builtin.command:
+        cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --dkms"
+      changed_when: true
+
+    - name: Set to load nvidia modules into the kernel
+      ansible.builtin.copy:
+        src: files/nvidia-modules.conf
+        dest: /etc/modules-load.d/nvidia-modules.conf
+        mode: "0600"
+
+    - name: Set to load nvidia udev rules
+      ansible.builtin.copy:
+        src: files/70-nvidia.rules
+        dest: /etc/udev/rules.d/70-nvidia.rules
+        mode: "0600"
+
+- name: Run the installer silently for guest
+  ansible.builtin.command:
+    cmd: '/tmp/{{ configure_nvidia_driver_file_name }} -s --no-kernel-module'
+  when: ansible_facts['virtualization_role'] == 'guest'
+  changed_when: true

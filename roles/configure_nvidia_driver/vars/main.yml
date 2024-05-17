@@ -1,0 +1,5 @@
+---
+configure_nvidia_driver_url: https://us.download.nvidia.com/XFree86/Linux-x86_64
+configure_nvidia_driver_version: '550.78'
+configure_nvidia_driver_file_name: NVIDIA-Linux-x86_64-550.78.run
+configure_nvidia_driver_checksum: 34070434527ec9d575483e7f11ca078e467e73f6defc54366ecfbdcfe4a3bf73

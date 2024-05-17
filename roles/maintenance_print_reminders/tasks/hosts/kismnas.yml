@@ -9,3 +9,21 @@
       - pct set 102 -mp2 /srv/Freya,mp=/srv/Freya
       - pct set 102 -mp3 /srv/Vivi,mp=/srv/Vivi
       - map the uids too https://pve.proxmox.com/wiki/Unprivileged_LXC_containers
+
+      - For the config file:
+      - |
+        # nvidia
+        lxc.cgroup2.devices.allow: c 195:* rwm
+        lxc.cgroup2.devices.allow: c 237:* rwm
+        lxc.cgroup2.devices.allow: c 240:* rwm
+        # if you want to use the card for other things than transcoding
+        # add /dev/dri cgroup values as well
+        lxc.cgroup2.devices.allow: c 226:* rwm
+        # mount nvidia devices into LXC container
+        lxc.mount.entry: /dev/nvidia0 dev/nvidia0 none bind,optional,create=file
+        lxc.mount.entry: /dev/nvidiactl dev/nvidiactl none bind,optional,create=file
+        lxc.mount.entry: /dev/nvidia-modeset dev/nvidia-modeset none bind,optional,create=file
+        lxc.mount.entry: /dev/nvidia-uvm dev/nvidia-uvm none bind,optional,create=file
+        lxc.mount.entry: /dev/nvidia-uvm-tools dev/nvidia-uvm-tools none bind,optional,create=file
+        lxc.mount.entry: /dev/nvidia-caps/nvidia-cap1 dev/nvidia-caps/nvidia-cap1 none bind,optional,create=file
+        lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-caps/nvidia-cap2 none bind,optional,create=file
