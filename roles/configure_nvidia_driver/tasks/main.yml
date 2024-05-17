@@ -91,6 +91,20 @@
 
 - name: Run the installer silently for guest
   ansible.builtin.command:
-    cmd: '/tmp/{{ configure_nvidia_driver_file_name }} -s --no-kernel-module'
+    cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --no-kernel-module"
   when: ansible_facts['virtualization_role'] == 'guest'
   changed_when: true
+
+- name: Another block for vm host
+  when: ansible_facts['virtualization_role'] == 'host'
+  block:
+    - name: Unarchive persistenced
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: /usr/share/doc/NVIDIA_GLX-1.0/samples/nvidia-persistenced-init.tar.bz2
+        dest: /tmp/
+
+    - name: Run service installer
+      ansible.builtin.command:
+        cmd: /tmp/nvidia-persistenced-init/install.sh
+        creates: /lib/systemd/system/nvidia-persistenced.service

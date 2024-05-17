@@ -26,7 +26,6 @@
         mode: "0644"
         owner: root
         group: telegraf
-
       notify:
         - Restart telegraf
 
@@ -35,3 +34,12 @@
         name: telegraf
         groups: docker
         append: true
+
+- name: Nvidia Monitoring
+  when: ansible_facts['services']['nvidia-persistenced.service'] is defined
+  ansible.builtin.copy:
+    src: files/telegraf.d/20-nvidia.conf
+    dest: /etc/telegraf/telegraf.d/20-nvidia.conf
+    mode: "0644"
+    owner: root
+    group: telegraf
