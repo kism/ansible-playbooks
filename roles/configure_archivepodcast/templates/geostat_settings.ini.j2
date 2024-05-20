@@ -1,6 +1,6 @@
 [NGINX_LOGS]
 # Path for the log file (Nginx)
-logpath = secret_geostat_path
+logpath = {{ secret_geostat_path }}
 extensionwhitelist = mp3
 
 [GEOIP]
@@ -37,7 +37,7 @@ measurement = geodata
 url = https://influxdb2.kierangee.au:443
 
 # Token for authentication
-token = secret_influxdb_geostat_write
+token = {{ secret_influxdb_geostat_write }}
 
 # Organization - the name of the organization you wish to write to
 organization = kg lan

@@ -22,8 +22,8 @@
     group: influxdb
 
 - name: Copy archivepodcast config
-  ansible.builtin.copy:
-    src: configs/influxpingscan/hosts/{{ ansible_hostname }}/ifdb_settings.ini
+  ansible.builtin.template:
+    src: templates/settings.ini.j2
     dest: /opt/influxpingscan/settings.ini
     owner: root
     group: influxdb
@@ -41,13 +41,6 @@
   become: true
   become_user: influxdb
   changed_when: true # Safe assumption, no way to know
-
-- name: Set influxdb token
-  ansible.builtin.lineinfile:
-    path: /opt/influxpingscan/settings.ini
-    regexp: ^.?token =
-    line: token = {{ secret_influxping_write }}
-    state: present
 
 - name: Set influxpingscan scan in cron
   ansible.builtin.cron:

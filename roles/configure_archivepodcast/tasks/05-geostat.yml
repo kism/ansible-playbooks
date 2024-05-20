@@ -23,29 +23,11 @@
   notify: Restart geostat
 
 - name: Copy geostat config
-  ansible.builtin.copy:
-    src: files/geostat_settings.ini
+  ansible.builtin.template:
+    src: templates/geostat_settings.ini.j2
     dest: /opt/geostat/settings.ini
     mode: "0660"
   notify: Restart geostat
-
-- name: Setup geostat influx token
-  ansible.builtin.lineinfile:
-    path: /opt/geostat/settings.ini
-    regexp: "token = "
-    line: token = {{ secret_influxdb_geostat_write }}
-    state: present
-  notify:
-    - Restart geostat
-
-- name: Setup geostat log location
-  ansible.builtin.lineinfile:
-    path: /opt/geostat/settings.ini
-    regexp: "logpath = "
-    line: logpath = {{ secret_geostat_path }}
-    state: present
-  notify:
-    - Restart geostat
 
 - name: Grab geoip database
   ansible.builtin.unarchive:
