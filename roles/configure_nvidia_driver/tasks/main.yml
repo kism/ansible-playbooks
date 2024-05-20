@@ -4,120 +4,106 @@
 # https://bradford.la/2016/GPU-FFMPEG-in-LXC/#pass-gpu-to-lxc-container
 # https://www.reddit.com/r/jellyfin/comments/e7sl8q/hardware_encoding_jellyfin_and_nvidia_gtx/
 
-# - name: Check if nouveau is loaded
-#   ansible.builtin.shell:
-#     cmd: |
-#       set -o pipefail
-#       lsmod | grep ^nouveau
-#   changed_when: false # Just getting info
-#   failed_when: false # Just getting info
-#   register: nouveau_loaded
+- name: Check if nouveau is loaded
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      lsmod | grep ^nouveau
+  changed_when: false # Just getting info
+  failed_when: false # Just getting info
+  register: nouveau_loaded
 
-# - name: Copy nouveau blocklist
-#   ansible.builtin.copy:
-#     src: files/blocklist-nouveau.conf
-#     dest: /etc/modprobe.d/blocklist-nouveau.conf
-#     mode: "0600"
-#   register: blocklist_copy
+- name: Copy nouveau blocklist
+  ansible.builtin.copy:
+    src: files/blocklist-nouveau.conf
+    dest: /etc/modprobe.d/blocklist-nouveau.conf
+    mode: "0600"
+  register: blocklist_copy
 
-# - name: Restart guest
-#   when: nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'guest'
-#   ansible.builtin.reboot:
-
-# - name: Block for vm host
-#   when: nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'host'
-#   block:
-#     - name: Run Initramfs update
-#       ansible.builtin.command:
-#         cmd: update-initramfs -u
-#       changed_when: blocklist_copy.changed
-
-#     - name: Reboot
-#       ansible.builtin.reboot:
-
-# - name: Wait for everything to come back
-#   ansible.builtin.wait_for_connection:
-#     timeout: 600
-
-# - name: Ensure folder exists
-#   delegate_to: localhost
-#   run_once: true
-#   become: true
-#   ansible.builtin.file:
-#     path: "/tmp/ansible/"
-#     state: directory
-#     mode: "0777"
-
-# - name: Download driver to local folder
-#   run_once: true
-#   delegate_to: localhost
-#   become: false
-#   ansible.builtin.get_url:
-#     url: "{{ configure_nvidia_driver_url }}/{{ configure_nvidia_driver_version }}/{{ configure_nvidia_driver_file_name }}"
-#     dest: "/tmp/ansible/{{ configure_nvidia_driver_file_name }}"
-#     checksum: "sha256:{{ configure_nvidia_driver_checksum }}"
-#     mode: "0660"
-
-# - name: Copy driver to target
-#   ansible.builtin.copy:
-#     src: "/tmp/ansible/{{ configure_nvidia_driver_file_name }}"
-#     dest: "/tmp/{{ configure_nvidia_driver_file_name }}"
-#     mode: "0744"
-
-# - name: Block for vm host
-#   when: ansible_facts['virtualization_role'] == 'host'
-#   block:
-#     - name: Install packages
-#       ansible.builtin.package:
-#         name: "{{ item }}"
-#         state: present
-#       loop:
-#         - build-essential
-#         - proxmox-headers-{{ ansible_facts['kernel'] }}
-
-#     - name: Run the installer silently for host
-#       ansible.builtin.command:
-#         cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --dkms"
-#       changed_when: true
-
-#     - name: Set to load nvidia modules into the kernel
-#       ansible.builtin.copy:
-#         src: files/nvidia-modules.conf
-#         dest: /etc/modules-load.d/nvidia-modules.conf
-#         mode: "0600"
-
-#     - name: Set to load nvidia udev rules
-#       ansible.builtin.copy:
-#         src: files/70-nvidia.rules
-#         dest: /etc/udev/rules.d/70-nvidia.rules
-#         mode: "0600"
-
-# - name: Run the installer silently for guest
-#   ansible.builtin.command:
-#     cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --no-kernel-module"
-#   when: ansible_facts['virtualization_role'] == 'guest'
-#   changed_when: true
-
-# - name: Another block for vm host
-#   when: ansible_facts['virtualization_role'] == 'host'
-#   block:
-#     - name: Unarchive persistenced
-#       ansible.builtin.unarchive:
-#         remote_src: true
-#         src: /usr/share/doc/NVIDIA_GLX-1.0/samples/nvidia-persistenced-init.tar.bz2
-#         dest: /tmp/
-
-#     - name: Run service installer
-#       ansible.builtin.command:
-#         cmd: /tmp/nvidia-persistenced-init/install.sh
-#         creates: /lib/systemd/system/nvidia-persistenced.service
-
-
-- name: Cuda block for guest
-  when: ansible_facts['virtualization_role'] == 'guest'
+- name: Block for vm host
+  when: nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'host'
   block:
-    - name: Add Nvidia Repo
-      ansible.builtin.get_url:
-        url: https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
-        dest: /etc/yum.repos.d/cuda-rhel9.repo
-        mode: "0644"
+    - name: Run Initramfs update
+      ansible.builtin.command:
+        cmd: update-initramfs -u
+      changed_when: blocklist_copy.changed
+
+    - name: Reboot
+      ansible.builtin.reboot:
+
+- name: Wait for everything to come back
+  ansible.builtin.wait_for_connection:
+    timeout: 600
+
+- name: Ensure folder exists
+  delegate_to: localhost
+  run_once: true
+  become: true
+  ansible.builtin.file:
+    path: "/tmp/ansible/"
+    state: directory
+    mode: "0777"
+
+- name: Download driver to local folder
+  run_once: true
+  delegate_to: localhost
+  become: false
+  ansible.builtin.get_url:
+    url: "{{ configure_nvidia_driver_url }}/{{ configure_nvidia_driver_version }}/{{ configure_nvidia_driver_file_name }}"
+    dest: "/tmp/ansible/{{ configure_nvidia_driver_file_name }}"
+    checksum: "sha256:{{ configure_nvidia_driver_checksum }}"
+    mode: "0660"
+
+- name: Copy driver to target
+  ansible.builtin.copy:
+    src: "/tmp/ansible/{{ configure_nvidia_driver_file_name }}"
+    dest: "/tmp/{{ configure_nvidia_driver_file_name }}"
+    mode: "0744"
+
+- name: Block for vm host
+  when: ansible_facts['virtualization_role'] == 'host'
+  block:
+    - name: Install packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - build-essential
+        - proxmox-headers-{{ ansible_facts['kernel'] }}
+
+    - name: Run the installer silently for host
+      ansible.builtin.command:
+        cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --dkms"
+      changed_when: true
+
+    - name: Set to load nvidia modules into the kernel
+      ansible.builtin.copy:
+        src: files/nvidia-modules.conf
+        dest: /etc/modules-load.d/nvidia-modules.conf
+        mode: "0600"
+
+    - name: Set to load nvidia udev rules
+      ansible.builtin.copy:
+        src: files/70-nvidia.rules
+        dest: /etc/udev/rules.d/70-nvidia.rules
+        mode: "0600"
+
+- name: Run the installer silently for guest
+  ansible.builtin.command:
+    cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --no-kernel-module"
+  when: ansible_facts['virtualization_role'] == 'guest'
+  changed_when: true
+
+- name: Another block for vm host
+  when: ansible_facts['virtualization_role'] == 'host'
+  block:
+    - name: Unarchive persistenced
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: /usr/share/doc/NVIDIA_GLX-1.0/samples/nvidia-persistenced-init.tar.bz2
+        dest: /tmp/
+
+    - name: Run service installer
+      ansible.builtin.command:
+        cmd: /tmp/nvidia-persistenced-init/install.sh
+        creates: /lib/systemd/system/nvidia-persistenced.service

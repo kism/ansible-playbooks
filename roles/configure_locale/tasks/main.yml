@@ -1,4 +1,11 @@
 ---
+- name: Install locale
+  ansible.builtin.dnf:
+    name:
+      - langpacks-en.noarch
+      - langpacks-core-en.noarch
+    state: installed
+
 - name: Ensure a locale exists
   community.general.locale_gen:
     name: en_AU.UTF-8

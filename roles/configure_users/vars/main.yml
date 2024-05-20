@@ -38,6 +38,18 @@ configure_users_users:
     shell: /usr/sbin/nologin
     groups:
       - content_public
+  minecraft:
+    uid: 1083
+    shell: /usr/sbin/nologin
+    groups:
+  factorio:
+    uid: 1082
+    shell: /usr/sbin/nologin
+    groups:
+  ollama:
+    uid: 1081
+    shell: /usr/sbin/nologin
+    groups:
 
 configure_users_groups:
   kgadmins:

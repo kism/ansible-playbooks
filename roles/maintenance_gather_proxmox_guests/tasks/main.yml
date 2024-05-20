@@ -1,0 +1,24 @@
+---
+- name: Get Proxmox Guests
+  delegate_to: localhost
+  run_once: true
+  community.general.proxmox_vm_info:
+    api_user: root@pam
+    api_token_id: "{{ secret_proxmox_token_id }}"
+    api_token_secret: "{{ secret_proxmox_token_secret }}"
+    api_host: "{{ proxmox_api_host }}"
+  register: proxmox_guests
+  until: not proxmox_guests.failed
+  retries: 5
+  delay: 10
+
+
+- name: Print Proxmox Guests
+  ansible.builtin.debug:
+    msg: '{{ proxmox_guests }}'
+
+- name: Set proxmox facts for host
+  ansible.builtin.set_fact:
+    proxmox_facts: '{{ item }}'
+  when: item.name == inventory_hostname
+  loop: '{{ proxmox_guests.proxmox_vms }}'

@@ -76,6 +76,7 @@ skip_ansible_lint
 |--------------------|--------------------------------------------------------------------|
 | configure_         | (Install and) configure a specific thing                           |
 | configure_service_ | (Install and) configure something that will be/run as a service    |
+| create_            | Create a new vm/ct/instance/whatever                               |
 | uninstall_         | Remove a specific application or package                           |
 | maintenance_       | No changes, other than patching                                    |
 | meta_              | roles that only include roles                                      |
@@ -85,27 +86,27 @@ skip_ansible_lint
 | adhoc_          | Reference or adhoc playbooks, often don't keep them |
 | audit_          | Playbooks that get the state of VMs                 |
 | build_          | Build a VM                                          |
+| configure_      | Apply a configure_ role or two to some VMs          |
 | maintenance_    | No changes, other than patching                     |
 
 ## TODO
 
-* separate out more configs
-* set permissions on unmounted directories
+* separate out more configs, use host vars, group vars
 * Proxmox
-* Proxmox `pct push`
-* Proxmox Set IP address, MAC in DNS, DHCP in opnsense
-* Proxmox grab lxc <https://images.linuxcontainers.org/>
+  * Proxmox Set IP address, MAC in DNS, DHCP in opnsense
+        <https://docs.opnsense.org/development/api/core/unbound.html>
+        <https://docs.opnsense.org/development/api/core/kea.html>
+  * Proxmox grab lxc <https://images.linuxcontainers.org/>
 * Unmount, chmod, remount disks to ensure perms
 * GNU stow for dotfiles
 * github gpg key
-* fix github actions lint
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
 * better fan control on the aliexpress board???
 * setup cert
 * workstation setup
 * firewall pve???
 
-do later
+do ~~later~~ never
 
 ```bash
 ansible-galaxy collection install ansible.windows

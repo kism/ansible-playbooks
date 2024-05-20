@@ -1,0 +1,41 @@
+---
+- name: Download Ollama
+  ansible.builtin.get_url:
+    url: "{{ configure_ollama_bin_url }}"
+    dest: /usr/bin/ollama
+    mode: "0755"
+
+- name: Copy systemd service
+  ansible.builtin.copy:
+    src: files/ollama.service
+    dest: /etc/systemd/system/ollama.service
+    mode: "0644"
+
+- name: Enable systemd service
+  ansible.builtin.systemd_service:
+    name: ollama.service
+    enabled: true
+    daemon_reload: true
+    state: started
+    masked: false
+
+- name: Run docker container for webui
+  community.docker.docker_container:
+    name: open-webui
+    image: ghcr.io/open-webui/open-webui:main
+    state: started
+    env:
+      OLLAMA_BASE_URL: http://127.0.0.1:11434
+    volumes:
+      - open-webui:/app/backend/data
+    restart_policy: always
+    network_mode: host
+
+- name: Allow http alt through firewalld
+  ansible.posix.firewalld:
+    service: "http-alt"
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld

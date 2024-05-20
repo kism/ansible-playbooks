@@ -1,0 +1,5 @@
+---
+proxmox_target_node: pvematt
+proxmox_guest_mac_address: BC:24:11:2B:E0:24
+proxmox_ct_features:
+  - nesting

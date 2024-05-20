@@ -14,15 +14,20 @@
 - name: Oracle Linux Block
   when: ansible_distribution == "OracleLinux"
   block:
-    - name: Add AppStream repo for oracle linux
-      ansible.builtin.yum_repository:
-        name: 'ol{{ ansible_distribution_major_version }}_appstream'
-        description: Oracle Linux {{ ansible_distribution_major_version }} AppStream Packages ({{ ansible_architecture }})
-        file: oracle-appstream-ol{{ ansible_distribution_major_version }}
-        baseurl: https://yum.oracle.com/repo/OracleLinux/OL{{ ansible_distribution_major_version }}/appstream/{{ ansible_architecture }}/
-        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
-        gpgcheck: true
-        enabled: true
+    # - name: Add AppStream repo for oracle linux
+    #   ansible.builtin.yum_repository:
+    #     name: 'ol{{ ansible_distribution_major_version }}_appstream'
+    #     description: Oracle Linux {{ ansible_distribution_major_version }} AppStream Packages ({{ ansible_architecture }})
+    #     file: oracle-appstream-ol{{ ansible_distribution_major_version }}
+    #     baseurl: https://yum.oracle.com/repo/OracleLinux/OL{{ ansible_distribution_major_version }}/appstream/{{ ansible_architecture }}/
+    #     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+    #     gpgcheck: true
+    #     enabled: true
+
+    - name: Remove duplicate repo definition lol
+      ansible.builtin.file:
+        path: /etc/yum.repos.d/oracle-appstream-ol9.repo
+        state: absent
 
 - name: Update DNF Cache
   ansible.builtin.dnf:

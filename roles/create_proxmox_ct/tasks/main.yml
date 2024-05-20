@@ -1,19 +1,81 @@
 ---
 - name: Block for creating a new VM
-  delegate_to: localhost
+  when: proxmox_facts is not defined
   become: false
   block:
-    - name: Create new container with minimal options
+    - name: If needed, Create new container with minimal options
       delegate_to: localhost
       community.general.proxmox:
-        vmid: '{{ proxmox_vm_id }}'
-        node: '{{ proxmox_target_node }}'
+        node: "{{ proxmox_target_node }}"
         api_user: root@pam
         api_token_id: "{{ secret_proxmox_token_id }}"
         api_token_secret: "{{ secret_proxmox_token_secret }}"
         api_host: "{{ proxmox_api_host }}"
         pubkey: "{{ lookup('ansible.builtin.url', 'https://github.com/kism.keys', split_lines=False) }}"
-        hostname: '{{ inventory_hostname | lower }}'
-        ostemplate: 'NFS_Amarant_proxmox:vztmpl/ol9_rootfs.tar.xz' # https://images.linuxcontainers.org/images
+        hostname: "{{ inventory_hostname | lower }}"
+        ostemplate: "NFS_Amarant_proxmox:vztmpl/ol9_rootfs.tar.xz" # https://images.linuxcontainers.org/images
         storage: local-lvm
         netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ proxmox_guest_mac_address }}"}'
+        features: "{{ proxmox_ct_features }}"
+        disk: "{{ proxmox_ct_disk }}"
+        state: stopped
+
+    - name: If needed, Gather new proxmox facts
+      ansible.builtin.include_role:
+        name: maintenance_gather_proxmox_guests
+
+    - name: Fail if vm not in the gathered proxmox_guests
+      ansible.builtin.fail:
+        msg: "CT didn't create successfully?"
+
+- name: Block for initialising the CT
+  when: proxmox_facts.status != 'running'
+  block:
+    - name: Set config entries for host if defined
+      delegate_to: "{{ proxmox_target_node }}"
+      become: true
+      become_user: root
+      ansible.builtin.lineinfile:
+        path: "/etc/pve/lxc/{{ proxmox_facts.vmid }}.conf"
+        line: "{{ item }}"
+        state: present
+        insertafter: EOF
+      when: proxmox_ct_conf_extra is defined
+      loop: '{{ proxmox_ct_conf_extra }}'
+
+    - name: Start container
+      delegate_to: localhost
+      community.general.proxmox:
+        vmid: "{{ proxmox_facts.vmid }}"
+        node: "{{ proxmox_target_node }}"
+        api_user: root@pam
+        api_token_id: "{{ secret_proxmox_token_id }}"
+        api_token_secret: "{{ secret_proxmox_token_secret }}"
+        api_host: "{{ proxmox_api_host }}"
+        onboot: true
+        state: started
+
+    - name: Copy init script to proxmox host
+      delegate_to: "{{ proxmox_target_node }}"
+      become: true
+      become_user: root
+      ansible.builtin.copy:
+        src: init_linux.sh
+        dest: "/tmp/{{ inventory_hostname }}_init_linux.sh"
+        mode: "0700"
+
+    - name: Copy the init script to container
+      delegate_to: "{{ proxmox_target_node }}"
+      become: true
+      become_user: root
+      ansible.builtin.command:
+        cmd: "pct push {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh /tmp/{{ inventory_hostname }}_init_linux.sh -perms 700"
+      changed_when: true # Safe assumption
+
+    - name: Run the init script
+      delegate_to: "{{ proxmox_target_node }}"
+      become: true
+      become_user: root
+      ansible.builtin.command:
+        cmd: "pct exec {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh"
+      changed_when: true # Safe assumption

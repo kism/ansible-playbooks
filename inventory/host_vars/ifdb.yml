@@ -1,0 +1,3 @@
+---
+proxmox_target_node: pvewill
+proxmox_guest_mac_address: EA:B0:82:7B:C4:2B

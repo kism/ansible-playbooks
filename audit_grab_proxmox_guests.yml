@@ -1,0 +1,7 @@
+---
+- name: Print ansible facts
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - meta_include_secrets
+    - maintenance_gather_proxmox_guests
