@@ -1,0 +1,12 @@
+---
+nfs_client_mounts:
+  Amarant: pvematt.kg.lan
+  Freya: pvematt.kg.lan
+  Garnet: pvematt.kg.lan
+  Vivi: pvematt.kg.lan
+disks_ext4:
+  - Steiner
+  - Beatrix
+  - Quale
+disks_btrfs:
+  Quina: 4054a595-ff86-4e6e-9bb4-d9b07ae1a7ef

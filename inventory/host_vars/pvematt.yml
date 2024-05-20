@@ -1,6 +1,13 @@
 ---
-configure_nfs_client_mounts:
+nfs_client_mounts:
   Beatrix: pvewill.kg.lan
   Steiner: pvewill.kg.lan
   Quina: pvewill.kg.lan
   Quale: pvewill.kg.lan
+disks_ext4:
+  - Zidane
+  - Vivi
+  - Garnet
+  - Amarant
+  - Freya
+  - Eiko

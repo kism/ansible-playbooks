@@ -1,6 +1,50 @@
 ---
-- name: Include vars for host
-  ansible.builtin.include_vars: vars/{{ ansible_hostname }}.yml
+- name: Ensure /srv
+  ansible.builtin.file:
+    path: /srv
+    state: directory
+    mode: "0755"
 
-- name: Include tasks for fstab
-  ansible.builtin.include_tasks: "01-fstab.yml"
+- name: BTRFS List
+  when: disks_ext4 is defined
+  block:
+    - name: Add directories for HDDs (ext4 list)
+      ansible.builtin.file:
+        path: /srv/{{ item }}
+        state: directory
+        mode: "0700"
+      loop: "{{ disks_ext4 }}"
+
+    - name: Mount partitions by label (ext4)
+      ansible.posix.mount:
+        path: /srv/{{ item }}
+        src: LABEL={{ item }}
+        fstype: ext4
+        opts: rw,nofail,relatime
+        state: mounted
+      loop: "{{ disks_ext4 }}"
+
+- name: BTRFS List
+  when: disks_btrfs is defined
+  block:
+    - name: Add directories for HDDs (btrfs list)
+      ansible.builtin.file:
+        path: /srv/{{ item.key }}
+        state: directory
+        mode: "0755"
+      with_dict: "{{ disks_btrfs }}"
+
+    - name: Mount partitions by uuid (btrfs)
+      ansible.posix.mount:
+        path: /srv/{{ item.key }}
+        src: UUID={{ item.value }}
+        fstype: btrfs
+        opts: defaults,nofail,autodefrag
+        state: mounted
+      with_dict: "{{ disks_btrfs }}"
+
+- name: Copy perms script
+  ansible.builtin.copy:
+    src: files/hosts/{{ ansible_hostname }}/perms.sh
+    dest: /root/perms.sh
+    mode: "0700"

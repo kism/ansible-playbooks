@@ -1,8 +1,0 @@
----
-configure_disks_ext4:
-  - Zidane
-  - Vivi
-  - Garnet
-  - Amarant
-  - Freya
-  - Eiko

@@ -91,7 +91,6 @@ skip_ansible_lint
 
 ## TODO
 
-* separate out more configs, use host vars, group vars
 * Proxmox
   * Proxmox Set IP address, MAC in DNS, DHCP in opnsense
         <https://docs.opnsense.org/development/api/core/unbound.html>
@@ -106,7 +105,7 @@ skip_ansible_lint
 * workstation setup
 * firewall pve???
 
-do ~~later~~ never
+## do ~~later~~ never
 
 ```bash
 ansible-galaxy collection install ansible.windows

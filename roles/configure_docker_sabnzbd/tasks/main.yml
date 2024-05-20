@@ -1,10 +1,7 @@
 ---
-- name: Include vars for host
-  ansible.builtin.include_vars: vars/{{ ansible_hostname }}.yml
-
 - name: Create settings folder structure
   ansible.builtin.file:
-    path: "{{ configure_docker_sabnzbd_settings_base_dir }}/sabnzbd/config"
+    path: "{{ settings_base_dir }}/sabnzbd/config"
     state: directory
     mode: "0770"
     owner: qbtuser
@@ -12,7 +9,7 @@
 
 - name: Create download folder structure
   ansible.builtin.file:
-    path: "{{ configure_docker_sabnzbd_downloads_base_dir }}/{{ item }}"
+    path: "{{ arr_downloads_base_dir }}/{{ item }}"
     state: directory
     mode: "0770"
     owner: qbtuser
@@ -25,14 +22,14 @@
 - name: Copy docker-compose.yml
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
-    dest: "{{ configure_docker_sabnzbd_settings_base_dir }}/sabnzbd/docker-compose.yml"
+    dest: "{{ settings_base_dir }}/sabnzbd/docker-compose.yml"
     mode: "0640"
     owner: root
     group: qbtuser
 
 - name: Pull images for docker-compose
   community.docker.docker_compose_v2_pull:
-    project_src: "{{ configure_docker_sabnzbd_settings_base_dir }}/sabnzbd/"
+    project_src: "{{ settings_base_dir }}/sabnzbd/"
 
 - name: Allow sabnzbd through firewalld
   ansible.posix.firewalld:

@@ -1,10 +1,7 @@
 ---
-- name: Include vars for host
-  ansible.builtin.include_vars: vars/{{ ansible_hostname }}.yml
-
 - name: Create settings folder structure
   ansible.builtin.file:
-    path: "{{ configure_docker_arr_settings_base_dir }}/{{ item }}"
+    path: "{{ arr_settings_base_dir }}/{{ item }}"
     state: directory
     mode: "0770"
     owner: qbtuser
@@ -24,7 +21,7 @@
 
 - name: Create downloads folder structure
   ansible.builtin.file:
-    path: "{{ configure_docker_arr_downloads_base_dir }}/{{ item }}"
+    path: "{{ arr_downloads_base_dir }}/{{ item }}"
     state: directory
     mode: "0770"
     owner: qbtuser
@@ -37,14 +34,14 @@
 - name: Copy docker-compose.yml
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
-    dest: "{{ configure_docker_arr_settings_base_dir }}/arr/docker-compose.yml"
+    dest: "{{ arr_settings_base_dir }}/arr/docker-compose.yml"
     mode: "0640"
     owner: root
     group: qbtuser
 
 - name: Pull images for docker-compose
   community.docker.docker_compose_v2_pull:
-    project_src: "{{ configure_docker_arr_settings_base_dir }}/arr/"
+    project_src: "{{ arr_settings_base_dir }}/arr/"
 
 - name: Allow arr services through firewalld
   ansible.posix.firewalld:
