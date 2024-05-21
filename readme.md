@@ -100,7 +100,6 @@ skip_ansible_lint
 * GNU stow for dotfiles
 * github gpg key
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
-* better fan control on the aliexpress board???
 * setup cert
 * workstation setup
 * firewall pve???

@@ -31,7 +31,6 @@ all:
     code:
       ansible_host: code.kg.lan
       ansible_host_description: VSCode Remote
-      ansible_python_interpreter: /usr/bin/python3.9
     yoho:
       ansible_host: yoho.kg.lan
       ansible_host_description: No one knows
