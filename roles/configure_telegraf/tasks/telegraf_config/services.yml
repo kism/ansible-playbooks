@@ -2,9 +2,19 @@
 - name: Populate service facts
   ansible.builtin.service_facts:
 
+- name: Get services that are not not found
+  ansible.builtin.set_fact:
+    existing_services: []
+
+- name: Get services that are not not found
+  ansible.builtin.set_fact:
+    existing_services: "{{ existing_services + [item.key] }}"
+  when: item.value.status != "not-found"
+  with_dict: "{{ ansible_facts.services }}"
+
 - name: Get list of services we want to monitor, that are on the host
   ansible.builtin.set_fact:
-    common_services: "{{ configure_telegraf_service_allowlist | intersect(ansible_facts.services.keys()) | sort }}" # Sort means that it won't trigger a change unless needed, as facts don't end up in order
+    common_services: "{{ configure_telegraf_service_allowlist | intersect(existing_services) | sort }}" # Sort means that it won't trigger a change unless needed, as facts don't end up in order
 
 - name: "Template telegraf config: input, systemd_units"
   ansible.builtin.template:
