@@ -50,6 +50,10 @@ configure_users_users:
     uid: 1081
     shell: /usr/sbin/nologin
     groups:
+  podcasto:
+    uid: 1080
+    shell: /usr/sbin/nologin
+    groups:
 
 configure_users_groups:
   kgadmins:
