@@ -9,7 +9,7 @@
 - name: Get services that are not not found
   ansible.builtin.set_fact:
     existing_services: "{{ existing_services + [item.key] }}"
-  when: item.value.status != "not-found"
+  when: item.value.status is defined and item.value.status != "not-found"
   with_dict: "{{ ansible_facts.services }}"
 
 - name: Get list of services we want to monitor, that are on the host
