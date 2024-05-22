@@ -1,4 +1,30 @@
 ---
+- name: Set default UMASK
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: "^UMASK"
+    line: "UMASK           077"
+
+- name: Set default HOME_MODE
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: "^HOME_MODE"
+    line: "HOME_MODE       0700"
+
+- name: Get existing home folders
+  ansible.builtin.find:
+    paths: /home
+    file_type: directory
+    recurse: false
+  register: home_dirs
+
+- name: Set permissions to 0700 for all home directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: "0700"
+  with_items: "{{ home_dirs.files }}"
+  when: item.path != '/home'
+
 - name: Add user accounts
   ansible.builtin.user:
     name: "{{ item.key }}"

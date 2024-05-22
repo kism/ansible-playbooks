@@ -18,23 +18,27 @@
     - name: Set fact for dotfile download location
       ansible.builtin.set_fact:
         dotfiles_temp_folder: /tmp/{{ lookup('ansible.builtin.env', 'USER') }}/ansible/dotfiles
+      changed_when: false # This is not happening on the remote
 
     - name: Remove dotfiles_temp_folder folder if exists
       ansible.builtin.file:
         path: "{{ dotfiles_temp_folder }}"
         state: absent
+      changed_when: false # This is not happening on the remote
 
     - name: Create folder on local machine to download dotfiles to
       ansible.builtin.file:
         path: "{{ dotfiles_temp_folder }}"
         state: directory
         mode: "0700"
+      changed_when: false # This is not happening on the remote
 
     - name: Create folders for dotfiles structure
       ansible.builtin.file:
         path: "{{ (dotfiles_temp_folder + '/' + (item['home_dest']) | dirname) }}"
         state: directory
         mode: "0700"
+      changed_when: false # This is not happening on the remote
       loop: "{{ configure_users_dotfiles }}"
 
     - name: Download dotfiles per vars to tmp folder
@@ -42,6 +46,7 @@
         url: "{{ item['url'] }}"
         dest: "{{ dotfiles_temp_folder }}/{{ item['home_dest'] }}"
         mode: "0600"
+      changed_when: false # This is not happening on the remote
       loop: "{{ configure_users_dotfiles }}"
 
 - name: Copy dotfiles taks, run for each user # Is this needed?

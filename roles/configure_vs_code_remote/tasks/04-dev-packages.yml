@@ -1,0 +1,26 @@
+---
+- name: Enable CodeReady repo DNF
+  community.general.dnf_config_manager:
+    name: 'ol{{ ansible_distribution_major_version }}_codeready_builder'
+    state: enabled
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install GCC
+  ansible.builtin.dnf:
+    name:
+      - gcc
+      - mingw-binutils-generic
+    state: installed
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install GCC
+  ansible.builtin.apt:
+    name: build-essential
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Install GCC
+  community.general.pacman:
+    name: base-devel
+    state: installed
+  when: ansible_pkg_mgr == 'pacman'

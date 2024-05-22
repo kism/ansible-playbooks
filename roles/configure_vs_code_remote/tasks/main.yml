@@ -19,3 +19,4 @@
     - ansible-playbooks
     - kism-ansible-audit
     - archivepodcast
+    - allowlistapp
