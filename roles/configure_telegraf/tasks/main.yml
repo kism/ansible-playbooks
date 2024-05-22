@@ -18,18 +18,9 @@
   notify:
     - Restart telegraf
 
-# - ansible.builtin.file:
-#     path: /etc/telegraf/telegraf.d/
-#     state: absent
-
-# - ansible.builtin.file:
-#     path: /etc/telegraf/telegraf.d/
-#     state: directory
-#     owner: root
-#     group: telegraf
-#     mode: "0750"
-
 - name: Include tasks, telegraf configs
-  ansible.builtin.include_tasks: "{{ item }}"
+  ansible.builtin.include_tasks: "{{ config_playbook }}"
   with_fileglob:
     - "tasks/telegraf_config/*"
+  loop_control:
+    loop_var: config_playbook

@@ -8,11 +8,11 @@
     - meta_include_secrets
 
     # Onboard Server
-    - meta_onboard_server
+    # - meta_onboard_server
 
     # Purpose Specific
     - configure_vs_code_remote
 
     # End
-    - configure_telegraf
+    # - configure_telegraf
     - maintenance_print_reminders

@@ -9,7 +9,7 @@
   ansible.builtin.dnf:
     name:
       - gcc
-      - mingw-binutils-generic
+      - mingw64-gcc
     state: installed
   when: ansible_pkg_mgr == 'dnf'
 
