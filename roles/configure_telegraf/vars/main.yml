@@ -5,12 +5,6 @@ configure_telegraf_service_allowlist:
   - fail2ban.service
   - grafana-server.service
   - influxdb.service
-  - pve-container*
-  - pve-cluster*
-  - pve-firewall*
-  - pvedaemon.service
-  - pveproxy.service
-  - pvescheduler.service
   - smb.service
   - smbd.service
   - step-ca.service
@@ -21,3 +15,13 @@ configure_telegraf_service_allowlist:
   - allowlistapp.service
   - ollama.service
   - jellyfin.service
+  - lxcfs.service
+  - lxc-monitord.service
+  - pve-lxc-syscalld.service
+  - pve-cluster.service
+  - pve-firewall.service
+  - pvedaemon.service
+  - pveproxy.service
+  - pvescheduler.service
+  - pve-cluster.service
+  - pve-container*
