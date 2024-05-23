@@ -18,5 +18,5 @@
     # No snapraid....
 
     # Reminders
-    - maintenance_update_packages
+    - configure_telegraf
     - maintenance_print_reminders

@@ -15,7 +15,7 @@
   ansible.builtin.copy:
     src: files/snapraid_helper.sh
     dest: /opt/scripts/snapraid_helper.sh
-    mode: "700"
+    mode: "0700"
 
 - name: Run SnapRAID script
   ansible.builtin.cron:
@@ -23,3 +23,9 @@
     minute: "0"
     hour: "09"
     job: /opt/scripts/snapraid_helper.sh
+
+- name: Set email address
+  ansible.builtin.lineinfile:
+    path: /opt/scripts/snapraid_helper.sh
+    regexp: '^EMAIL_ADDRESS="'
+    line: 'EMAIL_ADDRESS={{ secret_email }}'

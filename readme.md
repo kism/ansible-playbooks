@@ -103,6 +103,7 @@ skip_ansible_lint
 * setup cert
 * workstation setup
 * firewall pve???
+* redo secrets
 
 ## do ~~later~~ never
 

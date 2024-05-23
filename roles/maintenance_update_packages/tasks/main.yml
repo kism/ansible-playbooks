@@ -5,7 +5,7 @@
 - name: Run pipx update routine if needed
   ansible.builtin.include_tasks: "02-pipx.yml"
 
-- name: Append diff variable to file # Can we do a wild combine() here?
+- name: Append diff variable to file # Can we do a wild combine() here? (no)
   delegate_to: localhost
   become: false
   ansible.builtin.lineinfile:
