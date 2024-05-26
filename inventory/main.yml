@@ -49,6 +49,7 @@ proxmoxvms:
     rproxy:
     code:
     yoho:
+    llama:
 proxmoxhosts:
   hosts:
     pvewill:
