@@ -18,6 +18,8 @@
     - sonarr-main/config
     - sonarr-documentary
     - sonarr-documentary/config
+    - prowlarr
+    - prowlarr/config
 
 - name: Create downloads folder structure
   ansible.builtin.file:

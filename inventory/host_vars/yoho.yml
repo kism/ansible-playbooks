@@ -20,6 +20,6 @@ arr_tv_dirs:
   garnet: /mnt/Garnet/Video/Series
   vivi: /mnt/Vivi/Video/Series
 arr_movies_dir: /mnt/Vivi/Video/Movies
-arr_tv_documentary_dir: /mnt/Amarant/Video/Documentary Series
 arr_movies_hq_dir: /mnt/Vivi/Video/Movies HQ
+arr_tv_documentary_dir: /mnt/Amarant/Video/Documentary Series
 arr_movies_documentary_dir: /mnt/Amarant/Video/Documentary Movies

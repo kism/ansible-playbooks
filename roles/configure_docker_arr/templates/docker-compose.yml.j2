@@ -9,11 +9,11 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_arr_settings_base_dir }}/sonarr-main/config:/config
-{% for key, value in configure_docker_arr_tv_dirs.items() %}
+      - {{ arr_settings_base_dir }}/sonarr-main/config:/config
+{% for key, value in arr_tv_dirs.items() %}
       - {{ value + ":/tv/" + key }}
 {% endfor %}
-      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 10000:8989
     restart: unless-stopped
@@ -28,9 +28,9 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_arr_settings_base_dir }}/sonarr-documentary/config:/config
-      - {{ configure_docker_arr_tv_documentary_dir }}:/tv
-      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_settings_base_dir }}/sonarr-documentary/config:/config
+      - {{ arr_tv_documentary_dir }}:/tv
+      - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 10002:8989
     restart: unless-stopped
@@ -46,9 +46,9 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_arr_settings_base_dir }}/radarr-main/config:/config
-      - {{ configure_docker_arr_movies_dir }}:/movies
-      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_settings_base_dir }}/radarr-main/config:/config
+      - {{ arr_movies_dir }}:/movies
+      - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 11000:7878
     restart: unless-stopped
@@ -63,9 +63,9 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_arr_settings_base_dir }}/radarr-hq/config:/config
-      - {{ configure_docker_arr_movies_hq_dir }}:/movies
-      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_settings_base_dir }}/radarr-hq/config:/config
+      - {{ arr_movies_hq_dir }}:/movies
+      - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 11001:7878
     restart: unless-stopped
@@ -80,14 +80,28 @@ services:
       - PGID=1086
       - TZ=Etc/UTC
     volumes:
-      - {{ configure_docker_arr_settings_base_dir }}/radarr-documentary/config:/config
-      - {{ configure_docker_arr_movies_documentary_dir }}:/movies
-      - {{ configure_docker_arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_settings_base_dir }}/radarr-documentary/config:/config
+      - {{ arr_movies_documentary_dir }}:/movies
+      - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
     ports:
       - 11002:7878
     restart: unless-stopped
     networks:
       net-arr:
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1086
+      - PGID=1086
+      - TZ=Etc/UTC
+    volumes:
+      - {{ arr_settings_base_dir }}/prowlarr/config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
 
   # Misc
 
