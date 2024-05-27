@@ -11,6 +11,7 @@
     # - meta_onboard_server
 
     # Purpose Specific
+    - configure_docker
     - configure_vs_code_remote
 
     # End

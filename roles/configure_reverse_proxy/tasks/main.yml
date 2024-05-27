@@ -67,10 +67,27 @@
     - Reload nginx
   loop: "{{ config_files_found.files }}"
 
-- name: Copy index.html
+- name: Ensure dirs exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /usr/share/nginx/html/
+    - /usr/share/nginx/html-private/
+
+- name: Copy public index.html
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/index.html
+    src: files/hosts/{{ ansible_hostname }}/public/index.html
     dest: /usr/share/nginx/html/index.html
+    mode: "0664"
+  notify:
+    - Reload nginx
+
+- name: Copy private index.html
+  ansible.builtin.copy:
+    src: files/hosts/{{ ansible_hostname }}/private/index.html
+    dest: /usr/share/nginx/html-private/index.html
     mode: "0664"
   notify:
     - Reload nginx

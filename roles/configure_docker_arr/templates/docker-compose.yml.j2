@@ -7,7 +7,7 @@ services:
     environment:
       - PUID=1086
       - PGID=1086
-      - TZ=Etc/UTC
+      - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/sonarr-main/config:/config
 {% for key, value in arr_tv_dirs.items() %}
@@ -26,7 +26,7 @@ services:
     environment:
       - PUID=1086
       - PGID=1086
-      - TZ=Etc/UTC
+      - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/sonarr-documentary/config:/config
       - {{ arr_tv_documentary_dir }}:/tv
@@ -44,7 +44,7 @@ services:
     environment:
       - PUID=1086
       - PGID=1086
-      - TZ=Etc/UTC
+      - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/radarr-main/config:/config
       - {{ arr_movies_dir }}:/movies
@@ -61,7 +61,7 @@ services:
     environment:
       - PUID=1086
       - PGID=1086
-      - TZ=Etc/UTC
+      - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/radarr-hq/config:/config
       - {{ arr_movies_hq_dir }}:/movies
@@ -78,7 +78,7 @@ services:
     environment:
       - PUID=1086
       - PGID=1086
-      - TZ=Etc/UTC
+      - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/radarr-documentary/config:/config
       - {{ arr_movies_documentary_dir }}:/movies
@@ -95,13 +95,25 @@ services:
     environment:
       - PUID=1086
       - PGID=1086
-      - TZ=Etc/UTC
+      - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/prowlarr/config:/config
     ports:
       - 9696:9696
     restart: unless-stopped
 
+
+  jellyseerr:
+      image: fallenbagel/jellyseerr:latest
+      container_name: jellyseerr
+      environment:
+          - LOG_LEVEL=debug
+          - TZ=Australia/Perth
+      ports:
+          - 5055:5055
+      volumes:
+          - {{ arr_settings_base_dir }}/jellyseerr/config:/config
+      restart: unless-stopped
 
   # Misc
 

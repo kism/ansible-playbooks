@@ -24,5 +24,4 @@
     ".ansible-lint.yml": "yaml",
     "*.md.j2": "markdown"
   },
-  "ansible.python.interpreterPath": "/Users/kism/src/ansible-playbooks/.venv/bin/python"
 }

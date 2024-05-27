@@ -14,7 +14,7 @@
     state: directory
     mode: "0755"
 
-- name: Copy ssh config
+- name: Copy sshd config
   ansible.builtin.copy:
     src: files/90-sshnopasswordauth.conf
     dest: /etc/ssh/sshd_config.d/90-sshnopasswordauth.conf

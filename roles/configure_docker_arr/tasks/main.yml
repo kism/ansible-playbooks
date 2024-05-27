@@ -20,6 +20,8 @@
     - sonarr-documentary/config
     - prowlarr
     - prowlarr/config
+    - jellyseer
+    - jellyseer/config
 
 - name: Create downloads folder structure
   ansible.builtin.file:
@@ -55,6 +57,7 @@
     - radarr
     - sonarr
     - prowlarr
+    - jellyseer
   notify:
     - Restart firewalld
 

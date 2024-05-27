@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Jellyseerr</short>
+  <description>Jellyseerr is a free and open source fork of Overseerr for managing requests for your media library.</description>
+  <port protocol="tcp" port="5055" />
+</service>
