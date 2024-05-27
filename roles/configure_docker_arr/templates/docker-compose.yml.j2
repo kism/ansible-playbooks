@@ -106,15 +106,14 @@ services:
   jellyseerr:
       image: fallenbagel/jellyseerr:latest
       container_name: jellyseerr
+      user: 1086:1086
       environment:
-          - PUID=1086
-          - PGID=1086
           - LOG_LEVEL=debug
           - TZ=Australia/Perth
       ports:
           - 5055:5055
       volumes:
-          - {{ arr_settings_base_dir }}/jellyseerr/config:/config
+          - {{ arr_settings_base_dir }}/jellyseerr/config:/app/config
       restart: unless-stopped
 
   # Misc
