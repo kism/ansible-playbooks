@@ -107,6 +107,8 @@ services:
       image: fallenbagel/jellyseerr:latest
       container_name: jellyseerr
       environment:
+          - PUID=1086
+          - PGID=1086
           - LOG_LEVEL=debug
           - TZ=Australia/Perth
       ports:
