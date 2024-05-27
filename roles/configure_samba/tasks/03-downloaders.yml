@@ -8,3 +8,8 @@
   loop:
     - internetarchive
     - yt-dlp
+
+- name: Install mc
+  ansible.builtin.package:
+    name: mc
+    state: present

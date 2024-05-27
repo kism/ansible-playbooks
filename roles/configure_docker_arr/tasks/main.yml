@@ -54,6 +54,7 @@
   loop:
     - radarr
     - sonarr
+    - prowlarr
   notify:
     - Restart firewalld
 
