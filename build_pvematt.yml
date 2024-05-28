@@ -14,9 +14,9 @@
     # - configure_proxmox
     # - configure_concept_baremetal
     # - configure_postfix_gmail
-    # - configure_disks
-    - configure_snapraid
+    - configure_disks
+    # - configure_snapraid
 
     # Reminders
-    - configure_telegraf
+    # - configure_telegraf
     - maintenance_print_reminders
