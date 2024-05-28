@@ -14,6 +14,7 @@ services:
       - {{ value + ":/tv/" + key }}
 {% endfor %}
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
     ports:
       - 10000:8989
     restart: unless-stopped
@@ -31,6 +32,7 @@ services:
       - {{ arr_settings_base_dir }}/sonarr-documentary/config:/config
       - {{ arr_tv_documentary_dir }}:/tv
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
     ports:
       - 10002:8989
     restart: unless-stopped
@@ -49,6 +51,7 @@ services:
       - {{ arr_settings_base_dir }}/radarr-main/config:/config
       - {{ arr_movies_dir }}:/movies
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
     ports:
       - 11000:7878
     restart: unless-stopped
@@ -66,6 +69,7 @@ services:
       - {{ arr_settings_base_dir }}/radarr-hq/config:/config
       - {{ arr_movies_hq_dir }}:/movies
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
     ports:
       - 11001:7878
     restart: unless-stopped
@@ -83,6 +87,7 @@ services:
       - {{ arr_settings_base_dir }}/radarr-documentary/config:/config
       - {{ arr_movies_documentary_dir }}:/movies
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
     ports:
       - 11002:7878
     restart: unless-stopped

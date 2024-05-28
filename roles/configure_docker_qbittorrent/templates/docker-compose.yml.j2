@@ -33,9 +33,9 @@ services:
       - TZ=Australia/Perth
       - WEBUI_PORT=8080
     volumes:
-      - {{ configure_docker_qbittorrent_settings_base_dir }}/qbittorrent/config:/config
-      - {{ configure_docker_qbittorrent_settings_base_dir }}/qbittorrent/watch:/watch
-      - {{ configure_docker_qbittorrent_downloads_base_dir }}/torrent:/downloads
+      - {{ arr_settings_base_dir }}/qbittorrent/config:/config
+      - {{ arr_settings_base_dir }}/qbittorrent/watch:/watch
+      - {{ arr_downloads_base_dir }}/torrent:/downloads
       - /var/log/qbittorrent:/config/log
     restart: unless-stopped
     depends_on:
