@@ -25,6 +25,6 @@
     path: /mnt/{{ item.key }}
     src: "{{ item.value }}:/srv/{{ item.key }}"
     fstype: nfs
-    # opts: "vers=3,tcp,timeo=600,soft,intr"
+    opts: "vers=3,tcp,timeo=60,soft,intr"
     state: mounted
   with_dict: "{{ nfs_client_mounts }}"

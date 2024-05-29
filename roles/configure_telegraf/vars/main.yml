@@ -16,6 +16,7 @@ configure_telegraf_service_allowlist:
   - ollama.service
   - jellyfin.service
   - lxcfs.service
+  - nfs-kernel-server.service
   - lxc-monitord.service
   - pve-lxc-syscalld.service
   - pve-cluster.service
