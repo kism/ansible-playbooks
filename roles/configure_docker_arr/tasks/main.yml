@@ -58,6 +58,7 @@
     - sonarr
     - prowlarr
     - jellyseerr
+    - checkrr
   notify:
     - Restart firewalld
 

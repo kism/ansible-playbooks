@@ -6,6 +6,7 @@ proxmox_ct_conf_extra:
   - "mp1: /mnt/Garnet,mp=/mnt/Garnet"
   - "mp2: /mnt/Vivi,mp=/mnt/Vivi"
   - "mp3: /mnt/Amarant,mp=/mnt/Amarant"
+  - "mp4: /mnt/Freya,mp=/mnt/Freya"
   - "lxc.cgroup2.devices.allow: c 10:200 rwm"
   - "lxc.mount.entry: /dev/net dev/net none bind,create=dir"
 proxmox_ct_features:
@@ -20,6 +21,6 @@ arr_tv_dirs:
   garnet: /mnt/Garnet/Video/Series
   vivi: /mnt/Vivi/Video/Series
 arr_movies_dir: /mnt/Vivi/Video/Movies
-arr_movies_hq_dir: /mnt/Vivi/Video/Movies 4K
+arr_movies_4k_dir: /mnt/Vivi/Video/Movies 4K
 arr_tv_documentary_dir: /mnt/Amarant/Video/Documentary Series
 arr_movies_documentary_dir: /mnt/Amarant/Video/Documentary Movies

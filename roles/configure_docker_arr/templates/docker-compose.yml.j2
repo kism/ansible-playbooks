@@ -67,7 +67,7 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/radarr-4k/config:/config
-      - {{ arr_movies_hq_dir }}:/movies
+      - {{ arr_movies_4k_dir }}:/movies
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
       - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
     ports:
@@ -120,6 +120,25 @@ services:
       volumes:
           - {{ arr_settings_base_dir }}/jellyseerr/config:/app/config
       restart: unless-stopped
+
+
+  checkrr:
+    container_name: checkrr
+    image: aetaric/checkrr:latest
+    volumes:
+      - {{ arr_settings_base_dir }}/checkrr/config/checkrr.yaml:/etc/checkrr.yaml
+      - {{ arr_settings_base_dir }}/checkrr/config/checkrr.db:/checkrr.db
+      - {{ arr_movies_dir }}:/media/movies
+      - {{ arr_movies_4k_dir }}:/media/movies_4k
+      - {{ arr_tv_documentary_dir }}:/media/tv_documentary
+      - {{ arr_movies_documentary_dir }}:/media/movies_documentary
+{% for key, value in arr_tv_dirs.items() %}
+      - {{ value + ":/media/" + key }}
+{% endfor %}
+    ports:
+      - 8585:8585
+    restart: on-failure
+
 
   # Misc
 

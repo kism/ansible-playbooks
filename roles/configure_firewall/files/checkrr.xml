@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Checkrr</short>
+  <description>Scan your library files for corrupt media and replace the files via sonarr and radarr
+</description>
+  <port protocol="tcp" port="8585"/>
+</service>
