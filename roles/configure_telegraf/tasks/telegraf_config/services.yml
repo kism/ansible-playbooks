@@ -14,7 +14,8 @@
 
 - name: Get list of services we want to monitor, that are on the host
   ansible.builtin.set_fact:
-    common_services: "{{ configure_telegraf_service_allowlist | intersect(existing_services) | sort }}" # Sort means that it won't trigger a change unless needed, as facts don't end up in order
+    # Sort means that it won't trigger a change unless needed, as facts don't end up in order
+    common_services: "{{ configure_telegraf_service_allowlist | intersect(existing_services) | sort }}"
 
 - name: "Template telegraf config: input, systemd_units"
   ansible.builtin.template:
