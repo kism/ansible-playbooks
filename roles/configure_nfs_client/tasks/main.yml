@@ -28,3 +28,4 @@
     opts: "vers=3,tcp,timeo=60,soft,intr"
     state: mounted
   with_dict: "{{ nfs_client_mounts }}"
+  notify: Reload systemd
