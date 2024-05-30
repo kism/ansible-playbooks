@@ -1,0 +1,51 @@
+---
+- name: Create pki directory if it does not exist
+  ansible.builtin.file:
+    path: /usr/share/nginx/html/pki
+    state: directory
+    mode: "0755"
+
+- name: Enable crond
+  ansible.builtin.systemd_service:
+    name: crond
+    enabled: true
+    state: started
+
+- name: Set cloudflare key
+  ansible.builtin.copy:
+    content: dns_cloudflare_api_token = {{ secret_cloudflare_api_dns }}
+    dest: /root/.cloudflare.ini
+    mode: "0600"
+
+- name: Initial certbot config
+  ansible.builtin.command:
+    cmd: >-
+      certbot certonly
+      --agree-tos
+      --email={{ secret_email }}
+      -v
+      --non-interactive
+      --post-hook "service nginx reload"
+      --dns-cloudflare
+      --dns-cloudflare-credentials /root/.cloudflare.ini
+      -d kierangee.au,*.kierangee.au
+  register: command_output
+  changed_when: false # Handled in next task
+  failed_when: command_output.rc != 0 and not "too many certificates" in command_output.stderr
+  notify: Reload nginx
+
+- name: Check if certs have changed
+  ansible.builtin.find:
+    paths: /etc/letsencrypt/live/kierangee.au
+    age: 30s
+    recurse: false
+  register: modified_files
+  changed_when: modified_files.files | length > 0
+  notify: Reload nginx
+
+- name: Set certbot cron job
+  ansible.builtin.cron:
+    name: Try refresh Certificates
+    minute: "0"
+    hour: "4"
+    job: certbot renew"

@@ -1,0 +1,83 @@
+- name: Create per-vhost logging directory
+  ansible.builtin.file:
+    path: "/var/log/nginx/vhosts/"
+    state: directory
+    mode: "0750"
+    owner: root
+    group: nginx
+
+- name: Copy nginx conf
+  ansible.builtin.copy:
+    src: files/hosts/{{ ansible_hostname }}/nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: "0660"
+  notify:
+    - Reload nginx
+
+- name: Remove file (delete file)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+# Suffix any files you don't want at the minute with .bak
+- name: Copy nginx site confs
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/nginx/sites-available/
+    mode: "0660"
+  with_fileglob:
+    - "files/hosts/{{ ansible_hostname }}/sites-available/*.conf"
+  notify:
+    - Reload nginx
+
+- name: Build list of nginx configs
+  ansible.builtin.find:
+    paths: /etc/nginx/sites-available/
+    file_type: file
+  register: config_files_found
+
+- name: Create symbolic links to make sites available
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{ item.path | basename }}
+    dest: /etc/nginx/sites-enabled/{{ item.path | basename }}
+    state: link
+  notify:
+    - Reload nginx
+  loop: "{{ config_files_found.files }}"
+
+- name: Ensure dirs exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /usr/share/nginx/html/
+    - /usr/share/nginx/html/private/
+
+- name: Copy public index.html
+  ansible.builtin.copy:
+    src: files/hosts/{{ ansible_hostname }}/public/index.html
+    dest: /usr/share/nginx/html/index.html
+    mode: "0664"
+  notify:
+    - Reload nginx
+
+- name: Copy private index.html
+  ansible.builtin.copy:
+    src: files/hosts/{{ ansible_hostname }}/private/index.html
+    dest: /usr/share/nginx/html/private/index.html
+    mode: "0664"
+  notify:
+    - Reload nginx
