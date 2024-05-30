@@ -1,7 +1,7 @@
 ---
-configure_jellyfin_base_dir: /opt/jellyfin
+configure_jellyfin_base_dir: /opt/jellyfin-server
 configure_jellyfin_ffmpeg_dir: /opt/jellyfin-ffmpeg
 # https://repo.jellyfin.org/?path=/server/linux/latest-stable/amd64
-configure_jellyfin_version: 10.8.13
+configure_jellyfin_version: 10.9.3
 # https://github.com/jellyfin/jellyfin-ffmpeg/releases
-configure_jellyfin_ffmpeg_version: 6.0.1-3
+configure_jellyfin_ffmpeg_version: 6.0.1-7

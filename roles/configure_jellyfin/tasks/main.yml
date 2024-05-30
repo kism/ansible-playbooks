@@ -1,4 +1,9 @@
 ---
+- name: Install fontconfig
+  ansible.builtin.package:
+    name: fontconfig
+    state: present
+
 - name: Set /opt perms
   ansible.builtin.file:
     path: "{{ item }}"
@@ -45,38 +50,34 @@
         path: "{{ configure_jellyfin_base_dir }}/jellyfin"
         state: absent
 
-    - name: Create folders
+    - name: Create folder
       ansible.builtin.file:
-        path: "{{ item }}"
+        path: "{{ configure_jellyfin_base_dir }}/jellyfin"
         state: directory
         owner: qbtuser
         group: qbtuser
         mode: "0755"
-      loop:
-        - "{{ configure_jellyfin_base_dir }}/jellyfin"
-        - "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
+
+    - name: Set fact for the download URLs
+      ansible.builtin.set_fact:
+        jellyfin_server_download_url: |-
+          https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin_
+          {{- configure_jellyfin_version -}}
+          -amd64.tar.xz
+
+    - name: Print download url
+      run_once: true
+      ansible.builtin.debug:
+        var: jellyfin_server_download_url
 
     - name: Download and extract jellyfin
       ansible.builtin.unarchive:
-        src: |-
-          https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-server_
-          {{- configure_jellyfin_version -}}
-          _linux-amd64.tar.gz
+        src: "{{ jellyfin_server_download_url }}"
         dest: "{{ configure_jellyfin_base_dir }}/jellyfin"
         remote_src: true
         extra_opts:
           - --strip-components=1
-
-    - name: Download and extract jellyfin-web
-      ansible.builtin.unarchive:
-        src: |-
-          https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin-web_
-          {{- configure_jellyfin_version -}}
-          _portable.tar.gz
-        dest: "{{ configure_jellyfin_base_dir }}/jellyfin/jellyfin-web"
-        remote_src: true
-        extra_opts:
-          - --strip-components=1
+      notify: Restart Jellyfin
 
     - name: Write version file
       ansible.builtin.copy:
@@ -85,10 +86,11 @@
         owner: qbtuser
         group: qbtuser
         mode: "0644"
+      notify: Restart Jellyfin
 
 - name: Create a file if it doesn't exist
   ansible.builtin.file:
-    path: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
+    path: "{{ configure_jellyfin_ffmpeg_dir }}/jellyfin-ffmpeg-version"
     state: touch
     owner: qbtuser
     group: qbtuser
@@ -96,36 +98,43 @@
 
 - name: Check current jellyfin ffmpeg version, update if needed
   ansible.builtin.slurp:
-    src: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
+    src: "{{ configure_jellyfin_ffmpeg_dir }}/jellyfin-ffmpeg-version"
   register: file_contents
 
-- name: Upgrade Jellyfin
+- name: Upgrade Jellyfin ffmpeg
   when: file_contents.content | ansible.builtin.b64decode != configure_jellyfin_ffmpeg_version
   block:
-    - name: Download and extract jellyfin-ffmpeg
-      ansible.builtin.unarchive:
-        src: |-
+    - name: Set fact for the download URL
+      ansible.builtin.set_fact:
+        jellyfin_server_download_url: |-
           https://github.com/jellyfin/jellyfin-ffmpeg/releases/download/v
           {{- configure_jellyfin_ffmpeg_version -}}
           /jellyfin-ffmpeg_
           {{- configure_jellyfin_ffmpeg_version -}}
           _portable_linux64-gpl.tar.xz
+
+    - name: Download and extract jellyfin-ffmpeg
+      ansible.builtin.unarchive:
+        src: "{{ jellyfin_server_download_url }}"
         dest: "{{ configure_jellyfin_ffmpeg_dir }}"
         remote_src: true
+      notify: Restart Jellyfin
 
     - name: Write version file
       ansible.builtin.copy:
-        dest: "{{ configure_jellyfin_base_dir }}/jellyfin-ffmpeg-version"
+        dest: "{{ configure_jellyfin_ffmpeg_dir }}/jellyfin-ffmpeg-version"
         content: "{{ configure_jellyfin_ffmpeg_version }}"
         owner: qbtuser
         group: qbtuser
         mode: "0644"
+      notify: Restart Jellyfin
 
 - name: Copy service helper script
   ansible.builtin.template:
     src: templates/startjellyfin.sh.j2
     dest: "{{ configure_jellyfin_base_dir }}/startjellyfin.sh"
     mode: "0774"
+  notify: Restart Jellyfin
 
 - name: Set Jellyfin permissions
   ansible.builtin.file:
@@ -140,6 +149,7 @@
     src: templates/jellyfin.service.j2
     dest: /etc/systemd/system/jellyfin.service
     mode: "0664"
+  notify: Restart Jellyfin
 
 - name: Enable and start service
   ansible.builtin.systemd_service:

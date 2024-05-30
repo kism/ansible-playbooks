@@ -2,7 +2,7 @@
 - name: Create wsdd env file
   ansible.builtin.file:
     path: /etc/default/wsdd
-    state: touch
+    state: file
     mode: "0644"
 
 - name: Copy dfree script
