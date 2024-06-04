@@ -20,6 +20,7 @@ configure_server_packages_to_install:
   - cmartix
   - rsync
   - at
+  - unzip
 
 configure_server_packages_to_remove:
   - cockpit

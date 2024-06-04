@@ -17,5 +17,5 @@
     # - configure_allowlistapp
 
     # End
-    - configure_telegraf
+    # - configure_telegraf
     - maintenance_print_reminders

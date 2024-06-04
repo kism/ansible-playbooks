@@ -68,9 +68,10 @@
 
 - name: Copy public index.html
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/public/index.html
-    dest: /usr/share/nginx/html/index.html
+    src: "{{ item }}"
+    dest: /usr/share/nginx/html/{{ item | basename }}
     mode: "0664"
+  with_fileglob: "files/hosts/{{ ansible_hostname }}/public/*"
   notify:
     - Reload nginx
 
@@ -81,3 +82,24 @@
     mode: "0664"
   notify:
     - Reload nginx
+
+- name: Download css
+  ansible.builtin.unarchive:
+    src: https://github.com/kism/zy.css/archive/refs/heads/main.zip
+    dest: "/tmp/"
+    remote_src: true
+  changed_when: false # Not a change since temp
+
+- name: Copy static dir to nginx web root
+  ansible.builtin.copy:
+    src: /tmp/zy.css-main/static
+    dest: /usr/share/nginx/html/
+    remote_src: true
+    mode: "u=rwX,g=rwX,o=rX"
+
+- name: Fix perms
+  ansible.builtin.file:
+    path: /usr/share/nginx/html/
+    recurse: true
+    mode: "u=rwX,g=rwX,o=rX"
+# TODO copy root cert

@@ -104,6 +104,7 @@ skip_ansible_lint
 * workstation setup
 * firewall pve???
 * redo secrets
+* make repo for kierangee.au
 
 ## do ~~later~~ never
 
