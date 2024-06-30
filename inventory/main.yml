@@ -49,7 +49,7 @@ proxmoxvms:
     rproxy:
     code:
     yoho:
-    llama:
+    # llama:
 proxmoxhosts:
   hosts:
     pvewill:
