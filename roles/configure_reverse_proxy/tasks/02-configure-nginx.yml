@@ -84,18 +84,12 @@
     - Reload nginx
 
 - name: Download css
-  ansible.builtin.unarchive:
-    src: https://github.com/kism/zy.css/archive/refs/heads/main.zip
-    dest: "/tmp/"
-    remote_src: true
-  changed_when: false # Not a change since temp
-
-- name: Copy static dir to nginx web root
-  ansible.builtin.copy:
-    src: /tmp/zy.css-main/static
-    dest: /usr/share/nginx/html/
-    remote_src: true
-    mode: "u=rwX,g=rwX,o=rX"
+  ansible.builtin.shell:
+    cmd: |-
+      set -o pipefail
+      curl -LsS https://github.com/kism/zy.css/releases/download/main/grab.sh | bash
+    chdir: /usr/share/nginx/html/
+  changed_when: false # Next task will always be true rip
 
 - name: Fix perms
   ansible.builtin.file:
