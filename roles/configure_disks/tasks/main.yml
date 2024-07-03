@@ -43,6 +43,9 @@
         state: mounted
       with_dict: "{{ disks_btrfs }}"
 
+    - name: Include tasks for btrfs-maintanance
+      ansible.builtin.include_tasks: 01-btrfs-maintance.yml
+
 - name: Copy perms script
   ansible.builtin.copy:
     src: files/hosts/{{ ansible_hostname }}/perms.sh

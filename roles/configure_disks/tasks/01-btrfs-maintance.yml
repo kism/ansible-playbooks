@@ -1,0 +1,25 @@
+---
+- name: Install the btrfsmaintenance package
+  ansible.builtin.package:
+    name: btrfsmaintenance
+    state: present
+
+- name: Set config path RHEL
+  ansible.builtin.set_fact:
+    btrfsmaintenance_config_path: /etc/sysconfig/btrfsmaintenance
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Set config path APT
+  ansible.builtin.set_fact:
+    btrfsmaintenance_config_path: /etc/default/btrfsmaintenance
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Copy config for BTRFS
+  ansible.builtin.copy:
+    src: files/btrfsmaintenance
+    dest: "{{ btrfsmaintenance_config_path }}"
+    mode: "0644"
+
+- name: Setup up the cron jobs
+  Ansible.builtin.command:
+    cmd: /usr/share/btrfsmaintenance/btrfsmaintenance-refresh-cron.sh
