@@ -12,5 +12,4 @@
     - configure_nfs_client
 
     # End
-    # - configure_telegraf
     - maintenance_print_reminders
