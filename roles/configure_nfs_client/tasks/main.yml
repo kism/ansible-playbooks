@@ -27,5 +27,18 @@
     fstype: nfs
     opts: "vers=3,tcp,timeo=60,soft"
     state: mounted
+    boot: false
   with_dict: "{{ nfs_client_mounts }}"
   notify: Reload systemd
+
+- name: Copy systemd service
+  ansible.builtin.copy:
+    src: files/mount-nfs.service
+    dest: "/etc/systemd/system/mount-nfs.service"
+    mode: "0644"
+
+- name: Prepare service
+  ansible.builtin.systemd_service:
+    service: mount-nfs.service
+    enabled: true
+    daemon_reload: true

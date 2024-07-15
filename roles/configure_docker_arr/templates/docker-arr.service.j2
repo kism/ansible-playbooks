@@ -2,6 +2,8 @@
 Description=Arr docker compose service
 Requires=remote-fs.target
 After=docker.service,remote-fs.target
+StartLimitIntervalSec=93
+StartLimitBurst=5
 
 [Service]
 Type=oneshot

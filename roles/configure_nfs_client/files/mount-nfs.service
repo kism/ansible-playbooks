@@ -1,0 +1,9 @@
+[Unit]
+Description=Mount all NFS partitions
+After=network.target,pve-cluster.service
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mount -a -t nfs
