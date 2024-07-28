@@ -12,7 +12,13 @@
   roles:
     - maintenance_shutdown
 
-- name: Restart others
+- name: Shutdown other hosts
+  hosts: proxmoxhosts
+  become: false
+  roles:
+    - maintenance_shutdown_proxmox
+
+- name: Restart others (baremetal and public cloud)
   hosts: publiccloudvms, baremetal
   become: true
   roles:
