@@ -21,5 +21,6 @@
     mode: "0644"
 
 - name: Setup up the cron jobs
-  Ansible.builtin.command:
+  ansible.builtin.command:
     cmd: /usr/share/btrfsmaintenance/btrfsmaintenance-refresh-cron.sh
+  changed_when: true # Who knows

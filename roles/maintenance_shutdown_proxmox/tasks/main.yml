@@ -15,13 +15,13 @@
 - name: Shutdown Proxmox Guests
   delegate_to: localhost
   run_once: true
-  community.general.proxmox_vm:
+  community.general.proxmox:
     api_user: root@pam
     api_token_id: "{{ secret_proxmox_token_id }}"
     api_token_secret: "{{ secret_proxmox_token_secret }}"
     api_host: "{{ proxmox_api_host }}"
-    name: "{{ item.name }}"
-    state: shutdown
+    vmid: "{{ item.vmid }}"
+    state: stopped
     force: false
   loop: "{{ proxmox_guests.proxmox_vms }}"
   when: inventory_hostname in groups['proxmoxvms']
