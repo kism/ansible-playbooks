@@ -1,7 +1,7 @@
 ---
 - name: Download Ollama
   ansible.builtin.get_url:
-    url: "{{ configure_ollama_bin_url }}"
+    url: "{{ configure_llama_ollama_bin_url }}"
     dest: /usr/bin/ollama
     mode: "0755"
 

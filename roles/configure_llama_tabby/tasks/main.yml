@@ -1,0 +1,29 @@
+---
+- name: Download Ollama
+  ansible.builtin.unarchive:
+    url: "{{ configure_llama_tabby_bin_url }}"
+    dest: /usr/local/bin/tabby
+    mode: "0755"
+
+- name: Copy systemd service
+  ansible.builtin.copy:
+    src: files/tabby.service
+    dest: /etc/systemd/system/ollama.service
+    mode: "0644"
+
+- name: Enable systemd service
+  ansible.builtin.systemd_service:
+    name: tabby.service
+    enabled: true
+    daemon_reload: true
+    state: started
+    masked: false
+
+- name: Allow http alt through firewalld
+  ansible.posix.firewalld:
+    service: "http-alt"
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Restart firewalld

@@ -11,12 +11,12 @@
     - maintenance_gather_facts
 
     # Onboard Server
-    # - meta_onboard_server
+    - meta_onboard_server
 
     # Purpose specific
-    # - configure_docker
-    # - configure_nvidia_driver
-    - configure_ollama
+    - configure_docker
+    - configure_nvidia_driver
+    - configure_llama_tabby
 
     # End
     - configure_telegraf

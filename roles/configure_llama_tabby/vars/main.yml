@@ -1,0 +1,6 @@
+---
+# https://github.com/TabbyML/tabby/releases
+configure_llama_tabby_version: 0.14.0
+configure_llama_tabby_bin_url: https://github.com/TabbyML/tabby/releases/download/v{{ configure_tabby_version }}/tabby_x86_64-manylinux2014-cuda122.zip
+configure_llama_tabby_bin_path: /usr/bin/tabby
+configure_llama_tabby_bin_name: tabby
