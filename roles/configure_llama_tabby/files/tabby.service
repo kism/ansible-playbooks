@@ -3,7 +3,7 @@ Description=Tabby Service
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/tabby serve --model StarCoder-1B --chat-model Qwen2-1.5B-Instruct --device cuda
+ExecStart=/usr/local/bin/tabby serve --model StarCoder2-3B --chat-model Qwen2-1.5B-Instruct --device cuda
 User=ollama
 Group=ollama
 Restart=always
