@@ -25,7 +25,7 @@
     path: /mnt/{{ item.key }}
     src: "{{ item.value }}:/srv/{{ item.key }}"
     fstype: nfs
-    opts: "vers=3,tcp,timeo=60,soft"
+    opts: "vers=3,tcp,timeo=60,soft,x-systemd.mount-timeout=5,nofail"
     state: mounted
     boot: false
   with_dict: "{{ nfs_client_mounts }}"

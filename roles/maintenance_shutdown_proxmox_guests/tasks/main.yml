@@ -8,7 +8,7 @@
     api_token_secret: "{{ secret_proxmox_token_secret }}"
     api_host: "{{ proxmox_api_host }}"
   register: proxmox_guests
-  until: not proxmox_guests.failed
+  # until: not proxmox_guests.failed # ???
   retries: 5
   delay: 10
 

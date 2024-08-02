@@ -1,6 +1,6 @@
 [Unit]
 Description=Mount all NFS partitions
-After=network.target,pve-cluster.service
+After=network.target
 StartLimitIntervalSec=60
 StartLimitBurst=5
 

@@ -1,33 +1,35 @@
 ---
-- name: Update all packages with maintenance_update_all role
-  hosts: all
-  gather_facts: true
-  become: true
-  roles:
-    - maintenance_update_packages
+# - name: Update all packages with maintenance_update_all role
+#   hosts: all
+#   gather_facts: true
+#   become: true
+#   roles:
+#     - maintenance_update_packages
 
-- name: Shutdown hosts in hypervisors that I control
-  hosts: proxmoxvms
-  become: true
-  roles:
-    - maintenance_shutdown
+# - name: Shutdown hosts in hypervisors that I control
+#   hosts: proxmoxvms
+#   become: true
+#   roles:
+#     - maintenance_shutdown
 
-- name: Shutdown other hosts
-  hosts: proxmoxhosts
-  become: false
-  roles:
-    - maintenance_shutdown_proxmox
+# - name: Shutdown other hosts
+#   hosts: proxmoxhosts
+#   become: false
+#   roles:
+#     - meta_include_secrets
+#     - maintenance_shutdown_proxmox_guests
 
-- name: Restart others (baremetal and public cloud)
-  hosts: publiccloudvms, baremetal
-  become: true
-  roles:
-    - maintenance_reboot
+# - name: Restart others (baremetal and public cloud)
+#   hosts: publiccloudvms, baremetal
+#   become: true
+#   roles:
+#     - maintenance_reboot
 
 - name: Setup nvidia driver on hosts
   hosts: pvematt,kismnas
   gather_facts: true
   become: true
   roles:
+    - meta_include_secrets
     - maintenance_wait_for_connection
     - configure_nvidia_driver

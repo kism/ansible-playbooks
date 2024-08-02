@@ -38,7 +38,7 @@
 - name: Ensure folder exists
   delegate_to: localhost
   run_once: true
-  become: true
+  become: false
   ansible.builtin.file:
     path: "/tmp/ansible/"
     state: directory
