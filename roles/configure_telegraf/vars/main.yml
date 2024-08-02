@@ -26,3 +26,4 @@ configure_telegraf_service_allowlist:
   - pvescheduler.service
   - pve-cluster.service
   - pve-container*
+  - tabby.service

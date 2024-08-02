@@ -7,8 +7,6 @@
       ansible.builtin.debug:
         var: proxmox_ct_features
 
-
-
     - name: If needed, Create new container with minimal options
       delegate_to: localhost
       community.general.proxmox:

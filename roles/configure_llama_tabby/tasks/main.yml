@@ -1,14 +1,25 @@
 ---
-- name: Download Ollama
+- name: Download Tabby
   ansible.builtin.unarchive:
-    url: "{{ configure_llama_tabby_bin_url }}"
-    dest: /usr/local/bin/tabby
+    src: "{{ configure_llama_tabby_bin_url }}"
+    remote_src: true
+    dest: /tmp
     mode: "0755"
+
+- name: Copy tabby to /usr/local/bin
+  ansible.builtin.copy:
+    src: "/tmp/dist/tabby_x86_64-manylinux2014-cuda122/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    mode: "0755"
+    remote_src: true
+  loop:
+    - tabby
+    - llama-server
 
 - name: Copy systemd service
   ansible.builtin.copy:
     src: files/tabby.service
-    dest: /etc/systemd/system/ollama.service
+    dest: /etc/systemd/system/tabby.service
     mode: "0644"
 
 - name: Enable systemd service
