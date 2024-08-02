@@ -10,7 +10,7 @@ proxmox_ct_conf_extra:
   - "lxc.cgroup2.devices.allow: c 10:200 rwm"
   - "lxc.mount.entry: /dev/net dev/net none bind,create=dir"
 proxmox_ct_features:
-  - nesting
+  - nesting=true
 docker_compose_paths:
   - /opt/arr
   - /opt/sabnzbd

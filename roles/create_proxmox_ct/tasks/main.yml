@@ -3,6 +3,12 @@
   when: proxmox_facts is not defined
   become: false
   block:
+    - name: Debug
+      ansible.builtin.debug:
+        var: proxmox_ct_features
+
+
+
     - name: If needed, Create new container with minimal options
       delegate_to: localhost
       community.general.proxmox:
@@ -18,7 +24,7 @@
         netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ proxmox_guest_mac_address }}"}'
         features: "{{ proxmox_ct_features }}"
         disk: "{{ proxmox_ct_disk }}"
-        state: stopped
+        state: present
 
     - name: If needed, Gather new proxmox facts
       ansible.builtin.include_role:
@@ -41,7 +47,7 @@
         state: present
         insertafter: EOF
       when: proxmox_ct_conf_extra is defined
-      loop: '{{ proxmox_ct_conf_extra }}'
+      loop: "{{ proxmox_ct_conf_extra }}"
 
     - name: Start container
       delegate_to: localhost
