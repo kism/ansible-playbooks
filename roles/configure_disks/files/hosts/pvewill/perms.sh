@@ -27,11 +27,12 @@ echo -- Subfolders
 echo - Set Permissions for Content
 chown -R kism:content_private /srv/Quina/z
 chown -R qbtuser:qbtuser /srv/Quina/downloads
-chown -R qbtuser:qbtuser /srv/Quina/configs
+sudo setfacl -R -m "default:user::rwx" /srv/Quina/z
+sudo setfacl -R -m "default:group::rwx" /srv/Quina/downloads
 
 echo -- Finds
 
-echo - Find all dirs, set setguidfind
+echo - Find all dirs, set setguid
 find /srv/Quina    -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Quale    -mindepth 1 -type d -exec chmod g+s {} +
 find /srv/Steiner  -mindepth 1 -type d -exec chmod g+s {} +
