@@ -1,0 +1,5 @@
+---
+- name: Install elastic
+  ansible.builtin.package:
+    name: elasticsearch
+    state: present

@@ -24,7 +24,7 @@
     permanent: true
     state: enabled
   notify:
-    - Restart firewalld
+    - Reload firewalld
 
 - name: Start and enable InfluxDB service
   ansible.builtin.systemd_service:

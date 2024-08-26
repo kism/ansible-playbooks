@@ -1,6 +1,6 @@
 ---
-- name: Setup yoho
-  hosts: yoho
+- name: Setup ifdb influxdb2 host
+  hosts: ifdb
   gather_facts: true
   become: true
   roles:
@@ -11,12 +11,8 @@
     - meta_onboard_server
 
     # Purpose specific
-    - configure_samba
-    - configure_docker
-    - configure_docker_qbittorrent
-    - configure_docker_sabnzbd
-    - configure_docker_arr
+    - configure_elk
 
-    # # End
+    # End
     - configure_telegraf
     - maintenance_print_reminders

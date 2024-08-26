@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>Kibana</short>
+    <description>Kibana is a free and open user interface that lets you visualize your Elasticsearch data and navigate the Elastic Stack.
+</description>
+    <port protocol="tcp" port="5601" />
+</service>

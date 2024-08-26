@@ -30,4 +30,4 @@
   loop:
     - grafana
   notify:
-    - Restart firewalld
+    - Reload firewalld

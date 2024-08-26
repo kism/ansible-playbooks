@@ -37,10 +37,9 @@ all:
     llama:
       ansible_host: llama.kg.lan
       ansible_host_description: ollama host
-    podc-dev:
-      ansible_host: 158.179.26.216
-      ansible_host_description: podc host
-      # ansible_python_interpreter: /usr/bin/python3.11
+    elk:
+      ansible_host: elk.kg.lan
+      ansible_host_description: ELK
 
 # Server Type
 proxmoxvms:

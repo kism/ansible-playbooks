@@ -9,7 +9,7 @@
     name: influxdb
     state: restarted
 
-- name: Restart firewalld
+- name: Reload firewalld
   ansible.builtin.systemd_service:
     name: telegraf
-    state: restarted
+    state: reloaded

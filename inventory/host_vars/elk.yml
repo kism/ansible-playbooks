@@ -2,4 +2,4 @@
 ansible_python_interpreter: /usr/bin/python3.9
 proxmox:
   target_node: pvematt
-  guest_mac_address: 82:DC:BF:90:D5:0E
+  guest_mac_address: 00:D0:F1:33:77:CC

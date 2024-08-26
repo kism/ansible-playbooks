@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>Logstash</short>
+    <description>Logstash is a tool for managing events and logs.
+</description>
+    <port protocol="tcp" port="5044" />
+</service>

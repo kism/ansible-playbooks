@@ -8,15 +8,15 @@
     - meta_include_secrets
 
     # Onboard Server
-    # - meta_onboard_server
+    - meta_onboard_server
 
     # Purpose specific
-    # - configure_proxmox
-    # - configure_concept_baremetal
-    # - configure_postfix_gmail
+    - configure_proxmox
+    - configure_concept_baremetal
+    - configure_postfix_gmail
     - configure_disks
     # No snapraid....
 
     # Reminders
-    # - configure_telegraf
+    - configure_telegraf
     - maintenance_print_reminders

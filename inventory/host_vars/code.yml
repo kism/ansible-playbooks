@@ -1,6 +1,7 @@
 ---
 ansible_python_interpreter: /usr/bin/python3.9
-proxmox_target_node: pvematt
-proxmox_guest_mac_address: BC:24:11:2B:E0:24
-proxmox_ct_features:
-  - nesting
+proxmox:
+  target_node: pvematt
+  guest_mac_address: BC:24:11:2B:E0:24
+  ct_features:
+    - nesting

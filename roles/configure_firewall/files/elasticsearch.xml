@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>ElasticSearch</short>
+    <description>ElasticSearch is a search engine based on the Lucene library.
+</description>
+    <port protocol="tcp" port="9200-9300" />
+</service>

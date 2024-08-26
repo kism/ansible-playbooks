@@ -1,0 +1,10 @@
+---
+- name: Add Elastic yum repo
+  ansible.builtin.yum_repository:
+    name: elasticsearch
+    description: Elastic repository for {{ ansible_distribution_major_version }} packages
+    baseurl: https://artifacts.elastic.co/packages/{{ ansible_distribution_major_version }}.x/yum
+    gpgcheck: 1
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: 1
+  when: ansible_pkg_mgr == 'dnf'

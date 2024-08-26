@@ -38,4 +38,4 @@
     permanent: true
     state: enabled
   notify:
-    - Restart firewalld
+    - Reload firewalld

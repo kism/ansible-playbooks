@@ -25,7 +25,7 @@
     permanent: true
     state: enabled
   notify:
-    - Restart firewalld
+    - Reload firewalld
   loop:
     - samba
     - wsdd

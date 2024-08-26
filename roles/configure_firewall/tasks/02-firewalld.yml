@@ -9,7 +9,7 @@
 #   ansible.builtin.command:
 #     cmd: firewall-cmd --set-default-zone=public
 #   notify:
-#     - Restart firewalld
+#     - Reload firewalld
 #   tags: skip_ansible_lint # No way to do this in the module
 
 - name: Set public as default policy
@@ -18,7 +18,7 @@
     regexp: ^DefaultZone=
     line: DefaultZone=public
   notify:
-    - Restart firewalld
+    - Reload firewalld
 
 - name: Remove cockpit from firewall config
   ansible.posix.firewalld:
@@ -27,7 +27,7 @@
     permanent: true
     state: disabled
   notify:
-    - Restart firewalld
+    - Reload firewalld
 
 - name: Allow ssh
   ansible.posix.firewalld:
@@ -36,7 +36,7 @@
     permanent: true
     state: enabled
   notify:
-    - Restart firewalld
+    - Reload firewalld
 
 - name: Firewall enabled and running
   ansible.builtin.systemd_service:

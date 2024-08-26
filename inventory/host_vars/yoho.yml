@@ -1,16 +1,18 @@
 ---
-proxmox_target_node: pvewill
-proxmox_guest_mac_address: BC:24:11:F3:FC:C2
-proxmox_ct_conf_extra:
-  - "mp0: /srv/Quina,mp=/srv/Quina"
-  - "mp1: /mnt/Garnet,mp=/mnt/Garnet"
-  - "mp2: /mnt/Vivi,mp=/mnt/Vivi"
-  - "mp3: /mnt/Amarant,mp=/mnt/Amarant"
-  - "mp4: /mnt/Freya,mp=/mnt/Freya"
-  - "lxc.cgroup2.devices.allow: c 10:200 rwm"
-  - "lxc.mount.entry: /dev/net dev/net none bind,create=dir"
-proxmox_ct_features:
-  - nesting=true
+proxmox:
+  target_node: pvewill
+  guest_mac_address: BC:24:11:F3:FC:C2
+  ct_conf_extra:
+    - "mp0: /srv/Quina,mp=/srv/Quina"
+    - "mp1: /mnt/Garnet,mp=/mnt/Garnet"
+    - "mp2: /mnt/Vivi,mp=/mnt/Vivi"
+    - "mp3: /mnt/Amarant,mp=/mnt/Amarant"
+    - "mp4: /mnt/Freya,mp=/mnt/Freya"
+    - "lxc.cgroup2.devices.allow: c 10:200 rwm"
+    - "lxc.mount.entry: /dev/net dev/net none bind,create=dir"
+  ct_features:
+    - nesting=true
+
 docker_compose_paths:
   - /opt/arr
   - /opt/sabnzbd

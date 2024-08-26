@@ -39,7 +39,7 @@
     permanent: true
     state: enabled
   notify:
-    - Restart firewalld
+    - Reload firewalld
     - Restart docker
 
 - name: Copy systemd service

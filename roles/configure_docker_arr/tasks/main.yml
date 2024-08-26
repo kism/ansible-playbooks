@@ -59,7 +59,7 @@
     - prowlarr
     - jellyseerr
   notify:
-    - Restart firewalld
+    - Reload firewalld
 
 - name: Copy systemd service
   ansible.builtin.template:

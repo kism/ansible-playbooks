@@ -34,4 +34,4 @@
     - http
     - https
   notify:
-    - Restart firewalld
+    - Reload firewalld

@@ -19,7 +19,7 @@
     permanent: true
     state: enabled
   notify:
-    - Restart firewalld
+    - Reload firewalld
 
 - name: Create factorio directories
   ansible.builtin.file:

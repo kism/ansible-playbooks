@@ -10,7 +10,7 @@
     daemon_reload: true
     state: restarted
 
-- name: Restart firewalld
+- name: Reload firewalld
   ansible.builtin.systemd:
     name: firewalld
-    state: restarted
+    state: reloaded
