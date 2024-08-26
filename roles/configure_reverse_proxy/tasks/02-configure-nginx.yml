@@ -1,3 +1,13 @@
+---
+- name: Firewall rules
+  ansible.posix.firewalld:
+    service: elasticsearch
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Reload firewalld
+
 - name: Create per-vhost logging directory
   ansible.builtin.file:
     path: "/var/log/nginx/vhosts/"
