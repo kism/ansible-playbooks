@@ -2,17 +2,6 @@
 # - name: Run pending handlers now, for the sake of having reminders at the end of the play
 #   ansible.builtin.meta: flush_handlers
 
-- name: Read contents of a local file
-  delegate_to: localhost
-  become: false
-  ansible.builtin.stat:
-    path: "{{ role_path }}/tasks/hosts/{{ ansible_hostname }}.yml"
-  register: host_tasks_file
-
-- name: Any reminders for this host?
-  ansible.builtin.include_tasks: hosts/{{ ansible_hostname }}.yml
-  when: host_tasks_file.stat.exists
-
 # Might? need to remove unused elements from the list before this TODO
 - name: Print reminders for roles, built on 'reminder_list' first defined in inventory/group_vars/all.yml
   ansible.builtin.debug:

@@ -1,6 +1,6 @@
 ---
 output.elasticsearch:
-  hosts: ["https://elastic.kierangee.au:443"]
+  hosts: ["https://elastic.kierangee.au"]
   username: "{{ secret_filebeats_service_user }}"
   password: "{{ secret_filebeats_service_password }}"
   ssl:

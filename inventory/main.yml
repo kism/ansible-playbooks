@@ -34,9 +34,9 @@ all:
     yoho:
       ansible_host: yoho.kg.lan
       ansible_host_description: No one knows
-    llama:
-      ansible_host: llama.kg.lan
-      ansible_host_description: ollama host
+    # llama:
+    #   ansible_host: llama.kg.lan
+    #   ansible_host_description: ollama host
     elk:
       ansible_host: elk.kg.lan
       ansible_host_description: ELK (Elastic Search, Logstash, Kibana)
@@ -52,6 +52,7 @@ proxmoxvms:
     code:
     yoho:
     # llama:
+    elk:
 proxmoxhosts:
   hosts:
     pvewill:
