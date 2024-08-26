@@ -1,9 +1,4 @@
 ---
-- name: Remove apt key if needed
-  ansible.builtin.apt_key:
-    id: "9D539D90D3328DC7D6C8D3B9D8FF8E1F7DF8B07E"
-    state: absent
-
 - name: Ensure old repo listing is removed
   ansible.builtin.lineinfile:
     path: /etc/apt/sources.list.d/influxdb.list
