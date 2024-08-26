@@ -14,14 +14,14 @@
         api_user: root@pam
         api_token_id: "{{ secret_proxmox_token_id }}"
         api_token_secret: "{{ secret_proxmox_token_secret }}"
-        api_host: "{{ proxmox.api_host }}"
+        api_host: "{{ proxmox_api_host }}"
         pubkey: "{{ lookup('ansible.builtin.url', 'https://github.com/kism.keys', split_lines=False) }}"
         hostname: "{{ inventory_hostname | lower }}"
         ostemplate: "NFS_Amarant_proxmox:vztmpl/ol9_rootfs.tar.xz" # https://images.linuxcontainers.org/images
         storage: local-lvm
         netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ proxmox_guest_mac_address }}"}'
-        features: "{{ proxmox.ct_features }}"
-        disk: "{{ proxmox.ct_disk }}"
+        features: "{{ proxmox_ct_features }}"
+        disk: "{{ proxmox_ct_disk }}"
         state: present
 
     - name: If needed, Gather new proxmox facts
@@ -36,7 +36,7 @@
   when: proxmox_facts.status != 'running'
   block:
     - name: Set config entries for host if defined
-      delegate_to: "{{ proxmox.target_node }}"
+      delegate_to: "{{ proxmox_target_node }}"
       become: true
       become_user: root
       ansible.builtin.lineinfile:
@@ -60,7 +60,7 @@
         state: started
 
     - name: Copy init script to proxmox host
-      delegate_to: "{{ proxmox.target_node }}"
+      delegate_to: "{{ proxmox_target_node }}"
       become: true
       become_user: root
       ansible.builtin.copy:
@@ -69,7 +69,7 @@
         mode: "0700"
 
     - name: Copy the init script to container
-      delegate_to: "{{ proxmox.target_node }}"
+      delegate_to: "{{ proxmox_target_node }}"
       become: true
       become_user: root
       ansible.builtin.command:
@@ -77,7 +77,7 @@
       changed_when: true # Safe assumption
 
     - name: Run the init script
-      delegate_to: "{{ proxmox.target_node }}"
+      delegate_to: "{{ proxmox_target_node }}"
       become: true
       become_user: root
       ansible.builtin.command:
