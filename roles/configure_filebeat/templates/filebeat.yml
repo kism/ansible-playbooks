@@ -10,3 +10,7 @@ output.elasticsearch:
 setup.kibana.host: "http://10.42.0.9:5601"
 
 filebeat.config.modules.path: ${path.config}/modules.d/*.yml
+
+filebeat.inputs:
+- type: journald
+  id: everything
