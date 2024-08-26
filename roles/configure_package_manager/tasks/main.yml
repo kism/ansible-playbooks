@@ -1,20 +1,3 @@
 ---
-- name: Init APT
-  ansible.builtin.include_tasks: "01-apt.yml"
-  when: ansible_pkg_mgr == 'apt'
-
-- name: Init DNF
-  ansible.builtin.include_tasks: "01-dnf.yml"
-  when: ansible_pkg_mgr == 'dnf'
-
-- name: Init Pacman
-  ansible.builtin.include_tasks: "01-pacman.yml"
-  when: ansible_pkg_mgr == 'pacman'
-
-# - name: Install packages Brew 🍺
-#   ansible.builtin.include_tasks: _brew.yml
-#   when: ansible_pkg_mgr == 'brew'
-
-# - name: Install packages pkg
-#   ansible.builtin.include_tasks: _pkg.yml
-#   when: ansible_pkg_mgr == 'pkg'
+- name: Include tasks for package manager
+  ansible.builtin.include_tasks: "01-{{ ansible_pkg_mgr }}.yml"

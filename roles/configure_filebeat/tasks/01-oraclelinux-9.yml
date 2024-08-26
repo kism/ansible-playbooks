@@ -7,4 +7,3 @@
     gpgcheck: 1
     gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     enabled: 1
-  when: ansible_pkg_mgr == 'dnf'
