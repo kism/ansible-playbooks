@@ -27,3 +27,6 @@ configure_telegraf_service_allowlist:
   - pve-cluster.service
   - pve-container*
   - tabby.service
+  - kibana.service
+  - logstash.service
+  - elasticsearch.service

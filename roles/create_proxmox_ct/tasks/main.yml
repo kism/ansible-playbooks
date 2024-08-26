@@ -59,27 +59,27 @@
         onboot: true
         state: started
 
-    - name: Copy init script to proxmox host
-      delegate_to: "{{ proxmox_target_node }}"
-      become: true
-      become_user: root
-      ansible.builtin.copy:
-        src: init_linux.sh
-        dest: "/tmp/{{ inventory_hostname }}_init_linux.sh"
-        mode: "0700"
+- name: Copy init script to proxmox host
+  delegate_to: "{{ proxmox_target_node }}"
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: init_linux.sh
+    dest: "/tmp/{{ inventory_hostname }}_init_linux.sh"
+    mode: "0700"
 
-    - name: Copy the init script to container
-      delegate_to: "{{ proxmox_target_node }}"
-      become: true
-      become_user: root
-      ansible.builtin.command:
-        cmd: "pct push {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh /tmp/{{ inventory_hostname }}_init_linux.sh -perms 700"
-      changed_when: true # Safe assumption
+- name: Copy the init script to container
+  delegate_to: "{{ proxmox_target_node }}"
+  become: true
+  become_user: root
+  ansible.builtin.command:
+    cmd: "pct push {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh /tmp/{{ inventory_hostname }}_init_linux.sh -perms 700"
+  changed_when: true # Safe assumption
 
-    - name: Run the init script
-      delegate_to: "{{ proxmox_target_node }}"
-      become: true
-      become_user: root
-      ansible.builtin.command:
-        cmd: "pct exec {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh"
-      changed_when: true # Safe assumption
+- name: Run the init script
+  delegate_to: "{{ proxmox_target_node }}"
+  become: true
+  become_user: root
+  ansible.builtin.command:
+    cmd: "pct exec {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh"
+  changed_when: true # Safe assumption

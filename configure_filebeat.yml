@@ -1,5 +1,5 @@
 ---
-- name: Setup telegraf on all hosts
+- name: Setup filebeat on all hosts
   hosts: all
   gather_facts: true
   become: true
@@ -8,7 +8,7 @@
     - meta_include_secrets
 
     # Purpose specific
-    - configure_telegraf
+    - configure_filebeat
 
     # End
     - maintenance_print_reminders

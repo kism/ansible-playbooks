@@ -1,0 +1,9 @@
+---
+output.elasticsearch:
+  hosts: ["http://10.42.0.9:9200"]
+  username: "{{ secret_filebeats_service_user }}"
+  password: "{{ secret_filebeats_service_password }}"
+  ssl:
+    enabled: false
+
+filebeat.config.modules.path: ${path.config}/modules.d/*.yml

@@ -1,0 +1,33 @@
+---
+- name: Include tasks, Repository
+  ansible.builtin.include_tasks: "01-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"
+
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - filebeat
+    state: present
+
+- name: Enable filebeat service
+  ansible.builtin.systemd_service:
+    name: filebeat
+    enabled: true
+  notify:
+    - Restart filebeat
+
+- name: Template filebeat config
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/filebeat.yml"
+    dest: /etc/filebeat/filebeat.yml
+    mode: "0644"
+    owner: root
+    group: root
+  notify:
+    - Restart filebeat
+
+- name: Include tasks, configs
+  ansible.builtin.include_tasks: "{{ config_playbook }}"
+  with_fileglob:
+    - "tasks/filebeat_config/*"
+  loop_control:
+    loop_var: config_playbook

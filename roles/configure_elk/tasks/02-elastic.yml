@@ -3,3 +3,12 @@
   ansible.builtin.package:
     name: elasticsearch
     state: present
+
+- name: Open ports in firewalld
+  ansible.posix.firewalld:
+    service: elasticsearch
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Reload firewalld
