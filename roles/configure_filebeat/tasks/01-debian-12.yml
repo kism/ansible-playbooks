@@ -8,7 +8,7 @@
     path: /tmp/{{ key_name }}.gpg
     state: absent
 
-- name: Add Microsoft's apt signing key (modern ubuntu)
+- name: Grab apt signing key
   ansible.builtin.get_url:
     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     dest: /tmp/{{ key_name }}.asc
@@ -16,7 +16,7 @@
 
 - name: Dearmour the key
   ansible.builtin.command:
-    cmd: gpg --dearmor /tmp/{{ key_name }}.asc -o /tmp/{{ key_name }}.gpg
+    cmd: gpg -o /tmp/{{ key_name }}.gpg --dearmor /tmp/{{ key_name }}.asc
   changed_when: false
 
 - name: Copy the key to the correct location

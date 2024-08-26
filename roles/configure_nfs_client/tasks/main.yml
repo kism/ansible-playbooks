@@ -15,8 +15,8 @@
   ansible.builtin.file:
     path: /mnt/{{ item.key }}
     state: directory
-    owner: nobody
-    group: nogroup
+    owner: root
+    group: root
     mode: "0655"
   with_dict: "{{ nfs_client_mounts }}"
 
