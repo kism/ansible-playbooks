@@ -1,0 +1,21 @@
+---
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Nginx block
+  when: ansible_facts['services']['nginx.service'] is defined
+  block:
+    - name: Check if /var/log/nginx/vhosts exists
+      ansible.builtin.stat:
+        path: /var/log/nginx/vhosts
+      register: vhosts_dir
+
+    - name: "Copy filebeat nginx config"
+      ansible.builtin.copy:
+        src: "{{ role_path }}/files/nginx.yml"
+        dest: /etc/filebeat/modules.d/nginx.yml
+        mode: "0644"
+        owner: root
+        group: root
+      notify:
+        - Restart filebeat

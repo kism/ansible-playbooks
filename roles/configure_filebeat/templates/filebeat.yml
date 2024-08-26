@@ -1,9 +1,12 @@
 ---
 output.elasticsearch:
-  hosts: ["http://10.42.0.9:9200"]
+  hosts: ["https://10.42.0.9:9200"]
   username: "{{ secret_filebeats_service_user }}"
   password: "{{ secret_filebeats_service_password }}"
   ssl:
-    enabled: false
+    enabled: true
+    ca_trusted_fingerprint: ccc7dd870d6db46c77aa33c016c66b689020c4203ece9d7ed46e58d19da32fb2
+
+setup.kibana.host: "http://10.42.0.9:5601"
 
 filebeat.config.modules.path: ${path.config}/modules.d/*.yml
