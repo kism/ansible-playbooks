@@ -2,6 +2,7 @@
 ignore:
   - .github/
   - .venv/
+  - files/
 
 rules:
   line-length: disable # ansible

@@ -1,4 +1,10 @@
 ---
+- name: Ensure that proxmox repo isnt in sources.list
+  ansible.buildin.lineinfile:
+    path: /etc/apt/sources.list
+    regep: ^deb http://download.proxmox.com/debian/pve
+    state: absent
+
 - name: Make script directory
   ansible.builtin.file:
     path: /opt/scripts/pve-nag-buster

@@ -1,18 +1,14 @@
 ---
-- name: Include tasks, Debian
-  ansible.builtin.include_tasks: "01-debian.yml"
-  when: ansible_distribution == 'Debian'
+- name: Include tasks for {{ ansible_distribution | lower + "" + ansible_distribution_major_version }}
+  ansible.builtin.include_tasks: "01-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"
 
-- name: Include tasks, dnf base hosts
-  ansible.builtin.include_tasks: "01-dnf.yml"
-  when: ansible_pkg_mgr == 'dnf'
-
-- name: Include tasks, Ubuntu
-  ansible.builtin.include_tasks: "01-ubuntu.yml"
-  when: ansible_distribution == 'Ubuntu'
+- name: Install telegraf
+  ansible.builtin.package:
+    name: telegraf
+    state: present
 
 - name: Enable telegraf service
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: telegraf
     enabled: true
   notify:

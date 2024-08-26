@@ -8,8 +8,8 @@
 - name: Include tasks, Kibana
   ansible.builtin.include_tasks: 03-kibana.yml
 
-- name: Include tasks, Logstash
-  ansible.builtin.include_tasks: 04-logstash.yml
+# - name: Include tasks, Logstash
+#   ansible.builtin.include_tasks: 04-logstash.yml
 
 - name: Include tasks, Systemd
   ansible.builtin.include_tasks: 05-systemd.yml
