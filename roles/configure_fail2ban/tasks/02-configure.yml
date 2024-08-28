@@ -27,6 +27,12 @@
     mode: "0644"
   notify: Restart fail2ban
 
+- name: Log to Journald
+  ansible.builtin.lineinfile:
+    path: /etc/fail2ban/fail2ban.conf
+    regexp: ^.*logtarget\s*=.*$
+    line: logtarget = SYSTEMD-JOURNAL
+
 - name: Enable fail2ban service
   ansible.builtin.systemd_service:
     name: fail2ban.service

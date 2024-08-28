@@ -9,6 +9,12 @@
     dest: /tmp/{{ key_name }}.asc
     mode: "0644"
 
+- name: Remove old temp key if needed
+  ansible.builtin.file:
+    path: /tmp/{{ key_name }}.gpg
+    state: absent
+  changed_when: false
+
 - name: Dearmour the key
   ansible.builtin.command:
     cmd: gpg -o /tmp/{{ key_name }}.gpg --dearmor /tmp/{{ key_name }}.asc

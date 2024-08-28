@@ -11,5 +11,9 @@ setup.kibana.host: "https://kibana.kierangee.au"
 filebeat.config.modules.path: ${path.config}/modules.d/*.yml
 
 filebeat.inputs:
-- type: journald
-  id: everything
+  - type: journald
+    id: everything
+
+    # processors:
+    #   - drop_event.when.regexp:
+    #       systemd.unit: "(user@.*service|user-.*slice|user-runtime-dir@.*service|run-user-.*mount|init.scope)"
