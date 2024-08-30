@@ -1,0 +1,20 @@
+---
+- name: Remove system.yml.disabled
+  ansible.builtin.file:
+    path: /etc/filebeat/modules.d/system.yml.disabled
+    state: absent
+
+- name: Remove system.yml
+  ansible.builtin.file:
+    path: /etc/filebeat/modules.d/system.yml
+    state: absent
+
+# - name: Copy system.yml
+#   ansible.builtin.copy:
+#     src: files/system.yml
+#     dest: /etc/filebeat/modules.d/system.yml
+#     mode: "0644"
+#     owner: root
+#     group: root
+#   notify:
+#     - Restart filebeat

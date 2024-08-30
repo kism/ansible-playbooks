@@ -59,7 +59,15 @@
 
 - name: Replace some values in tmux.conf for root
   ansible.builtin.replace:
-    path: "{{ user_home }}/.tmux.conf"
+    path: "/root/.tmux.conf"
     regexp: "{{ item['regexp'] }}"
     replace: "{{ item['replace'] }}"
   loop: "{{ configure_users_dotfiles_tmux_regex }}"
+
+
+- name: Ensure that root rm alias is set
+  ansible.builtin.lineinfile:
+    path: /root/.bash_aliases
+    line: "alias rm='rm --one-file-system -i -v'"
+    create: true
+    mode: "0660"
