@@ -30,3 +30,8 @@ filebeat.inputs:
           fields: ["message"]
           target: "json"
           overwrite_keys: true
+
+  - type: log # Snapraid Specific
+    paths:
+      - /var/log/snapRAID.log
+      - /tmp/snapRAID.out
