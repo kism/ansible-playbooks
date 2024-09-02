@@ -1,6 +1,7 @@
 ---
 - name: Get Proxmox Guests
   delegate_to: localhost
+  become: false
   run_once: true
   community.general.proxmox_vm_info:
     api_user: root@pam
