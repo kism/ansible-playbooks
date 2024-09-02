@@ -7,3 +7,6 @@ StartLimitBurst=5
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/mount -a -t nfs
+
+[Install]
+WantedBy=multi-user.target
