@@ -7,5 +7,5 @@
     masked: false
   loop:
     - kibana
-    - logstash
+    # - logstash
     - elasticsearch
