@@ -22,5 +22,5 @@
 
 - name: Setup up the cron jobs
   ansible.builtin.command:
-    cmd: /usr/share/btrfsmaintenance/btrfsmaintenance-refresh-cron.sh
+    cmd: /usr/share/btrfsmaintenance/btrfsmaintenance-refresh-cron.sh timer
   changed_when: true # Who knows
