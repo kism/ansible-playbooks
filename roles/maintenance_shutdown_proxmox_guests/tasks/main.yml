@@ -6,7 +6,7 @@
     api_user: root@pam
     api_token_id: "{{ secret_proxmox_token_id }}"
     api_token_secret: "{{ secret_proxmox_token_secret }}"
-    api_host: "{{ proxmox.api_host }}"
+    api_host: "{{ proxmox_api_host }}"
   register: proxmox_guests
   # until: not proxmox_guests.failed # ???
   retries: 5
@@ -19,7 +19,7 @@
     api_user: root@pam
     api_token_id: "{{ secret_proxmox_token_id }}"
     api_token_secret: "{{ secret_proxmox_token_secret }}"
-    api_host: "{{ proxmox.api_host }}"
+    api_host: "{{ proxmox_api_host }}"
     vmid: "{{ item.vmid }}"
     state: stopped
     force: false
