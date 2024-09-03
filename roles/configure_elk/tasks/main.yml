@@ -1,15 +1,18 @@
 ---
-- name: Include tasks, ELK repos
-  ansible.builtin.include_tasks: 01-repos.yml
+# - name: Include tasks, ELK repos
+#   ansible.builtin.include_tasks: 01-repos.yml
 
-- name: Include tasks, Elastic
-  ansible.builtin.include_tasks: 02-elastic.yml
+# - name: Include tasks, Elastic
+#   ansible.builtin.include_tasks: 02-elastic.yml
 
-- name: Include tasks, Kibana
-  ansible.builtin.include_tasks: 03-kibana.yml
+# - name: Include tasks, Kibana
+#   ansible.builtin.include_tasks: 03-kibana.yml
 
 # - name: Include tasks, Logstash
 #   ansible.builtin.include_tasks: 04-logstash.yml
 
-- name: Include tasks, Systemd
-  ansible.builtin.include_tasks: 05-systemd.yml
+- name: Include tasks, elastalert2
+  ansible.builtin.include_tasks: 05-elastalert2.yml
+
+# - name: Include tasks, Systemd
+#   ansible.builtin.include_tasks: 06-systemd.yml

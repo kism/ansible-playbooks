@@ -54,6 +54,10 @@ configure_users_users:
     uid: 1080
     shell: /usr/sbin/nologin
     groups:
+  elastalert:
+    uid: 1079
+    shell: /usr/sbin/nologin
+    groups:
 
 configure_users_groups:
   kgadmins:

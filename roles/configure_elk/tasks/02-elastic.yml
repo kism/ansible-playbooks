@@ -68,13 +68,3 @@
     src: templates/certbot_elastic.sh.j2
     dest: /opt/scripts/certbot_elastic.sh
     mode: "0755"
-
-
-
-
-# - name: Set certbot cron job
-#   ansible.builtin.cron:
-#     name: Try refresh Certificates
-#     minute: "0"
-#     hour: "4"
-#     job: certbot renew"

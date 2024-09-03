@@ -1,0 +1,15 @@
+---
+index: filebeat-*
+type: flatline
+threshold: 1
+
+timeframe:
+  minutes: 1
+
+filter:
+- query:
+    query_string:
+      query: 'container.name : "radarr-main"'
+
+alert:
+- "debug"

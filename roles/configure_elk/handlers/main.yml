@@ -8,3 +8,8 @@
   ansible.builtin.systemd_service:
     name: elasticsearch
     state: restarted
+
+- name: Restart elastalert
+  ansible.builtin.systemd_service:
+    name: elastalert
+    state: restarted
