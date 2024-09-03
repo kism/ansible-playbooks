@@ -13,6 +13,13 @@
   notify:
     - Reload firewalld
 
+- name: Copy elasticsearch config
+  ansible.builtin.template:
+    src: templates/elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    mode: "0644"
+  notify: Restart elasticsearch
+
 # Letsencrypt
 - name: Install Packages
   ansible.builtin.package:
@@ -43,22 +50,22 @@
       --non-interactive
       --dns-cloudflare
       --dns-cloudflare-credentials /root/.cloudflare.ini
-      -d elastic.kierangee.au
+      -d elastic.{{ homelab_domain_external }}
   register: command_output
   changed_when: false # Handled in next task
   failed_when: command_output.rc != 0 and not "too many certificates" in command_output.stderr
 
 - name: Check if certs have changed
   ansible.builtin.find:
-    paths: /etc/letsencrypt/live/elastic.kierangee.au
+    paths: /etc/letsencrypt/live/elastic.{{ homelab_domain_external }}
     age: 30s
     recurse: false
   register: modified_files
   changed_when: modified_files.files | length > 0
 
 - name: Copy certbot script
-  ansible.builtin.copy:
-    src: files/certbot_elastic.sh
+  ansible.builtin.template:
+    src: templates/certbot_elastic.sh.j2
     dest: /opt/scripts/certbot_elastic.sh
     mode: "0755"
 

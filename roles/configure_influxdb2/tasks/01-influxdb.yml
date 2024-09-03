@@ -46,7 +46,7 @@
       -t {{ secret_influxdb_admin_token }}
       -o "kg lan"
       -b "Telegraf Main"
-      -host https://influxdb2.kierangee.au:443
+      -host https://influxdb2.{{ homelab_domain_external }}:443
       -f
   register: command_output
   failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'

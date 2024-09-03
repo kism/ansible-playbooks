@@ -1,7 +1,7 @@
 [INFLUXDB2]
 
 # InfluxDB server URL
-url = https://influxdb2.kierangee.au:443
+url = https://influxdb2.{{ homelab_domain_external}}:443
 
 # Token for authentication
 token = {{ secret_influxping_write }}

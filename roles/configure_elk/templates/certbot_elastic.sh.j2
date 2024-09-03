@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+
+python3 -c 'import random; import time; sleep_time = int(random.random() * 3600); print(f"Sleeping for {sleep_time} seconds"); time.sleep(sleep_time)'
+
+/usr/bin/certbot renew -q
+
+# Elastic
+
+mkdir -p /etc/elasticsearch/certs/{{ homelab_domain_external }}/
+
+cp /etc/letsencrypt/live/elastic.{{ homelab_domain_external }}/* /etc/elasticsearch/certs/{{ homelab_domain_external }}/
+
+chown -R root:elasticsearch /etc/elasticsearch/certs
+
+chmod -R u=rwX,g=rX,o= /etc/elasticsearch/certs
+
+# Kibana
+
+mkdir -p /etc/kibana/certs/{{ homelab_domain_external }}/
+
+cp /etc/letsencrypt/live/elastic.{{ homelab_domain_external }}/* /etc/kibana/certs/{{ homelab_domain_external }}/
+
+chown -R root:kibana /etc/kibana/certs
+
+chmod -R u=rwX,g=rX,o= /etc/kibana/certs

@@ -28,7 +28,7 @@
       --post-hook "service nginx reload"
       --dns-cloudflare
       --dns-cloudflare-credentials /root/.cloudflare.ini
-      -d kierangee.au,*.kierangee.au
+      -d {{ homelab_domain_external }},*.{{ homelab_domain_external }}
   register: command_output
   changed_when: false # Handled in next task
   failed_when: command_output.rc != 0 and not "too many certificates" in command_output.stderr
@@ -36,7 +36,7 @@
 
 - name: Check if certs have changed
   ansible.builtin.find:
-    paths: /etc/letsencrypt/live/kierangee.au
+    paths: /etc/letsencrypt/live/{{ homelab_domain_external }}
     age: 30s
     recurse: false
   register: modified_files
