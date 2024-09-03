@@ -1,0 +1,7 @@
+[Unit]
+Description="Timer for certbot service"
+Requires=certbot.timer
+
+[Service]
+Type=simple
+ExecStart=/opt/scripts/certbot_elastic.sh

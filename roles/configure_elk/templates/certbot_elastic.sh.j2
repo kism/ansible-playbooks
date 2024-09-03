@@ -2,11 +2,13 @@
 
 set -e
 
-python3 -c 'import random; import time; sleep_time = int(random.random() * 3600); print(f"Sleeping for {sleep_time} seconds"); time.sleep(sleep_time)'
+echo "Renewing certbot..."
 
-/usr/bin/certbot renew -q
+/usr/bin/certbot renew
 
 # Elastic
+
+echo "Handleing Elastic..."
 
 mkdir -p /etc/elasticsearch/certs/{{ homelab_domain_external }}/
 
@@ -18,6 +20,8 @@ chmod -R u=rwX,g=rX,o= /etc/elasticsearch/certs
 
 # Kibana
 
+echo "Handleing Kibana..."
+
 mkdir -p /etc/kibana/certs/{{ homelab_domain_external }}/
 
 cp /etc/letsencrypt/live/elastic.{{ homelab_domain_external }}/* /etc/kibana/certs/{{ homelab_domain_external }}/
@@ -25,3 +29,5 @@ cp /etc/letsencrypt/live/elastic.{{ homelab_domain_external }}/* /etc/kibana/cer
 chown -R root:kibana /etc/kibana/certs
 
 chmod -R u=rwX,g=rX,o= /etc/kibana/certs
+
+echo "Done!"

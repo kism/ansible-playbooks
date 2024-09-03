@@ -16,3 +16,6 @@
 
 # - name: Include tasks, Systemd
 #   ansible.builtin.include_tasks: 06-systemd.yml
+
+- name: Include tasks, certbot
+  ansible.builtin.include_tasks: 07-certbot.yml
