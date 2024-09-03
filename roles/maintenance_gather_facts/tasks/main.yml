@@ -44,12 +44,15 @@
         dest: "{{ maintenance_gather_facts_facts_debug_file }}"
         content: "{{ debug_yaml_output | to_yaml(default_flow_style=False) }}"
         mode: "0660"
+      changed_when: false # Grabbing information to store locally
+
 
     - name: Prepend to make valid yml file
       ansible.builtin.lineinfile:
         path: "{{ maintenance_gather_facts_facts_debug_file }}"
         insertbefore: BOF
         line: "---"
+      changed_when: false # Grabbing information to store locally
 
     - name: Print the usual culperates
       ansible.builtin.set_fact:
@@ -82,9 +85,11 @@
         dest: "{{ maintenance_gather_facts_vars_debug_file }}"
         content: "{{ print_vars | to_yaml(default_flow_style=False) }}"
         mode: "0660"
+      changed_when: false # Grabbing information to store locally
 
     - name: Prepend to make valid yml file
       ansible.builtin.lineinfile:
         path: "{{ maintenance_gather_facts_vars_debug_file }}"
         insertbefore: BOF
         line: "---"
+      changed_when: false # Grabbing information to store locally

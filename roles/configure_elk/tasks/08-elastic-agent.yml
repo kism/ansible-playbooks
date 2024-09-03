@@ -1,0 +1,25 @@
+---
+- name: Install elastic agent
+  ansible.builtin.package:
+    name: elastic-agent
+    state: present
+
+- name: Add reminder to list
+  ansible.builtin.set_fact:
+    reminder_list: "{{ reminder_list + ['Add elastic agent config to /etc/elastic-agent/elastic-agent.yml'] }}"
+
+- name: Enable and start service
+  ansible.builtin.systemd_service:
+    name: elastic-agent
+    enabled: true
+    state: started
+    masked: false
+
+- name: Enable firewall rule for opnsense/pfsense agent
+  ansible.posix.firewalld:
+    service: elastic-agent-pfsense
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Reload firewalld

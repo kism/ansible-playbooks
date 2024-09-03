@@ -19,3 +19,6 @@
 
 - name: Include tasks, certbot
   ansible.builtin.include_tasks: 07-certbot.yml
+
+- name: Incluse tasks, elastic-agent
+  ansible.builtin.include_tasks: 08-elastic-agent.yml

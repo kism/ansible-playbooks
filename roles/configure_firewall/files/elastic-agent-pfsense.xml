@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>Elastic Agent OPNSense / PFSense</short>
+    <description>For the the opnsense/pfsense firewall to send logs.
+</description>
+    <port protocol="tcp" port="9001" />
+    <source address="10.42.0.1/32" /> <!-- pfsense -->
+</service>
