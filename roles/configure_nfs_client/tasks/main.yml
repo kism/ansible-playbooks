@@ -20,26 +20,30 @@
     mode: "0655"
   with_dict: "{{ nfs_client_mounts }}"
 
-- name: Mount Partitions
-  ansible.posix.mount:
-    path: /mnt/{{ item.key }}
-    src: "{{ item.value }}:/srv/{{ item.key }}"
-    fstype: nfs
-    opts: "vers=3,tcp,timeo=60,soft,x-systemd.mount-timeout=5,nofail"
-    state: mounted
-    boot: false
+- name: Copy systemd mount files
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/mnt-{{ item.key }}.mount
+    content: |-
+      [Unit]
+      Description=Mount {{ item.key }}
+      After=rpcbind.target
+
+      [Mount]
+      What={{ item.value }}:/srv/{{ item.key }}
+      Where=/mnt/{{ item.key }}
+      Type=nfs
+      TimeoutSec=5s
+      Options=vers=3,tcp,timeo=60,soft
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: "0644"
   with_dict: "{{ nfs_client_mounts }}"
   notify: Reload systemd
 
-- name: Copy systemd service
-  ansible.builtin.copy:
-    src: files/mount-nfs.service
-    dest: "/etc/systemd/system/mount-nfs.service"
-    mode: "0644"
-
-- name: Prepare service
-  ansible.builtin.systemd_service:
-    service: mount-nfs.service
+- name: Start mount services
+  ansible.builtin.systemd:
+    name: "mnt-{{ item.key }}.mount"
     enabled: true
     state: started
-    daemon_reload: true
+  with_dict: "{{ nfs_client_mounts }}"
