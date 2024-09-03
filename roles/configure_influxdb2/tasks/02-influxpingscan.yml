@@ -1,55 +1,55 @@
 ---
-- name: Create influxscan directory
-  ansible.builtin.file:
-    path: /opt/influxpingscan
-    state: directory
-    owner: root
-    group: influxdb
-    mode: "0700"
+# - name: Create influxscan directory
+#   ansible.builtin.file:
+#     path: /opt/influxpingscan
+#     state: directory
+#     owner: root
+#     group: influxdb
+#     mode: "0700"
 
-- name: Clone archivepodcast
-  ansible.builtin.git:
-    repo: https://github.com/kism/influxpingscan
-    dest: /opt/influxpingscan
-    single_branch: true
-    version: master
+# - name: Clone archivepodcast
+#   ansible.builtin.git:
+#     repo: https://github.com/kism/influxpingscan
+#     dest: /opt/influxpingscan
+#     single_branch: true
+#     version: master
 
-- name: Change ownership on /opt/influxpingscan
-  ansible.builtin.file:
-    path: /opt/influxpingscan
-    recurse: true
-    owner: root
-    group: influxdb
+# - name: Change ownership on /opt/influxpingscan
+#   ansible.builtin.file:
+#     path: /opt/influxpingscan
+#     recurse: true
+#     owner: root
+#     group: influxdb
 
-- name: Copy archivepodcast config
-  ansible.builtin.template:
-    src: templates/settings.ini.j2
-    dest: /opt/influxpingscan/settings.ini
-    owner: root
-    group: influxdb
-    mode: "640"
+# - name: Copy archivepodcast config
+#   ansible.builtin.template:
+#     src: templates/settings.ini.j2
+#     dest: /opt/influxpingscan/settings.ini
+#     owner: root
+#     group: influxdb
+#     mode: "640"
 
-- name: Install pipenv python package
-  ansible.builtin.pip:
-    name: pipenv
+# - name: Install pipenv python package
+#   ansible.builtin.pip:
+#     name: pipenv
 
-- name: Setup pipenv environment
-  ansible.builtin.command:
-    cmd: /usr/local/bin/pipenv sync
-    chdir: /opt/influxpingscan
-  notify: Restart archivepodcast
-  become: true
-  become_user: influxdb
-  changed_when: true # Safe assumption, no way to know
+# - name: Setup pipenv environment
+#   ansible.builtin.command:
+#     cmd: /usr/local/bin/pipenv sync
+#     chdir: /opt/influxpingscan
+#   notify: Restart archivepodcast
+#   become: true
+#   become_user: influxdb
+#   changed_when: true # Safe assumption, no way to know
 
-- name: Set influxpingscan scan in cron
-  ansible.builtin.cron:
-    name: influxpingscan scan
-    minute: "58"
-    job: /usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py scan
+# - name: Set influxpingscan scan in cron
+#   ansible.builtin.cron:
+#     name: influxpingscan scan
+#     minute: "58"
+#     job: /usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py scan
 
-- name: Set influxpingscan ping in cron
-  ansible.builtin.cron:
-    name: influxpingscan ping
-    minute: "*/5"
-    job: /usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py ping
+# - name: Set influxpingscan ping in cron
+#   ansible.builtin.cron:
+#     name: influxpingscan ping
+#     minute: "*/5"
+#     job: /usr/local/bin/pipenv run python /opt/influxpingscan/influxpingscan.py ping

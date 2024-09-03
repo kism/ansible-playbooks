@@ -72,10 +72,3 @@
     service: docker-arr.service
     enabled: true
     daemon_reload: true
-
-# - name: Set certbot cron job for restarting arr
-#   ansible.builtin.cron:
-#     name: Restart the arr compose
-#     minute: "0"
-#     hour: "4"
-#     job: systemctl restart docker-arr"
