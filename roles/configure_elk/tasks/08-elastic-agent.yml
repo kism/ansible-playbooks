@@ -15,11 +15,14 @@
     state: started
     masked: false
 
-- name: Enable firewall rule for opnsense/pfsense agent
+- name: Enable firewall rules for the agent server
   ansible.posix.firewalld:
-    service: elastic-agent-pfsense
+    service: "{{ item }}"
     zone: public
     permanent: true
     state: enabled
+  loop:
+    - elastic-agent-pfsense
+    - elastic-agent-fleet-server
   notify:
     - Reload firewalld

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>Elastic Agent Fleet Server</short>
+    <description>Elastic Agent Fleet Server
+</description>
+    <port protocol="tcp" port="8220" />
+</service>
