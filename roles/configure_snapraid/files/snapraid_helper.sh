@@ -292,11 +292,7 @@ echo "[`date`] All jobs ended."
 
 sleep 240
 
-hd-idle -t /dev/sda
-hd-idle -t /dev/sdb
-hd-idle -t /dev/sdc
-hd-idle -t /dev/sdd
-hd-idle -t /dev/sde
-hd-idle -t /dev/sdf
+hd-idle -t /dev/disk/by-label/Eiko
+hd-idle -t /dev/disk/by-label/Zidane
 
 exit 0;
