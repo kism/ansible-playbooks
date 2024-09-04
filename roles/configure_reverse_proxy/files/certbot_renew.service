@@ -1,0 +1,7 @@
+[Unit]
+Description="Timer for duck dns renew service"
+Requires=duckdns_renew.timer
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/certbot renew

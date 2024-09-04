@@ -1,0 +1,11 @@
+[Unit]
+Description="Timer for snapraid helper script"
+
+[Timer]
+Unit=snapraid_helper.service
+Persistent=true
+# Run every day at 9am
+OnCalendar=*-*-* 09:00:00
+
+[Install]
+WantedBy=timers.target

@@ -5,6 +5,13 @@
     state: stopped
   failed_when: false # Only if needeed
 
+- name: Kill all filebeat processes
+  ansible.builtin.command:
+    cmd: killall filebeat
+  failed_when: false
+  register: kill_output # Only if needed
+  changed_when: kill_output.rc == 0
+
 - name: Remove filebeat if it is installed
   ansible.builtin.package:
     name: filebeat

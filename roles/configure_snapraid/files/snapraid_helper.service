@@ -1,0 +1,7 @@
+[Unit]
+Description="Timer for snapraid helper service"
+Requires=snapraid_helper.timer
+
+[Service]
+Type=simple
+ExecStart=/opt/scripts/snapraid_helper.sh

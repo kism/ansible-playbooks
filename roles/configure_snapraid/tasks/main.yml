@@ -17,15 +17,26 @@
     dest: /opt/scripts/snapraid_helper.sh
     mode: "0700"
 
-- name: Run SnapRAID script
-  ansible.builtin.cron:
-    name: Run snapraid script
-    minute: "0"
-    hour: "09"
-    job: /opt/scripts/snapraid_helper.sh
-
 - name: Set email address
   ansible.builtin.lineinfile:
     path: /opt/scripts/snapraid_helper.sh
     regexp: '^EMAIL_ADDRESS="'
-    line: 'EMAIL_ADDRESS={{ secret_email }}'
+    line: "EMAIL_ADDRESS={{ secret_email }}"
+
+- name: Copy systemd units
+  ansible.builtin.copy:
+    src: files/{{ item }}
+    dest: /etc/systemd/system/{{ item }}
+    mode: "0644"
+    owner: root
+    group: root
+  loop:
+    - snapraid_helper.service
+    - snapraid_helper.timer
+
+- name: Enable snapraid helper timer
+  ansible.builtin.systemd_service:
+    name: snapraid_helper.timer
+    enabled: true
+    daemon_reload: true
+    state: started

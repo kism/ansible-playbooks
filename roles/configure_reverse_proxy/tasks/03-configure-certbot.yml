@@ -38,9 +38,20 @@
   ansible.builtin.debug:
     var: command_output.stdout_lines
 
-- name: Set certbot cron job
-  ansible.builtin.cron:
-    name: Try refresh Certificates
-    minute: "0"
-    hour: "4"
-    job: certbot renew"
+- name: Copy systemd units
+  ansible.builtin.copy:
+    src: files/{{ item }}
+    dest: /etc/systemd/system/{{ item }}
+    mode: "0644"
+    owner: root
+    group: root
+  loop:
+    - certbot_renew.service
+    - certbot_renew.timer
+
+- name: Enable certbot renew timer
+  ansible.builtin.systemd_service:
+    name: certbot_renew.timer
+    enabled: true
+    daemon_reload: true
+    state: started
