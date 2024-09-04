@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=nginx
 WorkingDirectory=/opt/allowlistapp
-ExecStart=/usr/local/bin/poetry run waitress-serve --listen "127.0.0.1:8080" --trusted-proxy '127.0.0.1' --trusted-proxy-headers 'x-forwarded-for' --log-untrusted-proxy-headers --clear-untrusted-proxy-headers --threads 2 --call allowlist:create_app
+ExecStart=/usr/local/bin/poetry run waitress-serve --listen "127.0.0.1:8080" --trusted-proxy '127.0.0.1' --trusted-proxy-headers 'x-forwarded-for' --log-untrusted-proxy-headers --clear-untrusted-proxy-headers --threads 2 --call allowlistapp:create_app
 Restart=always
 
 [Install]

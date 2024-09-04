@@ -4,25 +4,6 @@
     name: elastic-agent
     state: present
 
-# - name: Set fact for enroll command
-#   ansible.builtin.set_fact:
-#     enroll_command: >-
-#       elastic-agent enroll \
-#       --url=https://elastic.{{ homelab_domain_external }}:8220 \
-#       --fleet-server-es=https://elastic.{{ homelab_domain_external }}:9200 \
-#       --fleet-server-service-token=<TOKEN> \
-#       --fleet-server-policy=fleet-server-policy \
-#       --certificate-authorities=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
-#       --fleet-server-es-ca=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
-#       --fleet-server-cert=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
-#       --fleet-server-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
-#       --fleet-server-port=8220 \
-#       --elastic-agent-cert=/tmp/fleet-server.crt \
-#       --elastic-agent-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
-#       --fleet-server-es-cert=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
-#       --fleet-server-es-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
-#       --fleet-server-client-auth=required
-
 - name: Set fact for enroll command
   ansible.builtin.set_fact:
     enroll_command: |-
@@ -35,7 +16,7 @@
       --fleet-server-es-ca=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
       --fleet-server-cert=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
       --fleet-server-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
-      --fleet-server-port=8220 \
+      --fleet-server-port=8220
 
 - name: Print enroll command
   ansible.builtin.debug:

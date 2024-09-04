@@ -1,5 +1,5 @@
 ---
-index: filebeat-*
+index: logs-*
 type: flatline
 threshold: 1
 
