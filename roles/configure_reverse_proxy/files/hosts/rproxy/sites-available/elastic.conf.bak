@@ -2,7 +2,7 @@ server {
     if ($host = elastic.kierangee.au) {
         return 301 https://$host:9200$request_uri;
     }
-    server_name gba.kierangee.au;
+    server_name elastic.kierangee.au;
     listen 80;
     return 404;
 }

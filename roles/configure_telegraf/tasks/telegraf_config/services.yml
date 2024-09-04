@@ -2,11 +2,11 @@
 - name: Populate service facts
   ansible.builtin.service_facts:
 
-- name: Get services that are not not found
+- name: Get services that are not not found, init list
   ansible.builtin.set_fact:
     existing_services: []
 
-- name: Get services that are not not found
+- name: Get services that are not not found, populate
   ansible.builtin.set_fact:
     existing_services: "{{ existing_services + [item.key] }}"
   when: item.value.status is defined and item.value.status != "not-found"

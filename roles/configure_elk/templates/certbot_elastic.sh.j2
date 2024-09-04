@@ -31,3 +31,17 @@ chown -R root:kibana /etc/kibana/certs
 chmod -R u=rwX,g=rX,o= /etc/kibana/certs
 
 echo "Done!"
+
+# Elastic Agent
+
+echo "Handleing Elastic Agent Fleet server..."
+
+mkdir -p /etc/elastic-agent/certs/{{ homelab_domain_external }}/
+
+cp /etc/letsencrypt/live/elastic.{{ homelab_domain_external }}/* /etc/elastic-agent/certs/{{ homelab_domain_external }}/
+
+chown -R root:root /etc/elastic-agent/certs
+
+chmod -R u=rwX,g=rX,o= /etc/elastic-agent/certs
+
+echo "Done!"

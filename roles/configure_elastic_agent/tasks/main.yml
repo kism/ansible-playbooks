@@ -1,4 +1,10 @@
 ---
+- name: Stop filebeat service if needed
+  ansible.builtin.systemd_service:
+    name: filebeat
+    state: stopped
+  failed_when: false # Only if needeed
+
 - name: Remove filebeat if it is installed
   ansible.builtin.package:
     name: filebeat
@@ -47,8 +53,8 @@
         enroll_command: >-
           elastic-agent
           enroll
-          -f
-          --url=https://fleet.{{ homelab_domain_external }}:443
+          --force
+          --url=https://elastic.{{ homelab_domain_external }}:8220
           --enrollment-token={{ secret_elastic_agent_linux_enrolement }}
           --certificate-authorities={{ cert_path }}
 
@@ -75,6 +81,7 @@
       ansible.builtin.command:
         cmd: elastic-agent status
       retries: 5
+      register: status_command_output
       until: status_command_output.rc == 0
       delay: 3
       changed_when: false # Just getting info

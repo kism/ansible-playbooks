@@ -27,6 +27,7 @@
       -v
       --non-interactive
       --dns-cloudflare
+      --dns-cloudflare-propagation-seconds 60
       --dns-cloudflare-credentials /root/.cloudflare.ini
       -d elastic.{{ homelab_domain_external }}
   register: command_output
@@ -42,6 +43,12 @@
     src: templates/certbot_elastic.sh.j2
     dest: /opt/scripts/certbot_elastic.sh
     mode: "0755"
+
+- name: Run the certbot script
+  ansible.builtin.command:
+    cmd: /opt/scripts/certbot_elastic.sh
+  register: command_output
+  changed_when: false or "Certificate not yet due for renewal" not in command_output.stdout
 
 - name: Copy systemd timer
   ansible.builtin.copy:

@@ -21,4 +21,4 @@
   ansible.builtin.include_tasks: 07-certbot.yml
 
 - name: Incluse tasks, elastic-agent
-  ansible.builtin.include_tasks: 08-elastic-agent.yml
+  ansible.builtin.include_tasks: 08-elastic-fleet-server.yml

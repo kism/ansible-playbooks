@@ -1,0 +1,64 @@
+---
+- name: Install elastic agent
+  ansible.builtin.package:
+    name: elastic-agent
+    state: present
+
+# - name: Set fact for enroll command
+#   ansible.builtin.set_fact:
+#     enroll_command: >-
+#       elastic-agent enroll \
+#       --url=https://elastic.{{ homelab_domain_external }}:8220 \
+#       --fleet-server-es=https://elastic.{{ homelab_domain_external }}:9200 \
+#       --fleet-server-service-token=<TOKEN> \
+#       --fleet-server-policy=fleet-server-policy \
+#       --certificate-authorities=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
+#       --fleet-server-es-ca=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
+#       --fleet-server-cert=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
+#       --fleet-server-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
+#       --fleet-server-port=8220 \
+#       --elastic-agent-cert=/tmp/fleet-server.crt \
+#       --elastic-agent-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
+#       --fleet-server-es-cert=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
+#       --fleet-server-es-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
+#       --fleet-server-client-auth=required
+
+- name: Set fact for enroll command
+  ansible.builtin.set_fact:
+    enroll_command: |-
+      elastic-agent enroll \
+      --url=https://elastic.{{ homelab_domain_external }}:8220 \
+      --fleet-server-es=https://elastic.{{ homelab_domain_external }}:9200 \
+      --fleet-server-service-token=<TOKEN> \
+      --fleet-server-policy=fleet-server-policy \
+      --certificate-authorities=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
+      --fleet-server-es-ca=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
+      --fleet-server-cert=/etc/elastic-agent/certs/{{ homelab_domain_external }}/fullchain.pem \
+      --fleet-server-cert-key=/etc/elastic-agent/certs/{{ homelab_domain_external }}/privkey.pem \
+      --fleet-server-port=8220 \
+
+- name: Print enroll command
+  ansible.builtin.debug:
+    msg: "{{ enroll_command }}"
+
+- name: Add reminder to list
+  ansible.builtin.set_fact:
+    reminder_list: "{{ reminder_list + ['Check previous output for the enroll command for the fleet server, ensure that the service is stopped when you run it. Then start the service.'] }}"
+
+- name: Enable and start service
+  ansible.builtin.systemd_service:
+    name: elastic-agent
+    enabled: true
+    masked: false
+
+- name: Enable firewall rules for the agent server
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    zone: public
+    permanent: true
+    state: enabled
+  loop:
+    - elastic-agent-pfsense
+    - elastic-agent-fleet-server
+  notify:
+    - Reload firewalld
