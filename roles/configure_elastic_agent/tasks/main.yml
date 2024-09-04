@@ -1,5 +1,5 @@
 ---
-- name: Remove filebeat
+- name: Remove filebeat if it is installed
   ansible.builtin.package:
     name: filebeat
     state: absent
@@ -13,33 +13,55 @@
     dest: "{{ cert_path }}"
     mode: "0444"
 
-- name: Install packages
+- name: Install elastic agent package
   ansible.builtin.package:
     name:
       - elastic-agent
     state: present
 
-- name: Enable filebeat service
+- name: Enable elastic-agent service
   ansible.builtin.systemd_service:
     name: elastic-agent
     enabled: true
     state: started
+
 
 - name: Check if agent needs to be enrolled
   ansible.builtin.command:
     cmd: elastic-agent status
   changed_when: false # Just getting info
   register: status_command_output
+  retries: 5
+  until: status_command_output.rc == 0
+  delay: 3
+
+- name: Print status_command_output
+  ansible.builtin.debug:
+    var: status_command_output.stdout_lines
 
 - name: Block to enroll
-  when: false or "Not enrolled into Fleet" in status_command_output.stdout
+  when: false or "(HEALTHY) Connected" not in status_command_output.stdout
   block:
+    - name: Set fact of enrollment command
+      ansible.builtin.set_fact:
+        enroll_command: >-
+          elastic-agent
+          enroll
+          -f
+          --url=https://fleet.{{ homelab_domain_external }}:443
+          --enrollment-token={{ secret_elastic_agent_linux_enrolement }}
+          --certificate-authorities={{ cert_path }}
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ enroll_command }}"
+
     - name: Enroll agent
       ansible.builtin.command:
-        cmd: elastic-agent enroll -f --url=https://fleet.{{ homelab_domain_external }}:443 --enrollment-token={{ secret_elastic_agent_linux_enrolement }} --certificate-authorities={{ cert_path }}
+        cmd: "{{ enroll_command }}"
       register: enroll_command_output
       timeout: 10
-      changed_when: false or "Successfully enrolled the Elastic Agent" in command_output.stdout
+      changed_when: false or "Successfully enrolled the Elastic Agent" in enroll_command_output.stdout
 
     - name: Debug stdout
       ansible.builtin.debug:
@@ -48,3 +70,12 @@
     - name: Debug stderr
       ansible.builtin.debug:
         var: enroll_command_output.stderr_lines
+
+    - name: Check success again for a laugh
+      ansible.builtin.command:
+        cmd: elastic-agent status
+      retries: 5
+      until: status_command_output.rc == 0
+      delay: 3
+      changed_when: false # Just getting info
+      failed_when: false or "(HEALTHY) Connected" not in status_command_output.stdout
