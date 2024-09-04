@@ -7,3 +7,9 @@
     gpgcheck: 1
     gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     enabled: 1
+
+# Cert
+
+- name: Set fact for certificate location
+  ansible.builtin.set_fact:
+    cert_path: /usr/share/pki/ca-trust-source/anchors/elastic-agent-root.cer

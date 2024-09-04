@@ -35,3 +35,9 @@
       https://artifacts.elastic.co/packages/8.x/apt stable main
     state: present
     mode: "0644"
+
+# Cert
+
+- name: Set fact for certificate location
+  ansible.builtin.set_fact:
+    cert_path: /usr/local/share/ca-certificates/elastic-agent-root.cer

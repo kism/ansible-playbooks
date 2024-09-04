@@ -1,11 +1,17 @@
 ---
-- name: Include tasks, Repository
-  ansible.builtin.include_tasks: "01-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"
-
 - name: Remove filebeat
   ansible.builtin.package:
     name: filebeat
     state: absent
+
+- name: Include tasks, Repository
+  ansible.builtin.include_tasks: "01-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"
+
+- name: Copy the root cert for elastic-agent
+  ansible.builtin.copy:
+    src: files/elastic-agent-root.cer
+    dest: "{{ cert_path }}"
+    mode: "0444"
 
 - name: Install packages
   ansible.builtin.package:
@@ -13,17 +19,32 @@
       - elastic-agent
     state: present
 
-- name: Enroll agent
-  ansible.builtin.command:
-    cmd: elastic-agent enroll --url=https://elk.kg.lan:8220 --enrollment-token={{ secret_elastic_agent_linux_enrolement }}
-  register: command_output
-
-- name: Debug
-  ansible.builtin.debug:
-    var: command_output.stdout_lines
-
 - name: Enable filebeat service
   ansible.builtin.systemd_service:
     name: elastic-agent
     enabled: true
     state: started
+
+- name: Check if agent needs to be enrolled
+  ansible.builtin.command:
+    cmd: elastic-agent status
+  changed_when: false # Just getting info
+  register: status_command_output
+
+- name: Block to enroll
+  when: false or "Not enrolled into Fleet" in status_command_output.stdout
+  block:
+    - name: Enroll agent
+      ansible.builtin.command:
+        cmd: elastic-agent enroll -f --url=https://fleet.{{ homelab_domain_external }}:443 --enrollment-token={{ secret_elastic_agent_linux_enrolement }} --certificate-authorities={{ cert_path }}
+      register: enroll_command_output
+      timeout: 10
+      changed_when: false or "Successfully enrolled the Elastic Agent" in command_output.stdout
+
+    - name: Debug stdout
+      ansible.builtin.debug:
+        var: enroll_command_output.stdout_lines
+
+    - name: Debug stderr
+      ansible.builtin.debug:
+        var: enroll_command_output.stderr_lines
