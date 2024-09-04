@@ -1,6 +1,5 @@
 ---
 configure_server_packages_to_install:
-  - cronie
   - file
   - git
   - gpg
