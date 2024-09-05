@@ -6,12 +6,6 @@
       - python3-certbot-dns-cloudflare
     state: installed
 
-- name: Enable crond
-  ansible.builtin.systemd_service:
-    name: crond
-    enabled: true
-    state: started
-
 - name: Set cloudflare key
   ansible.builtin.copy:
     content: dns_cloudflare_api_token = {{ secret_cloudflare_api_dns }}

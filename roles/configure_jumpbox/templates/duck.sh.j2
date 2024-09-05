@@ -1,7 +1,13 @@
+#!/usr/bin/env bash
+echo "Sleeping and then running duckdns renew"
 sleep $(shuf -i 0-500 -n 1)
 ducktoken=$(cat /opt/duckdns/ducktoken)
+echo "Getting IP addresses"
 ipv4addr=$(curl -s ipv4.icanhazip.com)
 ipv6addr=$(curl -s ipv6.icanhazip.com)
 domain={{ duckdns_domain }}
 url="https://www.duckdns.org/update?domains=$domain&token=$ducktoken&ip=$ipv4addr&ipv6=$ipv6addr"
-curl -s -k -o /var/log/duckdns.log $url
+# Headers
+echo "Running curl, IPv4 address: $ipv4addr, IPv6 address: $ipv6addr"
+curl curl -IL $url
+echo "Done!"
