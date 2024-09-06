@@ -1,0 +1,20 @@
+---
+index: logs-*
+type: any
+
+filter:
+- query:
+    query_string:
+      query: 'input.type : "journald" and log.syslog.appname : "kernel" and log.syslog.priority <= 3'
+
+alert:
+- "debug"
+
+
+
+
+
+
+
+
+

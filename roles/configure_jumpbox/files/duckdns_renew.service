@@ -1,5 +1,5 @@
 [Unit]
-Description="Timer for certbot renew service"
+Description="Service to renew duck dns"
 Requires=duckdns_renew.timer
 
 [Service]

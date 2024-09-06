@@ -1,8 +1,8 @@
 [Unit]
-Description="Timer for duck dns script"
+Description="Timer for certbot script"
 
 [Timer]
-Unit=duckdns_renew.service
+Unit=certbot_renew.service
 Persistent=true
 # Run every day at 2am
 OnCalendar=*-*-* 02:20:00

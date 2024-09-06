@@ -1,5 +1,5 @@
 [Unit]
-Description="Timer for certbot renew script"
+Description="Timer for duck dns renew script"
 
 [Timer]
 Unit=duckdns_renew.service
