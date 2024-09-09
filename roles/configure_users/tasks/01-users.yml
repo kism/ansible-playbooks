@@ -49,7 +49,7 @@
     user: "{{ item }}"
     state: present
     exclusive: true
-    key: "{{ lookup('url', configure_users_myuser.ssh_keys_url, split_lines=False) }}"
+    key: "{{ lookup('url', ssh_keys_url, split_lines=False) }}"
   loop:
     - "{{ configure_users_myuser.linux_username }}"
     - ansible_svc

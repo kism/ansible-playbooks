@@ -10,6 +10,6 @@
   block:
     - name: Install update pipx packages
       become: true
-      become_user: kism
+      become_user: "{{ homelab_my_username }}"
       community.general.pipx:
         state: upgrade_all

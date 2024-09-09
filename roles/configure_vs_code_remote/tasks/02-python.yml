@@ -6,7 +6,7 @@
 
 - name: Block to run as user
   become: true
-  become_user: kism
+  become_user: "{{ homelab_my_username }}"
   block:
     - name: Install poetry
       community.general.pipx:

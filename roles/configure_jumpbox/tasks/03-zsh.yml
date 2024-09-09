@@ -8,7 +8,7 @@
 - name: Get user info facts
   ansible.builtin.getent:
     database: passwd
-    key: kism
+    key: "{{ homelab_my_username }}"
   no_log: true
 
 - name: Block to run as my user
@@ -19,34 +19,34 @@
       ansible.builtin.file:
         path: "{{ getent_passwd['kism'][4] }}/.antigen"
         state: directory
-        owner: kism
-        group: kism
+        owner: "{{ homelab_my_username }}"
+        group: "{{ homelab_my_username }}"
         mode: "0770"
 
     - name: Download antigen
       ansible.builtin.get_url:
         url: https://git.io/antigen
         dest: "{{ getent_passwd['kism'][4] }}/.antigen/antigen.zsh"
-        owner: kism
-        group: kism
+        owner: "{{ homelab_my_username }}"
+        group: "{{ homelab_my_username }}"
         mode: "0770"
 
     - name: Copy bash config
       ansible.builtin.copy:
         src: files/jumpbox.zshrc
-        dest: '{{ getent_passwd["kism"][4] }}/.zshrc'
-        owner: kism
-        group: kism
+        dest: '{{ getent_passwd[homelab_my_username][4] }}/.zshrc'
+        owner: "{{ homelab_my_username }}"
+        group: "{{ homelab_my_username }}"
         mode: "0644"
 
     - name: Setup zsh
       ansible.builtin.command:
-        cmd: zsh -c ". {{ getent_passwd['kism'][4] }}/.zshrc; antigen update; antigen reset"
+        cmd: zsh -c ". {{ getent_passwd[homelab_my_username][4] }}/.zshrc; antigen update; antigen reset"
       changed_when: false # Handled by the next task
 
     - name: Check if zsh has changed
       ansible.builtin.find:
-        paths: "{{ getent_passwd['kism'][4] }}/.antigen/bundles"
+        paths: "{{ getent_passwd[homelab_my_username][4] }}/.antigen/bundles"
         age: 1m
         recurse: true
       register: modified_files
@@ -54,5 +54,5 @@
 
 - name: Change my shell to zsh
   ansible.builtin.user:
-    name: kism
+    name: "{{ homelab_my_username }}"
     shell: /bin/zsh

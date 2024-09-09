@@ -1,7 +1,6 @@
 ---
 configure_users_myuser:
   linux_username: kism
-  ssh_keys_url: https://github.com/kism.keys
 
 configure_users_users:
   kism:

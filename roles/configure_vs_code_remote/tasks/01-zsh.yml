@@ -6,12 +6,12 @@
 
 - name: Set shell
   ansible.builtin.user:
-    name: kism
+    name: "{{ homelab_my_username }}"
     shell: /usr/bin/zsh
 
 - name: Set default zsh config
   become: true
-  become_user: kism
+  become_user: "{{ homelab_my_username }}"
   ansible.builtin.file:
     path: ~/.zshrc
     state: touch
