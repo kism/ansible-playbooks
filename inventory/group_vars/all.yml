@@ -5,3 +5,4 @@ timezone: awst
 proxmox_ct_features: []
 proxmox_ct_disk: "local-lvm:20"
 homelab_domain_external: kierangee.au
+homelab_domain_internal: kg.lan

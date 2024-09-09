@@ -1,0 +1,67 @@
+---
+- name: Install Nginx
+  ansible.builtin.apt:
+    name:
+      - nginx
+    state: present
+
+- name: Nginx enabled and running
+  ansible.builtin.systemd_service:
+    name: nginx
+    enabled: true
+    state: started
+    daemon_reload: true
+  notify: Reload nginx
+
+- name: Remove default nginx site
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/nginx/sites-available/default
+    - /etc/nginx/sites-enabled/default
+
+- name: Copy nginx configuration
+  ansible.builtin.template:
+    src: templates/nginx_pve.conf.j2
+    dest: /etc/nginx/sites-available/pve.conf
+    mode: "0644"
+  notify: Reload nginx
+
+- name: Script to copy cert file
+  ansible.builtin.copy:
+    src: files/fetch_pvessl_cert.sh
+    dest: /opt/scripts/fetch_pvessl_cert.sh
+    mode: "0700"
+
+- name: Run the script now
+  ansible.builtin.command:
+    cmd: bash /opt/scripts/fetch_pvessl_cert.sh
+    creates: /etc/ssl/certs/pveproxy-fetched.cer
+  notify: Reload nginx
+
+- name: Symlink nginx configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/pve.conf
+    dest: /etc/nginx/sites-enabled/pve.conf
+    state: link
+  notify: Reload nginx
+
+- name: Systemd service to fetch cert
+  ansible.builtin.copy:
+    src: files/fetch_pvessl_cert.service
+    dest: /etc/systemd/system/fetch_pvessl_cert.service
+    mode: "0644"
+
+- name: Systemd timer to fetch cert
+  ansible.builtin.copy:
+    src: files/fetch_pvessl_cert.timer
+    dest: /etc/systemd/system/fetch_pvessl_cert.timer
+    mode: "0644"
+
+- name: Enable and start fetch cert timer
+  ansible.builtin.systemd:
+    name: fetch_pvessl_cert.timer
+    enabled: true
+    state: started
+    daemon_reload: true

@@ -27,6 +27,7 @@
       [Unit]
       Description=Mount {{ item.key }}
       After=rpcbind.target
+      Requires=remote-fs-pre.target
 
       [Mount]
       What={{ item.value }}:/srv/{{ item.key }}

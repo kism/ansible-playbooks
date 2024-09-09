@@ -1,0 +1,7 @@
+[Unit]
+Description="Oneshot service for cert fetch"
+Requires=fetch_pvessl_cert.timer
+
+[Service]
+Type=oneshot
+ExecStart=/opt/scripts/fetch_pvessl_cert.sh

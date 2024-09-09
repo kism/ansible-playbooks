@@ -1,0 +1,11 @@
+[Unit]
+Description="Timer for cert fetch"
+
+[Timer]
+Unit=fetch_pvessl_cert.service
+Persistent=true
+OnCalendar=hourly
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target
