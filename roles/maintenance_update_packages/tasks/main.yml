@@ -17,4 +17,3 @@
 
 - name: Run pipx update routine if needed
   ansible.builtin.include_tasks: "03-docker.yml"
-  when: pipx_check.stat.exists
