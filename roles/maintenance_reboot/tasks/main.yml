@@ -1,3 +1,4 @@
 ---
 - name: Unconditionally reboot the machine with all defaults
+  become: true
   ansible.builtin.reboot:
