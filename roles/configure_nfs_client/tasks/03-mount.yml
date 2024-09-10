@@ -1,0 +1,50 @@
+---
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+- name: Set fact for whether this is a nfs server
+  ansible.builtin.set_fact:
+    is_nfs_server: "{{ 'nfs-server.service' in ansible_facts.services.keys() }}"
+    after_nfs_server: ""
+
+- name: Set fact to start after nfs-server if needed
+  ansible.builtin.set_fact:
+    after_nfs_server: "nfs-server.service"
+
+- name: Copy systemd mount files
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/mnt-{{ item.key }}.mount
+    content: |-
+      [Unit]
+      Description=Mount {{ item.key }}
+      After=rpcbind.target {{ after_nfs_server }}
+      Requires=remote-fs-pre.target
+
+      [Mount]
+      What={{ item.value }}:/srv/{{ item.key }}
+      Where=/mnt/{{ item.key }}
+      Type=nfs
+      TimeoutSec=5s
+      Options=vers=3,tcp,timeo=60,soft
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: "0644"
+  with_dict: "{{ nfs_client_mounts }}"
+  notify: Reload systemd
+
+- name: Start mount services
+  ansible.builtin.systemd:
+    name: "mnt-{{ item.key }}.mount"
+    enabled: true
+    state: started
+  with_dict: "{{ nfs_client_mounts }}"
+
+- name: Set permissions post-mount
+  ansible.builtin.file:
+    path: /mnt/{{ item.key }}
+    state: directory
+    owner: root
+    group: root
+    mode: "0655"
+  with_dict: "{{ nfs_client_mounts }}"

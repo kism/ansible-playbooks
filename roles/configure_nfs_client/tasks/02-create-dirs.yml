@@ -1,0 +1,76 @@
+---
+- name: Create directories
+  ansible.builtin.file:
+    path: /mnt/{{ item.key }}/
+    state: directory
+    owner: root
+    group: root
+    mode: "0655"
+  with_dict: "{{ nfs_client_mounts }}"
+
+- name: Create temp mount folder
+  ansible.builtin.file:
+    path: /tmp/mnt
+    state: directory
+    mode: "0655"
+
+- name: Unnmount /tmp/mnt/ if possible
+  ansible.posix.mount:
+    path: /tmp/mnt
+    state: unmounted
+
+- name: Find files in /tmp/mnt/, fail if any since it should be unmounted and empty
+  ansible.builtin.find:
+    paths: /tmp/mnt/
+    file_type: any
+    depth: 1
+  register: mnt_files
+  failed_when: mnt_files.matched > 0
+
+- name: Create temp bind mount
+  ansible.posix.mount:
+    src: /mnt/
+    path: /tmp/mnt/
+    fstype: none
+    opts: bind
+    state: ephemeral
+  changed_when: false # This is in tmp
+
+- name: For each mount, check if there are any files or subfolders
+  ansible.builtin.find:
+    paths: /tmp/mnt/{{ item.key }}
+    file_type: any
+    depth: 1
+  register: nfs_files
+  with_dict: "{{ nfs_client_mounts }}"
+  failed_when: nfs_files.matched > 0
+
+- name: For each mount set the unmounted folder's permissions
+  ansible.builtin.file:
+    path: /tmp/mnt/{{ item.key }}
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: "0000"
+  with_dict: "{{ nfs_client_mounts }}"
+
+- name: For the sake of output, ls -lah /tmp/mnt
+  ansible.builtin.command:
+    cmd: ls -lah /tmp/mnt
+  register: ls_mnt
+  changed_when: false
+
+- name: Print the output of the previous command
+  ansible.builtin.debug:
+    msg: "{{ ls_mnt.stdout }}"
+
+- name: Unmount temp mount
+  ansible.posix.mount:
+    path: /tmp/mnt
+    state: unmounted
+  changed_when: false # This is in tmp
+
+- name: Ensure /tmp/mnt is not in fstab
+  ansible.posix.mount:
+    path: /tmp/mnt
+    state: absent
