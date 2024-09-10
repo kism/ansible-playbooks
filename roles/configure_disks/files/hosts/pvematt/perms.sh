@@ -32,14 +32,10 @@ chown root:root /srv/Eiko   # only touched by snapraid
 chown root:root /srv/Zidane # only touched by snapraid
 
 echo - Set ACLs
-sudo setfacl -R -m "default:user::rwx" /srv/Amarant/
-sudo setfacl -R -m "default:group::rwx" /srv/Amarant/
-sudo setfacl -R -m "default:user::rwx" /srv/Freya
-sudo setfacl -R -m "default:group::rwx" /srv/Freya
-sudo setfacl -R -m "default:user::rwx" /srv/Garnet
-sudo setfacl -R -m "default:group::rwx" /srv/Garnet
-sudo setfacl -R -m "default:user::rwx" /srv/Vivi
-sudo setfacl -R -m "default:group::rwx" /srv/Vivi
+sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Amarant/
+sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Freya
+sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Garnet
+sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Vivi
 
 echo -- Subfolders
 
@@ -47,7 +43,7 @@ echo - Set Permissions for Content
 chown -R backup_svc:backup_svc /srv/Amarant/backups
 chown -R kism:content_private /srv/Amarant/Downloads
 chown -R kism:content_private /srv/Amarant/Temp
-chown -R kism:content_public /srv/Freya/Video
+chown -R kism:content_public /srv/Amarant/Video
 
 chown -R kism:content_public /srv/Freya/Apps
 chown -R kism:content_public /srv/Freya/Emulators

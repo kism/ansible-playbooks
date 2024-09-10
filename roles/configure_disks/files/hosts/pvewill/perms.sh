@@ -27,8 +27,8 @@ echo -- Subfolders
 echo - Set Permissions for Content
 chown -R kism:content_private /srv/Quina/z
 chown -R qbtuser:qbtuser /srv/Quina/downloads
-sudo setfacl -R -m "default:user::rwx" /srv/Quina/z
-sudo setfacl -R -m "default:group::rwx" /srv/Quina/downloads
+sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Quina/z
+sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Quina/downloads
 
 echo -- Finds
 

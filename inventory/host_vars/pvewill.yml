@@ -7,6 +7,6 @@ nfs_client_mounts:
 disks_ext4:
   - Steiner
   - Beatrix
-  - Quale
 disks_btrfs:
   Quina: 4054a595-ff86-4e6e-9bb4-d9b07ae1a7ef
+  Quale: fe4b7442-115e-459e-8339-00009682bd32

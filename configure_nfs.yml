@@ -8,6 +8,7 @@
     - meta_include_secrets
 
     # Purpose specific
+    - configure_disks
     - configure_nfs_server
     - configure_nfs_client
 
