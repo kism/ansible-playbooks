@@ -26,4 +26,3 @@
     state: stopped
     force: false
   loop: "{{ proxmox_guests.proxmox_vms }}"
-  when: inventory_hostname in groups['proxmoxvms']

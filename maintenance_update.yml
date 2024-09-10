@@ -17,7 +17,7 @@
   become: false
   roles:
     - meta_include_secrets
-    - maintenance_shutdown_proxmox_guests
+    - maintenance_shutdown_all_proxmox_guests
 
 - name: Restart others (baremetal and public cloud)
   hosts: publiccloudvms, baremetal
