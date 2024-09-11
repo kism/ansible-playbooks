@@ -6,6 +6,7 @@
   roles:
     # Preflight
     - meta_include_secrets
+    - meta_pre_flight_checks
 
     # Purpose specific
     - configure_disks

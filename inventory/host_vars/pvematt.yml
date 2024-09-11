@@ -3,7 +3,15 @@ nfs_client_mounts:
   Beatrix: pvewill.kg.lan
   Steiner: pvewill.kg.lan
   Quina: pvewill.kg.lan
-  Quale: pvewill.kg.lan
+  Marcus: pvewill.kg.lan
+  Blank: pvewill.kg.lan
+nfs_server_exports: |-
+  /srv/Amarant/backups pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Amarant/backups pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Amarant pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Garnet pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Freya pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Vivi pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash)
 disks_ext4:
   - Zidane
   - Vivi

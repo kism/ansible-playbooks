@@ -1,0 +1,24 @@
+---
+- name: Check SSH keys loaded
+  delegate_to: localhost
+  become: false
+  run_once: true
+  block:
+    - name: Check that SSH_AUTH_SOCK is set on localhost
+      ansible.builtin.command:
+        cmd: echo $SSH_AUTH_SOCK
+      register: ssh_sock
+      changed_when: false # Just getting info
+
+    - name: Make ssh assertion before we start
+      ansible.builtin.assert:
+        that: ssh_sock.stdout != ""
+        fail_msg: |-
+          No SSH_AUTH_SOCK set!
+          if you are in vscode with agent forwarding, run:
+          export SSH_AUTH_SOCK=$(ls -t /tmp/ssh-**/* | head -1)
+
+
+- name: Test become
+  become: true
+  ansible.builtin.ping:

@@ -1,23 +1,8 @@
 ---
-- name: Install NFS server
-  ansible.builtin.apt:
-    name: nfs-kernel-server
-    state: present
+- name: Include tasks for install
+  ansible.builtin.include_tasks: 01-install.yml
+  when: nfs_server_exports is defined
 
-- name: Copy nfs server config to /etc/exports
-  ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/exports
-    dest: /etc/exports
-    mode: "0660"
-  register: copy_nfs_exports
-
-- name: Enable and start NFS service
-  ansible.builtin.systemd_service:
-    service: nfs-kernel-server
-    enabled: true
-    state: started
-
-- name: Export the shares
-  ansible.builtin.command:
-    cmd: exportfs -rav
-  changed_when: copy_nfs_exports.changed
+- name: Include tasks for configure-export
+  ansible.builtin.include_tasks: 02-configure-export.yml
+  when: nfs_server_exports is defined

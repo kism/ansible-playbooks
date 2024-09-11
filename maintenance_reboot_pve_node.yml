@@ -5,5 +5,6 @@
   gather_facts: false
   roles:
     - meta_include_secrets
+    - meta_pre_flight_checks
     - maintenance_shutdown_node_proxmox_guests
     - maintenance_reboot

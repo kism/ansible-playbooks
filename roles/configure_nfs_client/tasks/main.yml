@@ -1,9 +1,12 @@
 ---
 - name: Include tasks for installed
   ansible.builtin.include_tasks: 01-install.yml
+  when: nfs_client_mounts is defined
 
 - name: Include tasks for create-dirs
   ansible.builtin.include_tasks: 02-create-dirs.yml
+  when: nfs_client_mounts is defined
 
 - name: Include tasks for mount-nfs
   ansible.builtin.include_tasks: 03-mount.yml
+  when: nfs_client_mounts is defined

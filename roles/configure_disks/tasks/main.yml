@@ -5,14 +5,14 @@
     state: directory
     mode: "0755"
 
-- name: BTRFS List
+- name: Block for ext4
   when: disks_ext4 is defined
   block:
     - name: Add directories for HDDs (ext4 list)
       ansible.builtin.file:
         path: /srv/{{ item }}
         state: directory
-        mode: "0700"
+        mode: "0755"
       loop: "{{ disks_ext4 }}"
 
     - name: Mount partitions by label (ext4)
@@ -24,7 +24,7 @@
         state: mounted
       loop: "{{ disks_ext4 }}"
 
-- name: BTRFS List
+- name: Block for btrfs
   when: disks_btrfs is defined
   block:
     - name: Add directories for HDDs (btrfs list)
