@@ -4,6 +4,7 @@ set -e
 
 partition_list=(Quina Marcus Blank Beatrix Steiner)
 
+# region /srv
 echo -- /srv
 
 echo - Remove ACLs
@@ -28,6 +29,9 @@ for partition in "${partition_list[@]}"; do
     chown root:root /srv/$partition
 done
 
+# endregion
+
+# region Subfolders
 echo -- Subfolders
 
 echo - Set ACLs
@@ -45,6 +49,9 @@ chown -R root:root /srv/Blank
 chown -R root:root /srv/Beatrix
 chown -R root:root /srv/Steiner
 
+# endregion
+
+# region Finds
 echo -- Finds
 
 echo - Find all dirs, set setguid
@@ -65,7 +72,16 @@ for partition in "${partition_list[@]}"; do
     find /srv/$partition -mindepth 1 -maxdepth 1 -type d -exec chmod -R u=rwX,g+rwX,o= {} +
 done
 
+# endregion
+
+# region Exceptions
 echo -- Fun file exceptions
+
+set +e
 chown root:root /srv/*/lost+found
 chmod 0700 /srv/*/lost+found
 chmod g-s /srv/*/lost+found # huh
+
+# endregion
+
+echo done!

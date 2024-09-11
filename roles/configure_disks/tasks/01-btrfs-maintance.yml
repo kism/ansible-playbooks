@@ -20,7 +20,7 @@
     dest: "{{ btrfsmaintenance_config_path }}"
     mode: "0644"
 
-- name: Setup up the cron jobs
+- name: Setup up the systemd timer
   ansible.builtin.command:
     cmd: /usr/share/btrfsmaintenance/btrfsmaintenance-refresh-cron.sh timer
-  changed_when: true # Who knows
+    creates: /lib/systemd/system/btrfs-scrub.timer

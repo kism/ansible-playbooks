@@ -46,5 +46,5 @@
     state: directory
     owner: root
     group: root
-    mode: "0655"
+    mode: "0755"
   with_dict: "{{ nfs_client_mounts }}"
