@@ -25,7 +25,12 @@
     service: cockpit
     zone: public
     permanent: true
-    state: disabled
+    state: absent
+  loop:
+    - public
+    - trusted
+    - internal
+    - work
   notify:
     - Reload firewalld
 

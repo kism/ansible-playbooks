@@ -1,0 +1,34 @@
+---
+- name: Enable CodeReady repo DNF
+  community.general.dnf_config_manager:
+    name: "ol{{ ansible_distribution_major_version }}_codeready_builder"
+    state: enabled
+
+- name: Add RPM Fusion free repository
+  ansible.builtin.dnf:
+    name: "https://download1.rpmfusion.org/{{ item }}/el/rpmfusion-{{ item }}-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    disable_gpg_check: true # These contain the repo key, if https validates on this I trust it.
+    state: present
+  loop:
+    - free
+    - nonfree
+  when: ansible_pkg_mgr == "dnf"
+
+- name: Install Jellyfin
+  ansible.builtin.package:
+    name: jellyfin
+    state: present
+
+- name: Enable jellyfin firewall rule
+  ansible.posix.firewalld:
+    service: jellyfin
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Start Jellyfin
+  ansible.builtin.systemd:
+    name: jellyfin
+    state: started
+    enabled: true
+    daemon_reload: true

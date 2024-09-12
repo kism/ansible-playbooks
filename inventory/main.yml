@@ -40,6 +40,9 @@ all:
     elk:
       ansible_host: elk.kg.lan
       ansible_host_description: ELK (Elastic Search, Logstash, Kibana)
+    testnas:
+      ansible_host: testnas.kg.lan
+      ansible_host_description: KiSMNAS Test
 
 # Server Type
 proxmoxvms:

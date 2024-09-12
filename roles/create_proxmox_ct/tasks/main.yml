@@ -22,6 +22,8 @@
         netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ proxmox_guest_mac_address }}"}'
         features: "{{ proxmox_ct_features }}"
         disk: "{{ proxmox_ct_disk }}"
+        memory: "{{ proxmox_ct_memory }}"
+        cores: "{{ proxmox_ct_cores }}"
         state: present
 
     - name: If needed, Gather new proxmox facts

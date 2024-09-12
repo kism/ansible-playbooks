@@ -19,7 +19,7 @@
         path: /etc/yum.repos.d/oracle-appstream-ol9.repo
         state: absent
 
-    - name: Enable CodeReady repo DNF
+    - name: Enable EPEL and appstream
       community.general.dnf_config_manager:
         name: '{{ item }}'
         state: enabled
