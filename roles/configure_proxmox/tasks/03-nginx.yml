@@ -38,7 +38,7 @@
   ansible.builtin.copy:
     src: files/fetch_pvessl_cert.sh
     dest: /opt/scripts/fetch_pvessl_cert.sh
-    mode: "0700"
+    mode: "0744"
 
 - name: Run the script now
   ansible.builtin.command:

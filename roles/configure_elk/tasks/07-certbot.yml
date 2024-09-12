@@ -36,7 +36,7 @@
   ansible.builtin.template:
     src: templates/certbot_elastic.sh.j2
     dest: /opt/scripts/certbot_elastic.sh
-    mode: "0755"
+    mode: "0754"
 
 - name: Run the certbot script
   ansible.builtin.command:

@@ -9,7 +9,7 @@
   ansible.builtin.file:
     path: /opt/scripts/pve-nag-buster
     state: directory
-    mode: "0600"
+    mode: "0755"
 
 - name: Check if pve-nag-buster has been used before (hook)
   ansible.builtin.stat:
