@@ -1,0 +1,14 @@
+---
+- name: Include tasks for folder creation
+  ansible.builtin.include_tasks: "01-folders.yml"
+
+- name: Include tasks for downloading and extracting jellyfin
+  ansible.builtin.include_tasks: "02-jellyfin.yml"
+
+- name: Include tasks for setting up jellyfin-ffmpeg
+  ansible.builtin.include_tasks: "03-jellyfin-ffmpeg.yml"
+
+- name: Start Jellyfin
+  ansible.builtin.service:
+    name: jellyfin
+    state: started

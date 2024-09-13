@@ -57,6 +57,11 @@ configure_users_users:
     uid: 1079
     shell: /usr/sbin/nologin
     groups:
+  jellyfin:
+    uid: 1078
+    shell: /usr/sbin/nologin
+    groups:
+      - content_public
 
 configure_users_groups:
   kgadmins:

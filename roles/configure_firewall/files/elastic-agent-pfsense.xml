@@ -4,5 +4,4 @@
     <description>For the the opnsense/pfsense firewall to send logs.
 </description>
     <port protocol="tcp" port="9001" />
-    <source address="10.42.0.1/32" /> <!-- pfsense -->
 </service>

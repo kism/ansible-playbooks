@@ -12,7 +12,7 @@
 
     # Purpose specific
     - configure_samba
-    - configure_jellyfin
+    - configure_jellyfin_adhoc
 
     # End
     - configure_telegraf

@@ -20,6 +20,7 @@ configure_server_packages_to_install:
   - rsync
   - at
   - unzip
+  - xz
 
 configure_server_packages_to_remove:
   - cockpit

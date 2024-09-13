@@ -1,0 +1,100 @@
+---
+- name: Set fact for the download URLs
+  ansible.builtin.set_fact:
+    jellyfin_server_download_url: |-
+      https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin_
+      {{- configure_jellyfin_adhoc_version -}}
+      -amd64.tar.xz
+
+- name: Print download url
+  run_once: true
+  ansible.builtin.debug:
+    var: jellyfin_server_download_url
+
+- name: Copy firewalld service file
+  ansible.builtin.copy:
+    src: files/firewalld/jellyfin.xml
+    dest: /usr/lib/firewalld/services/jellyfin.xml
+    mode: "0644"
+  notify:
+    - Reload firewalld
+
+- name: Copy environment file
+  ansible.builtin.template:
+    src: files/sysconfig/jellyfin
+    dest: /etc/sysconfig/jellyfin
+    mode: "0644"
+  notify: Restart Jellyfin
+
+- name: Copy systemd service
+  ansible.builtin.template:
+    src: files/systemd/jellyfin.service
+    dest: /usr/lib/systemd/system/jellyfin.service
+    mode: "0664"
+  notify: Restart Jellyfin
+
+- name: Enable jellyfin firewalld service
+  ansible.posix.firewalld:
+    service: jellyfin
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Reload firewalld
+
+- name: Remove the folder
+  ansible.builtin.file:
+    path: "/var/lib/jellyfin"
+    state: absent
+
+- name: Create folder
+  ansible.builtin.file:
+    path: "/var/lib/jellyfin"
+    state: directory
+    owner: jellyfin
+    group: jellyfin
+    mode: "0755"
+
+- name: Download and extract jellyfin
+  ansible.builtin.unarchive:
+    src: "{{ jellyfin_server_download_url }}"
+    dest: "/var/lib/jellyfin"
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+  notify: Restart Jellyfin
+
+- name: Symlink jellyfin to /usr/bin
+  ansible.builtin.file:
+    src: "/var/lib/jellyfin/jellyfin"
+    dest: /usr/bin/jellyfin
+    state: link
+    force: true
+    follow: false
+    owner: root
+    group: root
+  notify: Restart Jellyfin
+
+- name: Set Jellyfin permissions
+  ansible.builtin.file:
+    path: "/var/lib/jellyfin"
+    state: directory
+    recurse: true
+    owner: jellyfin
+    group: jellyfin
+
+- name: Allow Jellyfin through firewalld
+  ansible.posix.firewalld:
+    service: jellyfin
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Reload firewalld
+
+- name: Enable service
+  ansible.builtin.systemd_service:
+    service: jellyfin
+    daemon_reload: true
+    enabled: true
+  notify: Restart jellyfin

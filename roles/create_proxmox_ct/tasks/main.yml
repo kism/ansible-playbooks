@@ -12,8 +12,7 @@
       community.general.proxmox:
         node: "{{ proxmox_target_node }}"
         api_user: root@pam
-        api_token_id: "{{ secret_proxmox_token_id }}"
-        api_token_secret: "{{ secret_proxmox_token_secret }}"
+        api_password: "{{ secret_proxmox_password }}"
         api_host: "{{ proxmox_api_host }}"
         pubkey: "{{ lookup('ansible.builtin.url', ssh_keys_url, split_lines=False) }}"
         hostname: "{{ inventory_hostname | lower }}"
@@ -24,6 +23,7 @@
         disk: "{{ proxmox_ct_disk }}"
         memory: "{{ proxmox_ct_memory }}"
         cores: "{{ proxmox_ct_cores }}"
+        unprivileged: "{{ proxmox_ct_unprivileged }}"
         state: present
 
     - name: If needed, Gather new proxmox facts
@@ -55,8 +55,7 @@
         vmid: "{{ proxmox_facts.vmid }}"
         node: "{{ proxmox_target_node }}"
         api_user: root@pam
-        api_token_id: "{{ secret_proxmox_token_id }}"
-        api_token_secret: "{{ secret_proxmox_token_secret }}"
+        api_password: "{{ secret_proxmox_password }}"
         api_host: "{{ proxmox_api_host }}"
         onboot: true
         state: started

@@ -23,9 +23,9 @@
 - name: Remove cockpit from firewall config
   ansible.posix.firewalld:
     service: cockpit
-    zone: public
+    zone: "{{ item }}"
     permanent: true
-    state: absent
+    state: disabled
   loop:
     - public
     - trusted

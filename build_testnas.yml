@@ -14,7 +14,7 @@
     # - meta_onboard_server
 
     # Purpose specific
-    - configure_jellyfin_new
+    - configure_jellyfin_adhoc
 
     # End
     # - configure_telegraf

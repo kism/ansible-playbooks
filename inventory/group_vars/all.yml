@@ -6,8 +6,10 @@ proxmox_ct_features: []
 proxmox_ct_disk: "local-lvm:20"
 proxmox_ct_memory: 1024
 proxmox_ct_cores: 1
+proxmox_ct_unprivileged: true
 homelab_domain_external: kierangee.au
 homelab_domain_internal: kg.lan
 homelab_my_username: kism
+homelab_admin_group: kgadmins
 github_username: kism
 ssh_keys_url: https://github.com/{{ github_username }}.keys

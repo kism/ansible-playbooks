@@ -1,0 +1,28 @@
+---
+- name: Install fontconfig
+  ansible.builtin.package:
+    name:
+      - fontconfig
+      - libicu
+    state: present
+
+- name: Create folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: jellyfin
+    group: jellyfin
+    mode: "0755"
+  loop:
+    - "/usr/local/lib64/jellyfin"
+    - "/usr/share/jellyfin-web"
+    - "/var/cache/jellyfin"
+    - "/var/log/jellyfin"
+    - "/etc/jellyfin"
+    - "/opt/jellyfin-ffmpeg"
+
+- name: Add user accounts
+  ansible.builtin.user:
+    name: "jellyfin"
+    create_home: false
+    append: false

@@ -28,8 +28,7 @@
   run_once: true
   community.general.proxmox_vm_info:
     api_user: root@pam
-    api_token_id: "{{ secret_proxmox_token_id }}"
-    api_token_secret: "{{ secret_proxmox_token_secret }}"
+    api_password: "{{ secret_proxmox_password }}"
     api_host: "{{ proxmox_api_host }}"
   register: proxmox_guests
   # until: not proxmox_guests.failed # ???
@@ -67,8 +66,7 @@
   run_once: true
   community.general.proxmox:
     api_user: root@pam
-    api_token_id: "{{ secret_proxmox_token_id }}"
-    api_token_secret: "{{ secret_proxmox_token_secret }}"
+    api_password: "{{ secret_proxmox_password }}"
     api_host: "{{ proxmox_api_host }}"
     vmid: "{{ item.vmid }}"
     state: stopped
