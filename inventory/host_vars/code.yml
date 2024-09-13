@@ -2,5 +2,8 @@
 ansible_python_interpreter: /usr/bin/python3.9
 proxmox_target_node: pvematt
 proxmox_guest_mac_address: BC:24:11:2B:E0:24
+proxmox_ct_disk: "local-lvm:60"
+proxmox_ct_memory: 8192
+proxmox_ct_cores: 12
 proxmox_ct_features:
   - nesting
