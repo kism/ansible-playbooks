@@ -14,3 +14,8 @@
   ansible.builtin.systemd:
     name: firewalld
     state: reloaded
+
+- name: Restart docker-arrr
+  ansible.builtin.systemd_service:
+    name: docker-arrr
+    state: restarted

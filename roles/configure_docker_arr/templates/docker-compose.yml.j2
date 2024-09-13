@@ -107,7 +107,7 @@ services:
       - 9696:9696
     restart: unless-stopped
 
-
+  # Misc
   jellyseerr:
       image: fallenbagel/jellyseerr:latest
       container_name: jellyseerr
@@ -121,8 +121,14 @@ services:
           - {{ arr_settings_base_dir }}/jellyseerr/config:/app/config
       restart: unless-stopped
 
-  # Misc
-
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+    ports:
+      - 8191:8191
+    restart: unless-stopped
 
 networks:
   net-arr:

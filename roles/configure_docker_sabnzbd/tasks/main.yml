@@ -1,7 +1,7 @@
 ---
 - name: Create settings folder structure
   ansible.builtin.file:
-    path: "{{ settings_base_dir }}/sabnzbd/config"
+    path: "{{ arr_settings_base_dir }}/sabnzbd/config"
     state: directory
     mode: "0770"
     owner: qbtuser
@@ -11,7 +11,7 @@
   ansible.builtin.file:
     path: "{{ arr_downloads_base_dir }}/{{ item }}"
     state: directory
-    mode: "0770"
+    mode: "2770"
     owner: qbtuser
     group: qbtuser
   with_items:
@@ -22,14 +22,14 @@
 - name: Copy docker-compose.yml
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
-    dest: "{{ settings_base_dir }}/sabnzbd/docker-compose.yml"
+    dest: "{{ arr_settings_base_dir }}/sabnzbd/docker-compose.yml"
     mode: "0640"
     owner: root
     group: qbtuser
 
 - name: Pull images for docker-compose
   community.docker.docker_compose_v2_pull:
-    project_src: "{{ settings_base_dir }}/sabnzbd/"
+    project_src: "{{ arr_settings_base_dir }}/sabnzbd/"
 
 - name: Allow sabnzbd through firewalld
   ansible.posix.firewalld:

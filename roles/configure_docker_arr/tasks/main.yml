@@ -27,7 +27,7 @@
   ansible.builtin.file:
     path: "{{ arr_downloads_base_dir }}/{{ item }}"
     state: directory
-    mode: "0770"
+    mode: "2770"
     owner: qbtuser
     group: qbtuser
   with_items:
@@ -42,6 +42,8 @@
     mode: "0640"
     owner: root
     group: qbtuser
+  notify:
+    - Restart docker-arr
 
 - name: Pull images for docker-compose
   community.docker.docker_compose_v2_pull:
@@ -66,6 +68,8 @@
     src: templates/docker-arr.service.j2
     dest: /etc/systemd/system/docker-arr.service
     mode: "0644"
+  notify:
+    - Restart docker-arr
 
 - name: Prepare service
   ansible.builtin.systemd_service:

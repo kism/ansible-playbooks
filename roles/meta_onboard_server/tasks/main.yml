@@ -15,3 +15,4 @@
     - configure_firewall
     - configure_ca_trust
     - configure_motd
+  when: skip_onboard_server is not defined or not skip_onboard_server

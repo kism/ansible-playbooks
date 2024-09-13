@@ -18,7 +18,7 @@ services:
       - PGID=1086
       - TZ=Australia/Perth
     volumes:
-      - {{ configure_docker_qbittorrent_settings_base_dir }}/gluetun:/config
+      - {{ arr_settings_base_dir }}/gluetun:/config
     networks:
       net-gluetun:
     restart: always

@@ -1,7 +1,7 @@
 ---
 - name: Create settings folder structure
   ansible.builtin.file:
-    path: "{{ settings_base_dir }}/{{ item }}"
+    path: "{{ arr_settings_base_dir }}/{{ item }}"
     state: directory
     mode: "0770"
     owner: qbtuser
@@ -16,7 +16,7 @@
   ansible.builtin.file:
     path: "{{ arr_downloads_base_dir }}/torrent"
     state: directory
-    mode: "0770"
+    mode: "2770"
     owner: qbtuser
     group: qbtuser
 
