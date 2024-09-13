@@ -102,8 +102,6 @@ skip_ansible_lint
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
 * setup cert
 * workstation setup
-* firewall pve???
-* redo secrets
 * make repo for kierangee.au
 
 ## do ~~later~~ never
