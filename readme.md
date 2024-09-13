@@ -12,6 +12,9 @@ Running on macos
 Run
 `ansible-playbook build_ent.yml -i inventory.yml`
 
+Run without server onboarding block
+`ansible-playbook build_ent.yml -i inventory.yml --extra-vars "skip_onboard_server=true"`
+
 ## Vault
 
 No need for `--vault-password-file=/tmp/ansiblevaultpassword` since its in config

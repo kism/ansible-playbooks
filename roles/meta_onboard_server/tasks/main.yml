@@ -16,3 +16,8 @@
     - configure_ca_trust
     - configure_motd
   when: skip_onboard_server is not defined or not skip_onboard_server
+
+- name: Are we skipping onboard server roles?
+  ansible.builtin.debug:
+    msg: "Skipping onboard server roles wahoo!"
+  when: skip_onboard_server is defined and skip_onboard_server
