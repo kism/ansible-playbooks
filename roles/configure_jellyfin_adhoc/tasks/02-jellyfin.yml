@@ -11,13 +11,13 @@
   ansible.builtin.debug:
     var: jellyfin_server_download_url
 
-- name: Copy firewalld service file
-  ansible.builtin.copy:
-    src: files/firewalld/jellyfin.xml
-    dest: /usr/lib/firewalld/services/jellyfin.xml
-    mode: "0644"
-  notify:
-    - Reload firewalld
+# Systemd
+- name: Copy systemd service
+  ansible.builtin.template:
+    src: files/systemd/jellyfin.service
+    dest: /usr/lib/systemd/system/jellyfin.service
+    mode: "0664"
+  notify: Restart Jellyfin
 
 - name: Copy environment file
   ansible.builtin.template:
@@ -26,14 +26,23 @@
     mode: "0644"
   notify: Restart Jellyfin
 
-- name: Copy systemd service
-  ansible.builtin.template:
-    src: files/systemd/jellyfin.service
-    dest: /usr/lib/systemd/system/jellyfin.service
-    mode: "0664"
-  notify: Restart Jellyfin
+- name: Enable service
+  ansible.builtin.systemd_service:
+    service: jellyfin
+    daemon_reload: true
+    enabled: true
+  notify: Restart jellyfin
 
-- name: Enable jellyfin firewalld service
+# Firewalld
+- name: Copy firewalld service file
+  ansible.builtin.copy:
+    src: files/firewalld/jellyfin.xml
+    dest: /usr/lib/firewalld/services/jellyfin.xml
+    mode: "0644"
+  notify:
+    - Reload firewalld
+
+- name: Allow Jellyfin through firewalld
   ansible.posix.firewalld:
     service: jellyfin
     zone: public
@@ -42,6 +51,7 @@
   notify:
     - Reload firewalld
 
+# Jellyfin
 - name: Remove the folder
   ansible.builtin.file:
     path: "/var/lib/jellyfin"
@@ -82,19 +92,3 @@
     recurse: true
     owner: jellyfin
     group: jellyfin
-
-- name: Allow Jellyfin through firewalld
-  ansible.posix.firewalld:
-    service: jellyfin
-    zone: public
-    permanent: true
-    state: enabled
-  notify:
-    - Reload firewalld
-
-- name: Enable service
-  ansible.builtin.systemd_service:
-    service: jellyfin
-    daemon_reload: true
-    enabled: true
-  notify: Restart jellyfin
