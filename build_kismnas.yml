@@ -11,9 +11,9 @@
     - meta_onboard_server
 
     # Purpose specific
-    - configure_samba
+    # - configure_samba
     - configure_jellyfin_adhoc
 
     # End
-    - configure_telegraf
+    # - configure_telegraf
     - maintenance_print_reminders

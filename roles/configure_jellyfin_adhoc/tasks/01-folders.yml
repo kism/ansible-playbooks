@@ -12,8 +12,10 @@
     state: directory
     owner: jellyfin
     group: jellyfin
+    recurse: true
     mode: "0755"
   loop:
+    - "/var/lib/jellyfin"
     - "/usr/local/lib64/jellyfin"
     - "/usr/share/jellyfin-web"
     - "/var/cache/jellyfin"

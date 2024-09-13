@@ -11,6 +11,18 @@
   ansible.builtin.debug:
     var: jellyfin_server_download_url
 
+# Firewalld
+- name: Copy firewalld service file
+  ansible.builtin.copy:
+    src: files/firewalld/jellyfin.xml
+    dest: /usr/lib/firewalld/services/jellyfin.xml
+    mode: "0644"
+  notify:
+    - Reload firewalld
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
 # Systemd
 - name: Copy systemd service
   ansible.builtin.template:
@@ -26,21 +38,12 @@
     mode: "0644"
   notify: Restart Jellyfin
 
-- name: Enable service
+- name: Enable jellyfin service
   ansible.builtin.systemd_service:
     service: jellyfin
     daemon_reload: true
     enabled: true
-  notify: Restart jellyfin
-
-# Firewalld
-- name: Copy firewalld service file
-  ansible.builtin.copy:
-    src: files/firewalld/jellyfin.xml
-    dest: /usr/lib/firewalld/services/jellyfin.xml
-    mode: "0644"
-  notify:
-    - Reload firewalld
+  notify: Restart Jellyfin
 
 - name: Allow Jellyfin through firewalld
   ansible.posix.firewalld:
@@ -54,12 +57,12 @@
 # Jellyfin
 - name: Remove the folder
   ansible.builtin.file:
-    path: "/var/lib/jellyfin"
+    path: "/usr/lib64/jellyfin"
     state: absent
 
 - name: Create folder
   ansible.builtin.file:
-    path: "/var/lib/jellyfin"
+    path: "/usr/lib64/jellyfin"
     state: directory
     owner: jellyfin
     group: jellyfin
@@ -68,7 +71,7 @@
 - name: Download and extract jellyfin
   ansible.builtin.unarchive:
     src: "{{ jellyfin_server_download_url }}"
-    dest: "/var/lib/jellyfin"
+    dest: "/usr/lib64/jellyfin"
     remote_src: true
     extra_opts:
       - --strip-components=1
@@ -76,7 +79,7 @@
 
 - name: Symlink jellyfin to /usr/bin
   ansible.builtin.file:
-    src: "/var/lib/jellyfin/jellyfin"
+    src: "/usr/lib64/jellyfin/jellyfin"
     dest: /usr/bin/jellyfin
     state: link
     force: true
@@ -87,7 +90,7 @@
 
 - name: Set Jellyfin permissions
   ansible.builtin.file:
-    path: "/var/lib/jellyfin"
+    path: "/usr/lib64/jellyfin"
     state: directory
     recurse: true
     owner: jellyfin
