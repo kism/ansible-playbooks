@@ -1,5 +1,5 @@
 ---
-- name: Include server onboarding roles...
+- name: Include workstation onboarding roles...
   ansible.builtin.include_role:
     name: "{{ item_role }}"
   loop_control:
@@ -7,8 +7,8 @@
   loop:
     - configure_package_manager
     - uninstall_snap
-    - configure_packages_server
-    - configure_users
+    - configure_packages_workstation
+    - configure_dev_environment
     - configure_directories
     - configure_sshd
     - configure_locale
@@ -19,5 +19,5 @@
 
 - name: Are we skipping onboard roles?
   ansible.builtin.debug:
-    msg: "Skipping onboard server roles wahoo!"
+    msg: "Skipping onboard roles wahoo!"
   when: skip_onboard is defined and skip_onboard

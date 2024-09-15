@@ -13,7 +13,7 @@ Run
 `ansible-playbook build_ent.yml -i inventory.yml`
 
 Run without server onboarding block
-`ansible-playbook build_ent.yml -i inventory.yml --extra-vars "skip_onboard_server=true"`
+`ansible-playbook build_ent.yml -i inventory.yml --extra-vars "skip_onboard=true"`
 
 ## Vault
 

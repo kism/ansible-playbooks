@@ -1,0 +1,6 @@
+---
+- name: Copy the kgadmins root ca certificate rule Manjaro
+  ansible.builtin.copy:
+    src: files/kglan_root.cer
+    dest: /etc/ca-certificates/trust-source/anchors/kglan_root.crt
+    mode: "0444"

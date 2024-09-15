@@ -1,0 +1,9 @@
+---
+# - name: Install telegraf
+#   ansible.builtin.package:
+#     name: telegraf
+#     state: present
+
+- name: Add to reminders
+  ansible.builtin.set_fact:
+    reminder_list: "{{ reminder_list + ['telegraf install not done for archlinux'] }}"

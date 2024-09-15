@@ -1,0 +1,34 @@
+---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  register: package_facts
+
+- name: Remove packages that I want to avoid
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ configure_packages_server_to_remove }}"
+
+- name: Install useful apps
+  ansible.builtin.apt:
+    install_recommends: false
+    pkg: "{{ item }}"
+    state: present
+  failed_when: false # Happy for this to partly fail, some systems can't get all of these
+  loop: "{{ configure_packages_server_to_install }}"
+
+- name: Install useful apps apt specific
+  ansible.builtin.apt:
+    install_recommends: false
+    pkg:
+      - ca-certificates
+      - apt-transport-https
+    state: present
+
+- name: Install packages for dnf
+  ansible.builtin.dnf:
+    name:
+      - gnupg2
+      - pipx
+    state: present

@@ -5,6 +5,7 @@
       - langpacks-en.noarch
       - langpacks-core-en.noarch
     state: installed
+  when: ansible_pkg_mgr == 'dnf'
 
 - name: Ensure a locale exists
   community.general.locale_gen:

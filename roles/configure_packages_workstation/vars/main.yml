@@ -1,0 +1,20 @@
+---
+configure_packages_workstation_to_install:
+  - file
+  - git
+  - htop
+  - iotop
+  - ncdu
+  - neofetch
+  - nload
+  - tar
+  - tmux
+  - tree
+  - vim
+  - wget
+  - which
+  - cmatrix
+  - rsync
+  - at
+  - unzip
+  - xz

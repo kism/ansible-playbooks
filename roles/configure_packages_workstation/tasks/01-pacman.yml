@@ -1,0 +1,12 @@
+---
+- name: Install packages for pacman
+  community.general.pacman:
+    name: "{{ configure_packages_workstation_to_install }}"
+    state: present
+
+- name: Install packages for pacman
+  community.general.pacman:
+    name:
+      - gnupg
+      - python-pipx
+    state: present

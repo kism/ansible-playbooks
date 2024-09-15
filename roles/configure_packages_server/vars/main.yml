@@ -1,5 +1,5 @@
 ---
-configure_server_packages_to_install:
+configure_packages_server_to_install:
   - file
   - git
   - gpg
@@ -16,13 +16,13 @@ configure_server_packages_to_install:
   - gnupg2
   - pipx
   - which
-  - cmartix
+  - cmatrix
   - rsync
   - at
   - unzip
   - xz
 
-configure_server_packages_to_remove:
+configure_packages_server_to_remove:
   - cockpit
   - cups
   - libwayland-client

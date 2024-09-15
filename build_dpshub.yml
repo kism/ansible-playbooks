@@ -1,6 +1,6 @@
 ---
 - name: Setup code vscode server
-  hosts: code
+  hosts: dpshub
   gather_facts: false
   become: true
   roles:
@@ -10,9 +10,6 @@
 
     # Onboard Server
     - meta_onboard_workstation
-
-    # Purpose Specific
-    - configure_dev_environment
 
     # End
     - configure_telegraf

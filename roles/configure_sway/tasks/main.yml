@@ -1,0 +1,16 @@
+---
+- name: Install sway and friends
+  ansible.builtin.package:
+    name:
+      - gnu-free-fonts
+      - sway
+      - swaylock
+      - swayidle
+      - swaybg
+      # - waybar
+      - mako
+      - foot
+      - firefox
+      - pipewire
+      - pipewire-jack
+      - mpv
