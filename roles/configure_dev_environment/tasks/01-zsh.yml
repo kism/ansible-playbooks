@@ -1,5 +1,5 @@
 ---
-- name: Install zsh, modern python
+- name: Install zsh
   ansible.builtin.package:
     name: zsh
     state: present

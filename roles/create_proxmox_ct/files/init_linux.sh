@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Setup a VM for ansible
-# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/master/init/init_linux.sh | bash
+# curl --silent https://raw.githubusercontent.com/kism/ansible-playbooks/main/roles/create_proxmox_ct/files/init_linux.sh | bash
 
 # All users and groups defined in https://github.com/kism/ansible-playbooks/blob/main/roles/configure_users/vars/main.yml
 # This script onboards the a user manually for onboarding
