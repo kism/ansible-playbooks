@@ -18,3 +18,5 @@ configure_packages_workstation_to_install:
   - at
   - unzip
   - xz
+  - ffmpeg
+  - lsix
