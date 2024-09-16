@@ -27,6 +27,7 @@ configure_sway_packages_pacman:
   - pipewire-pulse
   - wireplumber
   - mpv
+  - nwg-look
 
 configure_sway_packages_aur:
   - thunar-shares-plugin
@@ -34,6 +35,8 @@ configure_sway_packages_aur:
   - otf-font-awesome-5
   - microsoft-edge-stable-bin
   - visual-studio-code-bin
+  - numix-icon-theme-git
+  - numix-gtk-theme-git
 
 configure_sway_reminders_list:
   - manual install for yay
@@ -44,3 +47,4 @@ configure_sway_reminders_list:
   - onboarding (btrfs-progs, sudo)
   - set dark theme
   - mako config
+  - figure out lxappearance
