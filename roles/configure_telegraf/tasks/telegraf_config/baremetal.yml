@@ -13,12 +13,22 @@
         - Restart telegraf
 
     - name: Install packages
-      ansible.builtin.apt:
-        install_recommends: false
+      ansible.builtin.package:
         pkg:
           - nvme-cli
           - lm-sensors
+          - smartmontools
         state: present
+      when: ansible_distribution != "Archlinux"
+
+    - name: Install packages
+      ansible.builtin.package:
+        pkg:
+          - nvme-cli
+          - lm_sensors
+          - smartmontools
+        state: present
+      when: ansible_distribution == "Archlinux"
 
     - name: Copy the telegraf sudoers rule baremetal hosts
       ansible.builtin.copy:

@@ -3,7 +3,7 @@
 #   ansible.builtin.meta: flush_handlers
 
 # Might? need to remove unused elements from the list before this TODO
-- name: Print reminders for roles, built on 'reminder_list' first defined in inventory/group_vars/all.yml
+- name: ⚠️ Print reminders for roles, built on 'reminder_list' first defined in inventory/group_vars/all.yml
   ansible.builtin.debug:
-    msg: ⚠️{{ reminder_list }}
+    var: reminder_list
   when: reminder_list | length > 0

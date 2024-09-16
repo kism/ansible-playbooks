@@ -1,9 +1,16 @@
 ---
-# - name: Install telegraf
-#   ansible.builtin.package:
-#     name: telegraf
-#     state: present
+- name: Install telegraf
+  become: true
+  become_method: ansible.builtin.sudo
+  become_user: "{{ homelab_my_username }}"
+  kewlfft.aur.aur:
+    name: "telegraf"
+    use: yay
+    state: present
 
-- name: Add to reminders
-  ansible.builtin.set_fact:
-    reminder_list: "{{ reminder_list + ['telegraf install not done for archlinux'] }}"
+- name: Add telegraf user to input group
+  ansible.builtin.user:
+    name: telegraf
+    groups: input
+    append: true
+    state: present

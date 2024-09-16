@@ -6,13 +6,7 @@
   ansible.builtin.package:
     name: telegraf
     state: present
-
-- name: Enable telegraf service
-  ansible.builtin.service:
-    name: telegraf
-    enabled: true
-  notify:
-    - Restart telegraf
+  when: ansible_distribution != "Archlinux"
 
 - name: Include tasks, telegraf configs
   ansible.builtin.include_tasks: "{{ config_playbook }}"
@@ -20,3 +14,9 @@
     - "tasks/telegraf_config/*"
   loop_control:
     loop_var: config_playbook
+
+- name: Enable telegraf service
+  ansible.builtin.service:
+    name: telegraf
+    enabled: true
+    state: started

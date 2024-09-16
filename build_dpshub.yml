@@ -8,8 +8,9 @@
     - meta_include_secrets
     - maintenance_gather_facts
 
-    # Onboard Server
+    # Onboard Workstation
     - meta_onboard_workstation
+    - configure_sway
 
     # End
     - configure_telegraf

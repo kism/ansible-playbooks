@@ -8,3 +8,6 @@ collections:
 
   - name: community.docker
     source: https://galaxy.ansible.com
+
+  - name: kewlfft.aur
+    source: https://galaxy.ansible.com

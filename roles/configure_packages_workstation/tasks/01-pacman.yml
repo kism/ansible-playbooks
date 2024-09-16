@@ -9,4 +9,6 @@
     name:
       - gnupg
       - python-pipx
+      - usbutils
+      - pciutils
     state: present
