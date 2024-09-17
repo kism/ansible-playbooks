@@ -21,6 +21,7 @@ configure_packages_server_to_install:
   - at
   - unzip
   - xz
+  - stow
 
 configure_packages_server_to_remove:
   - cockpit

@@ -15,6 +15,7 @@ configure_sway_packages_pacman:
   - mako
   - wdisplays
   - rofi-wayland
+  - nwg-look
   # Applications
   - foot
   - firefox
@@ -27,7 +28,6 @@ configure_sway_packages_pacman:
   - pipewire-pulse
   - wireplumber
   - mpv
-  - nwg-look
 
 configure_sway_packages_aur:
   - thunar-shares-plugin
@@ -47,4 +47,3 @@ configure_sway_reminders_list:
   - onboarding (btrfs-progs, sudo)
   - set dark theme
   - mako config
-  - figure out lxappearance

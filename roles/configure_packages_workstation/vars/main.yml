@@ -19,4 +19,9 @@ configure_packages_workstation_to_install:
   - unzip
   - xz
   - ffmpeg
+  - stow
+  # Graphical applications
+  - firefox
+  - neovim
+  - foot
   - lsix
