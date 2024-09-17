@@ -1,8 +1,8 @@
-server {
-    return 301 https://{{ inventory_hostname }}.{{ homelab_domain_internal }}:8006$request_uri;
-    server_name {{ inventory_hostname }}.{{ homelab_domain_internal }};
-    listen 80;
-}
+#server {
+#    return 301 https://{{ inventory_hostname }}.{{ homelab_domain_internal }}:8006$request_uri;
+#    server_name {{ inventory_hostname }}.{{ homelab_domain_internal }};
+#    listen 80;
+#}
 
 server {
     return 301 https://{{ inventory_hostname }}.{{ homelab_domain_internal }}:8006$request_uri;
