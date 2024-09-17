@@ -1,0 +1,11 @@
+---
+# https://wiki.archlinux.org/title/AMDGPU
+
+- name: Install amdgpu driver
+  ansible.builtin.package:
+    name:
+      - mesa
+      - vulkan-radeon
+      - libva-mesa-driver
+      - mesa-vdpau
+    state: present

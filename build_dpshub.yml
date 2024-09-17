@@ -11,6 +11,7 @@
     # Onboard Workstation
     - meta_onboard_workstation
     - configure_sway
+    - configure_amdgpu_driver
 
     # End
     - configure_telegraf
