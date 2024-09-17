@@ -106,6 +106,7 @@ skip_ansible_lint
 * setup cert
 * workstation setup
 * make repo for kierangee.au
+* better server packages install
 
 ## do ~~later~~ never
 
