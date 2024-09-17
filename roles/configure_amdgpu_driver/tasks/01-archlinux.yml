@@ -8,4 +8,7 @@
       - vulkan-radeon
       - libva-mesa-driver
       - mesa-vdpau
+      - rocm-hip-sdk
+      - rocm-opencl-sdk
+      - rocm-language-runtime
     state: present
