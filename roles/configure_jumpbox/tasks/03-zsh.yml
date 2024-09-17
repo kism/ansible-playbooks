@@ -44,6 +44,12 @@
         cmd: zsh -c ". {{ getent_passwd[homelab_my_username][4] }}/.zshrc; antigen update; antigen reset"
       changed_when: false # Too hard to tell
 
+    - name: Add reminder in bashrc
+      ansible.builtin.lineinfile:
+        path: "{{ getent_passwd[homelab_my_username][4] }}/.bashrc"
+        line: "echo 'run: sudo usermod --shell /bin/zsh kism'"
+        insertafter: EOF
+
 - name: Change my shell to zsh
   ansible.builtin.user:
     name: "{{ homelab_my_username }}"
