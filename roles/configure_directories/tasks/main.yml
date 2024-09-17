@@ -21,3 +21,13 @@
   ansible.builtin.file:
     path: /root/anaconda-ks.cfg
     state: absent
+
+- name: Disable services that fail for lxc containers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  when: ansible_facts['virtualization_role'] == 'guest' and ansible_facts['virtualization_type'] == 'lxc'
+  with_items:
+    - sys-kernel-config.mount
+    - sys-kernel-debug.mount

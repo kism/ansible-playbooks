@@ -21,7 +21,7 @@
       Requires=remote-fs-pre.target
 
       [Mount]
-      What={{ item.value }}:/srv/{{ item.key }}
+      What={{ item.value.host }}:{{ item.value.share }}
       Where=/mnt/{{ item.key }}
       Type=nfs
       TimeoutSec=5s
@@ -32,6 +32,9 @@
     mode: "0644"
   with_dict: "{{ nfs_client_mounts }}"
   notify: Reload systemd
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Start mount services
   ansible.builtin.systemd:

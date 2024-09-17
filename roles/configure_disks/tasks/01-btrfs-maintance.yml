@@ -1,7 +1,9 @@
 ---
 - name: Install the btrfsmaintenance package
   ansible.builtin.package:
-    name: btrfsmaintenance
+    name:
+      - btrfsmaintenance
+      - btrfs-progs
     state: present
 
 - name: Set config path RHEL

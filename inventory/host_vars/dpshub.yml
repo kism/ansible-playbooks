@@ -1,1 +1,29 @@
 ---
+nfs_client_mounts:
+  Amarant:
+    host: pvematt.kg.lan
+    share: /srv/Amarant
+  Freya:
+    host: pvematt.kg.lan
+    share: /srv/Freya
+  Garnet:
+    host: pvematt.kg.lan
+    share: /srv/Garnet
+  Vivi:
+    host: pvematt.kg.lan
+    share: /srv/Vivi
+  Beatrix:
+    host: pvewill.kg.lan
+    share: /srv/Beatrix
+  Steiner:
+    host: pvewill.kg.lan
+    share: /srv/Steiner
+  Quina:
+    host: pvewill.kg.lan
+    share: /srv/Quina
+  Marcus:
+    host: pvewill.kg.lan
+    share: /srv/Marcus
+  Blank:
+    host: pvewill.kg.lan
+    share: /srv/Blank

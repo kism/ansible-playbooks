@@ -24,7 +24,7 @@
         state: mounted
       loop: "{{ disks_ext4 }}"
 
-- name: Block for btrfs
+- name: Block for mounting btrfs
   when: disks_btrfs is defined
   block:
     - name: Add directories for HDDs (btrfs list)
@@ -43,8 +43,14 @@
         state: mounted
       with_dict: "{{ disks_btrfs }}"
 
-    - name: Include tasks for btrfs-maintanance
-      ansible.builtin.include_tasks: 01-btrfs-maintance.yml
+- name: Check if there is at least one btrfs disk from facts
+  ansible.builtin.set_fact:
+    disks_btrfs_exist: "{{ ansible_facts['mounts'] | selectattr('fstype', 'equalto', 'btrfs') | map(attribute='device') | list }}"
+  when: disks_btrfs is not defined and ansible_facts['virtualization_role'] == "host"
+
+- name: Include tasks for btrfs packages and btrfs-maintanance
+  ansible.builtin.include_tasks: 01-btrfs-maintance.yml
+  when: disks_btrfs is defined or disks_btrfs_exist | length > 0
 
 - name: Copy perms script
   ansible.builtin.copy:
