@@ -1,11 +1,17 @@
 ---
 - name: Configure Docker repo APT
-  ansible.builtin.include_tasks: "01-apt.yml"
-  when: ansible_pkg_mgr == 'apt'
+  ansible.builtin.include_tasks: "01-{{ ansible_pkg_mgr }}.yml"
 
-- name: Configure Docker repo DNF
-  ansible.builtin.include_tasks: "01-dnf.yml"
-  when: ansible_pkg_mgr == 'yum' or ansible_pkg_mgr == 'dnf'
+# - name: Install packages required for ansible docker collection
+#   ansible.builtin.package:
+#     pkg:
+#       - python3-requests
+#     state: present
+#   notify: Restart docker service
 
-- name: Install packages
-  ansible.builtin.include_tasks: "02-install.yml"
+- name: Start docker service
+  ansible.builtin.systemd_service:
+    service: docker
+    enabled: true
+    state: started
+    daemon_reload: true

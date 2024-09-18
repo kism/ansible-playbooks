@@ -16,3 +16,14 @@
 - name: Update DNF Cache
   ansible.builtin.dnf:
     update_cache: true
+
+- name: Install docker packages
+  ansible.builtin.package:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+  notify: Restart docker service

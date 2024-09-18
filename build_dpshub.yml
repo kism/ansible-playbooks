@@ -9,9 +9,10 @@
     - maintenance_gather_facts
 
     # Onboard Workstation
-    - meta_onboard_workstation
-    - configure_sway
+    # - meta_onboard_workstation
+    # - configure_sway
     - configure_amdgpu_driver
+    # - configure_docker
 
     # End
     - configure_telegraf

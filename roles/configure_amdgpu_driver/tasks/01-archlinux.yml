@@ -11,4 +11,15 @@
       - rocm-hip-sdk
       - rocm-opencl-sdk
       - rocm-language-runtime
+      - rocm-opencl-runtime
     state: present
+
+- name: Symlink rocm-smi to /usr/local/bin
+  ansible.builtin.file:
+    src: /opt/rocm/bin/rocm-smi
+    dest: /usr/local/bin/rocm-smi
+    state: link
+
+- name: Add reminder for amd config tool
+  ansible.builtin.set_fact:
+    reminder_list: "{{ reminder_list + ['https://github.com/ilya-zlobintsev/lact'] }}"

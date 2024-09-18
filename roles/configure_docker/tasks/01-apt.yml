@@ -41,3 +41,14 @@
     filename: docker
     state: present
   when: ansible_architecture == "aarch64"
+
+- name: Install docker packages
+  ansible.builtin.package:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+  notify: Restart docker service

@@ -1,0 +1,17 @@
+---
+- name: Check if rocm command is installed
+  ansible.builtin.command:
+    cmd: which rocm-smi
+  register: rocm_smi_installed
+  failed_when: false # Just checking
+  changed_when: false # Just checking
+
+- name: Copy over config if rocm-smi is installed
+  ansible.builtin.copy:
+    src: telegraf.d/20-amdgpu.conf
+    dest: /etc/telegraf/telegraf.d/20-amdgpu.conf
+    owner: root
+    group: root
+    mode: "0644"
+  when: rocm_smi_installed.rc == 0
+  notify: Restart telegraf
