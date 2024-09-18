@@ -1,0 +1,15 @@
+---
+- name: Create folder for tabby
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /opt/tabby
+    - /opt/tabby/data
+
+- name: Copy docker-compose.yml
+  ansible.builtin.copy:
+    src: files/docker-compose-rocm.yml
+    dest: /opt/tabby/docker-compose-rocm.yml
+    mode: "0644"

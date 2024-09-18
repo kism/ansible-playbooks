@@ -13,6 +13,7 @@
     - configure_sway
     - configure_amdgpu_driver
     - configure_docker
+    - configure_llama_tabby_docker
 
     # End
     - configure_telegraf

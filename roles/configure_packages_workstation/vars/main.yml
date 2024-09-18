@@ -26,6 +26,3 @@ configure_packages_workstation_to_install:
   - neovim
   - foot
   - lsix
-
-# Get list of actually installed packages:
-# comm -23 <(pacman -Qqt | sort) <(pacman -Qqg base | sort)

@@ -46,7 +46,6 @@
         mode: "0660"
       changed_when: false # Grabbing information to store locally
 
-
     - name: Prepend to make valid yml file
       ansible.builtin.lineinfile:
         path: "{{ maintenance_gather_facts_facts_debug_file }}"
@@ -92,4 +91,28 @@
         path: "{{ maintenance_gather_facts_vars_debug_file }}"
         insertbefore: BOF
         line: "---"
+      changed_when: false # Grabbing information to store locally
+
+- name: Run pacman audit for pacman
+  when: ansible_pkg_mgr == 'pacman'
+  block:
+    - name: Run fun audit command
+      ansible.builtin.shell:
+        cmd: |-
+          set -o pipefail
+          comm -23 <(pacman -Qqt | sort) <(pacman -Qqg base | sort)
+      changed_when: false # Just getting info
+      register: top_level_pacman_packages
+
+    - name: Print top level pacman packages
+      ansible.builtin.debug:
+        var: top_level_pacman_packages.stdout_lines
+
+    - name: Copy stdout to file
+      delegate_to: localhost
+      become: false
+      ansible.builtin.copy:
+        content: "{{ top_level_pacman_packages.stdout }}"
+        dest: "{{ maintenance_gather_facts_pacman_file }}"
+        mode: "0660"
       changed_when: false # Grabbing information to store locally
