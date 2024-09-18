@@ -17,11 +17,13 @@ configure_sway_packages_pacman:
   - rofi-wayland
   - nwg-look
   # Applications
-  - foot
+  - foot # Terminal
+  - imv # Image viewer
   - firefox
   - neovim
   - vivaldi
   - thunar
+  - ristretto
   # Audio and video
   - pipewire
   - pipewire-jack
@@ -43,3 +45,5 @@ configure_sway_reminders_list:
   - dotfiles install still manual
   - onboarding (btrfs-progs, sudo)
   - set dark theme
+  - imv config
+  - theme for pwavucontrol
