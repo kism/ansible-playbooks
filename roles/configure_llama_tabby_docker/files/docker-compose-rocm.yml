@@ -18,4 +18,4 @@ services:
           HSA_OVERRIDE_GFX_VERSION: 10.3.0
         # command: serve --device rocm --model StarCoder2-3B
         # command: serve --device rocm --model StarCoder2-7B --chat-model CodeGemma-7B-Instruct
-        command: serve --device rocm --model CodeLlama-13B --chat-model CodeGemma-7B-Instruct
+        command: serve --device rocm --model CodeLlama-7B
