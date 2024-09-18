@@ -1,10 +1,27 @@
 ---
-- name: Install the btrfsmaintenance package
+- name: Install the btrfs packages
   ansible.builtin.package:
     name:
       - btrfsmaintenance
       - btrfs-progs
     state: present
+  when: ansible_pkg_mgr != 'pacman'
+
+- name: Install the btrfs-progs pacman
+  ansible.builtin.package:
+    name: btrfs-progs
+    state: present
+  when: ansible_pkg_mgr == 'pacman'
+
+- name: Install btrfsmaintenance pacman
+  become: true
+  become_method: ansible.builtin.sudo
+  become_user: "{{ homelab_my_username }}"
+  kewlfft.aur.aur:
+    name: btrfsmaintenance
+    use: yay
+    state: present
+  when: ansible_pkg_mgr == 'pacman'
 
 - name: Set config path RHEL
   ansible.builtin.set_fact:
@@ -14,7 +31,7 @@
 - name: Set config path APT
   ansible.builtin.set_fact:
     btrfsmaintenance_config_path: /etc/default/btrfsmaintenance
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'pacman'
 
 - name: Copy config for BTRFS
   ansible.builtin.copy:

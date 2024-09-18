@@ -51,3 +51,12 @@
     group: root
     mode: "0755"
   with_dict: "{{ nfs_client_mounts }}"
+
+- name: Ensure everyone can get to /mnt
+- name: Set permissions post-mount
+  ansible.builtin.file:
+    path: /mnt
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"

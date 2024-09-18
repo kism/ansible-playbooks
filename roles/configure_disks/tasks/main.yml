@@ -54,6 +54,6 @@
 
 - name: Copy perms script
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/perms.sh
+    src: files/hosts/{{ inventory_hostname }}/perms.sh
     dest: /root/perms.sh
     mode: "0700"

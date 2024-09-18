@@ -47,3 +47,4 @@ configure_sway_reminders_list:
   - set dark theme
   - imv config
   - theme for pwavucontrol
+  - fix my uid
