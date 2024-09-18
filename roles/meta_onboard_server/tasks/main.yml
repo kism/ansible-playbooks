@@ -19,5 +19,12 @@
 
 - name: Are we skipping onboard roles?
   ansible.builtin.debug:
-    msg: "Skipping onboard server roles wahoo!"
+    msg: |-
+      Skipping onboard server roles!
+      ░██╗░░░░░░░██╗░█████╗░██╗░░██╗░█████╗░░█████╗░
+      ░██║░░██╗░░██║██╔══██╗██║░░██║██╔══██╗██╔══██╗
+      ░╚██╗████╗██╔╝███████║███████║██║░░██║██║░░██║
+      ░░████╔═████║░██╔══██║██╔══██║██║░░██║██║░░██║
+      ░░╚██╔╝░╚██╔╝░██║░░██║██║░░██║╚█████╔╝╚█████╔╝
+      ░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚════╝░
   when: skip_onboard is defined and skip_onboard
