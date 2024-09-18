@@ -97,10 +97,8 @@
   when: ansible_pkg_mgr == 'pacman'
   block:
     - name: Run fun audit command
-      ansible.builtin.shell:
-        cmd: |-
-          set -o pipefail
-          comm -23 <(pacman -Qqt | sort) <(pacman -Qqg base | sort)
+      ansible.builtin.command:
+        cmd: pacman -Qeq # pacman -Qqt
       changed_when: false # Just getting info
       register: top_level_pacman_packages
 

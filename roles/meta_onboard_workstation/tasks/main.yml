@@ -1,8 +1,4 @@
 ---
-- name: Debug print skip_onboard
-  ansible.builtin.debug:
-    var: skip_onboard
-
 - name: Include workstation onboarding roles...
   ansible.builtin.include_role:
     name: "{{ item_role }}"

@@ -100,12 +100,12 @@ skip_ansible_lint
         <https://docs.opnsense.org/development/api/core/kea.html>
   * Proxmox grab lxc <https://images.linuxcontainers.org/>
 * Unmount, chmod, remount disks to ensure perms
-* GNU stow for dotfiles
+* ~~GNU stow for dotfiles~~
 * github gpg key
 * get rid of dotfiles repo, setup for workstation one role plus meta role for non-servers
 * setup cert
 * workstation setup
-* make repo for kierangee.au
+* ~~make repo for kierangee.au~~
 * better server packages install
 
 ## do ~~later~~ never

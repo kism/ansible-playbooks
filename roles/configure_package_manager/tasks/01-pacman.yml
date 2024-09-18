@@ -23,3 +23,42 @@
       community.general.pacman:
         name: archlinux-keyring
         state: latest
+
+- name: Prevent makepkg from creating debug packages
+  ansible.builtin.lineinfile:
+    path: /etc/makepkg.conf
+    regexp: "^OPTIONS=.*"
+    line: "OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug lto)"
+    state: present
+
+- name: Block to install yay if it doesn't exist
+  block:
+    - name: Check if yay is installed
+      community.general.pacman:
+        name: yay
+        state: present
+  rescue:
+    - name: Install tools needed to install yay
+      community.general.pacman:
+        name:
+          - git
+          - base-devel
+        state: present
+
+    - name: Clone yay repo
+      become: true
+      become_user: "{{ homelab_my_username }}"
+      ansible.builtin.git:
+        repo: https://aur.archlinux.org/yay.git
+        dest: /tmp/yay
+        single_branch: true
+        version: master
+      changed_when: false # This is in temp
+
+    - name: Run makepackage
+      become: true
+      become_user: "{{ homelab_my_username }}"
+      ansible.builtin.command:
+        cmd: makepkg -Ccsi --force --noconfirm
+        chdir: /tmp/yay
+        creates: /usr/bin/yay

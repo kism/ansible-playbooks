@@ -38,10 +38,8 @@ configure_sway_packages_aur:
   - numix-gtk-theme-git
 
 configure_sway_reminders_list:
-  - manual install for yay
   - add user to audio and video groups
   - thunar shares don't work
   - dotfiles install still manual
   - onboarding (btrfs-progs, sudo)
   - set dark theme
-  - set tty theme
