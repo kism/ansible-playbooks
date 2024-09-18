@@ -104,10 +104,6 @@
       changed_when: false # Just getting info
       register: top_level_pacman_packages
 
-    - name: Print top level pacman packages
-      ansible.builtin.debug:
-        var: top_level_pacman_packages.stdout_lines
-
     - name: Copy stdout to file
       delegate_to: localhost
       become: false

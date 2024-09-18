@@ -26,3 +26,4 @@ configure_packages_workstation_to_install:
   - neovim
   - foot
   - lsix
+  - terminus-font

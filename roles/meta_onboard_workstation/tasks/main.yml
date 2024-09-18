@@ -1,4 +1,8 @@
 ---
+- name: Debug print skip_onboard
+  ansible.builtin.debug:
+    var: skip_onboard
+
 - name: Include workstation onboarding roles...
   ansible.builtin.include_role:
     name: "{{ item_role }}"
@@ -9,13 +13,14 @@
     - uninstall_snap
     - configure_packages_workstation
     - configure_dev_environment
-    - configure_directories
+    - configure_misc
     - configure_sshd
     - configure_locale
     - configure_firewall
     - configure_ca_trust
     - configure_motd
-  when: skip_onboard is not defined or not skip_onboard
+    - configure_misc
+  when: skip_onboard is not defined
 
 - name: Are we skipping onboard roles?
   ansible.builtin.debug:
@@ -27,4 +32,4 @@
       ░░████╔═████║░██╔══██║██╔══██║██║░░██║██║░░██║
       ░░╚██╔╝░╚██╔╝░██║░░██║██║░░██║╚█████╔╝╚█████╔╝
       ░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚════╝░
-  when: skip_onboard is defined and skip_onboard
+  when: skip_onboard is defined

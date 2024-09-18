@@ -9,7 +9,7 @@
     - uninstall_snap
     - configure_packages_server
     - configure_users
-    - configure_directories
+    - configure_misc
     - configure_sshd
     - configure_locale
     - configure_firewall
@@ -20,7 +20,7 @@
 - name: Are we skipping onboard roles?
   ansible.builtin.debug:
     msg: |-
-      Skipping onboard server roles!
+      Skipping onboard server roles wahoo!
       ░██╗░░░░░░░██╗░█████╗░██╗░░██╗░█████╗░░█████╗░
       ░██║░░██╗░░██║██╔══██╗██║░░██║██╔══██╗██╔══██╗
       ░╚██╗████╗██╔╝███████║███████║██║░░██║██║░░██║

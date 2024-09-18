@@ -31,3 +31,31 @@
   with_items:
     - sys-kernel-config.mount
     - sys-kernel-debug.mount
+
+
+# Vconsole
+- name: Check if /etc/vconsole.conf exists
+  ansible.builtin.stat:
+    path: /etc/vconsole.conf
+  register: vconsole_stat
+
+- name: Check if terminus is installed
+  ansible.builtin.stat:
+    path: /usr/share/kbd/consolefonts/ter-116n.psf.gz
+  register: terminus_font_stat
+
+- name: Set terminal font as terminus
+  ansible.builtin.lineinfile:
+    path: /etc/vconsole.conf
+    regexp: "^FONT="
+    line: "FONT=ter-116n"
+    state: present
+  when: vconsole_stat.stat.exists and terminus_font_stat.stat.exists
+
+- name: Set keyboard layout for vconsole
+  ansible.builtin.lineinfile:
+    path: /etc/vconsole.conf
+    regexp: "^.*KEYMAP="
+    line: "KEYMAP=us"
+    state: present
+  when: vconsole_stat.stat.exists

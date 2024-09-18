@@ -10,16 +10,3 @@
 
 - name: Include zsh tasks
   ansible.builtin.include_tasks: 04-dev-packages.yml
-
-- name: Clone repos, if they don't exist? TODO
-  ansible.builtin.git:
-    repo: https://github.com/kism/{{ item }}.git
-    dest: ~/src/{{ item }}
-    single_branch: true
-    version: main
-  loop:
-    - dotfiles
-    - ansible-playbooks
-    - kism-ansible-audit
-    - archivepodcast
-    - allowlistapp

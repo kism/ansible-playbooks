@@ -9,6 +9,11 @@
     name: "{{ homelab_my_username }}"
     shell: /usr/bin/zsh
 
+- name: Check if there is a .zsh config
+  ansible.builtin.stat:
+    path: ~/.zshrc
+  register: zsh_config_stat
+
 - name: Set default zsh config
   become: true
   become_user: "{{ homelab_my_username }}"
@@ -16,3 +21,4 @@
     path: ~/.zshrc
     state: touch
     mode: "0640"
+  when: zsh_config_stat.stat.exists
