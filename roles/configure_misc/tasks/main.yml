@@ -41,14 +41,14 @@
 
 - name: Check if terminus is installed
   ansible.builtin.stat:
-    path: /usr/share/kbd/consolefonts/ter-116n.psf.gz
+    path: /usr/share/kbd/consolefonts/ter-120n.psf.gz
   register: terminus_font_stat
 
 - name: Set terminal font as terminus
   ansible.builtin.lineinfile:
     path: /etc/vconsole.conf
     regexp: "^FONT="
-    line: "FONT=ter-116n"
+    line: "FONT=ter-120n"
     state: present
   when: vconsole_stat.stat.exists and terminus_font_stat.stat.exists
 
