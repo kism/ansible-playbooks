@@ -1,6 +1,7 @@
 ---
 - name: Populate service facts
   ansible.builtin.service_facts:
+  when: ansible_facts.services is not defined
 
 - name: If service is found, stop and disable
   ansible.builtin.systemd_service:

@@ -19,4 +19,5 @@
 
     # End
     - configure_telegraf
+    - configure_elastic_agent
     - maintenance_print_reminders

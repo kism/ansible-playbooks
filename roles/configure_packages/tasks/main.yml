@@ -6,20 +6,8 @@
   when: ansible_facts['virtualization_role'] == 'host' or ansible_facts['virtualization_role'] == 'NA'
   ansible.builtin.include_tasks: "02-baremetal.yml"
 
-- name: Block for fastfetch/neofetch so I don't want both
-  block:
-    - name: Install fastfetch
-      ansible.builtin.package:
-        name: fastfetch
-        state: present
+- name: Include tasks to remove snappy
+  ansible.builtin.include_tasks: "03-remove-snappy.yml"
 
-    - name: Remove neofetch
-      ansible.builtin.package:
-        name: neofetch
-        state: absent
-
-  rescue:
-    - name: Remove neofetch
-      ansible.builtin.package:
-        name: neofetch
-        state: present
+- name: Include tasks for fastfetch
+  ansible.builtin.include_tasks: "04-fastfetch.yml"

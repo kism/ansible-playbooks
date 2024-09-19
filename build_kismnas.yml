@@ -18,5 +18,5 @@
     - configure_jellyfin_adhoc
 
     # End
-    # - configure_telegraf
+    - configure_telegraf
     - maintenance_print_reminders
