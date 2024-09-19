@@ -3,3 +3,8 @@
   community.general.pacman:
     name: "{{ configure_packages_common_to_install + configure_packages_common_pacman_to_install }}"
     state: present
+
+- name: Install workstation packages for pacman
+  community.general.pacman:
+    name: "{{ configure_packages_workstation_pacman_to_install }}"
+    state: present

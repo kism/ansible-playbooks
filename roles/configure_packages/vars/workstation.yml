@@ -1,0 +1,9 @@
+---
+configure_packages_workstation_pacman_to_install:
+  - ffmpeg
+  - lsix
+  - pacman-contrib # for pactree
+  - terminus-font
+  # Graphical applications
+  - firefox
+  - foot

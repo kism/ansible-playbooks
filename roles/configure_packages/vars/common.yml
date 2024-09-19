@@ -1,0 +1,48 @@
+---
+# Server and workstation packages
+configure_packages_common_to_install:
+  - file
+  - git
+  - gpg
+  - htop
+  - iotop
+  - ncdu
+  - neofetch
+  - nload
+  - tar
+  - tmux
+  - tree
+  - wget
+  - which
+  - rsync
+  - at
+  - unzip
+  - xz
+  - stow
+  - ca-certificates
+
+configure_packages_common_apt_to_install:
+  - cmatrix
+  - pipx
+  - vim
+  - xz-utils
+  - apt-transport-https # Specific to ubuntu
+
+configure_packages_common_dnf_to_install:
+  # - cmatrix
+  - pipx
+  - vim
+  - xz
+
+configure_packages_common_pacman_to_install:
+  - cmatrix
+  - python-pipx
+  - xz
+  - neovim
+
+configure_packages_common_pacman_to_remove:
+  - vim
+
+configure_packages_common_to_remove:
+  - cockpit
+  - cups

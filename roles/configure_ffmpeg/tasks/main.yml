@@ -1,39 +1,8 @@
 ---
-- name: Get ffmpeg_arch
-  block:
-    - name: Set target arch per map if possible
-      ansible.builtin.set_fact:
-        ffmpeg_arch: "{{  configure_ffmpeg_arch_map[ansible_architecture] }}"
+- name: Include tasks for pacman based hosts
+  ansible.builtin.include_tasks: "01-pacman.yml"
+  when: ansible_pkg_mgr == 'pacman'
 
-  rescue:
-    - name: Set default ffmpeg_arch
-      ansible.builtin.set_fact:
-        ffmpeg_arch: "{{ ansible_architecture }}"
-
-- name: Create ffmpreg directory
-  ansible.builtin.file:
-    path: /opt/ffmpeg
-    state: directory
-    mode: "0775"
-
-- name: Change ownership on /opt/ffmpeg
-  ansible.builtin.file:
-    path: /opt/ffmpeg
-    recurse: true
-
-- name: Grab ffmpeg aarch64
-  ansible.builtin.unarchive:
-    src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ ffmpeg_arch }}-static.tar.xz
-    dest: /opt/ffmpeg
-    extra_opts: [--strip-components=1]
-    remote_src: true
-
-- name: Create symbolic links to make sites available
-  ansible.builtin.file:
-    src: /opt/ffmpeg/{{ item }}
-    dest: /usr/local/bin/{{ item }}
-    state: link
-  loop:
-    - ffmpeg
-    - ffprobe
-    - qt-faststart
+- name: Include tasks for NON pacman based hosts
+  ansible.builtin.include_tasks: "01-others.yml"
+  when: ansible_pkg_mgr != 'pacman'
