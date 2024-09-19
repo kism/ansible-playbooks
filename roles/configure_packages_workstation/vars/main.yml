@@ -19,7 +19,6 @@ configure_packages_workstation_to_install:
   - xz
   - ffmpeg
   - stow
-  - fastfetch
   - pacman-contrib # for pactree
   # Graphical applications
   - firefox

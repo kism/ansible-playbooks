@@ -1,3 +1,21 @@
 ---
 - name: Include tasks for package manager
   ansible.builtin.include_tasks: "01-{{ ansible_pkg_mgr }}.yml"
+
+- name: Block for fastfetch/neofetch so I don't want both
+  block:
+    - name: Install fastfetch
+      ansible.builtin.package:
+        name: fastfetch
+        state: present
+
+    - name: Remove neofetch
+      ansible.builtin.package:
+        name: neofetch
+        state: absent
+
+  rescue:
+    - name: Remove neofetch
+      ansible.builtin.package:
+        name: neofetch
+        state: present

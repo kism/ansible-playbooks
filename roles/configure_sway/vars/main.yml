@@ -23,7 +23,6 @@ configure_sway_packages_pacman:
   - neovim
   - vivaldi
   - thunar
-  - ristretto
   # Audio and video
   - pipewire
   - pipewire-jack
@@ -32,10 +31,13 @@ configure_sway_packages_pacman:
   - mpv
 
 configure_sway_packages_aur:
+  # Apps
   - thunar-shares-plugin
   - pwvucontrol
-  - otf-font-awesome-5
   - visual-studio-code-bin
+  # Fonts
+  - otf-font-awesome-5
+  # Themes
   - numix-icon-theme-git
   - numix-gtk-theme-git
 
@@ -48,3 +50,8 @@ configure_sway_reminders_list:
   - imv config
   - theme for pwavucontrol
   - fix my uid
+  - https://store.kde.org/p/1230631
+
+# Maybe you wanna try add the css code below on the file $HOME/.config/gtk-4.0/gtk-dark.css or $HOME/.config/gtk-4.0/gtk-light.css
+# window { border-bottom-left-radius: 5px; border-bottom-right-radius:5px; border-top-left-radius: 5px; border-top-right-radius: 5px; }
+# or really sharp: window { border-bottom-left-radius: 0px; border-bottom-right-radius:0px; border-top-left-radius: 0px; border-top-right-radius: 0px; }
