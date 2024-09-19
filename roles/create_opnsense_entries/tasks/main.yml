@@ -1,0 +1,17 @@
+---
+# - name: Ensure that there is a dhcp entry for the host
+#   ansibleguy.opnsense.unbound_host:
+#     hostname: '{{ inventory_hostname | lower }}'
+#     domain: "{{ homelab_domain_internal }}"
+#     value: '{{ target_host_ip }}'
+#     description: '{{ ansible_host_description }}'
+
+- name: Ensure that there is a dns entry for the host
+  ansibleguy.opnsense.unbound_host:
+    firewall: "{{ opnsense_firewall }}"
+    api_key: "{{ secret_opnsense_api_key }}"
+    api_secret: "{{ secret_opnsense_api_secret }}"
+    hostname: "{{ inventory_hostname | lower }}"
+    domain: "{{ homelab_domain_internal }}"
+    value: "{{ target_host_ip }}"
+    description: "{{ ansible_host_description }}"

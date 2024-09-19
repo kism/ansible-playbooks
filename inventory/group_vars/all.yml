@@ -9,6 +9,7 @@ proxmox_ct_cores: 1
 proxmox_ct_unprivileged: true
 github_username: kism
 ssh_keys_url: https://github.com/{{ github_username }}.keys
+opnsense_firewall: "opnsense.{{ homelab_domain_internal }}"
 homelab_domain_external: kierangee.au
 homelab_domain_internal: kg.lan
 homelab_my_username: kism
