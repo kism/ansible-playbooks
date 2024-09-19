@@ -40,7 +40,18 @@
     version: main
   notify: Restart allowlistapp
 
-- name: Run poetry install
+- name: Ensure that .venv is writable by nginx user
+  ansible.builtin.file:
+    path: /opt/allowlistapp/.venv
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: u=rwX,g=rwX,o=
+    recurse: true
+
+- name: Run poetry
+  become: true
+  become_user: nginx
   ansible.builtin.command:
     cmd: /usr/local/bin/poetry install --only main
     chdir: /opt/allowlistapp
