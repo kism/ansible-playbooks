@@ -51,6 +51,7 @@ configure_sway_reminders_list:
   - theme for pwavucontrol
   - fix my uid
   - https://store.kde.org/p/1230631
+  - https://github.com/end-4/dots-hyprland/blob/main/.config/hypr/hyprland ?
 
 # Maybe you wanna try add the css code below on the file $HOME/.config/gtk-4.0/gtk-dark.css or $HOME/.config/gtk-4.0/gtk-light.css
 # window { border-bottom-left-radius: 5px; border-bottom-right-radius:5px; border-top-left-radius: 5px; border-top-right-radius: 5px; }
