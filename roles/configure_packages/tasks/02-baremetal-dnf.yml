@@ -1,5 +1,0 @@
----
-- name: Install packages for dnf
-  ansible.builtin.dnf:
-    name: "{{ configure_packages_baremetal_common_to_install + configure_packages_baremetal_dnf_to_install }}"
-    state: present

@@ -5,3 +5,12 @@ configure_concept_baremetal_hdidle_version: 1.21
 configure_concept_baremetal_arch_map: # uname (ansible), whatever ffmpeg uses
   x86_64: amd64
   aarch64: arm64
+
+configure_concept_baremetal_openseachest_url: |-
+  https://github.com/Seagate/openSeaChest/releases/download/v
+  {{- configure_concept_baremetal_openseachest_version -}}
+  /openSeaChest-v
+  {{- configure_concept_baremetal_openseachest_version -}}
+  -linux-
+  {{- ansible_architecture -}}
+  -manylinux.tar.xz

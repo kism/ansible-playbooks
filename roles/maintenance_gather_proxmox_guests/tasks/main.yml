@@ -12,10 +12,6 @@
   retries: 5
   delay: 10
 
-- name: Print Proxmox Guests
-  ansible.builtin.debug:
-    msg: "{{ proxmox_guests }}"
-
 - name: Set proxmox facts for host
   ansible.builtin.set_fact:
     proxmox_facts: "{{ item }}"

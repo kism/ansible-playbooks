@@ -6,15 +6,15 @@
     loop_var: item_role
   loop:
     - configure_package_manager
-    - uninstall_snap
+    # - uninstall_snap
     - configure_packages
-    - configure_users
-    - configure_misc
-    - configure_sshd
-    - configure_locale
-    - configure_firewall
-    - configure_ca_trust
-    - configure_motd
+    # - configure_users
+    # - configure_misc
+    # - configure_sshd
+    # - configure_locale
+    # - configure_firewall
+    # - configure_ca_trust
+    # - configure_motd
   when: skip_onboard is not defined or not skip_onboard
 
 - name: Are we skipping onboard roles?

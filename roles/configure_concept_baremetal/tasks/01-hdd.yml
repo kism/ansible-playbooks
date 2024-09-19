@@ -7,7 +7,6 @@
       - lm-sensors
     state: present
 
-
 - name: Figure out if a Seagate Hard Drive is attached
   ansible.builtin.set_fact:
     configure_concept_baremetal_found_seagate: true
@@ -18,16 +17,13 @@
 - name: Block for openSeaChest install
   when: configure_concept_baremetal_found_seagate
   block:
+    - name: Print URL
+      ansible.builtin.debug:
+        msg: "{{ configure_concept_baremetal_openseachest_url }}"
+
     - name: Download openSeaChest
       ansible.builtin.unarchive:
-        src: |-
-          https://github.com/Seagate/openSeaChest/releases/download/v
-          {{- configure_concept_baremetal_openseachest_version -}}
-          /openSeaChest-v
-          {{- configure_concept_baremetal_openseachest_version -}}
-          -linux-
-          {{- ansible_architecture -}}
-          -manylinux.tar.xz
+        src: "{{ configure_concept_baremetal_openseachest_url }}"
         dest: /opt/
         mode: "0755"
         remote_src: true

@@ -1,0 +1,12 @@
+---
+configure_packages_to_install:
+  - cmatrix
+  - pipx
+  - vim
+  - xz-utils
+  - apt-transport-https # Specific to ubuntu
+
+configure_packages_to_remove:
+  - libwayland-client
+  - libX11
+  - xorg-x11-server-Xorg

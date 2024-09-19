@@ -1,5 +1,6 @@
 ---
-configure_packages_workstation_pacman_to_install:
+configure_packages_to_install:
+  - lm_sensors
   - ffmpeg
   - lsix
   - pacman-contrib # for pactree
@@ -7,3 +8,5 @@ configure_packages_workstation_pacman_to_install:
   # Graphical applications
   - firefox
   - foot
+
+configure_packages_to_remove: []

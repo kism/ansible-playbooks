@@ -1,0 +1,47 @@
+---
+- name: Include vars for all-common
+  ansible.builtin.include_vars: "all-common.yml"
+
+- name: Install all-common packages (NON APT)
+  ansible.builtin.package:
+    name: "{{ configure_packages_to_install }}"
+    state: present
+  when: ansible_pkg_mgr != 'apt'
+  register: packages_installed_non_apt
+
+- name: Install all-common packages (APT)
+  ansible.builtin.apt:
+    name: "{{ configure_packages_to_install }}"
+    install_recommends: false
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+  register: packages_installed_apt
+
+- name: Remove not-wanted all-common packages
+  ansible.builtin.package:
+    name: "{{ configure_packages_to_remove }}"
+    state: absent
+
+# Re-include vars
+- name: Include vars for all-(package manager)
+  ansible.builtin.include_vars: "all-{{ ansible_pkg_mgr }}.yml"
+
+- name: Install all-(package manager) packages (NON APT)
+  ansible.builtin.package:
+    name: "{{ configure_packages_to_install }}"
+    state: present
+  when: ansible_pkg_mgr != 'apt'
+  register: packages_installed_non_apt
+
+- name: Install all-(package manager) packages (APT)
+  ansible.builtin.apt:
+    name: "{{ configure_packages_to_install }}"
+    install_recommends: false
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+  register: packages_installed_apt
+
+- name: Remove not-wanted all-(package manager) packages
+  ansible.builtin.package:
+    name: "{{ configure_packages_to_remove }}"
+    state: absent

@@ -1,5 +1,0 @@
----
-configure_packages_server_to_remove:
-  - libwayland-client
-  - libX11
-  - xorg-x11-server-Xorg

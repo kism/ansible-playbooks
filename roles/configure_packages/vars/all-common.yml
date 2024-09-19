@@ -1,0 +1,23 @@
+---
+configure_packages_to_install:
+  - file
+  - git
+  - gpg
+  - htop
+  - iotop
+  - ncdu
+  - nload
+  - tar
+  - tmux
+  - tree
+  - wget
+  - which
+  - rsync
+  - at
+  - unzip
+  - stow
+  - ca-certificates
+
+configure_packages_to_remove:
+  - cockpit
+  - cups

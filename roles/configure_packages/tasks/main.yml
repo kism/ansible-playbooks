@@ -1,13 +1,10 @@
 ---
-- name: Include vars from fileglob
-  ansible.builtin.include_vars: "vars/*.yml"
-
-- name: Include tasks for package manager, assumes that apt and dnf are servers
-  ansible.builtin.include_tasks: "01-{{ ansible_pkg_mgr }}.yml"
+- name: Include tasks for all
+  ansible.builtin.include_tasks: "01-all.yml"
 
 - name: Include tasks for baremetal hosts
-  when: ansible_facts['virtualization_role'] == 'host'
-  ansible.builtin.include_tasks: "02-{{ ansible_pkg_mgr }}-baremetal.yml"
+  when: ansible_facts['virtualization_role'] == 'host' or ansible_facts['virtualization_role'] == 'NA'
+  ansible.builtin.include_tasks: "02-baremetal.yml"
 
 - name: Block for fastfetch/neofetch so I don't want both
   block:

@@ -32,7 +32,7 @@
     shell: "{{ item.value.shell }}" # These could be an issue depending on install location
     create_home: false
     append: false
-  with_dict: "{{ configure_users_users }}"
+  with_dict: "{{ homelab_users }}"
 
 - name: Set passwords for login accounts
   ansible.builtin.user:
@@ -44,12 +44,12 @@
     kism: "{{ secret_myuser_password_hash }}"
     root: "{{ secret_root_password_hash }}"
 
-- name: Set authorized keys for {{ configure_users_myuser }}
+- name: Set authorized keys for {{ homelab_my_username }}
   ansible.posix.authorized_key:
     user: "{{ item }}"
     state: present
     exclusive: true
     key: "{{ lookup('url', ssh_keys_url, split_lines=False) }}"
   loop:
-    - "{{ configure_users_myuser.linux_username }}"
+    - "{{ homelab_my_username }}"
     - ansible_svc

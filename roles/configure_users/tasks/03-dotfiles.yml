@@ -1,10 +1,4 @@
 ---
-- name: Include dotfiles vars
-  run_once: true
-  delegate_to: localhost
-  ansible.builtin.include_vars:
-    file: vars/dotfiles.yml
-
 - name: Get user info facts
   ansible.builtin.getent:
     database: passwd

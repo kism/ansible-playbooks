@@ -107,6 +107,7 @@ skip_ansible_lint
 * workstation setup
 * ~~make repo for kierangee.au~~
 * better server packages install
+* figure out configure_concept_baremetal
 
 ## do ~~later~~ never
 

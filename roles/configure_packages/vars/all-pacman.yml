@@ -1,0 +1,9 @@
+---
+configure_packages_to_install:
+  - cmatrix
+  - python-pipx
+  - xz
+  - neovim
+
+configure_packages_to_remove:
+  - vim

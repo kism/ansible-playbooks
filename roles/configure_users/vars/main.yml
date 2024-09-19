@@ -1,72 +1,20 @@
 ---
-configure_users_myuser:
-  linux_username: kism
+configure_users_dotfiles:
+  - url: https://raw.githubusercontent.com/kism/dotfiles/main/.bash_profile
+    home_dest: .bash_profile
+  - url: https://raw.githubusercontent.com/kism/dotfiles/main/.bashrc
+    home_dest: .bashrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles/main/.inputrc
+    home_dest: .inputrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles/main/.tmux.conf
+    home_dest: .tmux.conf
+  - url: https://raw.githubusercontent.com/kism/dotfiles/main/.vimrc
+    home_dest: .vimrc
+  - url: https://raw.githubusercontent.com/kism/dotfiles/main/.config/htop/htoprc
+    home_dest: .config/htop/htoprc
 
-configure_users_users:
-  kism:
-    uid: 1089
-    shell: /usr/bin/bash
-    groups:
-      - kgadmins
-      - content_private
-      - content_public
-      - backup_svc
-      - qbtuser
-  ansible_svc:
-    uid: 1088
-    shell: /usr/bin/bash
-    groups: kgadmins
-  backup_svc:
-    uid: 1087
-    shell: /usr/sbin/nologin
-    groups:
-  qbtuser:
-    uid: 1086
-    shell: /usr/sbin/nologin
-    groups:
-      - content_private
-      - content_public
-  lanprivate:
-    uid: 1085
-    shell: /usr/sbin/nologin
-    groups:
-      - content_private
-      - content_public
-  lanuser:
-    uid: 1084
-    shell: /usr/sbin/nologin
-    groups:
-      - content_public
-  minecraft:
-    uid: 1083
-    shell: /usr/sbin/nologin
-    groups:
-  factorio:
-    uid: 1082
-    shell: /usr/sbin/nologin
-    groups:
-  ollama:
-    uid: 1081
-    shell: /usr/sbin/nologin
-    groups:
-  podcasto:
-    uid: 1080
-    shell: /usr/sbin/nologin
-    groups:
-  elastalert:
-    uid: 1079
-    shell: /usr/sbin/nologin
-    groups:
-  jellyfin:
-    uid: 1078
-    shell: /usr/sbin/nologin
-    groups:
-      - content_public
-
-configure_users_groups:
-  kgadmins:
-    gid: 1099
-  content_private:
-    gid: 1098
-  content_public:
-    gid: 1097
+configure_users_dotfiles_tmux_regex:
+  - regexp: green
+    replace: red
+  - regexp: colour10
+    replace: colour9

@@ -11,7 +11,7 @@
     name: "{{ item.key }}"
     groups: "{{ item.value.groups }}"
     append: true
-  with_dict: "{{ configure_users_users }}"
+  with_dict: "{{ homelab_users }}"
 
 - name: Copy the kgadmins sudoers rule
   ansible.builtin.copy:
