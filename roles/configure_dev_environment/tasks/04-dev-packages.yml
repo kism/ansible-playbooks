@@ -10,17 +10,22 @@
     name:
       - gcc
       - mingw64-gcc
+      - gnupg2
     state: installed
   when: ansible_pkg_mgr == 'dnf'
 
 - name: Install GCC
   ansible.builtin.apt:
-    name: build-essential
+    name:
+      - build-essential
+      - gnupg2
     state: present
   when: ansible_pkg_mgr == 'apt'
 
-- name: Install GCC
+- name: Install dev tools
   community.general.pacman:
-    name: base-devel
+    name:
+      - base-devel
+      - gnupg
     state: installed
   when: ansible_pkg_mgr == 'pacman'

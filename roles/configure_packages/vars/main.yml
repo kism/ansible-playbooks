@@ -1,0 +1,55 @@
+---
+configure_packages_common_to_install:
+  - file
+  - git
+  - gpg
+  - htop
+  - iotop
+  - ncdu
+  - neofetch
+  - nload
+  - tar
+  - tmux
+  - tree
+  - wget
+  - which
+  - cmatrix
+  - rsync
+  - at
+  - unzip
+  - xz
+  - stow
+  - ca-certificates
+
+configure_packages_common_apt_to_install:
+  - apt-transport-https # Specific to ubuntu
+  - pipx
+
+configure_packages_common_dnf_to_install:
+  - pipx
+
+configure_packages_common_to_remove:
+  - cockpit
+  - cups
+
+configure_packages_server_to_install:
+  - vim
+
+configure_packages_server_to_remove:
+  - libwayland-client
+  - libX11
+  - xorg-x11-server-Xorg
+
+
+configure_packages_workstation_arch_to_install:
+  - ffmpeg
+  - lsix
+  - neovim
+  - pacman-contrib # for pactree
+  - terminus-font
+  # Graphical applications
+  - firefox
+  - foot
+
+configure_packages_workstation_arch_to_remove:
+  - vim

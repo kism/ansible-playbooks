@@ -1,5 +1,5 @@
 ---
-- name: Include tasks for package manager
+- name: Include tasks for package manager, assumes that apt and dnf are servers
   ansible.builtin.include_tasks: "01-{{ ansible_pkg_mgr }}.yml"
 
 - name: Block for fastfetch/neofetch so I don't want both

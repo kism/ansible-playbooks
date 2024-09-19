@@ -1,0 +1,10 @@
+---
+- name: Remove packages that I want to avoid
+  ansible.builtin.dnf:
+    name: "{{ configure_packages_common_to_remove + configure_packages_server_to_remove }}"
+    state: absent
+
+- name: Install useful apps
+  ansible.builtin.dnf:
+    name: "{{ configure_packages_common_to_install + configure_packages_server_to_install }}"
+    state: present

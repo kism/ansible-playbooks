@@ -7,7 +7,7 @@
   loop:
     - configure_package_manager
     - uninstall_snap
-    - configure_packages_server
+    - configure_packages
     - configure_users
     - configure_misc
     - configure_sshd

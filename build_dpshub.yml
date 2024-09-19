@@ -9,7 +9,8 @@
     - maintenance_gather_facts
 
     # Onboard Workstation
-    - meta_onboard_workstation
+    - meta_onboard
+    - configure_dev_environment
     - configure_sway
     - configure_amdgpu_driver
     - configure_docker
