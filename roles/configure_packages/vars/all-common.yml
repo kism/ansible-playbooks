@@ -2,7 +2,6 @@
 configure_packages_to_install:
   - file
   - git
-  - gpg
   - htop
   - iotop
   - ncdu
