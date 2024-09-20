@@ -11,23 +11,25 @@ configure_sway_packages_pacman:
   - swaylock
   - swayidle
   - swaybg
-  - waybar
-  - mako
-  - wdisplays
-  - rofi-wayland
-  - nwg-look
+  - waybar # Status bar
+  - mako # Notifications
+  - wdisplays # Display manager
+  - rofi-wayland # Launcher
+  - nwg-look # Set theme
+  - grim # Screenshot
   # Applications
   - foot # Terminal
   - imv # Image viewer
   - firefox
   - neovim
   - vivaldi
-  - thunar
+  - thunar # File manager
   # Audio and video
   - pipewire
   - pipewire-jack
   - pipewire-pulse
   - wireplumber
+  - pulsemixer
   - mpv
 
 configure_sway_packages_aur:
@@ -35,6 +37,7 @@ configure_sway_packages_aur:
   - thunar-shares-plugin
   - pwvucontrol
   - visual-studio-code-bin
+  - vesktop
   # Fonts
   - otf-font-awesome-5
   # Themes
