@@ -1,21 +1,22 @@
 ---
 configure_packages_to_install:
+  - at
+  - ca-certificates
   - file
   - git
   - htop
   - iotop
   - ncdu
   - nload
+  - rsync
+  - stow
   - tar
   - tmux
   - tree
+  - unzip
+  - vim
   - wget
   - which
-  - rsync
-  - at
-  - unzip
-  - stow
-  - ca-certificates
 
 configure_packages_to_remove:
   - cockpit

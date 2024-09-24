@@ -4,6 +4,3 @@ configure_packages_to_install:
   - python-pipx
   - xz
   - neovim
-
-configure_packages_to_remove:
-  - vim
