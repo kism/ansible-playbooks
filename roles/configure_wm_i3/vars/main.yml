@@ -1,29 +1,24 @@
 ---
-configure_sway_packages_pacman:
+configure_wm_i3_packages_pacman:
   # Fonts
   - gnu-free-fonts
   - otf-hasklig-nerd
   - ttf-firacode-nerd
   - noto-fonts
   - noto-fonts-emoji
-  # Sway
-  - sway
-  - swaylock
-  - swayidle
-  - swaybg
-  - xorg-xwayland
-  - waybar # Status bar
-  - mako # Notifications
-  - wdisplays # Display manager
-  - rofi-wayland # Launcher
-  - nwg-look # Set theme
-  - grim # Screenshot
+  # i3
+  - i3
+  - i3blocks
+  - xrandr
+  - lxappearance
   # Applications
-  - foot # Terminal
+  - xfce4-terminal # Terminal
   - imv # Image viewer
   - firefox
   - neovim
   - vivaldi
+  - wireguard-tools
+  - openresolv
   - thunar # File manager
   # Audio and video
   - pipewire
@@ -33,23 +28,30 @@ configure_sway_packages_pacman:
   - pulsemixer
   - mpv
 
-configure_sway_packages_aur:
+configure_wm_i3_packages_aur:
+  # i3
+  - xtitle
   # Apps
   - thunar-shares-plugin
   - pwvucontrol
   - visual-studio-code-bin
   - vesktop
+  - vial
   # Fonts
   - otf-font-awesome-5
   # Themes
   - numix-icon-theme-git
   - numix-gtk-theme-git
 
-configure_sway_reminders_list:
+configure_wm_i3_reminders_list:
   - add user to audio and video groups
   - thunar shares don't work
   - dotfiles install still manual
   - onboarding (btrfs-progs, sudo)
+  - set dark theme
+  - imv config
+  - theme for pwavucontrol
+  - fix my uid
   - https://store.kde.org/p/1230631
   - https://github.com/end-4/dots-hyprland/blob/main/.config/hypr/hyprland ?
   - https://github.com/vinceliuice/Fluent-gtk-theme

@@ -1,0 +1,17 @@
+---
+- name: Install sway and friends
+  ansible.builtin.package:
+    name: "{{ configure_sway_packages_pacman }}"
+
+- name: Install aur packages
+  become: true
+  become_method: ansible.builtin.sudo
+  become_user: "{{ homelab_my_username }}"
+  kewlfft.aur.aur:
+    name: "{{ configure_sway_packages_aur }}"
+    use: yay
+    state: present
+
+- name: Add reminder to complete manual tasks
+  ansible.builtin.set_fact:
+    reminder_list: "{{ reminder_list + configure_sway_reminders_list }}"
