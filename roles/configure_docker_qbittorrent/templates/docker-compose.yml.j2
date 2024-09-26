@@ -14,6 +14,8 @@ services:
       - OPENVPN_USER={{ secret_mullvad_user }}
       - SERVER_CITIES=Singapore
       - FIREWALL_VPN_INPUT_PORTS=6881
+      - DOT=on
+      - DNS_ADDRESS=194.242.2.2
       - PUID=1086
       - PGID=1086
       - TZ=Australia/Perth
