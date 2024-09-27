@@ -1,0 +1,11 @@
+---
+- name: Install ly
+  ansible.builtin.package:
+    name: ly
+    state: present
+
+- name: Enable ly
+  ansible.builtin.systemd:
+    name: ly
+    enabled: true
+    state: started
