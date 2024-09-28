@@ -11,8 +11,8 @@
     # Onboard Workstation
     - meta_onboard
     - configure_dev_environment
-    - configure_sway
-    - configure_i3
+    - configure_wm_sway
+    - configure_wm_i3
     - configure_ly_login_manager
     - configure_amdgpu_driver
     - configure_docker
