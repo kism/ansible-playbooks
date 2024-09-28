@@ -46,7 +46,7 @@ configure_wm_sway_packages_aur:
   - otf-font-awesome-5
   # Themes
   - numix-icon-theme-git
-  - numix-gtk-theme-git
+  - zuki-themes
 
 configure_wm_sway_reminders_list:
   - add user to audio and video groups
