@@ -7,8 +7,9 @@ configure_packages_to_install:
   - terminus-font
   # Graphical applications
   - firefox
-  - cifs-utils
   - avahi
   - mousepad
+  - hwinfo
+  - perl-rename
 
 configure_packages_to_remove: []
