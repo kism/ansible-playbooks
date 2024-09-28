@@ -9,3 +9,9 @@
     name: ly
     enabled: true
     state: started
+
+- name: Set border colour of login window
+  ansible.builtin.lineinfile:
+    path: /etc/ly/config.ini
+    regexp: '^border_fg'
+    line: 'border_fg = 7'

@@ -9,17 +9,18 @@
     - maintenance_gather_facts
 
     # Onboard Workstation
-    - meta_onboard
-    - configure_dev_environment
-    - configure_sway
-    - configure_i3
-    - configure_ly_login_manager
-    - configure_amdgpu_driver
-    - configure_docker
-    - configure_llama_tabby_docker
-    - configure_disks
-    - configure_nfs_client
+    # - meta_onboard
+    # - configure_dev_environment
+    # - configure_sway
+    # - configure_i3
+    # - configure_ly_login_manager
+    # - configure_amdgpu_driver
+    # - configure_docker
+    # - configure_llama_tabby_docker
+    # - configure_disks
+    # - configure_nfs_client
+    - configure_cifs_client
 
     # End
-    - configure_telegraf
+    # - configure_telegraf
     - maintenance_print_reminders

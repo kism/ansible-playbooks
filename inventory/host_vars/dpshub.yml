@@ -27,3 +27,8 @@ nfs_client_mounts:
   Blank:
     host: pvewill.kg.lan
     share: /srv/Blank
+
+cifs_client_mounts:
+  yoho_watch:
+    mount_folder: watch
+    share: //10.42.0.3/watch

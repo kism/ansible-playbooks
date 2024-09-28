@@ -14,7 +14,7 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_samba
+    - configure_cifs_server
     - configure_jellyfin_adhoc
 
     # End

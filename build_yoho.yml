@@ -14,7 +14,7 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_samba
+    - configure_cifs_server
     - configure_docker
     - configure_docker_qbittorrent
     - configure_docker_sabnzbd
