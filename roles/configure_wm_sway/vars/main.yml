@@ -42,6 +42,7 @@ configure_wm_sway_packages_aur:
   - visual-studio-code-bin
   - vesktop
   - vial
+  - wlogout
   # Fonts
   - otf-font-awesome-5
   # Themes
