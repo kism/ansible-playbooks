@@ -11,5 +11,6 @@ configure_packages_to_install:
   - mousepad
   - hwinfo
   - perl-rename
+  - gnome-keyring
 
 configure_packages_to_remove: []
