@@ -8,7 +8,6 @@ configure_wm_sway_packages_pacman:
   - noto-fonts-emoji
   # Sway
   - sway
-  - swaylock
   - swayidle
   - swaybg
   - xorg-xwayland
@@ -43,6 +42,7 @@ configure_wm_sway_packages_aur:
   - vesktop
   - vial
   - wlogout
+  - gtklock # Swaylock equivalent
   # Fonts
   - otf-font-awesome-5
   # Themes
