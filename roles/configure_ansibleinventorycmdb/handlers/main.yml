@@ -1,0 +1,6 @@
+---
+- name: Restart ansibleinventorycmdb
+  ansible.builtin.systemd_service:
+    name: ansibleinventorycmdb
+    daemon_reload: true
+    state: restarted

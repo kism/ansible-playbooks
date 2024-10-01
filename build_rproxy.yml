@@ -18,6 +18,7 @@
     - configure_fail2ban
     - configure_reverse_proxy
     - configure_allowlistapp
+    - configure_ansibleinventorycmdb
 
     # End
     - configure_telegraf

@@ -1,0 +1,79 @@
+---
+- name: Install python-related packages
+  ansible.builtin.package:
+    name:
+      - python3.11
+      - python3.11-pip
+    state: present
+
+- name: Install poetry python package
+  ansible.builtin.pip:
+    name: poetry
+
+- name: Create ansibleinventorycmdb directory
+  ansible.builtin.file:
+    path: /opt/ansibleinventorycmdb
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: u=rwX,g=rwX,o=
+
+- name: Create ansibleinventorycmdb log file
+  ansible.builtin.file:
+    path: /var/log/ansibleinventorycmdb.log
+    state: touch
+    owner: nginx
+    group: nginx
+    mode: "0664"
+  notify: Restart ansibleinventorycmdb
+
+- name: Git config ansibleinventorycmdb
+  community.general.git_config:
+    name: safe.directory
+    value: /opt/ansibleinventorycmdb
+
+- name: Clone ansibleinventorycmdb
+  ansible.builtin.git:
+    repo: https://github.com/kism/ansible-inventory-cmdb
+    dest: /opt/ansibleinventorycmdb
+    single_branch: true
+    version: main
+  notify: Restart ansibleinventorycmdb
+
+- name: Ensure that .venv is writable by nginx user
+  ansible.builtin.file:
+    path: /opt/ansibleinventorycmdb/.venv
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: u=rwX,g=rwX,o=
+    recurse: true
+
+- name: Run poetry
+  become: true
+  become_user: nginx
+  ansible.builtin.command:
+    cmd: /usr/local/bin/poetry install --only main
+    chdir: /opt/ansibleinventorycmdb
+  notify: Restart ansibleinventorycmdb
+  changed_when: true # Safe assumption, no way to know
+
+- name: Fix selinux
+  ansible.builtin.command: restorecon -Rv /opt/ansibleinventorycmdb
+  changed_when: true # This command only matters if another task has changed files
+
+- name: Copy systemd service
+  ansible.builtin.copy:
+    src: files/ansibleinventorycmdb.service
+    dest: /etc/systemd/system/ansibleinventorycmdb.service
+    mode: "0644"
+  notify: Restart ansibleinventorycmdb
+
+- name: Enable systemd service
+  ansible.builtin.systemd_service:
+    name: ansibleinventorycmdb.service
+    enabled: true
+    daemon_reload: true
+    state: started
+    masked: false
+
