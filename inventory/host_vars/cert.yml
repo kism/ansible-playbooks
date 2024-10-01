@@ -1,2 +1,4 @@
 ---
 timezone: utc
+target_host_ip_address: 10.42.0.11
+target_host_mac_address: 02:42:46:4F:7A:0F

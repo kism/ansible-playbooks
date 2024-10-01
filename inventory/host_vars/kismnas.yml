@@ -1,6 +1,7 @@
 ---
-proxmox_target_node: pvematt
+target_host_ip_address: 10.42.0.21
 target_host_mac_address: 4A:2B:86:10:33:1F
+proxmox_target_node: pvematt
 proxmox_ct_disk: "local-lvm:20"
 proxmox_ct_memory: 4096
 proxmox_ct_cores: 3

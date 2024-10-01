@@ -1,4 +1,6 @@
 ---
+target_host_ip_address: 10.42.0.19
+target_host_mac_address: 9c:6b:00:26:e2:c6
 nfs_client_mounts:
   Beatrix:
     host: pvewill.kg.lan

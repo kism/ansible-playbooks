@@ -1,4 +1,6 @@
 ---
+target_host_ip_address: 10.42.0.29
+target_host_mac_address: 00:E2:69:63:E7:A3
 nfs_client_mounts:
   Amarant:
     host: pvematt.kg.lan

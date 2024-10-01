@@ -1,6 +1,7 @@
 ---
 ansible_python_interpreter: /usr/bin/python3.9
 proxmox_target_node: pvematt
+target_host_ip_address: 10.42.0.6
 target_host_mac_address: BC:24:11:2B:E0:24
 proxmox_ct_disk: "local-lvm:60"
 proxmox_ct_memory: 8192
