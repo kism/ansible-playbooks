@@ -16,9 +16,8 @@
         api_host: "{{ proxmox_api_host }}"
         pubkey: "{{ lookup('ansible.builtin.url', ssh_keys_url, split_lines=False) }}"
         hostname: "{{ inventory_hostname | lower }}"
-        ostemplate: "NFS_Amarant_proxmox:vztmpl/ol9_rootfs.tar.xz" # https://images.linuxcontainers.org/images
-        storage: local-lvm
-        netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ proxmox_guest_mac_address }}"}'
+        ostemplate: "Amarant_Backups_NFS:vztmpl/ol9_rootfs.tar.xz" # https://images.linuxcontainers.org/images
+        netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ target_host_mac_address }}"}'
         features: "{{ proxmox_ct_features }}"
         disk: "{{ proxmox_ct_disk }}"
         memory: "{{ proxmox_ct_memory }}"

@@ -1,7 +1,7 @@
 ---
 duckdns_domain: kism
 proxmox_target_node: pvewill
-proxmox_guest_mac_address: 4A:24:F7:A8:5C:5C
+target_host_mac_address: 4A:24:F7:A8:5C:5C
 proxmox_ct_disk: "local-lvm:10"
 proxmox_ct_memory: 512
 proxmox_ct_cores: 1

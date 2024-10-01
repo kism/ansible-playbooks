@@ -1,0 +1,14 @@
+---
+- name: Ensure that there is a dns entry for the host
+  delegate_to: localhost
+  become: false
+  ansibleguy.opnsense.unbound_host:
+    firewall: "{{ opnsense_firewall }}"
+    api_key: "{{ secret_opnsense_api_key }}"
+    api_secret: "{{ secret_opnsense_api_secret }}"
+    record_type: 'A'
+    hostname: "{{ inventory_hostname | lower }}"
+    domain: "{{ homelab_domain_internal }}"
+    value: "{{ target_host_ip_address }}"
+    description: "Ansible: {{ ansible_host_description }}"
+    match_fields: ['description']

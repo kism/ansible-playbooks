@@ -1,6 +1,6 @@
 ---
 proxmox_target_node: pvewill
-proxmox_guest_mac_address: 6E:3D:14:3A:70:A1
+target_host_mac_address: 6E:3D:14:3A:70:A1
 proxmox_ct_disk: "local-lvm:10"
 proxmox_ct_memory: 1024
 proxmox_ct_cores: 1

@@ -11,3 +11,4 @@ ansible = "*"
 ansible-lint = { version = "*", markers = "platform_system != 'Windows'" }
 pywinrm = "*"
 proxmoxer = "^2.0.1"
+httpx = "*"

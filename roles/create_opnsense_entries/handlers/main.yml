@@ -1,0 +1,28 @@
+---
+- name: Apply kea
+  block:
+    - name: Set kea
+      delegate_to: localhost
+      become: false
+      ansible.builtin.uri:
+        url: "https://{{ opnsense_firewall }}/api/kea/service/set"
+        method: POST
+        force_basic_auth: true
+        user: "{{ secret_opnsense_api_key }}"
+        password: "{{ secret_opnsense_api_secret }}"
+      register: kea_dhcp_reconfigure
+      when: kea_dhcp_entry.changed
+      failed_when: kea_dhcp_reconfigure.status != 200 or kea_dhcp_reconfigure.json.result != "saved"
+
+    - name: Reconfigure kea
+      delegate_to: localhost
+      become: false
+      ansible.builtin.uri:
+        url: "https://{{ opnsense_firewall }}/api/kea/service/reconfigure"
+        method: POST
+        force_basic_auth: true
+        user: "{{ secret_opnsense_api_key }}"
+        password: "{{ secret_opnsense_api_secret }}"
+      register: kea_dhcp_reconfigure
+      when: kea_dhcp_entry.changed
+      failed_when: kea_dhcp_reconfigure.status != 200 or kea_dhcp_reconfigure.json.status != "ok"

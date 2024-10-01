@@ -43,6 +43,10 @@ all:
     dpshub:
       ansible_host: dpshub.kg.lan
       ansible_host_description: DPSHUB Workstation
+    podctest:
+      ansible_host: podctest.kg.lan
+      ansible_host_description: Podcast Archive Test
+
 
 # Server Type
 proxmoxvms:

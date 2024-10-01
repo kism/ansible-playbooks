@@ -1,4 +1,16 @@
 ---
+- name: Are we skipping onboard roles?
+  ansible.builtin.debug:
+    msg: |-
+      Skipping onboard server roles wahoo!
+      ░██╗░░░░░░░██╗░█████╗░██╗░░██╗░█████╗░░█████╗░
+      ░██║░░██╗░░██║██╔══██╗██║░░██║██╔══██╗██╔══██╗
+      ░╚██╗████╗██╔╝███████║███████║██║░░██║██║░░██║
+      ░░████╔═████║░██╔══██║██╔══██║██║░░██║██║░░██║
+      ░░╚██╔╝░╚██╔╝░██║░░██║██║░░██║╚█████╔╝╚█████╔╝
+      ░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚════╝░
+  when: skip_onboard is defined and skip_onboard
+
 - name: Include server onboarding roles...
   ansible.builtin.include_role:
     name: "{{ item_role }}"
@@ -15,15 +27,3 @@
     - configure_ca_trust
     - configure_motd
   when: skip_onboard is not defined or not skip_onboard
-
-- name: Are we skipping onboard roles?
-  ansible.builtin.debug:
-    msg: |-
-      Skipping onboard server roles wahoo!
-      ░██╗░░░░░░░██╗░█████╗░██╗░░██╗░█████╗░░█████╗░
-      ░██║░░██╗░░██║██╔══██╗██║░░██║██╔══██╗██╔══██╗
-      ░╚██╗████╗██╔╝███████║███████║██║░░██║██║░░██║
-      ░░████╔═████║░██╔══██║██╔══██║██║░░██║██║░░██║
-      ░░╚██╔╝░╚██╔╝░██║░░██║██║░░██║╚█████╔╝╚█████╔╝
-      ░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░░╚════╝░
-  when: skip_onboard is defined and skip_onboard

@@ -59,3 +59,17 @@
     line: "KEYMAP=us"
     state: present
   when: vconsole_stat.stat.exists
+
+# Allow ping
+- name: Check that sysctl.d folder exists
+  ansible.builtin.stat:
+    path: /etc/sysctl.d
+  register: sysctl_d_stat
+
+- name: Write file to allow ping if possible
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-allow-ping.conf
+    content: |
+      net.ipv4.ping_group_range=0 1100
+    mode: "0644"
+  when: sysctl_d_stat.stat.exists
