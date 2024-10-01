@@ -69,3 +69,10 @@ baremetal:
     pvewill:
     pvematt:
     cert:
+
+nonansible:
+  hosts:
+    openwrt:
+      ansible_host: opnsense.kg.lan
+      ansible_host_description: Opnsense Router
+    podctest:
