@@ -22,7 +22,7 @@
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
-    - Reload nginx
+    - Restart nginx
 
 - name: Remove file (delete file)
   ansible.builtin.file:
@@ -50,7 +50,7 @@
   with_fileglob:
     - "files/hosts/{{ ansible_hostname }}/sites-available/*.conf"
   notify:
-    - Reload nginx
+    - Restart nginx
 
 - name: Build list of nginx configs
   ansible.builtin.find:
@@ -64,7 +64,7 @@
     dest: /etc/nginx/sites-enabled/{{ item.path | basename }}
     state: link
   notify:
-    - Reload nginx
+    - Restart nginx
   loop: "{{ config_files_found.files }}"
 
 - name: Ensure dirs exist
@@ -83,7 +83,7 @@
     mode: "0664"
   with_fileglob: "files/hosts/{{ ansible_hostname }}/public/*"
   notify:
-    - Reload nginx
+    - Restart nginx
 
 - name: Copy private index.html
   ansible.builtin.copy:
@@ -91,7 +91,7 @@
     dest: /usr/share/nginx/html/private/index.html
     mode: "0664"
   notify:
-    - Reload nginx
+    - Restart nginx
 
 - name: Download css
   ansible.builtin.shell:

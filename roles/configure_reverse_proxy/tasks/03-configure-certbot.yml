@@ -26,7 +26,7 @@
   register: command_output
   changed_when: false or "Certificate not yet due for renewal" not in command_output.stdout
   failed_when: command_output.rc != 0 and not "too many certificates" in command_output.stderr
-  notify: Reload nginx
+  notify: Restart nginx
 
 - name: Debug the command output
   ansible.builtin.debug:

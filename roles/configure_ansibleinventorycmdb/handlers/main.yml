@@ -1,6 +1,6 @@
 ---
-- name: Restart ansibleinventorycmdb
+- name: Restart allowlistapp
   ansible.builtin.systemd_service:
-    name: ansibleinventorycmdb
+    name: allowlistapp
     daemon_reload: true
     state: restarted

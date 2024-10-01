@@ -40,14 +40,19 @@
     version: main
   notify: Restart ansibleinventorycmdb
 
-- name: Ensure that .venv is writable by nginx user
+- name: Remove venv
   ansible.builtin.file:
     path: /opt/ansibleinventorycmdb/.venv
+    state: absent
+
+- name: Ensure that all files are readable by nginx user
+  ansible.builtin.file:
+    path: /opt/ansibleinventorycmdb
     state: directory
     owner: nginx
     group: nginx
-    mode: u=rwX,g=rwX,o=
     recurse: true
+    mode: u+rwX,g+rwX,o=
 
 - name: Run poetry
   become: true
@@ -76,4 +81,3 @@
     daemon_reload: true
     state: started
     masked: false
-
