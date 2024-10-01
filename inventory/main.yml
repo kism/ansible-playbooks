@@ -78,7 +78,6 @@ nonansible:
       ansible_host: opnsense.kg.lan
       ansible_host_description: Opnsense Router
       target_host_ip_address: 10.42.0.1
-      target_host_mac_address:
     h2:
       ansible_host: h2.kg.lan
       ansible_host_description: Old Odroid H2
