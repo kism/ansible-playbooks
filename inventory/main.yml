@@ -43,7 +43,9 @@ all:
     podctest:
       ansible_host: podctest.kg.lan
       ansible_host_description: Podcast Archive Test
-
+    x230t:
+      ansible_host: x230t.kg.lan
+      ansible_host_description: Lenovo X230t Tablet
 
 # Server Type
 proxmoxvms:
@@ -72,7 +74,53 @@ baremetal:
 
 nonansible:
   hosts:
-    openwrt:
+    opnsense:
       ansible_host: opnsense.kg.lan
       ansible_host_description: Opnsense Router
-    podctest:
+      target_host_ip_address: 10.42.0.1
+      target_host_mac_address:
+    h2:
+      ansible_host: h2.kg.lan
+      ansible_host_description: Old Odroid H2
+      target_host_ip_address: 10.42.0.44
+      target_host_mac_address:
+    sallys-air:
+      ansible_host: sallys-air.kg.lan
+      ansible_host_description: Sally's MacBook Air
+      target_host_ip_address: 10.42.0.45
+      target_host_mac_address: c4:b3:01:ad:99:fc
+    kpbp:
+      ansible_host: kpbp.kg.lan
+      ansible_host_description: Kieran's Pinebook Pro
+      target_host_ip_address: 10.42.0.69
+      target_host_mac_address: C0:84:7D:2E:EC:32
+    kobo:
+      ansible_host: kobo.kg.lan
+      ansible_host_description: Kieran's Kobo Clara HD
+      target_host_ip_address: 10.42.0.73
+      target_host_mac_address: 58:B0:D4:4A:4B:75
+    cc:
+      ansible_host: cc.kg.lan
+      ansible_host_description: Chromecast
+      target_host_ip_address: 10.42.0.74
+      target_host_mac_address: 00:e0:4c:70:c2:ae
+    kgns:
+      ansible_host: kgns.kg.lan
+      ansible_host_description: Kieran's Nintendo Switch
+      target_host_ip_address: 10.42.0.81
+      target_host_mac_address: 98:B6:E9:BA:C8:D3
+    uggbe01:
+      ansible_host: uggbe01.kg.lan
+      ansible_host_description: Black UGreen USB 3.0 GBE
+      target_host_ip_address: 10.42.0.91
+      target_host_mac_address: F8:E4:3B:A9:4B:6F
+    gss:
+      ansible_host: gss.kg.lan
+      ansible_host_description: NetGear GSS108E
+      target_host_ip_address: 10.42.0.95
+      target_host_mac_address: A0:63:91:7B:D0:09
+    openwrt:
+      ansible_host: openwrt.kg.lan
+      ansible_host_description: OpenWRT Wireless Access Point
+      target_host_ip_address: 10.42.0.99
+      target_host_mac_address: 24:F5:A2:BA:81:33
