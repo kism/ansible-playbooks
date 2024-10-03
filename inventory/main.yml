@@ -76,8 +76,9 @@ nonansible:
   hosts:
     opnsense:
       ansible_host: opnsense.kg.lan
-      ansible_host_description: Opnsense Router
+      ansible_host_description: OPNsense Router
       target_host_ip_address: 10.42.0.1
+      target_host_mac_address: 58:9C:FC:10:FF:D0
     h2:
       ansible_host: h2.kg.lan
       ansible_host_description: Old Odroid H2
@@ -87,7 +88,7 @@ nonansible:
       ansible_host: sallys-air.kg.lan
       ansible_host_description: Sally's MacBook Air
       target_host_ip_address: 10.42.0.45
-      target_host_mac_address: c4:b3:01:ad:99:fc
+      target_host_mac_address: C4:B3:01:AD:99:FC
     kpbp:
       ansible_host: kpbp.kg.lan
       ansible_host_description: Kieran's Pinebook Pro
@@ -102,7 +103,7 @@ nonansible:
       ansible_host: cc.kg.lan
       ansible_host_description: Chromecast
       target_host_ip_address: 10.42.0.74
-      target_host_mac_address: 00:e0:4c:70:c2:ae
+      target_host_mac_address: 00:E0:4C:70:C2:AE
     kgns:
       ansible_host: kgns.kg.lan
       ansible_host_description: Kieran's Nintendo Switch
