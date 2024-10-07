@@ -26,6 +26,7 @@ configure_wm_sway_packages_pacman:
   - wireguard-tools
   - openresolv
   - thunar # File manager
+  - tumbler # Thumbnailer for file browsers
   # Audio and video
   - pipewire
   - pipewire-jack
@@ -35,8 +36,10 @@ configure_wm_sway_packages_pacman:
   - mpv
 
 configure_wm_sway_packages_aur:
+  # Tumbler
+  - tumbler-extra-thumbnailers
+  - ffmpegthumbnailer
   # Apps
-  - thunar-shares-plugin
   - pwvucontrol
   - visual-studio-code-bin
   - vesktop
