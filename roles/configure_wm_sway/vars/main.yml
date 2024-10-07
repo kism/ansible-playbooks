@@ -18,7 +18,7 @@ configure_wm_sway_packages_pacman:
   - nwg-look # Set theme
   - grim # Screenshot
   # Applications
-  - foot # Terminal
+  - alacritty # Terminal
   - imv # Image viewer
   - firefox
   - neovim

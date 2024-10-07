@@ -13,7 +13,7 @@ configure_wm_i3_packages_pacman:
   - xrandr
   - lxappearance
   # Applications
-  - xfce4-terminal # Terminal
+  - alacritty # Terminal
   - imv # Image viewer
   - firefox
   - neovim
