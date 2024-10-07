@@ -58,7 +58,7 @@
   become: true
   become_user: nginx
   ansible.builtin.command:
-    cmd: /usr/local/bin/poetry install --only main
+    cmd: /usr/local/bin/poetry install --sync --only main
     chdir: /opt/ansibleinventorycmdb
   notify: Restart ansibleinventorycmdb
   changed_when: true # Safe assumption, no way to know
