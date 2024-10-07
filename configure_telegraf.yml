@@ -1,6 +1,6 @@
 ---
 - name: Setup telegraf on all hosts
-  hosts: all
+  hosts: ansible_main
   gather_facts: true
   become: true
   roles:

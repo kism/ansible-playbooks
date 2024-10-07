@@ -25,5 +25,13 @@
       - containerd.io
       - docker-buildx-plugin
       - docker-compose-plugin
+      - python3-pip
     state: present
   notify: Restart docker service
+
+- name: Install docker pip packages
+  ansible.builtin.pip:
+    name:
+      - docker
+      - docker-compose
+    state: present

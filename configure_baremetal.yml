@@ -1,6 +1,6 @@
 ---
 - name: Configure baremetal real quick
-  hosts: all
+  hosts: ansible_main
   become: true
   gather_facts: true
   roles:

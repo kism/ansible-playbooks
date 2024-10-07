@@ -1,6 +1,6 @@
 ---
 - name: Print ansible facts
-  hosts: all
+  hosts: ansible_main
   gather_facts: false
   vars:
     print_debug: true

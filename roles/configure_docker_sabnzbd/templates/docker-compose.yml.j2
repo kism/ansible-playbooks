@@ -9,8 +9,8 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/sabnzbd/config:/config
-      - {{ arr_settings_base_dir }}/usenet/complete:/downloads
-      - {{ arr_settings_base_dir }}/usenet/incomplete:/incomplete-downloads
+      - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
+      - {{ arr_downloads_base_dir }}/usenet/incomplete:/incomplete-downloads
     ports:
       - 8081:8080
     networks:

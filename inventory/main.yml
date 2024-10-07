@@ -1,5 +1,5 @@
 ---
-all:
+ansible_main:
   hosts:
     ent:
       ansible_host: ent.kg.lan

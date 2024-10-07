@@ -24,3 +24,4 @@
     state: stopped
     force: false
   loop: "{{ proxmox_guests.proxmox_vms }}"
+  failed_when: false
