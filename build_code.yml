@@ -14,10 +14,11 @@
     - meta_onboard
 
     # Purpose Specific
-    - configure_docker
-    - configure_dev_environment
+    # - configure_docker
+    - configure_ffmpeg
+    # - configure_dev_environment
 
     # End
-    - configure_telegraf
-    - configure_elastic_agent
+    # - configure_telegraf
+    # - configure_elastic_agent
     - maintenance_print_reminders

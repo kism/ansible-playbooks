@@ -20,9 +20,9 @@
 
     # Purpose specific, required for switchover
     - configure_archivepodcast
-    # - configure_archivepodcast_secrets
+    - configure_archivepodcast_secrets
 
     # End
     # - configure_telegraf
-    - configure_elastic_agent
+    # - configure_elastic_agent
     - maintenance_print_reminders

@@ -21,7 +21,7 @@
     path: /opt/ffmpeg
     recurse: true
 
-- name: Grab ffmpeg aarch64
+- name: Grab ffmpeg with right arch
   ansible.builtin.unarchive:
     src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ ffmpeg_arch }}-static.tar.xz
     dest: /opt/ffmpeg

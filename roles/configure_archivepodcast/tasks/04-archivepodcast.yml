@@ -2,59 +2,66 @@
 - name: Install pip apt
   ansible.builtin.package:
     name:
-      - python3-pip
+      - python3.11
+      - python3.11-pip
     state: present
 
-- name: Install pipenv python package
+- name: Install pipx
+  become: true
+  become_user: podcasto
   ansible.builtin.pip:
-    name: pipenv
+    name: pipx
+    state: present
+    executable: pip3.11
 
-- name: Create archivepodcast directory
-  ansible.builtin.file:
-    path: /opt/archivepodcast
-    state: directory
-    recurse: true
-    owner: root
-    group: podcasto
-    mode: "0700"
+- name: Install poetry python package
+  become: true
+  become_user: podcasto
+  community.general.pipx:
+    name: poetry
 
 - name: Attempt to change ownership on /opt/archivepodcast
   ansible.builtin.file:
     path: /opt/archivepodcast
-    owner: root
+    state: directory
+    owner: podcasto
     group: podcasto
-    mode: u=rwx,g=rX,o=
+    recurse: true
 
 - name: Clone archivepodcast
+  become: true
+  become_user: podcasto
   ansible.builtin.git:
     repo: https://github.com/kism/archivepodcast
     dest: /opt/archivepodcast
     single_branch: true
-    version: master
+    version: develop
   notify: Restart archivepodcast
 
-- name: Git config allowlistapp
-  community.general.git_config:
-    name: safe.directory
-    value: /opt/archivepodcast
+# - name: Git config allowlistapp
+#   become: true
+#   become_user: podcasto
+#   community.general.git_config:
+#     name: safe.directory
+#     value: /opt/archivepodcast
 
-- name: Run pipenv sync
+- name: Run poetry sync
   become: true
   become_user: podcasto
   ansible.builtin.command:
-    cmd: /usr/local/bin/pipenv sync
+    cmd: ~/.local/bin/poetry install --sync --only main
     chdir: /opt/archivepodcast
   notify: Restart archivepodcast
   changed_when: true # Safe assumption, no way to know
 
-- name: Copy archivepodcast config
-  ansible.builtin.copy:
-    src: files/{{ ansible_host }}.json
-    dest: /opt/archivepodcast/settings.json
-    owner: podcasto
-    group: root
-    mode: "0660"
-  notify: Restart archivepodcast # One day this will be reload...
+# - name: Copy archivepodcast config
+#   ansible.builtin.copy:
+#     src: files/{{ ansible_host }}.json
+#     dest: /opt/archivepodcast/instance/config.toml
+#     owner: podcasto
+#     group: root
+#     mode: "0660"
+#   notify: Restart archivepodcast # One day this will be reload...
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
