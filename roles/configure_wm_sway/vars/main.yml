@@ -17,6 +17,7 @@ configure_wm_sway_packages_pacman:
   - rofi-wayland # Launcher
   - nwg-look # Set theme
   - grim # Screenshot
+  - wl-clipboard # Clipboard tool
   # Applications
   - alacritty # Terminal
   - imv # Image viewer
@@ -46,6 +47,8 @@ configure_wm_sway_packages_aur:
   - vial
   - wlogout
   - gtklock # Swaylock equivalent
+  - bemoji # Emoji picker
+  - wtype  # Type out the emoji, kinda broken, use wl-clipboard
   # Fonts
   - otf-font-awesome-5
   # Themes
