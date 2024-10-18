@@ -29,6 +29,9 @@ configure_wm_sway_packages_pacman:
   - openresolv
   - thunar # File manager
   - tumbler # Thumbnailer for file browsers
+  # Polkit
+  - gnome-keyring
+  - polkit-gnome
   # Audio and video
   - pipewire
   - pipewire-jack
@@ -49,7 +52,7 @@ configure_wm_sway_packages_aur:
   - wlogout # Sway logout
   - gtklock # Swaylock equivalent
   - bemoji # Emoji picker
-  - wtype  # Type out the emoji, kinda broken, use wl-clipboard
+  - wtype # Type out the emoji, kinda broken, use wl-clipboard
   - autotiling # Auto tiling for sway (think awesome/xmonad tiling modes)
   # Fonts
   - otf-font-awesome-5
@@ -57,7 +60,6 @@ configure_wm_sway_packages_aur:
   - numix-icon-theme-git
   - zuki-themes
   - xcursor-breeze
-
 # Maybe you wanna try add the css code below on the file $HOME/.config/gtk-4.0/gtk-dark.css or $HOME/.config/gtk-4.0/gtk-light.css
 # window { border-bottom-left-radius: 5px; border-bottom-right-radius:5px; border-top-left-radius: 5px; border-top-right-radius: 5px; }
 # or really sharp: window { border-bottom-left-radius: 0px; border-bottom-right-radius:0px; border-top-left-radius: 0px; border-top-right-radius: 0px; }
