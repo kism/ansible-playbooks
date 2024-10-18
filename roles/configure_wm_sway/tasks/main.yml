@@ -11,7 +11,3 @@
     name: "{{ configure_sway_packages_aur }}"
     use: yay
     state: present
-
-- name: Add reminder to complete manual tasks
-  ansible.builtin.set_fact:
-    reminder_list: "{{ reminder_list + configure_sway_reminders_list }}"

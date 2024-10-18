@@ -17,6 +17,7 @@ configure_wm_sway_packages_pacman:
   - rofi-wayland # Launcher
   - nwg-look # Set theme
   - grim # Screenshot
+  - slurp # Select area for screenshot
   - wl-clipboard # Clipboard tool
   # Applications
   - alacritty # Terminal
@@ -37,33 +38,25 @@ configure_wm_sway_packages_pacman:
   - mpv
 
 configure_wm_sway_packages_aur:
-  # Tumbler
+  # Tumbler, thumbnails for thunar
   - tumbler-extra-thumbnailers
   - ffmpegthumbnailer
   # Apps
-  - pwvucontrol
-  - visual-studio-code-bin
-  - vesktop
-  - vial
-  - wlogout
+  - pwvucontrol # Pipewire volume control
+  - visual-studio-code-bin # VSCode
+  - vesktop # Discord client
+  - vial # vial keyboard layout editor
+  - wlogout # Sway logout
   - gtklock # Swaylock equivalent
   - bemoji # Emoji picker
   - wtype  # Type out the emoji, kinda broken, use wl-clipboard
+  - autotiling # Auto tiling for sway (think awesome/xmonad tiling modes)
   # Fonts
   - otf-font-awesome-5
   # Themes
   - numix-icon-theme-git
   - zuki-themes
   - xcursor-breeze
-
-configure_wm_sway_reminders_list:
-  - add user to audio and video groups
-  - thunar shares don't work
-  - dotfiles install still manual
-  - onboarding (btrfs-progs, sudo)
-  - https://store.kde.org/p/1230631
-  - https://github.com/end-4/dots-hyprland/blob/main/.config/hypr/hyprland ?
-  - https://github.com/vinceliuice/Fluent-gtk-theme
 
 # Maybe you wanna try add the css code below on the file $HOME/.config/gtk-4.0/gtk-dark.css or $HOME/.config/gtk-4.0/gtk-light.css
 # window { border-bottom-left-radius: 5px; border-bottom-right-radius:5px; border-top-left-radius: 5px; border-top-right-radius: 5px; }
