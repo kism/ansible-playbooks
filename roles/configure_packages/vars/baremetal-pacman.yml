@@ -12,5 +12,9 @@ configure_packages_to_install:
   - hwinfo
   - perl-rename
   - gnome-keyring
+  - noto-fonts
+  - noto-fonts-cjk
+  - noto-fonts-emoji
+  - noto-fonts-extra
 
 configure_packages_to_remove: []
