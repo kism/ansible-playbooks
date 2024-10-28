@@ -89,6 +89,11 @@ nonansible:
       ansible_host_description: Sally's MacBook Air
       target_host_ip_address: 10.42.0.45
       target_host_mac_address: C4:B3:01:AD:99:FC
+    worklaptop:
+      ansible_host: worklaptop.kg.lan
+      ansible_host_description: Work Laptop
+      target_host_ip_address: 10.42.0.46
+      target_host_mac_address: c4:03:a8:08:77:94
     kpbp:
       ansible_host: kpbp.kg.lan
       ansible_host_description: Kieran's Pinebook Pro
