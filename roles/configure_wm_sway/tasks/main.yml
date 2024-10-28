@@ -11,3 +11,10 @@
     name: "{{ configure_sway_packages_aur }}"
     use: yay
     state: present
+
+- name: Enable and start bluetooth
+  ansible.builtin.systemd:
+    name: bluetooth
+    enabled: true
+    state: started
+    daemon_reload: true

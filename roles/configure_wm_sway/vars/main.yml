@@ -11,11 +11,12 @@ configure_wm_sway_packages_pacman:
   - swayidle
   - swaybg
   - xorg-xwayland
-  - waybar # Status bar
-  - mako # Notifications
-  - wdisplays # Display manager
+  - nwg-shell # Meta package with bar, dock, launcher
+  # - waybar # Status bar
+  # - mako # Notifications
+  # - wdisplays # Display manager
   - rofi-wayland # Launcher
-  - nwg-look # Set theme
+  # - nwg-look # Set theme
   - grim # Screenshot
   - slurp # Select area for screenshot
   - wl-clipboard # Clipboard tool
@@ -53,7 +54,7 @@ configure_wm_sway_packages_aur:
   - gtklock # Swaylock equivalent
   - bemoji # Emoji picker
   - wtype # Type out the emoji, kinda broken, use wl-clipboard
-  - autotiling # Auto tiling for sway (think awesome/xmonad tiling modes)
+  # - autotiling # Auto tiling for sway (think awesome/xmonad tiling modes)
   # Fonts
   - otf-font-awesome-5
   # Themes

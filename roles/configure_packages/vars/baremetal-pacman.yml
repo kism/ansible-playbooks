@@ -5,13 +5,15 @@ configure_packages_to_install:
   - lsix
   - pacman-contrib # for pactree
   - terminus-font
+  - ly # display manager
   # Graphical applications
   - firefox
   - avahi
   - mousepad
   - hwinfo
-  - perl-rename
   - gnome-keyring
+  - blueman # bluetooth manager
+  # Fonts
   - noto-fonts
   - noto-fonts-cjk
   - noto-fonts-emoji
