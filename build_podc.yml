@@ -20,7 +20,7 @@
 
     # Purpose specific, required for switchover
     - configure_archivepodcast
-    - configure_archivepodcast_secrets
+    # - configure_archivepodcast_secrets
 
     # End
     # - configure_telegraf
