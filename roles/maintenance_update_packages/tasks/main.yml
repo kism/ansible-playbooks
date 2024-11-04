@@ -15,5 +15,5 @@
     insertafter: EOF
     mode: "0600"
 
-- name: Run pipx update routine if needed
+- name: Run docker update routine if needed
   ansible.builtin.include_tasks: "03-docker.yml"

@@ -1,8 +1,8 @@
 ---
-- name: Clear yum cache
-  ansible.builtin.command:
-    cmd: yum clean all
-  changed_when: false # Technically untrue
+# - name: Clear yum cache
+#   ansible.builtin.command:
+#     cmd: yum clean all
+#   changed_when: false # Technically untrue
 
 - name: Update DNF Cache, list updates
   ansible.builtin.dnf:

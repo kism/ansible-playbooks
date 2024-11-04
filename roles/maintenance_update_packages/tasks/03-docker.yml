@@ -2,13 +2,19 @@
 - name: Docker compose block
   when: docker_compose_paths is defined
   block:
-    - name: Take down docker compose
-      community.docker.docker_compose:
-        project_src: "{{ item }}"
-        state: absent
-      loop: "{{ docker_compose_paths }}"
+    # - name: Take down docker compose
+    #   community.docker.docker_compose:
+    #     project_src: "{{ item }}"
+    #     state: absent
+    #   loop: "{{ docker_compose_paths }}"
 
-    - name: Pull images for docker-compose
-      community.docker.docker_compose_v2_pull:
-        project_src: "{{ item }}"
+    # - name: Pull images for docker-compose
+    #   community.docker.docker_compose_v2_pull:
+    #     project_src: "{{ item }}"
+    #   loop: "{{ docker_compose_paths }}"
+
+    - name: Run docker compose pull for all paths
+      ansible.builtin.command:
+        cmd: "docker compose -f {{ item }}/docker-compose.yml pull"
       loop: "{{ docker_compose_paths }}"
+      changed_when: true
