@@ -39,6 +39,20 @@
       ansible.builtin.set_fact:
         debug_yaml_output: "{{ debug_yaml_output | combine({'ansible_facts': ansible_facts}) }}"
 
+    - name: Ensure that logs folder exists
+      ansible.builtin.file:
+        path: "{{ maintenance_gather_facts_logs_dir }}"
+        state: directory
+        mode: "0770"
+      changed_when: false # Running locally
+
+    - name: Ensure that .gitkeep exists
+      ansible.builtin.file:
+        path: "{{ maintenance_gather_facts_logs_dir }}/.gitkeep"
+        state: touch
+        mode: "0770"
+      changed_when: false # Running locally
+
     - name: Put facts in a nice yaml
       ansible.builtin.copy:
         dest: "{{ maintenance_gather_facts_facts_debug_file }}"
@@ -75,8 +89,8 @@
             ansible_play_name: "{{ ansible_play_name }}"
             playbook_dir: "{{ playbook_dir }}"
             role_path: "{{ role_path }}"
-            inventory_dir: "{{ inventory_dir }}"
-            inventory_file: "{{ inventory_file }}"
+            inventory_dir: "{{ inventory_dir | default('<Not Defined>') }}"
+            inventory_file: "{{ inventory_file | default('<Not Defined>') }}"
             ansible_search_path: "{{ ansible_search_path }}"
 
     - name: Put vars in a nice yaml

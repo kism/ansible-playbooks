@@ -14,7 +14,10 @@ secrets*.yml
 *.gz
 *.tar
 *.zip
+
+# --- Logs ---
 logs/*
+!logs/.gitkeep
 
 
 # --- Python ---

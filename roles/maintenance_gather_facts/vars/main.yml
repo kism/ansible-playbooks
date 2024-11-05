@@ -1,4 +1,5 @@
 ---
-maintenance_gather_facts_facts_debug_file: logs/{{ inventory_hostname }}_facts.yml
-maintenance_gather_facts_vars_debug_file: logs/{{ inventory_hostname }}_vars.yml
-maintenance_gather_facts_pacman_file: logs/{{ inventory_hostname }}_pacman.txt
+maintenance_gather_facts_logs_dir: logs
+maintenance_gather_facts_facts_debug_file: "{{ maintenance_gather_facts_logs_dir }}/{{ inventory_hostname }}_facts.yml"
+maintenance_gather_facts_vars_debug_file: "{{ maintenance_gather_facts_logs_dir }}/{{ inventory_hostname }}_vars.yml"
+maintenance_gather_facts_pacman_file: "{{ maintenance_gather_facts_logs_dir }}/{{ inventory_hostname }}_pacman.yml"

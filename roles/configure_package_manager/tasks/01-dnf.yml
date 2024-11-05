@@ -9,8 +9,6 @@
     name: epel-release
     state: present
 
-# community.general.dnf_config_manager ?
-
 - name: Oracle Linux Block
   when: ansible_distribution == "OracleLinux"
   block:
