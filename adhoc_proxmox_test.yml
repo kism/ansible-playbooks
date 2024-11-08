@@ -5,7 +5,6 @@
   become: false
   roles:
     # Preflight
-    - meta_include_secrets
 
     # Create Server
     # https://docs.ansible.com/ansible/latest/collections/community/general/proxmox_module.html

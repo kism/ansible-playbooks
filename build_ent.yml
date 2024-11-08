@@ -5,7 +5,6 @@
   become: true
   roles:
     # Preflight
-    - meta_include_secrets
     - maintenance_gather_proxmox_guests
     - create_proxmox_ct
     - maintenance_gather_facts

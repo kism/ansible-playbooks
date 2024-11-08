@@ -5,7 +5,6 @@
   become: true
   roles:
     # Preflight
-    - meta_include_secrets
     - create_opnsense_entries
     - maintenance_gather_proxmox_guests
     - create_proxmox_ct

@@ -16,7 +16,6 @@
   hosts: proxmoxhosts
   become: false
   roles:
-    - meta_include_secrets
     - maintenance_shutdown_all_proxmox_guests
 
 - name: Restart others (baremetal and public cloud)
@@ -30,6 +29,5 @@
   gather_facts: true
   become: true
   roles:
-    - meta_include_secrets
     - maintenance_wait_for_connection
     - configure_nvidia_driver

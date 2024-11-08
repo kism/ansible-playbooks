@@ -1,0 +1,36 @@
+---
+secret_email: "{{ lookup('bitwarden.secrets.lookup', '265a4fee-d565-4bee-aad8-b222006d3a0e') }}"
+secret_root_password_hash: "{{ lookup('bitwarden.secrets.lookup', 'c53d8631-abbe-4ef9-a30c-b222006d7448') }}"
+secret_myuser: "kism"
+secret_myuser_password_hash: "{{ lookup('bitwarden.secrets.lookup', '3ab33d3c-2302-40c5-b682-b222006e7ab5') }}"
+
+secret_duckdns: "{{ lookup('bitwarden.secrets.lookup', 'b7d9f383-d025-4c26-93ca-b222006eb3f2') }}"
+
+secret_influxdb_admin_username: "admin"
+secret_influxdb_admin_password: "{{ lookup('bitwarden.secrets.lookup', '86f8482d-8c5c-40ac-9d20-b222006eebd2') }}"
+secret_influxdb_admin_token: "{{ lookup('bitwarden.secrets.lookup', 'e8d9b1d8-2a78-414f-bda0-b222006f0304') }}"
+secret_influxdb_telegraf_write: "{{ lookup('bitwarden.secrets.lookup', 'faa9a6bd-c10c-49ea-b3d0-b222006f40c8') }}"
+secret_influxdb_telegraf_read: "{{ lookup('bitwarden.secrets.lookup', '77b66880-231b-4df5-9e3d-b222006f76e7') }}"
+secret_influxdb_geostat_write: "{{ lookup('bitwarden.secrets.lookup', '533e9fe8-3d97-403b-8859-b222006f8e75') }}"
+
+secret_geostat_path: "{{ lookup('bitwarden.secrets.lookup', 'e78f307b-ee94-43cb-bf74-b222006fc30b') }}"
+secret_maxmind_license: "{{ lookup('bitwarden.secrets.lookup', '424cfd14-24fb-45a5-a35e-b222006fef9a') }}"
+
+secret_notification_email: "{{ lookup('bitwarden.secrets.lookup', '349598d5-69dc-44c6-9558-b22200701c06') }}"
+secret_notification_email_password: "{{ lookup('bitwarden.secrets.lookup', '9bba64c2-4a77-4bcf-8262-b222007038a8') }}"
+
+secret_cloudflare_api_dns: "{{ lookup('bitwarden.secrets.lookup', '403c608c-85a3-487f-92ec-b22200708cd5') }}"
+
+secret_mullvad_user: "{{ lookup('bitwarden.secrets.lookup', '27ece857-7df1-42ee-ac10-b2220070b91c') }}"
+
+secret_filebeats_service_user: svc_filebeats
+secret_filebeats_service_password: "{{ lookup('bitwarden.secrets.lookup', 'b65ffe2a-8cc8-4dc5-9d0a-b2220070e592') }}"
+secret_elastalert_api_key: "{{ lookup('bitwarden.secrets.lookup', '798505a3-83c3-4b15-8c58-b2220070ffd7') }}"
+
+secret_elastic_agent_linux_enrolement: "{{ lookup('bitwarden.secrets.lookup', 'c1e90fad-d9fb-4f70-a2a9-b22200714ba2') }}"
+secret_discord_webhook_url: "{{ lookup('bitwarden.secrets.lookup', '9e8ffdfc-98d6-4c5f-b671-b2220071650b') }}"
+
+secret_proxmox_password: "{{ lookup('bitwarden.secrets.lookup', '5a4138a6-ff68-4ef8-9a90-b2220071812e') }}"
+
+secret_opnsense_api_key: "{{ lookup('bitwarden.secrets.lookup', 'd81879b8-9cda-4b2a-8fa9-b2220071aa24') }}"
+secret_opnsense_api_secret: "{{ lookup('bitwarden.secrets.lookup', 'ef7aac02-4e5d-48b1-877a-b2220071c304') }}"

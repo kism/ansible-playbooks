@@ -5,7 +5,6 @@
   become: true
   roles:
     # Preflight
-    - meta_include_secrets
 
     # Onboard Server
     - meta_onboard

@@ -5,7 +5,6 @@
   become: true
   roles:
     # Preflight
-    - meta_include_secrets
 
     # Configure Nvidia drivers
     - configure_nvidia_driver

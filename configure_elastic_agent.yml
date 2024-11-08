@@ -5,7 +5,6 @@
   become: true
   roles:
     # Preflight
-    - meta_include_secrets
 
     # Purpose specific
     - configure_elastic_agent

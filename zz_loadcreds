@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+function echo_stderr() { # This is to avoid the output being captured by eval
+    echo "$@" 1>&2
+}
+
+echo_stderr "Use this with: \$(./zz_loadcreds.sh)"
+if [ -z "$BWS_ACCESS_TOKEN" ]; then
+    echo_stderr -n "BWS_ACCESS_TOKEN: "
+    read -rs BWS_ACCESS_TOKEN
+    BWS_ACCESS_TOKEN=${BWS_ACCESS_TOKEN//[[:space:]]/}
+else
+    echo_stderr "Environment variable is already set, not prompting"
+    echo_stderr "Use 'unset BWS_ACCESS_TOKEN' to reset"
+fi
+
+echo "export BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN"
