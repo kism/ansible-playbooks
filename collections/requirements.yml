@@ -17,3 +17,6 @@ collections:
 
   - name: bitwarden.secrets
     source: https://galaxy.ansible.com
+
+  - name: hetzner.hcloud
+    source: https://galaxy.ansible.com
