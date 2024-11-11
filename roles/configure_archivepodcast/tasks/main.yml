@@ -1,6 +1,6 @@
 ---
-# - name: User Setup
-#   ansible.builtin.include_tasks: "01-user.yml"
+- name: User Setup
+  ansible.builtin.include_tasks: "01-user.yml"
 
 - name: Nginx setup # Required for switchover
   ansible.builtin.include_tasks: "03-nginx.yml"
@@ -11,8 +11,8 @@
 # - name: Geostat Setup
 #   ansible.builtin.include_tasks: "05-geostat.yml"
 
-# - name: Certbot Setup # Required for switchover
-#   ansible.builtin.include_tasks: "06-certbot.yml"
+- name: Certbot Setup # Required for switchover
+  ansible.builtin.include_tasks: "06-certbot.yml"
 
 - name: System Setup
   ansible.builtin.include_tasks: "07-system.yml"

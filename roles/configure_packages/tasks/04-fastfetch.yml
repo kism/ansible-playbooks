@@ -6,13 +6,13 @@
         name: fastfetch
         state: present
 
-    - name: Remove neofetch
+    - name: Remove neofetch if needed
       ansible.builtin.package:
         name: neofetch
         state: absent
 
   rescue:
-    - name: Remove neofetch
+    - name: Install neofetch
       ansible.builtin.package:
         name: neofetch
         state: present

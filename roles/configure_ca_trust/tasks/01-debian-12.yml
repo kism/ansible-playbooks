@@ -1,5 +1,5 @@
 ---
-- name: Copy the kgadmins root ca certificate rule Debian
+- name: Copy the kg.lan root ca certificate rule {{ ansible_distribution | lower + ' ' + ansible_distribution_major_version }}
   ansible.builtin.copy:
     src: files/kglan_root.cer
     dest: /usr/local/share/ca-certificates/kglan_root.crt

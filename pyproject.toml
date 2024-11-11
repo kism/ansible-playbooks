@@ -12,6 +12,8 @@ pywinrm = "*"
 proxmoxer = "^2.0.1"
 httpx = "*"
 bitwarden-sdk = "*"
+python-dateutil = "*"
+requests = "*"
 
 [tool.poetry.group.test.dependencies]
 ansible-lint = { version = "*", markers = "platform_system != 'Windows'" }

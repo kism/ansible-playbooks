@@ -34,3 +34,8 @@ secret_proxmox_password: "{{ lookup('bitwarden.secrets.lookup', '5a4138a6-ff68-4
 
 secret_opnsense_api_key: "{{ lookup('bitwarden.secrets.lookup', 'd81879b8-9cda-4b2a-8fa9-b2220071aa24') }}"
 secret_opnsense_api_secret: "{{ lookup('bitwarden.secrets.lookup', 'ef7aac02-4e5d-48b1-877a-b2220071c304') }}"
+
+secret_hetzner_cloud_token_test: "{{ lookup('bitwarden.secrets.lookup', 'e3664c58-5e80-44f4-9427-b222007f6213') }}"
+secret_hetzner_cloud_token_prod: "{{ lookup('bitwarden.secrets.lookup', 'c59c0264-e837-4a52-b405-b222005546da') }}"
+
+secret_ip_addresses: "{{ lookup('bitwarden.secrets.lookup', 'f20ca68b-1907-4d74-823d-b2250052b1ff') | split(',') }}"

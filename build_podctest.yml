@@ -1,13 +1,10 @@
 ---
 - name: Setup elk host
-  hosts: podctest
+  hosts: all
   gather_facts: false
   become: true
+
   roles:
-    # Preflight
-    - create_opnsense_entries
-    - maintenance_gather_proxmox_guests
-    - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard
@@ -20,4 +17,4 @@
 
     # Purpose specific, required for switchover
     - configure_archivepodcast
-    - configure_archivepodcast_secrets
+    # - configure_archivepodcast_secrets

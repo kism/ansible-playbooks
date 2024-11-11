@@ -6,13 +6,13 @@
       - python3.11-pip
     state: present
 
-- name: Install pipx
-  become: true
-  become_user: podcasto
-  ansible.builtin.pip:
-    name: pipx
-    state: present
-    executable: pip3.11
+# - name: Install pipx
+#   become: true
+#   become_user: podcasto
+#   ansible.builtin.pip:
+#     name: pipx
+#     state: present
+#     executable: pip3.11
 
 - name: Install poetry python package
   become: true
@@ -38,13 +38,6 @@
     version: develop
   notify: Restart archivepodcast
 
-# - name: Git config allowlistapp
-#   become: true
-#   become_user: podcasto
-#   community.general.git_config:
-#     name: safe.directory
-#     value: /opt/archivepodcast
-
 - name: Run poetry sync
   become: true
   become_user: podcasto
@@ -53,15 +46,6 @@
     chdir: /opt/archivepodcast
   notify: Restart archivepodcast
   changed_when: true # Safe assumption, no way to know
-
-# - name: Copy archivepodcast config
-#   ansible.builtin.copy:
-#     src: files/{{ ansible_host }}.json
-#     dest: /opt/archivepodcast/instance/config.toml
-#     owner: podcasto
-#     group: root
-#     mode: "0660"
-#   notify: Restart archivepodcast # One day this will be reload...
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast

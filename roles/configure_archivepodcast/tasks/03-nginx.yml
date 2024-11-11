@@ -26,9 +26,9 @@
     - /etc/nginx/sites-enabled/
 
 - name: Copy nginx site confs
-  ansible.builtin.copy:
-    src: files/nginx-archivepodcast.conf
-    dest: /etc/nginx/sites-available/
+  ansible.builtin.template:
+    src: templates/nginx-archivepodcast.conf.j2
+    dest: /etc/nginx/sites-available/nginx-archivepodcast.conf
     mode: "0660"
   notify:
     - Restart nginx
@@ -40,9 +40,3 @@
     state: link
   notify:
     - Restart nginx
-
-- name: Set server address
-  ansible.builtin.replace:
-    path: /etc/nginx/sites-available/nginx-archivepodcast.conf
-    regexp: secret_domain
-    replace: "{{ secret_domain }}"

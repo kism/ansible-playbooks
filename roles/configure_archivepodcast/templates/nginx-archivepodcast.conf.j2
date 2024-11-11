@@ -1,0 +1,37 @@
+map $http_user_agent $is_feedly {
+    default 0;
+    "~*Feedly/1.0" 1;
+    "~*FeedlyApp/1.0" 1;
+    "~*FeedlyBot/1.0" 1;
+}
+
+server {
+    server_name {{ secret_domain }};
+    location / {
+        if ($is_feedly) {
+            return 410;
+        }
+        proxy_pass http://127.0.0.1:5000/;
+    }
+
+    listen [::]:443 ssl ipv6only=on;
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ secret_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ secret_domain }}/privkey.pem;
+    {# include /etc/letsencrypt/options-ssl-nginx.conf; #}
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+}
+
+
+server {
+    if ($host = {{ secret_domain }}) {
+        return 301 https://$host$request_uri;
+    }
+
+
+    server_name {{ secret_domain }};
+    listen       0.0.0.0:80;
+    listen       [::]:80;
+    return 404;
+}

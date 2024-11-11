@@ -28,6 +28,12 @@
   register: command_output
   changed_when: false or "Certificate not yet due for renewal" not in command_output.stdout
 
+- name: Generate dhparms
+  ansible.builtin.command:
+    cmd: openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
+  creates: /etc/letsencrypt/ssl-dhparams.pem
+
+
 - name: Debug the command output
   ansible.builtin.debug:
     var: command_output.stdout_lines
