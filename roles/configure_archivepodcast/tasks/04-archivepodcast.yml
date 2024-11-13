@@ -1,9 +1,7 @@
 ---
-- name: Install pip apt
+- name: Install python
   ansible.builtin.package:
-    name:
-      - python3.11
-      - python3.11-pip
+    name: python3.11
     state: present
 
 # - name: Install pipx
@@ -18,7 +16,7 @@
   become: true
   become_user: podcasto
   community.general.pipx:
-    name: poetry
+    name: uv
 
 - name: Attempt to change ownership on /opt/archivepodcast
   ansible.builtin.file:
@@ -38,18 +36,18 @@
     version: develop
   notify: Restart archivepodcast
 
-- name: Run poetry sync
+- name: Run uv sync
   become: true
   become_user: podcasto
   ansible.builtin.command:
-    cmd: ~/.local/bin/poetry install --sync --only main
+    cmd: ~/.local/bin/uv sync --frozen --no-install-project --no-group dev --no-group test
     chdir: /opt/archivepodcast
   notify: Restart archivepodcast
   changed_when: true # Safe assumption, no way to know
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
-  changed_when: true # This command only matters if another task has changed files
+  changed_when: false # This command only matters if another task has changed files
 
 - name: Create archivepodcast log file
   ansible.builtin.file:

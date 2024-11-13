@@ -8,7 +8,7 @@
     - maintenance_gather_facts
 
     # Onboard
-    - meta_onboard
+    # - meta_onboard
 
     # Purpose specific
     # - configure_nginx

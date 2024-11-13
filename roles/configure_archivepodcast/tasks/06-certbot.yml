@@ -31,8 +31,22 @@
 - name: Generate dhparms
   ansible.builtin.command:
     cmd: openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
-  creates: /etc/letsencrypt/ssl-dhparams.pem
+    creates: /etc/letsencrypt/ssl-dhparams.pem
 
+- name: Block for nginx ssl options
+  block:
+    - name: Grab nginx config from github
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+        dest: /etc/letsencrypt/options-ssl-nginx.conf
+        mode: "0644"
+
+  rescue:
+    - name: Just create an empty file
+      ansible.builtin.file:
+        path: /etc/letsencrypt/options-ssl-nginx.conf
+        state: touch
+        mode: "0644"
 
 - name: Debug the command output
   ansible.builtin.debug:
