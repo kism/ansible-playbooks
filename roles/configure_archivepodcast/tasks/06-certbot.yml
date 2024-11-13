@@ -33,6 +33,11 @@
     cmd: openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
     creates: /etc/letsencrypt/ssl-dhparams.pem
 
+- name: Set permissions on dhparams
+  ansible.builtin.file:
+    path: /etc/letsencrypt/ssl-dhparams.pem
+    mode: "0644" # This is the certbot default
+
 - name: Block for nginx ssl options
   block:
     - name: Grab nginx config from github
