@@ -1,2 +1,3 @@
 ---
 secret_domain: "{{ lookup('bitwarden.secrets.lookup', '633d44cf-bdf4-4de4-9c00-b222007e2bc9') }}"
+secret_config_toml: "{{ lookup('bitwarden.secrets.lookup', 'f1784b15-33a0-41ab-a12d-b227003f7c4e') }}"
