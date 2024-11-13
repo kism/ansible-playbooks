@@ -49,13 +49,13 @@
   ansible.builtin.command: restorecon -Rv /opt/archivepodcast
   changed_when: false # This command only matters if another task has changed files
 
-- name: Create archivepodcast log file
+- name: Create archivepodcast log dir
   ansible.builtin.file:
-    path: /var/log/archivepodcast.log
-    state: touch
+    path: /var/log/archivepodcast
+    state: directory
     owner: podcasto
     group: podcasto
-    mode: "0664"
+    mode: "0770"
   notify: Restart archivepodcast
 
 - name: Copy systemd service
