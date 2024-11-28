@@ -3,16 +3,13 @@
 #   ansible.builtin.include_tasks: "01-user.yml"
 
 # - name: Nginx setup # Required for switchover
-#   ansible.builtin.include_tasks: "03-nginx.yml"
+#   ansible.builtin.include_tasks: "02-nginx.yml"
 
 - name: Archivepodcast setup
-  ansible.builtin.include_tasks: "04-archivepodcast.yml"
-
-# - name: Geostat Setup
-#   ansible.builtin.include_tasks: "05-geostat.yml"
+  ansible.builtin.include_tasks: "03-archivepodcast.yml"
 
 - name: Certbot Setup # Required for switchover
-  ansible.builtin.include_tasks: "06-certbot.yml"
+  ansible.builtin.include_tasks: "04-certbot.yml"
 
 - name: System Setup
-  ansible.builtin.include_tasks: "07-system.yml"
+  ansible.builtin.include_tasks: "05-system.yml"

@@ -11,9 +11,9 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_nginx
-    - configure_fail2ban
-    - configure_ffmpeg
+    # - configure_nginx
+    # - configure_fail2ban
+    # - configure_ffmpeg
 
     # Purpose specific, required for switchover
     - configure_archivepodcast

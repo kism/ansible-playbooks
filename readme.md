@@ -108,6 +108,7 @@ skip_ansible_lint
 * ~~make repo for kierangee.au~~
 * better server packages install
 * figure out configure_concept_baremetal
+* remove geostat
 
 ## do ~~later~~ never
 

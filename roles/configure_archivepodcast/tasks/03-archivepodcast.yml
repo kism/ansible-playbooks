@@ -32,8 +32,8 @@
   ansible.builtin.git:
     repo: https://github.com/kism/archivepodcast
     dest: /opt/archivepodcast
-    single_branch: true
-    version: develop
+    single_branch: false
+    version: main
   notify: Restart archivepodcast
 
 - name: Run uv sync
@@ -64,6 +64,14 @@
     dest: /etc/systemd/system/archivepodcast.service
     mode: "0644"
   notify: Restart archivepodcast
+
+- name: Create instance folder
+  ansible.builtin.file:
+    path: /opt/archivepodcast/instance
+    state: directory
+    owner: podcasto
+    group: podcasto
+    mode: "0770"
 
 - name: Copy config
   ansible.builtin.copy:
