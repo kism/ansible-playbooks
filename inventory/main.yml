@@ -25,9 +25,6 @@ ansible_main:
     rproxy:
       ansible_host: rproxy.kg.lan
       ansible_host_description: Reverse Proxy
-    podc:
-      ansible_host: podc.kg.lan
-      ansible_host_description: Podcast Archive
     code:
       ansible_host: code.kg.lan
       ansible_host_description: VSCode Remote
@@ -40,9 +37,6 @@ ansible_main:
     dpshub:
       ansible_host: dpshub.kg.lan
       ansible_host_description: DPSHUB Workstation
-    podctest:
-      ansible_host: podctest.kg.lan
-      ansible_host_description: Podcast Archive Test
     x230t:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
@@ -63,9 +57,6 @@ proxmoxhosts:
   hosts:
     pvewill:
     pvematt:
-publiccloudvms:
-  hosts:
-    podc:
 baremetal:
   hosts:
     pvewill:
