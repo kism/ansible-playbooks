@@ -4,13 +4,13 @@
     name: python3.11
     state: present
 
-# - name: Install pipx
-#   become: true
-#   become_user: podcasto
-#   ansible.builtin.pip:
-#     name: pipx
-#     state: present
-#     executable: pip3.11
+- name: Install pipx
+  become: true
+  become_user: podcasto
+  ansible.builtin.pip:
+    name: pipx
+    state: present
+    executable: pip3.11
 
 - name: Install poetry python package
   become: true

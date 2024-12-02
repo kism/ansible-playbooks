@@ -1,0 +1,16 @@
+---
+- name: Copy over influxdb repo
+  ansible.builtin.copy:
+    src: files/influxdb.repo
+    dest: /etc/yum.repos.d/influxdb.repo
+    mode: "644"
+
+- name: Import InfluxDB GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://repos.influxdata.com/influxdb.key
+
+- name: Install telegraf
+  ansible.builtin.dnf:
+    name: telegraf
+    state: present

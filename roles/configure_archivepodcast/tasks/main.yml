@@ -1,9 +1,9 @@
 ---
-# - name: User Setup
-#   ansible.builtin.include_tasks: "01-user.yml"
+- name: User Setup
+  ansible.builtin.include_tasks: "01-user.yml"
 
-# - name: Nginx setup # Required for switchover
-#   ansible.builtin.include_tasks: "02-nginx.yml"
+- name: Nginx setup # Required for switchover
+  ansible.builtin.include_tasks: "02-nginx.yml"
 
 - name: Archivepodcast setup
   ansible.builtin.include_tasks: "03-archivepodcast.yml"

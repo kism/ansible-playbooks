@@ -1,3 +1,4 @@
 ---
-target_host_ip_address:
-target_host_mac_address:
+secret_domain: "{{ lookup('bitwarden.secrets.lookup', 'dc9ed29f-e186-4a8e-93a5-b2220079be4e') }}"
+secret_config_toml: "{{ lookup('bitwarden.secrets.lookup', '30c21253-9129-46a8-83c6-b222007abd5d') }}"
+ansible_host_description: "Podcast Archive"

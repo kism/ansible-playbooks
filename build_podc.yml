@@ -1,27 +1,24 @@
 ---
 - name: Setup archivepodcast on podc
-  hosts: podc,podc-dev
+  hosts: podc
   gather_facts: false
   become: true
   roles:
     # Preflight
-    - maintenance_gather_proxmox_guests
-    - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
     # - meta_onboard
 
-    # Purpose specific
+    # # Purpose specific
     # - configure_nginx
     # - configure_fail2ban
     # - configure_ffmpeg
 
     # Purpose specific, required for switchover
     - configure_archivepodcast
-    # - configure_archivepodcast_secrets
 
     # End
-    # - configure_telegraf
-    # - configure_elastic_agent
+    - configure_telegraf
+    - configure_elastic_agent
     - maintenance_print_reminders
