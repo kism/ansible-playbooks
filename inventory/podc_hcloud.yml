@@ -1,6 +1,6 @@
 ---
 plugin: hetzner.hcloud.hcloud
-api_token: "{{ lookup('bitwarden.secrets.lookup', 'e3664c58-5e80-44f4-9427-b222007f6213') }}"
+api_token: "{{ lookup('bitwarden.secrets.lookup', 'c59c0264-e837-4a52-b405-b222005546da') }}"
 groups:
   all: true
   ansible_main: true
