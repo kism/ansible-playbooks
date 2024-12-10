@@ -72,8 +72,8 @@
       delegate_to: "{{ proxmox_target_node }}"
       become: true
       become_user: root
-      ansible.builtin.copy:
-        src: init_linux.sh
+      ansible.builtin.get_url:
+        url: "{{ user_data_url }}"
         dest: "/tmp/{{ inventory_hostname }}_init_linux.sh"
         mode: "0700"
 
