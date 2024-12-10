@@ -9,6 +9,8 @@ services:
       - 8080:8080 # qBittorrent webui
       - 6881:6881 # qBittorrent listening port
       - 6881:6881/udp # qBittorrent listening port/udp
+    devices:
+      - /dev/net/tun:/dev/net/tun
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
       - OPENVPN_USER={{ secret_mullvad_user }}
