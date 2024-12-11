@@ -95,9 +95,9 @@ nonansible:
       ansible_host_description: Kieran's Kobo Clara HD
       target_host_ip_address: 10.42.0.73
       target_host_mac_address: 58:B0:D4:4A:4B:75
-    cc:
-      ansible_host: cc.kg.lan
-      ansible_host_description: Chromecast
+    kmbp:
+      ansible_host: kmbp.kg.lan
+      ansible_host_description: Kieran's MacBook Pro (Ethernet)
       target_host_ip_address: 10.42.0.74
       target_host_mac_address: 00:E0:4C:70:C2:AE
     kgns:
