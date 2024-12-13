@@ -18,11 +18,11 @@ nfs_client_mounts:
     host: pvematt.kg.lan
     share: /srv/Amarant/backups
 nfs_server_exports: |-
-  /srv/Beatrix pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash)
-  /srv/Quina   pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash)
-  /srv/Marcus  pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash)
-  /srv/Steiner pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash)
-  /srv/Blank   pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Beatrix pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash) kmbp.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Quina   pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash) kmbp.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Marcus  pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash) kmbp.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Steiner pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash) kmbp.kg.lan(rw,sync,no_subtree_check,no_root_squash)
+  /srv/Blank   pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash) kmbp.kg.lan(rw,sync,no_subtree_check,no_root_squash)
 disks_btrfs:
   Quina: 4054a595-ff86-4e6e-9bb4-d9b07ae1a7ef
   Marcus: fe4b7442-115e-459e-8339-00009682bd32
