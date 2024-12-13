@@ -1,0 +1,7 @@
+---
+- name: Setup ollama host
+  hosts: all
+  gather_facts: false
+  become: true
+  roles:
+    - create_opnsense_entries

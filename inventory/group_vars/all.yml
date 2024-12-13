@@ -1,4 +1,10 @@
 ---
+opnsense_firewall: "opnsense.{{ homelab_domain_internal }}"
+homelab_domain_external: kierangee.au
+homelab_domain_internal: kg.lan
+target_host_subnet: 10.42.0.0/24
+
+# Bitwarden secrets
 secret_email: "{{ lookup('bitwarden.secrets.lookup', '265a4fee-d565-4bee-aad8-b222006d3a0e') }}"
 secret_root_password_hash: "{{ lookup('bitwarden.secrets.lookup', 'c53d8631-abbe-4ef9-a30c-b222006d7448') }}"
 secret_myuser: "kism"
