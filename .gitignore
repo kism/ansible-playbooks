@@ -1,3 +1,7 @@
+#old
+poetry.lock
+poetry.toml
+
 *.asc
 secrets.yml
 secrets*.yml

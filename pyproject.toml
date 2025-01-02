@@ -1,19 +1,15 @@
-[tool.poetry]
+[project]
 name = "ansible-playbooks"
-description = "Kieran's ansible playbooks, for his homelab"
-authors = ["Kieran Gee <kieran.lost.the.game@gmail.com>"]
-readme = "README.md"
-package-mode = false
+version = "0.1.0"
+requires-python = ">=3.11, <3.13"
+dependencies = [
+    "ansible",
+    "pywinrm",
+    "proxmoxer",
+    "httpx",
+    "bitwarden-sdk",
+    "python-dateutil",
+    "requests",
+    "ansible-lint"
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-ansible = { version = "*", markers = "platform_system != 'Windows'" }
-pywinrm = "*"
-proxmoxer = "^2.0.1"
-httpx = "*"
-bitwarden-sdk = "*"
-python-dateutil = "*"
-requests = "*"
-
-[tool.poetry.group.test.dependencies]
-ansible-lint = { version = "*", markers = "platform_system != 'Windows'" }
