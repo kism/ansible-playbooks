@@ -10,6 +10,6 @@ dependencies = [
     "bitwarden-sdk",
     "python-dateutil",
     "requests",
-    "ansible-lint"
+    "ansible-lint",
 ]
 
