@@ -99,7 +99,7 @@ nonansible:
       ansible_host: kmbp.kg.lan
       ansible_host_description: Kieran's MacBook Pro (Ethernet)
       target_host_ip_address: 10.42.0.74
-      target_host_mac_address: 00:E0:4C:70:C2:AE
+      target_host_mac_address: 6c:1f:f7:19:7a:df
     kgns:
       ansible_host: kgns.kg.lan
       ansible_host_description: Kieran's Nintendo Switch
