@@ -6,9 +6,17 @@
       - python3.11-pip
     state: present
 
-- name: Install poetry python package
+- name: Install pipx
+  become: true
+  become_user: podcasto
   ansible.builtin.pip:
-    name: poetry
+    name: pipx
+    state: present
+    executable: pip3.11
+
+- name: Install poetry python package
+  community.general.pipx:
+    name: uv
 
 - name: Create ansibleinventorycmdb directory
   ansible.builtin.file:
@@ -54,11 +62,9 @@
     recurse: true
     mode: u+rwX,g+rwX,o=
 
-- name: Run poetry
-  become: true
-  become_user: nginx
+- name: Run uv sync
   ansible.builtin.command:
-    cmd: /usr/local/bin/poetry install --sync --only main
+    cmd: ~/.local/bin/uv sync --frozen --no-install-project --no-group dev --no-group test
     chdir: /opt/ansibleinventorycmdb
   notify: Restart ansibleinventorycmdb
   changed_when: true # Safe assumption, no way to know
