@@ -31,7 +31,7 @@
   ansible.builtin.apt_repository:
     repo: |-
       deb
-      [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/{{ key_name }}.gpg]
+      [arch=amd64,arm64 signed-by=/etc/apt/keyrings/{{ key_name }}.gpg]
       https://artifacts.elastic.co/packages/8.x/apt stable main
     state: present
     mode: "0644"
