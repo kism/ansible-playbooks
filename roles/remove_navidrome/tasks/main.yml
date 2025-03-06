@@ -1,0 +1,22 @@
+---
+- name: Stop navidrome service
+  ansible.builtin.systemd:
+    name: navidrome
+    state: stopped
+    enabled: no
+
+- name: Disable firewall rules
+  ansible.builtin.firewalld:
+    service: navidrome
+    permanent: true
+    state: disabled
+    immediate: true
+
+- name: Remove Items
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/opt/navidrome"
+    - "/var/lib/navidrome"
+    - "/etc/systemd/system/navidrome.service"
