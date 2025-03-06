@@ -1,0 +1,51 @@
+---
+- name: Create dir, give it the jellyfin user, and set permissions
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ configure_navidrome_user }}"
+    group: "{{ configure_navidrome_user }}"
+    mode: "0755"
+  loop:
+    - "{{ configure_navidrome_working_dir }}"
+    - "{{ configure_navidrome_install_dir }}"
+
+- name: Grab the tar.gz and extract to appropriate dir in /opt
+  ansible.builtin.unarchive:
+    src: "{{ configure_navidrome_url }}"
+    dest: "{{ configure_navidrome_install_dir }}"
+    remote_src: yes
+
+- name: Create config file if it doesn't exist
+  ansible.builtin.template:
+    src: "navidrome.toml.j2"
+    dest: "{{ configure_navidrome_working_dir }}/navidrome.toml"
+    owner: "{{ configure_navidrome_user }}"
+    group: "{{ configure_navidrome_user }}"
+    mode: "0644"
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: "navidrome.service.j2"
+    dest: "/etc/systemd/system/navidrome.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Start and enable the service
+  ansible.builtin.systemd:
+    name: navidrome
+    state: restarted
+    enabled: true
+
+- name: Create firewall rules
+  ansible.builtin.firewalld:
+    service: navidrome
+    permanent: true
+    state: enabled
+    immediate: true
+

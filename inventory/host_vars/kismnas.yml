@@ -23,3 +23,5 @@ proxmox_ct_conf_extra:
   - "mp3: /srv/Vivi,mp=/srv/Vivi"
 proxmox_ct_features:
   - nesting=true
+configure_navidrome_music_folder: /srv/Vivi/Music/Managed
+configure_navidrome_user: jellyfin

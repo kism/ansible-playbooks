@@ -26,6 +26,8 @@
   },
   "ansible.python.interpreterPath": "/home/kism/src/ansible-playbooks/.venv/bin/python",
   "cSpell.words": [
-    "CMDB"
+    "CMDB",
+    "firewalld",
+    "navidrome"
   ]
 }

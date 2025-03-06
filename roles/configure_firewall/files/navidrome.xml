@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Navidrome</short>
+  <description>Navidrome Music Server and Streamer compatible with Subsonic/Airsonic</description>
+  <port protocol="tcp" port="4533" />
+</service>

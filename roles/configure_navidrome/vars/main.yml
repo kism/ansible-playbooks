@@ -1,0 +1,6 @@
+---
+configure_navidrome_version: "0.54.5"
+configure_navidrome_user: "jellyfin"
+configure_navidrome_url: https://github.com/navidrome/navidrome/releases/download/v{{ configure_navidrome_version }}/navidrome_{{ configure_navidrome_version }}_linux_amd64.tar.gz
+configure_navidrome_working_dir: /var/lib/navidrome
+configure_navidrome_install_dir: /opt/navidrome
