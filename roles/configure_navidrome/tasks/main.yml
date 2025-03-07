@@ -14,7 +14,7 @@
   ansible.builtin.unarchive:
     src: "{{ configure_navidrome_url }}"
     dest: "{{ configure_navidrome_install_dir }}"
-    remote_src: yes
+    remote_src: true
 
 - name: Create config file if it doesn't exist
   ansible.builtin.template:
@@ -43,9 +43,8 @@
     enabled: true
 
 - name: Create firewall rules
-  ansible.builtin.firewalld:
+  ansible.posix.firewalld:
     service: navidrome
     permanent: true
     state: enabled
     immediate: true
-

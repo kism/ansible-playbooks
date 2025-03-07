@@ -3,10 +3,10 @@
   ansible.builtin.systemd:
     name: navidrome
     state: stopped
-    enabled: no
+    enabled: false
 
 - name: Disable firewall rules
-  ansible.builtin.firewalld:
+  ansible.posix.firewalld:
     service: navidrome
     permanent: true
     state: disabled
