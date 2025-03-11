@@ -40,6 +40,9 @@ ansible_main:
     x230t:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
+    mediaharbor:
+      ansible_host: 10.42.0.129
+      ansible_host_description: Media Harbor
 
 # Server Type
 proxmoxvms:

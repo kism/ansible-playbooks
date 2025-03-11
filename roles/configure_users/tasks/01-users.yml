@@ -39,7 +39,7 @@
     name: "{{ item.key }}"
     password: "{{ item.value }}"
     create_home: true
-  no_log: true
+  no_log: false
   with_dict:
     kism: "{{ secret_myuser_password_hash }}"
     root: "{{ secret_root_password_hash }}"

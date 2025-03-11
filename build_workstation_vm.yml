@@ -1,0 +1,11 @@
+---
+- name: Setup rproxy, reverse proxy
+  hosts: mediaharbor
+  gather_facts: false
+  become: true
+  roles:
+    # Preflight
+    - maintenance_gather_facts
+
+    # Onboard Server
+    - meta_onboard
