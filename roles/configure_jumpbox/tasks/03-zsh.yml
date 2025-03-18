@@ -15,22 +15,6 @@
   become: true
   become_user: kism
   block:
-    - name: Create antigen folder
-      ansible.builtin.file:
-        path: "{{ getent_passwd['kism'][4] }}/.antigen"
-        state: directory
-        owner: "{{ homelab_my_username }}"
-        group: "{{ homelab_my_username }}"
-        mode: "0770"
-
-    - name: Download antigen
-      ansible.builtin.get_url:
-        url: https://git.io/antigen
-        dest: "{{ getent_passwd['kism'][4] }}/.antigen/antigen.zsh"
-        owner: "{{ homelab_my_username }}"
-        group: "{{ homelab_my_username }}"
-        mode: "0770"
-
     - name: Copy bash config
       ansible.builtin.copy:
         src: files/jumpbox.zshrc
@@ -38,11 +22,6 @@
         owner: "{{ homelab_my_username }}"
         group: "{{ homelab_my_username }}"
         mode: "0644"
-
-    - name: Setup zsh
-      ansible.builtin.command:
-        cmd: zsh -c ". {{ getent_passwd[homelab_my_username][4] }}/.zshrc; antigen update; antigen reset"
-      changed_when: false # Too hard to tell
 
     - name: Add reminder in bashrc
       ansible.builtin.lineinfile:
