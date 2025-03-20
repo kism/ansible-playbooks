@@ -40,9 +40,7 @@ ansible_main:
     x230t:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
-    mediaharbor:
-      ansible_host: 10.42.0.129
-      ansible_host_description: Media Harbor
+
 
 # Server Type
 proxmoxvms:
@@ -73,11 +71,6 @@ nonansible:
       ansible_host_description: OPNsense Router
       target_host_ip_address: 10.42.0.1
       target_host_mac_address: 58:9C:FC:10:FF:D0
-    h2:
-      ansible_host: h2.kg.lan
-      ansible_host_description: Old Odroid H2
-      target_host_ip_address: 10.42.0.44
-      target_host_mac_address:
     sallys-air:
       ansible_host: sallys-air.kg.lan
       ansible_host_description: Sally's MacBook Air
