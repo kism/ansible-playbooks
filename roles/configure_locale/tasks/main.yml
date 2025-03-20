@@ -23,3 +23,14 @@
   when: timezone == 'awst'
   community.general.timezone:
     name: Australia/Perth
+
+- name: Copy ghostty terminfo
+  ansible.builtin.copy:
+    src: files/ghostty.infocmp
+    dest: "/tmp/ghostty.infocmp"
+    mode: "0644"
+
+- name: Install ghostty terminfo
+  ansible.builtin.command:
+    cmd: "tic -x /tmp/ghostty.infocmp"
+  changed_when: false # Too difficult

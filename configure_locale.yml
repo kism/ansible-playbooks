@@ -1,0 +1,9 @@
+---
+- name: Setup nvidia driver on hosts
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    # Preflight
+
+    - configure_locale
