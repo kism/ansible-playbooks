@@ -5,8 +5,8 @@
   become: true
   roles:
     # Preflight
-    - maintenance_gather_proxmox_guests
-    - create_proxmox_ct
+    # - maintenance_gather_proxmox_guests
+    # - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
@@ -14,8 +14,9 @@
 
     # Purpose Specific
     # - configure_docker
-    - configure_ffmpeg
+    # - configure_ffmpeg
     # - configure_dev_environment
+    - configure_xrdp
 
     # End
     # - configure_telegraf

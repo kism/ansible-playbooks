@@ -1,0 +1,48 @@
+---
+- name: Install xrdp dnf
+  ansible.builtin.dnf:
+    name:
+      - xrdp
+      - xfce-polkit
+      # - xfce4-panel
+      # - xfce4-session
+      # - xfce4-settings
+      # - xfce4-terminal
+      - xfdesktop
+      - xfwm4
+
+    state: present
+    install_weak_deps: false
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install xrdp apt
+  ansible.builtin.apt:
+    name:
+      - xrdp
+      - xfce4
+      - xfwm4
+    state: present
+    install_recommends: false
+  when: ansible_pkg_mgr == 'apt'
+
+- name: Add xrdp to the ssl group
+  ansible.builtin.user:
+    name: xrdp
+    groups: ssl-cert
+
+- name: Update-alternative x-session-manager
+  community.general.alternatives:
+    name: x-session-manager
+    path: /usr/bin/startxfce4
+
+- name: Enable and start the xrdp service
+  ansible.builtin.systemd:
+    name: xrdp
+    enabled: true
+    state: started
+
+- name: Enable and start the xrdp-sesman service
+  ansible.builtin.systemd:
+    name: xrdp-sesman
+    enabled: true
+    state: started
