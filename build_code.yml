@@ -16,7 +16,6 @@
     # - configure_docker
     # - configure_ffmpeg
     # - configure_dev_environment
-    - configure_xrdp
 
     # End
     # - configure_telegraf

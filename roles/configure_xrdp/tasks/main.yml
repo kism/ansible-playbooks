@@ -1,15 +1,24 @@
 ---
+# sudo dnf install @base-x
+# sudo yum install -y @xfce-desktop  sddm --exclude="gdm*" --exclude="gnome*"
+# sudo yum systemctl isolate graphical
 - name: Install xrdp dnf
   ansible.builtin.dnf:
     name:
       - xrdp
+      - xorgxrdp
+      - xorg-x11-utils
+      - xorg-x11-xinit-session
+      - glx-utils
       - xfce-polkit
+
       # - xfce4-panel
       # - xfce4-session
       # - xfce4-settings
       # - xfce4-terminal
       - xfdesktop
       - xfwm4
+
 
     state: present
     install_weak_deps: false
