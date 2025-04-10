@@ -10,9 +10,9 @@
     - /opt/elastalert2
     - /opt/elastalert2/rules
 
-- name: Install python3.11
+- name: Install python3.12
   ansible.builtin.package:
-    name: python3.11
+    name: python3.12
     state: present
 
 - name: Install elastalert2 with pipx
@@ -21,7 +21,7 @@
   community.general.pipx:
     name: elastalert2
     state: present
-    python: "/bin/python3.11"
+    python: "/bin/python3.12"
 
 - name: Copy run script
   ansible.builtin.copy:
