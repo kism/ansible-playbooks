@@ -1,6 +1,6 @@
 ---
 - name: Setup rproxy, reverse proxy
-  hosts: mediaharbor
+  hosts: all
   gather_facts: false
   become: true
   roles:
