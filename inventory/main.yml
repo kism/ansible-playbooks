@@ -116,3 +116,8 @@ nonansible:
       ansible_host_description: OpenWRT Wireless Access Point
       target_host_ip_address: 10.42.0.99
       target_host_mac_address: 24:F5:A2:BA:81:33
+    mrpi:
+      ansible_host: mrpi.kg.lan
+      ansible_host_description: MiSTER Pi
+      target_host_ip_address: 10.42.0.82
+      target_host_mac_address: ea:c8:21:56:e3:43

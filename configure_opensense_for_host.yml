@@ -1,5 +1,5 @@
 ---
-- name: Setup ollama host
+- name: Setup opnsense config for host
   hosts: all
   gather_facts: false
   become: true
