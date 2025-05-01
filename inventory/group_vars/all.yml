@@ -1,5 +1,5 @@
 ---
-opnsense_firewall: "opnsense.{{ homelab_domain_internal }}"
+opnsense_firewall: "opnsense.{{ homelab_domain_external }}"
 homelab_domain_external: kierangee.au
 homelab_domain_internal: kg.lan
 target_host_subnet: 10.42.0.0/24
