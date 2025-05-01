@@ -1,4 +1,5 @@
 ---
+# ansible-playbook configure_opensense_for_host.yml -i inventory/main.yml --limit mrpi
 - name: Setup opnsense config for host
   hosts: all
   gather_facts: false
