@@ -74,3 +74,8 @@
   when: item.name in proxmox_vms_to_reboot
   loop: "{{ proxmox_guests.proxmox_vms }}"
   failed_when: false # Don't stop, the jumpbox could go down
+
+- name: Wait for a minute
+  ansible.builtin.pause:
+    seconds: 60
+  when: proxmox_vms_to_reboot | length > 0

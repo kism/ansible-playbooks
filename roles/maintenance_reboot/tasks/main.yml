@@ -2,3 +2,11 @@
 - name: Unconditionally reboot the machine with all defaults
   become: true
   ansible.builtin.reboot:
+
+- name: Wait for connection to come back
+  ansible.builtin.wait_for_connection:
+    delay: 10
+    timeout: 300
+    sleep: 5
+    state: present
+  register: wait_for_connection
