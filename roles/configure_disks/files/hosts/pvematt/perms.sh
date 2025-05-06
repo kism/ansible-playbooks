@@ -52,8 +52,9 @@ echo - Set Permissions
 
 echo - Set Permissions for Content
 chown -R backup_svc:backup_svc /srv/Amarant/backups
+chown -R kism:content_private /srv/Amarant/backups/TimeMachine
 chown -R kism:content_private /srv/Amarant/Downloads
-chown -R kism:content_private /srv/Amarant/Temp
+chown -R kism:content_private '/srv/Amarant/Important Files'
 chown -R kism:content_public /srv/Amarant/Video
 
 chown -R kism:content_public /srv/Freya/Apps
