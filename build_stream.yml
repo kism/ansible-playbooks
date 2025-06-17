@@ -1,0 +1,22 @@
+---
+- name: Setup stream on podc
+  hosts: stream
+  gather_facts: false
+  become: true
+  vars:
+    configure_swap_file_size: 4G
+  roles:
+    # Preflight
+    - maintenance_gather_facts
+
+    # Onboard Server
+    # - configure_swap_file
+    # - meta_onboard
+
+    # Configure Server
+    - configure_docker
+
+    # End
+    - configure_telegraf
+    - configure_elastic_agent
+    - maintenance_print_reminders

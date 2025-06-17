@@ -9,7 +9,7 @@ proxmox_ct_cores: 1
 proxmox_ct_unprivileged: true
 github_username: kism
 ssh_keys_url: https://github.com/{{ github_username }}.keys
-user_data_url: https://autist.network/kism-user-data
+user_data_url: https://autist.network/userdata-kism
 homelab_my_username: kism
 homelab_admin_group: kgadmins
 homelab_users:
