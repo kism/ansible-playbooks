@@ -1,4 +1,6 @@
 ---
+# Make sure you are in tmux, and not jumping via ent.kg.lan
+# ansible-playbook maintenance_update.yml -i inventory/main.yml -i inventory/podc_hcloud.yml -i inventory/stream_hcloud.yml
 - name: Update all packages with maintenance_update_all role
   hosts: proxmoxvms, proxmoxhosts, publiccloudvms, baremetal
   gather_facts: true
