@@ -9,7 +9,7 @@
 
 - name: Set cloudflare key
   ansible.builtin.copy:
-    content: dns_cloudflare_api_token = {{ secret_cloudflare_api_dns }}
+    content: dns_cloudflare_api_token = {{ secret_cloudflare_api_dns_podc }}
     dest: /root/.cloudflare.ini
     mode: "0600"
 

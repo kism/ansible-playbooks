@@ -5,4 +5,4 @@ groups:
   all: true
   ansible_main: true
   publiccloudvms: true
-hostname: "podc"
+hostname: "podctest"

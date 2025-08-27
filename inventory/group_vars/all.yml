@@ -26,6 +26,7 @@ secret_notification_email: "{{ lookup('bitwarden.secrets.lookup', '349598d5-69dc
 secret_notification_email_password: "{{ lookup('bitwarden.secrets.lookup', '9bba64c2-4a77-4bcf-8262-b222007038a8') }}"
 
 secret_cloudflare_api_dns: "{{ lookup('bitwarden.secrets.lookup', '403c608c-85a3-487f-92ec-b22200708cd5') }}"
+secret_cloudflare_api_dns_podc: "{{ lookup('bitwarden.secrets.lookup', '619cdefa-8755-417f-91f9-b346001cbedf') }}"
 
 secret_mullvad_user: "{{ lookup('bitwarden.secrets.lookup', '27ece857-7df1-42ee-ac10-b2220070b91c') }}"
 
