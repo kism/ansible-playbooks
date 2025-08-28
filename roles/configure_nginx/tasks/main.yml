@@ -35,3 +35,11 @@
     - https
   notify:
     - Reload firewalld
+
+- name: Copy logrotate config
+  ansible.builtin.copy:
+    src: logrotate-nginx-vhost
+    dest: /etc/logrotate.d/nginx-vhost
+    owner: root
+    group: root
+    mode: "0644"

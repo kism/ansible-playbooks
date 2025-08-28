@@ -112,6 +112,7 @@ skip_ansible_lint
 - better server packages install
 - figure out configure_concept_baremetal
 - remove geostat
+- nginx log rotation
 
 ## do ~~later~~ never
 

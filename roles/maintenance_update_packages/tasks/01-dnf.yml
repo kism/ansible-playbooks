@@ -1,16 +1,16 @@
 ---
-- name: Update DNF Cache, list updates
-  ansible.builtin.dnf:
-    update_cache: true
-    list: updates
-  register: dnf_packages_to_upgrade_before
-
-- name: Wip update list to get changed
-  ansible.builtin.debug: # WIP: nevra: 0:telegraf-1.30.2-1.aarch64
-    msg: "{{ dnf_packages_to_upgrade_before }}"
-
 - name: Block with fun rescue
   block:
+    - name: Update DNF Cache, list updates
+      ansible.builtin.dnf:
+        update_cache: true
+        list: updates
+      register: dnf_packages_to_upgrade_before
+
+    - name: Wip update list to get changed
+      ansible.builtin.debug: # WIP: nevra: 0:telegraf-1.30.2-1.aarch64
+        msg: "{{ dnf_packages_to_upgrade_before }}"
+
     - name: Update dnf packages
       ansible.builtin.dnf:
         name: "*"
@@ -32,6 +32,13 @@
       ansible.builtin.command:
         cmd: dnf makecache --assumeyes
       changed_when: true # Technically untrue
+
+    - name: Update dnf packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_only: true
+      register: dnf_update
 
 - name: Get only installed # WIP telegraf-1.30.2-1.aarch64
   ansible.builtin.set_fact:
