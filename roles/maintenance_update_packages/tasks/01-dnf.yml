@@ -1,9 +1,4 @@
 ---
-# - name: Clear yum cache
-#   ansible.builtin.command:
-#     cmd: yum clean all
-#   changed_when: false # Technically untrue
-
 - name: Update DNF Cache, list updates
   ansible.builtin.dnf:
     update_cache: true
@@ -14,12 +9,29 @@
   ansible.builtin.debug: # WIP: nevra: 0:telegraf-1.30.2-1.aarch64
     msg: "{{ dnf_packages_to_upgrade_before }}"
 
-- name: Update dnf packages
-  ansible.builtin.dnf:
-    name: "*"
-    state: latest
-    update_only: true
-  register: dnf_update
+- name: Block with fun rescue
+  block:
+    - name: Update dnf packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_only: true
+      register: dnf_update
+  rescue:
+    - name: Run cleaning commands
+      ansible.builtin.command:
+        cmd: dnf clean all
+      changed_when: true
+
+    - name: Ensure removed cache
+      ansible.builtin.file:
+        path: /var/cache/dnf
+        state: absent
+
+    - name: Clear dnf cache
+      ansible.builtin.command:
+        cmd: dnf makecache --assumeyes
+      changed_when: true # Technically untrue
 
 - name: Get only installed # WIP telegraf-1.30.2-1.aarch64
   ansible.builtin.set_fact:

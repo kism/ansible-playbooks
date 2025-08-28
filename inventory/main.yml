@@ -62,7 +62,7 @@ baremetal:
   hosts:
     pvewill:
     pvematt:
-    cert:
+    # cert:
 
 nonansible:
   hosts:
