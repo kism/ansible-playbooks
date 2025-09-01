@@ -1,5 +1,5 @@
 ---
-- name: Setup stream on podc
+- name: Setup acerestreamer on stream
   hosts: stream
   gather_facts: false
   become: true
@@ -7,16 +7,20 @@
     configure_swap_file_size: 4G
   roles:
     # Preflight
+    - meta_pre_flight_checks
     - maintenance_gather_facts
 
     # Onboard Server
-    # - configure_swap_file
-    # - meta_onboard
+    - configure_swap_file
+    - meta_onboard
 
     # Configure Server
+    - configure_nginx
+    - configure_nginx_certbot
     - configure_docker
 
+    # Purpose specific
+    - configure_acerestreamer
+
     # End
-    - configure_telegraf
-    - configure_elastic_agent
     - maintenance_print_reminders
