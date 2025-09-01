@@ -14,6 +14,7 @@
     cmd: fallocate -l {{ configure_swap_file_size }} /swapfile
   register: command_output
   changed_when: not file_stat.stat.exists and command_output.rc == 0
+  failed_when: command_output.rc != 0 and "Text file busy" not in command_output.stderr
 
 - name: Set perms
   ansible.builtin.file:
@@ -24,7 +25,9 @@
 - name: Run mkswap
   ansible.builtin.command:
     cmd: mkswap /swapfile
+  register: mkswap_command_output
   changed_when: true # Safe assumption
+  failed_when: mkswap_command_output.rc != 0 and "swapfile is mounted" not in mkswap_command_output.stderr
 
 - name: Check if swap is active
   ansible.builtin.shell:
@@ -38,9 +41,9 @@
 - name: Run swapon
   ansible.builtin.command:
     cmd: swapon /swapfile
-  register: command_output
+  register: swapon_command_output
   changed_when: swap_status.rc != 0
-  failed_when: command_output.rc != 0
+  failed_when: command_output.rc != 0 and "Device or resource busy" not in swapon_command_output.stderr
 
 - name: Mount swap proper
   ansible.posix.mount:

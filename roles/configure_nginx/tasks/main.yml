@@ -18,6 +18,25 @@
       - nginx
     state: present
 
+- name: Copy nginx.conf
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Create directories for sites available and enabled
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
 - name: Nginx enabled and running
   ansible.builtin.systemd_service:
     name: nginx

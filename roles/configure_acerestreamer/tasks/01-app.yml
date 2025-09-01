@@ -15,13 +15,13 @@
   ansible.builtin.debug:
     msg: "{{ configure_acerestreamer_uv_setup.stdout }}"
 
-- name: Clone repo
-  ansible.builtin.git:
-    repo: "https://github.com/kism/acerestreamer"
-    dest: "{{ configure_acerestreamer_directory }}"
-    version: main
-    update: true
-  notify: Restart acerestreamer
+# - name: Clone repo
+#   ansible.builtin.git:
+#     repo: "https://github.com/kism/acerestreamer"
+#     dest: "{{ configure_acerestreamer_directory }}"
+#     version: main
+#     update: true
+#   notify: Restart acerestreamer
 
 - name: Setup virtual environment
   ansible.builtin.command:

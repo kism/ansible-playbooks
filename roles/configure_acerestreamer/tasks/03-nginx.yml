@@ -1,9 +1,9 @@
 ---
 - name: Template the nginx config
   ansible.builtin.template:
-    src: "templates/acerestreamer.nginx.j2"
+    src: "templates/nginx-acerestreamer.conf.j2"
     dest: "/etc/nginx/sites-available/acerestreamer.conf"
-    user: "root"
+    owner: "root"
     group: "root"
     mode: "0644"
   notify: Reload nginx
