@@ -1,0 +1,22 @@
+---
+- name: Setup acerestreamer on stream
+  hosts: stream
+  gather_facts: false
+  become: true
+  roles:
+    # Preflight
+    - maintenance_gather_facts
+
+    # Onboard Server
+    - meta_onboard
+
+    # # Purpose specific
+    - configure_nginx
+    - configure_nginx_certbot
+    - configure_docker
+
+    # Purpose specific, required for switchover
+    - configure_acerestreamer
+
+    # End
+    - maintenance_print_reminders

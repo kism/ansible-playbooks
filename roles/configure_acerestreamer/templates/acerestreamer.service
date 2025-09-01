@@ -1,0 +1,14 @@
+[Unit]
+Description=Ace Restreamer
+After=network.target
+
+[Service]
+User=podcasto
+WorkingDirectory=/opt/archivepodcast
+ExecStart=/opt/archivepodcast/.venv/bin/waitress-serve --listen "127.0.0.1:5000" --trusted-proxy '*' --trusted-proxy-headers 'x-forwarded-for x-forwarded-proto x-forwarded-port' --log-untrusted-proxy-headers --clear-untrusted-proxy-headers --threads 4 --call archivepodcast:create_app
+
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

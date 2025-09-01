@@ -1,0 +1,16 @@
+---
+- name: Template the nginx config
+  ansible.builtin.template:
+    src: "templates/acerestreamer.nginx.j2"
+    dest: "/etc/nginx/sites-available/acerestreamer.conf"
+    user: "root"
+    group: "root"
+    mode: "0644"
+  notify: Reload nginx
+
+- name: Symlink to sites enabled
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/acerestreamer.conf"
+    dest: "/etc/nginx/sites-enabled/acerestreamer.conf"
+    state: link
+  notify: Reload nginx

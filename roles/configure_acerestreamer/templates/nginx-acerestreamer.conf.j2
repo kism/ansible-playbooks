@@ -29,6 +29,7 @@ server {
         return 301 https://$host$request_uri;
     }
 
+
     server_name {{ secret_domain }};
     listen       0.0.0.0:80;
     listen       [::]:80;

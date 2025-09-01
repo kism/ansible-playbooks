@@ -1,0 +1,58 @@
+---
+- name: Install certbot
+  ansible.builtin.package:
+    name:
+      - certbot
+      - python3-certbot-nginx
+      - python3-certbot-dns-cloudflare
+    state: present
+
+- name: Set cloudflare key
+  ansible.builtin.copy:
+    content: dns_cloudflare_api_token = {{ configure_nginx_certbot_cloudflare_dns_api }}
+    dest: /root/.cloudflare.ini
+    mode: "0600"
+
+- name: Initial certbot config
+  ansible.builtin.command:
+    cmd: >-
+      certbot certonly
+      --agree-tos
+      --email={{ secret_email }}
+      -v
+      --non-interactive
+      --post-hook "service nginx reload"
+      --dns-cloudflare
+      --dns-cloudflare-credentials /root/.cloudflare.ini
+      -d {{ secret_domain }}
+  register: configure_nginx_certbot_command_output
+  changed_when: false or "Certificate not yet due for renewal" not in configure_nginx_certbot_command_output.stdout
+
+- name: Generate dhparms
+  ansible.builtin.command:
+    cmd: openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
+    creates: /etc/letsencrypt/ssl-dhparams.pem
+
+- name: Set permissions on dhparams
+  ansible.builtin.file:
+    path: /etc/letsencrypt/ssl-dhparams.pem
+    mode: "0644" # This is the certbot default
+
+- name: Block for nginx ssl options
+  block:
+    - name: Grab nginx config from github
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+        dest: /etc/letsencrypt/options-ssl-nginx.conf
+        mode: "0644"
+
+  rescue:
+    - name: Just create an empty file
+      ansible.builtin.file:
+        path: /etc/letsencrypt/options-ssl-nginx.conf
+        state: touch
+        mode: "0644"
+
+- name: Debug the command output
+  ansible.builtin.debug:
+    var: configure_nginx_certbot_command_output.stdout_lines

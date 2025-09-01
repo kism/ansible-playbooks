@@ -1,0 +1,9 @@
+---
+- name: Include tasks for app setup
+  ansible.builtin.include_tasks: 01-app.yml
+
+- name: Include tasks for service setup
+  ansible.builtin.include_tasks: 02-service.yml
+
+- name: Include tasks for nginx config
+  ansible.builtin.include_tasks: 03-nginx.yml

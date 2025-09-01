@@ -1,0 +1,10 @@
+---
+- name: Reload nginx
+  ansible.builtin.systemd:
+    service: nginx
+    state: reloaded
+
+- name: Restart acerestreamer
+  ansible.builtin.systemd:
+    service: acerestreamer
+    state: restarted

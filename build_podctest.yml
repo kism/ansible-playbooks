@@ -5,7 +5,7 @@
   become: true
 
   roles:
-    - maintenance_gather_facts
+    # - maintenance_gather_facts
 
     # Onboard
     # - meta_onboard
@@ -14,6 +14,7 @@
     # - configure_nginx
     # - configure_fail2ban
     # - configure_ffmpeg
+    - configure_swap_file
 
     # Purpose specific, required for switchover
-    - configure_archivepodcast
+    # - configure_archivepodcast
