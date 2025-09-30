@@ -10,16 +10,17 @@
     - maintenance_gather_facts
 
     # Onboard Server
-    - meta_onboard
+    # - meta_onboard
 
     # Purpose specific
-    - configure_cifs_server
-    - configure_docker
-    - configure_docker_qbittorrent
-    - configure_docker_sabnzbd
-    - configure_docker_arr
+    # - configure_cifs_server
+    # - configure_docker
+    # - configure_docker_qbittorrent
+    # - configure_docker_sabnzbd
+    # - configure_docker_arr
+    - configure_ffmpeg
 
     # End
-    - configure_telegraf
-    - configure_elastic_agent
+    # - configure_telegraf
+    # - configure_elastic_agent
     - maintenance_print_reminders

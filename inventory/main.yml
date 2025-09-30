@@ -34,9 +34,6 @@ ansible_main:
     elk:
       ansible_host: elk.kg.lan
       ansible_host_description: ELK (Elastic Search, Logstash, Kibana)
-    dpshub:
-      ansible_host: dpshub.kg.lan
-      ansible_host_description: DPSHUB Workstation
     x230t:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
