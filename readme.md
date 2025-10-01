@@ -113,6 +113,7 @@ skip_ansible_lint
 - figure out configure_concept_baremetal
 - remove geostat
 - nginx log rotation
+- openseachest .deb or .rpm, find latest version per github
 
 ## do ~~later~~ never
 

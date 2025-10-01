@@ -1,6 +1,6 @@
 ---
-configure_proxmox_nagbuster_url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/
-configure_proxmox_nagbuster_files:
+configure_pve_nagbuster_url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/
+configure_pve_nagbuster_files:
   - filename: install.sh
     sha256sum: e5ef33c6899c8131ee6c48b9707ff5b906dbe6a822ee7f4231fa24153a881983
   - filename: pve-nag-buster.sh

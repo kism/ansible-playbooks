@@ -11,6 +11,7 @@
     name: "{{ item.key }}"
     groups: "{{ item.value.groups }}"
     append: true
+  when: item.value.groups is defined and item.value.groups | length > 0
   with_dict: "{{ homelab_users }}"
 
 - name: Copy the kgadmins sudoers rule

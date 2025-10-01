@@ -14,25 +14,25 @@
 - name: Check if pve-nag-buster has been used before (hook)
   ansible.builtin.stat:
     path: /etc/apt/apt.conf.d/86pve-nags
-  register: pve_nag_buster_hook
+  register: configure_pve_nag_buster_hook
 
 - name: Check if pve-nag-buster has been used before (script)
   ansible.builtin.stat:
     path: /usr/share/pve-nag-buster.sh
-  register: pve_nag_buster_script
+  register: configure_pve_nag_buster_script
 
 - name: Download the pve-nag-buster script
   ansible.builtin.get_url:
-    url: "{{ configure_proxmox_nagbuster_url }}{{ item.filename }}"
+    url: "{{ configure_pve_nagbuster_url }}{{ item.filename }}"
     dest: /opt/scripts/pve-nag-buster/{{ item.filename }}
     checksum: sha256:{{ item.sha256sum }}
     mode: "0700"
-  register: configure_proxmox_nagbuster_replace_files
-  loop: "{{ configure_proxmox_nagbuster_files }}"
+  register: configure_pve_nagbuster_replace_files
+  loop: "{{ configure_pve_nagbuster_files }}"
 
 - name: Run pve-nag-buster script to configure repos and remove nag
   ansible.builtin.command:
     cmd: /opt/scripts/pve-nag-buster/install.sh --offline
-  changed_when: not pve_nag_buster_hook.stat.exists or
-    not pve_nag_buster_script.stat.exists or
-    configure_proxmox_nagbuster_replace_files.changed
+  changed_when: not configure_pve_nag_buster_hook.stat.exists or
+    not configure_pve_nag_buster_script.stat.exists or
+    configure_pve_nagbuster_replace_files.changed

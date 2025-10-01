@@ -10,7 +10,7 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_proxmox
+    - configure_pve
     - configure_concept_baremetal
     - configure_postfix_gmail
     - configure_disks
