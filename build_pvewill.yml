@@ -7,13 +7,13 @@
     # Preflight
 
     # Onboard Server
-    # - meta_onboard
+    - meta_onboard
 
     # Purpose specific
-    # - configure_pve
+    - configure_pve
     - configure_concept_baremetal
-    # - configure_postfix_gmail
-    # - configure_disks
+    - configure_postfix_gmail
+    - configure_disks
     # No snapraid....
 
     # End
