@@ -21,66 +21,9 @@
       ansible.builtin.debug:
         msg: "{{ configure_concept_baremetal_openseachest_url }}"
 
-    - name: Download openSeaChest
-      ansible.builtin.unarchive:
-        src: "{{ configure_concept_baremetal_openseachest_url }}"
-        dest: /opt/
-        mode: "0755"
-        remote_src: true
-
-    - name: Remove old openSeaChest
-      ansible.builtin.file:
-        path: /opt/openseachest
-        state: absent
-
-    - name: Copy downloaded directory to the openSeaChest direct
-      ansible.builtin.copy:
-        remote_src: true
-        src: /opt/openSeaChest-v{{ configure_concept_baremetal_openseachest_version }}-linux-{{ ansible_architecture }}-manylinux/
-        dest: /opt/openseachest
-        mode: "0755"
-
-    - name: Remove openSeaChest
-      ansible.builtin.file:
-        path: /opt/openSeaChest-v{{ configure_concept_baremetal_openseachest_version }}-linux-{{ ansible_architecture }}-manylinux
-        state: absent
-
-    - name: Make list of binaries
-      ansible.builtin.find:
-        paths: /opt/openseachest
-        file_type: file
-        depth: 0
-      register: bins_found
-
-    - name: Extract bin filenames
-      ansible.builtin.set_fact:
-        bins_found_list: "{{ bins_found.files | map(attribute='path') | map('basename') | list }}"
-
-    - name: Create symbolic links for openSeaChest bins
-      ansible.builtin.file:
-        src: /opt/openseachest/{{ item }}
-        dest: /usr/local/sbin/{{ item }}
-        state: link
-      loop: "{{ bins_found_list }}"
-
-    - name: Make list of man files
-      ansible.builtin.find:
-        paths: /opt/openseachest/man/man8/
-        file_type: file
-        depth: 0
-      register: mans_found
-
-    - name: Extract man filenames
-      ansible.builtin.set_fact:
-        mans_found_list: "{{ mans_found.files | map(attribute='path') | map('basename') | list }}"
-
-    # Do you need to remove broken symlinks, I dont think so...
-    - name: Create symbolic links for openSeaChest man pages
-      ansible.builtin.file:
-        src: /opt/openseachest/man/man8/{{ item }}
-        dest: /usr/share/man/man8/{{ item }}
-        state: link
-      loop: "{{ mans_found_list }}"
+    - name: NOT INSTALLING NOT IMPLEMENTED
+      ansible.builtin.debug:
+        msg: "NOT INSTALLING NOT IMPLEMENTED"
 
 # Install hd-idle
 - name: Get hd-idle_arch
