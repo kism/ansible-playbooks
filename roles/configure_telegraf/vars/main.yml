@@ -1,6 +1,5 @@
 ---
 configure_telegraf_service_allowlist:
-  - geostat.service
   - archivepodcast.service
   - fail2ban.service
   - grafana-server.service

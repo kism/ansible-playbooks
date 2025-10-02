@@ -17,10 +17,6 @@ secret_influxdb_admin_password: "{{ lookup('bitwarden.secrets.lookup', '86f8482d
 secret_influxdb_admin_token: "{{ lookup('bitwarden.secrets.lookup', 'e8d9b1d8-2a78-414f-bda0-b222006f0304') }}"
 secret_influxdb_telegraf_write: "{{ lookup('bitwarden.secrets.lookup', 'faa9a6bd-c10c-49ea-b3d0-b222006f40c8') }}"
 secret_influxdb_telegraf_read: "{{ lookup('bitwarden.secrets.lookup', '77b66880-231b-4df5-9e3d-b222006f76e7') }}"
-secret_influxdb_geostat_write: "{{ lookup('bitwarden.secrets.lookup', '533e9fe8-3d97-403b-8859-b222006f8e75') }}"
-
-secret_geostat_path: "{{ lookup('bitwarden.secrets.lookup', 'e78f307b-ee94-43cb-bf74-b222006fc30b') }}"
-secret_maxmind_license: "{{ lookup('bitwarden.secrets.lookup', '424cfd14-24fb-45a5-a35e-b222006fef9a') }}"
 
 secret_notification_email: "{{ lookup('bitwarden.secrets.lookup', '349598d5-69dc-44c6-9558-b22200701c06') }}"
 secret_notification_email_password: "{{ lookup('bitwarden.secrets.lookup', '9bba64c2-4a77-4bcf-8262-b222007038a8') }}"

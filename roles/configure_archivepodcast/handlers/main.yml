@@ -1,10 +1,4 @@
 ---
-- name: Restart geostat
-  ansible.builtin.systemd_service:
-    name: geostat
-    daemon_reload: true
-    state: restarted
-
 - name: Restart archivepodcast
   ansible.builtin.systemd_service:
     name: archivepodcast
