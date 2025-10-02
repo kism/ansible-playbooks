@@ -14,11 +14,18 @@
     state: present
     executable: pip3.11
 
+- name: Download uv setup script to tmp
+  ansible.builtin.get_url:
+    url: "https://astral.sh/uv/install.sh"
+    dest: "/tmp/uv_setup.sh"
+    mode: "0755"
+
 - name: Install poetry python package
   become: true
   become_user: nginx
-  community.general.pipx:
-    name: uv
+  ansible.builtin.command:
+    cmd: "/tmp/uv_setup.sh"
+  changed_when: true # Don't want to program this
 
 - name: Create ansibleinventorycmdb directory
   ansible.builtin.file:
