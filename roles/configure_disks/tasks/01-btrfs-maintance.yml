@@ -25,18 +25,18 @@
 
 - name: Set config path RHEL
   ansible.builtin.set_fact:
-    btrfsmaintenance_config_path: /etc/sysconfig/btrfsmaintenance
+    configure_disks_btrfsmaintenance_config_path: /etc/sysconfig/btrfsmaintenance
   when: ansible_pkg_mgr == 'dnf'
 
 - name: Set config path APT
   ansible.builtin.set_fact:
-    btrfsmaintenance_config_path: /etc/default/btrfsmaintenance
+    configure_disks_btrfsmaintenance_config_path: /etc/default/btrfsmaintenance
   when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'pacman'
 
 - name: Copy config for BTRFS
   ansible.builtin.copy:
     src: files/btrfsmaintenance
-    dest: "{{ btrfsmaintenance_config_path }}"
+    dest: "{{ configure_disks_btrfsmaintenance_config_path }}"
     mode: "0644"
 
 - name: Setup up the systemd timer

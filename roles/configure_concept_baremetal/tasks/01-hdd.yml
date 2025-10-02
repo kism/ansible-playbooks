@@ -1,75 +1,9 @@
 ---
-- name: Install packages
-  ansible.builtin.apt:
-    install_recommends: false
-    pkg:
-      - nvme-cli
-      - lm-sensors
-    state: present
+- name: Include tasks for OpenSeaChest
+  ansible.builtin.include_tasks: "01a-openseachest.yml"
 
-- name: Figure out if a Seagate Hard Drive is attached
-  ansible.builtin.set_fact:
-    configure_concept_baremetal_found_seagate: true
-  when: item.value['model'] is regex('^ST.*') and item.value['vendor'] == "ATA"
-  no_log: true
-  with_dict: "{{ ansible_facts['devices'] }}"
+- name: Include tasks for hd-idle
+  ansible.builtin.include_tasks: "01b-hdidle.yml"
 
-- name: Block for openSeaChest install
-  when: configure_concept_baremetal_found_seagate
-  block:
-    - name: Print URL
-      ansible.builtin.debug:
-        msg: "{{ configure_concept_baremetal_openseachest_url }}"
-
-    - name: NOT INSTALLING NOT IMPLEMENTED
-      ansible.builtin.debug:
-        msg: "NOT INSTALLING NOT IMPLEMENTED"
-
-# Install hd-idle
-- name: Get hd-idle_arch
-  block:
-    - name: Set target arch per map if possible
-      ansible.builtin.set_fact:
-        hdidle_arch: "{{ configure_concept_baremetal_arch_map[ansible_architecture] }}"
-
-  rescue:
-    - name: Set default hdidle_arch
-      ansible.builtin.set_fact:
-        hdidle_arch: "{{ ansible_architecture }}"
-
-- name: Install hd-idle
-  ansible.builtin.apt:
-    deb: |-
-      https://github.com/adelolmo/hd-idle/releases/download/v
-      {{- configure_concept_baremetal_hdidle_version -}}
-      /hd-idle_
-      {{- configure_concept_baremetal_hdidle_version -}}
-      _
-      {{- hdidle_arch -}}.deb
-
-- name: Install some hdd related packages
-  ansible.builtin.apt:
-    install_recommends: false
-    pkg:
-      - hdparm
-      - smartmontools
-      - rsync
-      - libatasmart-bin
-    state: present
-  when: ansible_pkg_mgr == 'apt'
-
-- name: Install some hdd related packages
-  ansible.builtin.dnf:
-    pkg:
-      - hdparm
-      - smartmontools
-      - rsync
-      - libatasmart-bin
-    state: present
-  when: ansible_pkg_mgr == 'dnf'
-
-- name: Copy SMART check script
-  ansible.builtin.copy:
-    src: files/checksmart.sh
-    dest: /root/checksmart.sh
-    mode: "0700"
+- name: Include tasks for misc storage tools
+  ansible.builtin.include_tasks: "01c-smart.yml"

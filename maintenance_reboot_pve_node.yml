@@ -1,9 +1,0 @@
----
-- name: Shutdown other hosts
-  hosts: pvewill
-  become: false
-  gather_facts: false
-  roles:
-    - meta_pre_flight_checks
-    - maintenance_shutdown_node_proxmox_guests
-    - maintenance_reboot

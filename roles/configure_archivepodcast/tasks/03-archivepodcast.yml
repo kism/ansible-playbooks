@@ -13,11 +13,11 @@
       ansible.builtin.command:
         cmd: "/tmp/uv_setup.sh"
       changed_when: true
-      register: uv_setup
+      register: configure_archivepodcast_uv_setup
 
     - name: Print uv_setup
       ansible.builtin.debug:
-        msg: "{{ uv_setup.stdout }}"
+        msg: "{{ configure_archivepodcast_uv_setup.stdout }}"
 
 - name: Attempt to change ownership on /opt/archivepodcast
   ansible.builtin.file:

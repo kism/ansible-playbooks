@@ -8,4 +8,3 @@
     delay: 10
     timeout: 300
     sleep: 5
-  register: wait_for_connection

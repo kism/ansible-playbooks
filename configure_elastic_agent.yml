@@ -10,4 +10,3 @@
     - configure_elastic_agent
 
     # End
-    - maintenance_print_reminders

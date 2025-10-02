@@ -6,6 +6,8 @@
       - wsdd
       - avahi
     state: present
+  notify:
+    - Print smb reminder
 
 - name: Enable services
   ansible.builtin.systemd_service:
@@ -15,6 +17,8 @@
     - smb
     - wsdd
     - avahi-daemon
+  notify:
+    - Print smb reminder
 
 - name: Allow samba and wsdd through firewalld
   ansible.posix.firewalld:

@@ -12,4 +12,4 @@
 
 - name: Set fact for certificate location
   ansible.builtin.set_fact:
-    cert_path: /usr/share/pki/ca-trust-source/anchors/elastic-agent-root.cer
+    configure_elastic_agent_cert_path: /usr/share/pki/ca-trust-source/anchors/elastic-agent-root.cer

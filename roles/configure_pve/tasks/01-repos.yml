@@ -33,6 +33,5 @@
 - name: Run pve-nag-buster script to configure repos and remove nag
   ansible.builtin.command:
     cmd: /opt/scripts/pve-nag-buster/install.sh --offline
-  changed_when: not configure_pve_nag_buster_hook.stat.exists or
-    not configure_pve_nag_buster_script.stat.exists or
+  changed_when: not configure_pve_nag_buster_hook.stat.exists or not configure_pve_nag_buster_script.stat.exists or
     configure_pve_nagbuster_replace_files.changed

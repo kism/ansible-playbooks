@@ -1,4 +1,1 @@
 ---
-- name: Add reminder that this isnt implemented
-  ansible.builtin.set_fact:
-    reminder_list: "{{ reminder_list + ['configure_elastic_agent not done for archlinux'] }}"

@@ -7,7 +7,7 @@
     name: "{{ configure_packages_to_install }}"
     state: present
   when: ansible_pkg_mgr != 'apt'
-  register: packages_installed_non_apt
+  register: configure_packages_installed_non_apt
 
 - name: Install all-common packages (APT)
   ansible.builtin.apt:
@@ -15,7 +15,7 @@
     install_recommends: false
     state: present
   when: ansible_pkg_mgr == 'apt'
-  register: packages_installed_apt
+  register: configure_packages_installed_apt
 
 - name: Remove not-wanted all-common packages
   ansible.builtin.package:
@@ -31,7 +31,7 @@
     name: "{{ configure_packages_to_install }}"
     state: present
   when: ansible_pkg_mgr != 'apt'
-  register: packages_installed_non_apt
+  register: configure_packages_installed_non_apt
 
 - name: Install all-(package manager) packages (APT)
   ansible.builtin.apt:
@@ -39,7 +39,7 @@
     install_recommends: false
     state: present
   when: ansible_pkg_mgr == 'apt'
-  register: packages_installed_apt
+  register: configure_packages_installed_apt
 
 - name: Remove not-wanted all-(package manager) packages
   ansible.builtin.package:

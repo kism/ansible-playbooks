@@ -22,10 +22,6 @@
       ansible.builtin.getent:
         database: group
 
-    # - name: Get ec2 instance facts
-    #   amazon.aws.ec2_metadata_facts:
-    #   failed_when: false # Easier than checking if the host is an ec2 instance
-
 - name: Debug block chuck vars into a file
   become: false
   delegate_to: localhost
@@ -33,11 +29,11 @@
     # Start outputting to a ansible_distribution_file_variety
     - name: Make temp var so we capture the ansible_facts key
       ansible.builtin.set_fact:
-        debug_yaml_output: {}
+        maintenance_gather_facts_debug_yaml: {}
 
-    - name: Copy ansible_facts into debug_yaml_output var
+    - name: Copy ansible_facts into maintenance_gather_facts_debug_yaml var
       ansible.builtin.set_fact:
-        debug_yaml_output: "{{ debug_yaml_output | combine({'ansible_facts': ansible_facts}) }}"
+        maintenance_gather_facts_debug_yaml: "{{ maintenance_gather_facts_debug_yaml | combine({'ansible_facts': ansible_facts}) }}"
 
     - name: Ensure that logs folder exists
       ansible.builtin.file:
@@ -56,7 +52,7 @@
     - name: Put facts in a nice yaml
       ansible.builtin.copy:
         dest: "{{ maintenance_gather_facts_facts_debug_file }}"
-        content: "{{ debug_yaml_output | to_yaml(default_flow_style=False) }}"
+        content: "{{ maintenance_gather_facts_debug_yaml | to_yaml(default_flow_style=False) }}"
         mode: "0660"
       changed_when: false # Grabbing information to store locally
 
@@ -69,7 +65,7 @@
 
     - name: Print the usual culperates
       ansible.builtin.set_fact:
-        print_vars:
+        maintenance_gather_facts_print_vars:
           host_things:
             ansible_hostname: "{{ ansible_hostname }}"
             ansible_default_ipv4_address: "{{ ansible_default_ipv4.address }}"
@@ -96,7 +92,7 @@
     - name: Put vars in a nice yaml
       ansible.builtin.copy:
         dest: "{{ maintenance_gather_facts_vars_debug_file }}"
-        content: "{{ print_vars | to_yaml(default_flow_style=False) }}"
+        content: "{{ maintenance_gather_facts_print_vars | to_yaml(default_flow_style=False) }}"
         mode: "0660"
       changed_when: false # Grabbing information to store locally
 
@@ -114,13 +110,13 @@
       ansible.builtin.command:
         cmd: pacman -Qeq # pacman -Qqt
       changed_when: false # Just getting info
-      register: top_level_pacman_packages
+      register: maintenance_gather_facts_top_level_pacman_packages
 
     - name: Copy stdout to file
       delegate_to: localhost
       become: false
       ansible.builtin.copy:
-        content: "{{ top_level_pacman_packages.stdout }}"
+        content: "{{ maintenance_gather_facts_top_level_pacman_packages.stdout }}"
         dest: "{{ maintenance_gather_facts_pacman_file }}"
         mode: "0660"
       changed_when: false # Grabbing information to store locally

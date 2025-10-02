@@ -2,6 +2,17 @@
 - name: Baremetal Hosts only block
   when: "'baremetal' in group_names"
   block:
+    - name: Get hd-idle_arch
+      block:
+        - name: Set target arch per map if possible
+          ansible.builtin.set_fact:
+            configure_concept_baremetal_github_arch: "{{ configure_concept_baremetal_arch_map[ansible_architecture] }}"
+
+      rescue:
+        - name: Set default configure_concept_baremetal_github_arch
+          ansible.builtin.set_fact:
+            configure_concept_baremetal_github_arch: "{{ ansible_architecture }}"
+
     - name: Include HDD/fstab tasks
       ansible.builtin.include_tasks: "01-hdd.yml"
 

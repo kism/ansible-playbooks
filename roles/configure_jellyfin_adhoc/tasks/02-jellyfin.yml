@@ -1,7 +1,7 @@
 ---
 - name: Set fact for the download URLs
   ansible.builtin.set_fact:
-    jellyfin_server_download_url: |-
+    configure_jellyfin_adhoc_server_download_url: |-
       https://repo.jellyfin.org/files/server/linux/latest-stable/amd64/jellyfin_
       {{- configure_jellyfin_adhoc_version -}}
       -amd64.tar.xz
@@ -9,7 +9,7 @@
 - name: Print download url
   run_once: true
   ansible.builtin.debug:
-    var: jellyfin_server_download_url
+    var: configure_jellyfin_adhoc_server_download_url
 
 # Firewalld
 - name: Copy firewalld service file
@@ -70,7 +70,7 @@
 
 - name: Download and extract jellyfin
   ansible.builtin.unarchive:
-    src: "{{ jellyfin_server_download_url }}"
+    src: "{{ configure_jellyfin_adhoc_server_download_url }}"
     dest: "/usr/lib64/jellyfin"
     remote_src: true
     extra_opts:

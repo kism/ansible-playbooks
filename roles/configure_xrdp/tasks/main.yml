@@ -19,7 +19,6 @@
       - xfdesktop
       - xfwm4
 
-
     state: present
     install_weak_deps: false
   when: ansible_pkg_mgr == 'dnf'

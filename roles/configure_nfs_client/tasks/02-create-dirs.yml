@@ -24,8 +24,8 @@
     paths: /tmp/mnt/
     file_type: any
     depth: 1
-  register: mnt_files
-  failed_when: mnt_files.matched > 0
+  register: configure_nfs_client_mnt_files
+  failed_when: configure_nfs_client_mnt_files.matched > 0
 
 - name: Create temp bind mount
   ansible.posix.mount:
@@ -41,9 +41,9 @@
     paths: /tmp/mnt/{{ item.key }}
     file_type: any
     depth: 1
-  register: nfs_files
+  register: configure_nfs_client_nfs_files
   with_dict: "{{ nfs_client_mounts }}"
-  failed_when: nfs_files.matched > 0
+  failed_when: configure_nfs_client_nfs_files.matched > 0
 
 - name: For each mount set the unmounted folder's permissions
   ansible.builtin.file:
@@ -68,12 +68,12 @@
 - name: For the sake of output, ls -lah /tmp/mnt
   ansible.builtin.command:
     cmd: ls -lah /tmp/mnt
-  register: ls_mnt
+  register: configure_nfs_client_ls_mnt
   changed_when: false
 
 - name: Print the output of the previous command
   ansible.builtin.debug:
-    msg: "{{ ls_mnt.stdout }}"
+    msg: "{{ configure_nfs_client_ls_mnt.stdout }}"
 
 - name: Unmount temp mount
   ansible.posix.mount:

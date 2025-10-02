@@ -48,6 +48,6 @@
       -b "Telegraf Main"
       -host https://influxdb2.{{ homelab_domain_external }}:443
       -f
-  register: command_output
-  failed_when: '"Error: instance has already been set up" not in command_output.stderr_lines'
-  changed_when: command_output.rc == 0
+  register: configure_influxdb2_influx_setup
+  failed_when: '"Error: instance has already been set up" not in configure_influxdb2_influx_setup.stderr_lines'
+  changed_when: configure_influxdb2_influx_setup.rc == 0

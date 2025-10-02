@@ -1,0 +1,4 @@
+---
+- name: Add reminder for amd config tool
+  ansible.builtin.debug:
+    msg: "⚠️ Reminder added for AMD config tool: https://github.com/ilya-zlobintsev/lact"

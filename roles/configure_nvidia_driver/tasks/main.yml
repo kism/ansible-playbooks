@@ -11,22 +11,22 @@
       lsmod | grep ^nouveau
   changed_when: false # Just getting info
   failed_when: false # Just getting info
-  register: nouveau_loaded
+  register: configure_nvidia_driver_nouveau_loaded
 
 - name: Copy nouveau blocklist
   ansible.builtin.copy:
     src: files/blocklist-nouveau.conf
     dest: /etc/modprobe.d/blocklist-nouveau.conf
     mode: "0600"
-  register: blocklist_copy
+  register: configure_nvidia_driver_blocklist_copy
 
 - name: Block for vm host
-  when: nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'host'
+  when: configure_nvidia_driver_nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'host'
   block:
     - name: Run Initramfs update
       ansible.builtin.command:
         cmd: update-initramfs -u
-      changed_when: blocklist_copy.changed
+      changed_when: configure_nvidia_driver_blocklist_copy.changed
 
     - name: Reboot
       ansible.builtin.reboot:

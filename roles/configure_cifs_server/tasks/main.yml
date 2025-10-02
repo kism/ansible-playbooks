@@ -7,7 +7,3 @@
 
 - name: Run fun downloader tasks
   ansible.builtin.include_tasks: "03-downloaders.yml"
-
-- name: Add reminder to list
-  ansible.builtin.set_fact:
-    reminder_list: "{{ reminder_list + ['Add samba users manually: smbpasswd -a <linux username>'] }}"

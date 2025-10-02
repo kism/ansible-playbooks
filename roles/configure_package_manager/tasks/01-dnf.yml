@@ -19,7 +19,7 @@
 
     - name: Enable EPEL and appstream
       community.general.dnf_config_manager:
-        name: '{{ item }}'
+        name: "{{ item }}"
         state: enabled
       loop:
         - "ol{{ ansible_distribution_major_version }}_appstream"

@@ -4,7 +4,7 @@
     content: "{{ nfs_server_exports }}"
     dest: /etc/exports
     mode: "0660"
-  register: copy_nfs_exports
+  register: configure_nfs_server_copy_nfs_exports
 
 - name: Enable and start NFS service
   ansible.builtin.systemd_service:
@@ -15,4 +15,4 @@
 - name: Export the shares
   ansible.builtin.command:
     cmd: exportfs -rav
-  changed_when: copy_nfs_exports.changed
+  changed_when: configure_nfs_server_copy_nfs_exports.changed

@@ -3,4 +3,4 @@
   hosts: localhost
   gather_facts: false
   roles:
-    - maintenance_gather_proxmox_guests
+    - maintenance_gather_facts_pve

@@ -6,6 +6,8 @@
       - samba-vfs-modules
       - avahi-daemon
     state: present
+  notify:
+    - Print smb reminder
 
 - name: Enable services deb 11
   ansible.builtin.systemd_service:
@@ -14,6 +16,8 @@
   loop:
     - smbd
     - avahi-daemon
+  notify:
+    - Print smb reminder
 
 - name: Allow samba and wsdd through firewalld deb 11
   ansible.posix.firewalld:

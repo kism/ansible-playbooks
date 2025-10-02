@@ -1,0 +1,48 @@
+---
+- name: Figure out if a Seagate Hard Drive is attached
+  ansible.builtin.set_fact:
+    configure_concept_baremetal_found_seagate: true
+  when: item.value['model'] is regex('^ST.*') and item.value['vendor'] == "ATA"
+  no_log: true
+  with_dict: "{{ ansible_facts['devices'] }}"
+
+- name: Block for openSeaChest install
+  when: configure_concept_baremetal_found_seagate
+  block:
+    - name: Get github api response for openSeaChest
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/Seagate/openSeaChest/releases/latest"
+      register: configure_concept_baremetal_openseachest_github
+
+    - name: Set openSeaChest download url
+      ansible.builtin.set_fact:
+        configure_concept_baremetal_openseachest_url: >-
+          {{ configure_concept_baremetal_openseachest_github.json.assets |
+             selectattr('browser_download_url', 'search', configure_concept_baremetal_github_arch) |
+             selectattr('browser_download_url', 'search', '\.deb') |
+             map(attribute='browser_download_url') |
+             first }}
+
+    - name: Download and install openSeaChest
+      ansible.builtin.apt:
+        deb: "{{ configure_concept_baremetal_openseachest_url }}"
+      when: ansible_pkg_mgr == 'apt'
+
+- name: Remove old openSeaChest install
+  ansible.builtin.file:
+    path: /opt/openseachest
+    state: absent
+
+- name: Find broken symlinks in /usr/local/sbin/
+  ansible.builtin.find:
+    paths: /usr/local/sbin/
+    patterns: "openSeaChest*"
+    file_type: link
+  register: configure_concept_baremetal_openseachest_links
+
+- name: Remove broken symlinks
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ configure_concept_baremetal_openseachest_links.files }}"
+  when: configure_concept_baremetal_openseachest_links.matched > 0

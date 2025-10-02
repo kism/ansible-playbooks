@@ -36,6 +36,7 @@
     src: https://www.factorio.com/get-download/{{ install_factorio_server_version }}/headless/linux64
     dest: /opt/
     remote_src: true
+  notify: Print factorio reminder
 
 - name: Recursively change ownership of a directory
   ansible.builtin.file:
@@ -44,7 +45,3 @@
     recurse: true
     owner: factorio
     group: factorio
-
-- name: Add reminder to list
-  ansible.builtin.set_fact:
-    reminder_list: "{{ reminder_list + ['Copy a save and a config to: ' ~ install_factorio_server_save ~ ' and ' ~ install_factorio_server_settings ] }}"

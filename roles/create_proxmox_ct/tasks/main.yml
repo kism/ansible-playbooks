@@ -1,6 +1,6 @@
 ---
 - name: Block for creating a new VM
-  when: proxmox_facts is not defined
+  when: maintenance_gather_facts_pve_guest is not defined
   become: false
   block:
     - name: Debug
@@ -27,21 +27,21 @@
 
     - name: If needed, Gather new proxmox facts
       ansible.builtin.include_role:
-        name: maintenance_gather_proxmox_guests
+        name: maintenance_gather_facts_pve
 
     - name: Fail if vm not in the gathered proxmox_guests
       ansible.builtin.fail:
         msg: "CT didn't create successfully?"
 
 - name: Block for initialising the CT
-  when: proxmox_facts.status != 'running'
+  when: maintenance_gather_facts_pve_guest.status != 'running'
   block:
     - name: Set config entries for host if defined
       delegate_to: "{{ proxmox_target_node }}"
       become: true
       become_user: root
       ansible.builtin.lineinfile:
-        path: "/etc/pve/lxc/{{ proxmox_facts.vmid }}.conf"
+        path: "/etc/pve/lxc/{{ maintenance_gather_facts_pve_guest.vmid }}.conf"
         line: "{{ item }}"
         state: present
         insertafter: EOF
@@ -51,7 +51,7 @@
     - name: Start container
       delegate_to: localhost
       community.general.proxmox:
-        vmid: "{{ proxmox_facts.vmid }}"
+        vmid: "{{ maintenance_gather_facts_pve_guest.vmid }}"
         node: "{{ proxmox_target_node }}"
         api_user: root@pam
         api_password: "{{ secret_proxmox_password }}"
@@ -82,7 +82,8 @@
       become: true
       become_user: root
       ansible.builtin.command:
-        cmd: "pct push {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh /tmp/{{ inventory_hostname }}_init_linux.sh -perms 700"
+        cmd: "pct push {{ maintenance_gather_facts_pve_guest.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh /tmp/{{ inventory_hostname }}_init_linux.sh -perms
+          700"
       changed_when: true # Safe assumption
 
     - name: Run the init script
@@ -90,5 +91,5 @@
       become: true
       become_user: root
       ansible.builtin.command:
-        cmd: "pct exec {{ proxmox_facts.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh"
+        cmd: "pct exec {{ maintenance_gather_facts_pve_guest.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh"
       changed_when: true # Safe assumption

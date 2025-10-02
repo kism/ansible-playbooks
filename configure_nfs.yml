@@ -13,4 +13,3 @@
     - configure_nfs_client
 
     # End
-    - maintenance_print_reminders

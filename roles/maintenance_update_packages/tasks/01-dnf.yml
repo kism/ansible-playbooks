@@ -5,18 +5,18 @@
       ansible.builtin.dnf:
         update_cache: true
         list: updates
-      register: dnf_packages_to_upgrade_before
+      register: maintenance_update_packages_dnf_before
 
     - name: Wip update list to get changed
       ansible.builtin.debug: # WIP: nevra: 0:telegraf-1.30.2-1.aarch64
-        msg: "{{ dnf_packages_to_upgrade_before }}"
+        msg: "{{ maintenance_update_packages_dnf_before }}"
 
     - name: Update dnf packages
       ansible.builtin.dnf:
         name: "*"
         state: latest
         update_only: true
-      register: dnf_update
+      register: maintenance_update_packages_dnf_update
   rescue:
     - name: Run cleaning commands
       ansible.builtin.command:
@@ -38,14 +38,14 @@
         name: "*"
         state: latest
         update_only: true
-      register: dnf_update
+      register: maintenance_update_packages_dnf_update
 
 - name: Get only installed # WIP telegraf-1.30.2-1.aarch64
   ansible.builtin.set_fact:
-    patching_packages_changed:
+    maintenance_update_packages_changed:
       host: "{{ ansible_hostname }}"
-      packages: "{{ dnf_update.results | select('match', '^Installed: ') | map('regex_replace', '^Installed: ', '') | list }}"
+      packages: "{{ maintenance_update_packages_dnf_update.results | select('match', '^Installed: ') | map('regex_replace', '^Installed: ', '') | list }}"
 
-- name: Set fact for patching_packages_changed
+- name: Set fact for maintenance_update_packages_changed
   ansible.builtin.set_fact:
-    patching_packages_changed: "{{ [patching_packages_changed] | to_yaml(default_flow_style=False) }}"
+    maintenance_update_packages_changed: "{{ [maintenance_update_packages_changed] | to_yaml(default_flow_style=False) }}"

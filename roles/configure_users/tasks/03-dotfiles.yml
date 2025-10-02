@@ -11,25 +11,25 @@
   block:
     - name: Set fact for dotfile download location
       ansible.builtin.set_fact:
-        dotfiles_temp_folder: /tmp/{{ lookup('ansible.builtin.env', 'USER') }}/ansible/dotfiles
+        configure_users_dotfiles_temp_dir: /tmp/{{ lookup('ansible.builtin.env', 'USER') }}/ansible/dotfiles
       changed_when: false # This is not happening on the remote
 
-    - name: Remove dotfiles_temp_folder folder if exists
+    - name: Remove configure_users_dotfiles_temp_dir folder if exists
       ansible.builtin.file:
-        path: "{{ dotfiles_temp_folder }}"
+        path: "{{ configure_users_dotfiles_temp_dir }}"
         state: absent
       changed_when: false # This is not happening on the remote
 
     - name: Create folder on local machine to download dotfiles to
       ansible.builtin.file:
-        path: "{{ dotfiles_temp_folder }}"
+        path: "{{ configure_users_dotfiles_temp_dir }}"
         state: directory
         mode: "0700"
       changed_when: false # This is not happening on the remote
 
     - name: Create folders for dotfiles structure
       ansible.builtin.file:
-        path: "{{ (dotfiles_temp_folder + '/' + (item['home_dest']) | dirname) }}"
+        path: "{{ (configure_users_dotfiles_temp_dir + '/' + (item['home_dest']) | dirname) }}"
         state: directory
         mode: "0700"
       changed_when: false # This is not happening on the remote
@@ -38,7 +38,7 @@
     - name: Download dotfiles per vars to tmp folder
       ansible.builtin.get_url:
         url: "{{ item['url'] }}"
-        dest: "{{ dotfiles_temp_folder }}/{{ item['home_dest'] }}"
+        dest: "{{ configure_users_dotfiles_temp_dir }}/{{ item['home_dest'] }}"
         mode: "0600"
       changed_when: false # This is not happening on the remote
       loop: "{{ configure_users_dotfiles }}"
@@ -57,7 +57,6 @@
     regexp: "{{ item['regexp'] }}"
     replace: "{{ item['replace'] }}"
   loop: "{{ configure_users_dotfiles_tmux_regex }}"
-
 
 - name: Ensure that root rm alias is set
   ansible.builtin.lineinfile:

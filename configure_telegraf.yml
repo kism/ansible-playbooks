@@ -8,6 +8,3 @@
 
     # Purpose specific
     - configure_telegraf
-
-    # End
-    - maintenance_print_reminders

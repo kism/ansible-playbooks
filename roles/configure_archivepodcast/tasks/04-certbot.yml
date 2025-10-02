@@ -25,8 +25,8 @@
       --dns-cloudflare
       --dns-cloudflare-credentials /root/.cloudflare.ini
       -d {{ secret_domain }}
-  register: command_output
-  changed_when: false or "Certificate not yet due for renewal" not in command_output.stdout
+  register: configure_archivepodcast_certbot
+  changed_when: false or "Certificate not yet due for renewal" not in configure_archivepodcast_certbot.stdout
 
 - name: Generate dhparms
   ansible.builtin.command:

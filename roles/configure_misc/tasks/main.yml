@@ -8,14 +8,14 @@
 - name: Check if kdump is installed
   ansible.builtin.stat:
     path: /etc/init.d/kdump
-  register: kdump_installed
+  register: configure_misc_kdump_installed
 
 - name: Disable kdump service
   ansible.builtin.service:
     name: kdump
     state: stopped
     enabled: false
-  when: kdump_installed.stat.exists
+  when: configure_misc_kdump_installed.stat.exists
 
 - name: Remove anaconda-ks.cfg
   ansible.builtin.file:
@@ -37,12 +37,12 @@
 - name: Check if /etc/vconsole.conf exists
   ansible.builtin.stat:
     path: /etc/vconsole.conf
-  register: vconsole_stat
+  register: configure_misc_vconsole_stat
 
 - name: Check if terminus is installed
   ansible.builtin.stat:
     path: /usr/share/kbd/consolefonts/ter-120n.psf.gz
-  register: terminus_font_stat
+  register: configure_misc_terminus_font_stat
 
 - name: Set terminal font as terminus
   ansible.builtin.lineinfile:
@@ -50,7 +50,7 @@
     regexp: "^FONT="
     line: "FONT=ter-120n"
     state: present
-  when: vconsole_stat.stat.exists and terminus_font_stat.stat.exists
+  when: configure_misc_vconsole_stat.stat.exists and configure_misc_terminus_font_stat.stat.exists
 
 - name: Set keyboard layout for vconsole
   ansible.builtin.lineinfile:
@@ -58,13 +58,13 @@
     regexp: "^.*KEYMAP="
     line: "KEYMAP=us"
     state: present
-  when: vconsole_stat.stat.exists
+  when: configure_misc_vconsole_stat.stat.exists
 
 # Allow ping
 - name: Check that sysctl.d folder exists
   ansible.builtin.stat:
     path: /etc/sysctl.d
-  register: sysctl_d_stat
+  register: configure_misc_sysctl_d_stat
 
 - name: Write file to allow ping if possible
   ansible.builtin.copy:
@@ -72,4 +72,4 @@
     content: |
       net.ipv4.ping_group_range=0 1100
     mode: "0644"
-  when: sysctl_d_stat.stat.exists
+  when: configure_misc_sysctl_d_stat.stat.exists

@@ -13,3 +13,7 @@
   ansible.builtin.systemd_service:
     name: avahi-daemon
     state: restarted
+
+- name: Print smb reminder
+  ansible.builtin.debug:
+    msg: "Add samba users manually: smbpasswd -a <linux username>"

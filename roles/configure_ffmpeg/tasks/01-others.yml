@@ -3,12 +3,12 @@
   block:
     - name: Set target arch per map if possible
       ansible.builtin.set_fact:
-        ffmpeg_arch: "{{  configure_ffmpeg_arch_map[ansible_architecture] }}"
+        configure_ffmpeg_arch: "{{  configure_ffmpeg_arch_map[ansible_architecture] }}"
 
   rescue:
     - name: Set default ffmpeg_arch
       ansible.builtin.set_fact:
-        ffmpeg_arch: "{{ ansible_architecture }}"
+        configure_ffmpeg_arch: "{{ ansible_architecture }}"
 
 - name: Create ffmpreg directory
   ansible.builtin.file:
@@ -23,7 +23,7 @@
 
 - name: Grab ffmpeg with right arch
   ansible.builtin.unarchive:
-    src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ ffmpeg_arch }}-static.tar.xz
+    src: https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-{{ configure_ffmpeg_arch }}-static.tar.xz
     dest: /opt/ffmpeg
     extra_opts: [--strip-components=1]
     remote_src: true

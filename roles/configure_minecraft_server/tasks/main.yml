@@ -7,7 +7,3 @@
 
 - name: Setup folders
   ansible.builtin.include_tasks: "03-folders.yml"
-
-- name: Add reminder to list
-  ansible.builtin.set_fact:
-    reminder_list: "{{ reminder_list + ['Install your favorite minecraft server to /opt/minecraft'] }}"

@@ -5,7 +5,7 @@
   become: true
   roles:
     # Preflight
-    - maintenance_gather_proxmox_guests
+    - maintenance_gather_facts_pve
     - create_proxmox_ct
     - maintenance_gather_facts
 
@@ -18,4 +18,3 @@
     # End
     - configure_telegraf
     - configure_elastic_agent
-    - maintenance_print_reminders

@@ -3,3 +3,7 @@
   ansible.builtin.systemd_service:
     name: firewalld
     state: reloaded
+
+- name: Print factorio reminder
+  ansible.builtin.debug:
+    msg: "{{ 'Copy a save and a config to: ' ~ install_factorio_server_save ~ ' and ' ~ install_factorio_server_settings  }}"

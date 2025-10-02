@@ -1,21 +1,21 @@
 ---
 name: Tabby-ROCM
 services:
-    tabby-rocm:
-        devices:
-            - /dev/kfd
-            - /dev/dri
-        security_opt:
-            - seccomp=unconfined
-        group_add:
-            - video
-        ports:
-            - 8080:8080
-        volumes:
-            - /opt/tabby/data:/data
-        image: tabbyml/tabby-rocm
-        environment:
-          HSA_OVERRIDE_GFX_VERSION: 10.3.0
-        # command: serve --device rocm --model StarCoder2-3B
-        # command: serve --device rocm --model StarCoder2-7B
-        command: serve --device rocm --model CodeLlama-7B
+  tabby-rocm:
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    security_opt:
+      - seccomp=unconfined
+    group_add:
+      - video
+    ports:
+      - 8080:8080
+    volumes:
+      - /opt/tabby/data:/data
+    image: tabbyml/tabby-rocm
+    environment:
+      HSA_OVERRIDE_GFX_VERSION: 10.3.0
+    # command: serve --device rocm --model StarCoder2-3B
+    # command: serve --device rocm --model StarCoder2-7B
+    command: serve --device rocm --model CodeLlama-7B

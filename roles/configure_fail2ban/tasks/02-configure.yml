@@ -2,7 +2,7 @@
 - name: Get nginx service status
   ansible.builtin.systemd_service:
     name: nginx.service
-  register: nginx_status
+  register: configure_fail2ban_nginx_status
 
 - name: Copy filters
   ansible.builtin.copy:
@@ -10,7 +10,7 @@
     dest: /etc/fail2ban/filter.d/nginx-kism.conf
     mode: "0640"
   notify: Restart fail2ban
-  when: nginx_status["status"]["LoadState"] != "not-found"
+  when: configure_fail2ban_nginx_status["status"]["LoadState"] != "not-found"
 
 - name: Copy jail
   ansible.builtin.template:
@@ -18,7 +18,7 @@
     dest: /etc/fail2ban/jail.d/nginx-kism.conf
     mode: "0644"
   notify: Restart fail2ban
-  when: nginx_status["status"]["LoadState"] != "not-found"
+  when: configure_fail2ban_nginx_status["status"]["LoadState"] != "not-found"
 
 - name: Copy jail
   ansible.builtin.template:

@@ -8,8 +8,8 @@
 - name: Small change to nginx service
   ansible.builtin.lineinfile:
     path: /lib/systemd/system/nginx.service
-    regexp: '^After='
-    line: 'After=network-online.target remote-fs.target nss-lookup.target pveproxy.service'
+    regexp: "^After="
+    line: "After=network-online.target remote-fs.target nss-lookup.target pveproxy.service"
 
 - name: Nginx enabled and running
   ansible.builtin.systemd_service:

@@ -1,29 +1,29 @@
 ---
 - name: Set fact for key name
   ansible.builtin.set_fact:
-    key_name: "elasticsearch-keyring"
+    configure_filebeat_key_name: "elasticsearch-keyring"
 
 - name: Grab apt signing key
   ansible.builtin.get_url:
     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    dest: /tmp/{{ key_name }}.asc
+    dest: /tmp/{{ configure_filebeat_key_name }}.asc
     mode: "0644"
 
 - name: Remove old temp key if needed
   ansible.builtin.file:
-    path: /tmp/{{ key_name }}.gpg
+    path: /tmp/{{ configure_filebeat_key_name }}.gpg
     state: absent
   changed_when: false
 
 - name: Dearmour the key
   ansible.builtin.command:
-    cmd: gpg -o /tmp/{{ key_name }}.gpg --dearmor /tmp/{{ key_name }}.asc
+    cmd: gpg -o /tmp/{{ configure_filebeat_key_name }}.gpg --dearmor /tmp/{{ configure_filebeat_key_name }}.asc
   changed_when: false
 
 - name: Copy the key to the correct location
   ansible.builtin.copy:
-    src: /tmp/{{ key_name }}.gpg
-    dest: /etc/apt/keyrings/{{ key_name }}.gpg
+    src: /tmp/{{ configure_filebeat_key_name }}.gpg
+    dest: /etc/apt/keyrings/{{ configure_filebeat_key_name }}.gpg
     mode: "0644"
     remote_src: true
 
@@ -31,7 +31,7 @@
   ansible.builtin.apt_repository:
     repo: |-
       deb
-      [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/{{ key_name }}.gpg]
+      [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/{{ configure_filebeat_key_name }}.gpg]
       https://artifacts.elastic.co/packages/8.x/apt stable main
     state: present
     mode: "0644"

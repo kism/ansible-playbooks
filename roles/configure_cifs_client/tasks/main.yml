@@ -24,7 +24,7 @@
       WantedBy=multi-user.target
     mode: "0644"
   with_dict: "{{ cifs_client_mounts }}"
-  register: systemd_mount_files
+  register: configure_cifs_client_systemd_mount_files
   notify: Deamon reload systemd
 
 - name: Include tasks to create cifs credentials files

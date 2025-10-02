@@ -45,20 +45,6 @@ configure_wm_i3_packages_aur:
   # Themes
   - numix-icon-theme-git
   - zuki-themes
-
-configure_wm_i3_reminders_list:
-  - add user to audio and video groups
-  - thunar shares don't work
-  - dotfiles install still manual
-  - onboarding (btrfs-progs, sudo)
-  - set dark theme
-  - imv config
-  - theme for pwavucontrol
-  - fix my uid
-  - https://store.kde.org/p/1230631
-  - https://github.com/end-4/dots-hyprland/blob/main/.config/hypr/hyprland ?
-  - https://github.com/vinceliuice/Fluent-gtk-theme
-
 # Maybe you wanna try add the css code below on the file $HOME/.config/gtk-4.0/gtk-dark.css or $HOME/.config/gtk-4.0/gtk-light.css
 # window { border-bottom-left-radius: 5px; border-bottom-right-radius:5px; border-top-left-radius: 5px; border-top-right-radius: 5px; }
 # or really sharp: window { border-bottom-left-radius: 0px; border-bottom-right-radius:0px; border-top-left-radius: 0px; border-top-right-radius: 0px; }

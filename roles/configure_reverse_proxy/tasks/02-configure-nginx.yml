@@ -56,7 +56,7 @@
   ansible.builtin.find:
     paths: /etc/nginx/sites-available/
     file_type: file
-  register: config_files_found
+  register: configure_reverse_proxy_config_files_found
 
 - name: Create symbolic links to make sites available
   ansible.builtin.file:
@@ -65,7 +65,7 @@
     state: link
   notify:
     - Restart nginx
-  loop: "{{ config_files_found.files }}"
+  loop: "{{ configure_reverse_proxy_config_files_found.files }}"
 
 - name: Ensure dirs exist
   ansible.builtin.file:

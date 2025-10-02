@@ -23,14 +23,14 @@
       --dns-cloudflare
       --dns-cloudflare-credentials /root/.cloudflare.ini
       -d {{ homelab_domain_external }},*.{{ homelab_domain_external }}
-  register: command_output
-  changed_when: false or "Certificate not yet due for renewal" not in command_output.stdout
-  failed_when: command_output.rc != 0 and not "too many certificates" in command_output.stderr
+  register: configure_reverse_proxy_certbot_output
+  changed_when: false or "Certificate not yet due for renewal" not in configure_reverse_proxy_certbot_output.stdout
+  failed_when: configure_reverse_proxy_certbot_output.rc != 0 and not "too many certificates" in configure_reverse_proxy_certbot_output.stderr
   notify: Restart nginx
 
 - name: Debug the command output
   ansible.builtin.debug:
-    var: command_output.stdout_lines
+    var: configure_reverse_proxy_certbot_output.stdout_lines
 
 - name: Copy systemd units
   ansible.builtin.copy:

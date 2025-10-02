@@ -16,13 +16,13 @@
     paths: /home
     file_type: directory
     recurse: false
-  register: home_dirs
+  register: configure_users_home_dirs
 
 - name: Set permissions to 0700 for all home directories
   ansible.builtin.file:
     path: "{{ item.path }}"
     mode: "0700"
-  with_items: "{{ home_dirs.files }}"
+  with_items: "{{ configure_users_home_dirs.files }}"
   when: item.path != '/home'
 
 - name: Add user accounts

@@ -2,10 +2,10 @@
 - name: Check if /etc/pve exists
   ansible.builtin.stat:
     path: /etc/pve
-  register: pve_status
+  register: configure_firewall_pve_status
 
 - name: Run firewalld setup on non-pve hosts
-  when: not pve_status.stat.exists and 'proxmoxhosts' not in group_names # make double sure
+  when: not configure_firewall_pve_status.stat.exists and 'proxmoxhosts' not in group_names # make double sure
   block:
     - name: Remove ufw if it exists
       ansible.builtin.include_tasks: "01-remove-ufw.yml"

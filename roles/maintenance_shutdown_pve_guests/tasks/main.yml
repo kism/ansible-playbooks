@@ -7,8 +7,7 @@
     api_user: root@pam
     api_password: "{{ secret_proxmox_password }}"
     api_host: "{{ proxmox_api_host }}"
-  register: proxmox_guests
-  # until: not proxmox_guests.failed # ???
+  register: maintenance_shutdown_pve_guests_guests
   retries: 5
   delay: 10
 
@@ -23,5 +22,5 @@
     vmid: "{{ item.vmid }}"
     state: stopped
     force: false
-  loop: "{{ proxmox_guests.proxmox_vms }}"
+  loop: "{{ maintenance_shutdown_pve_guests_guests.proxmox_vms }}"
   failed_when: false

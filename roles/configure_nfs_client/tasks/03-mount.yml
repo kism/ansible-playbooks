@@ -4,12 +4,12 @@
 
 - name: Set fact for whether this is a nfs server
   ansible.builtin.set_fact:
-    is_nfs_server: "{{ 'nfs-server.service' in ansible_facts.services.keys() }}"
-    after_nfs_server: ""
+    configure_nfs_client_is_nfs_server: "{{ 'nfs-server.service' in ansible_facts.services.keys() }}"
+    configure_nfs_client_after_nfs_server: ""
 
 - name: Set fact to start after nfs-server if needed
   ansible.builtin.set_fact:
-    after_nfs_server: "nfs-server.service"
+    configure_nfs_client_after_nfs_server: "nfs-server.service"
 
 - name: Copy systemd mount files
   ansible.builtin.copy:
@@ -17,7 +17,7 @@
     content: |-
       [Unit]
       Description=Mount {{ item.key }}
-      After=rpcbind.target {{ after_nfs_server }}
+      After=rpcbind.target {{ configure_nfs_client_after_nfs_server }}
       Requires=remote-fs-pre.target
 
       [Mount]

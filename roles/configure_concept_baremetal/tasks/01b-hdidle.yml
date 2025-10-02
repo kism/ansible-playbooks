@@ -1,0 +1,19 @@
+---
+- name: Get github api response for hdidle
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/adelolmo/hd-idle/releases/latest"
+  register: configure_concept_baremetal_hdidle_github
+
+- name: Set hdidle download url
+  ansible.builtin.set_fact:
+    configure_concept_baremetal_hdidle_url: >-
+      {{ configure_concept_baremetal_hdidle_github.json.assets |
+          selectattr('browser_download_url', 'search', configure_concept_baremetal_github_arch) |
+          selectattr('browser_download_url', 'search', '\.deb') |
+          map(attribute='browser_download_url') |
+          first }}
+
+- name: Download and install hd-idle
+  ansible.builtin.apt:
+    deb: "{{ configure_concept_baremetal_hdidle_url }}"
+  when: ansible_pkg_mgr == 'apt'

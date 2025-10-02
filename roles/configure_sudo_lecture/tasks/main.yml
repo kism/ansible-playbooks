@@ -10,11 +10,11 @@
     path: /etc/sudoers
     line: "Defaults lecture_file=/etc/sudo_lecture"
     state: present
-    validate: 'visudo -cf %s'
+    validate: "visudo -cf %s"
 
 - name: Configure sudo lecture to always show
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     line: "Defaults lecture = always"
     state: present
-    validate: 'visudo -cf %s'
+    validate: "visudo -cf %s"

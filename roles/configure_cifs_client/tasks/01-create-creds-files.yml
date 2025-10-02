@@ -2,7 +2,7 @@
 - name: Check if credentials file exists
   ansible.builtin.stat:
     path: /etc/cifs-creds-{{ cifs_share_item.value.mount_folder }}
-  register: creds_file
+  register: configure_cifs_client_creds_file
 
 - name: Create credentials file if it doesnt exist
   ansible.builtin.copy:
@@ -11,4 +11,4 @@
       username=
       password=
     mode: "0600"
-  when: not creds_file.stat.exists
+  when: not configure_cifs_client_creds_file.stat.exists

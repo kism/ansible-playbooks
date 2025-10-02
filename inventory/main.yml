@@ -38,7 +38,6 @@ ansible_main:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
 
-
 # Server Type
 proxmoxvms:
   hosts:

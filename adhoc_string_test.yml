@@ -9,19 +9,19 @@
       armv6l: armel
       armv7l: armel
       armv8l: armel
-    ffmpeg_arch: ""
+    configure_ffmpeg_arch: ""
 
   tasks:
     - name: Get ffmpeg_arch
       block:
         - name: Set target arch per map if possible
           ansible.builtin.set_fact:
-            ffmpeg_arch: "{{  arch_map[ansible_architecture] }}"
+            configure_ffmpeg_arch: "{{  arch_map[ansible_architecture] }}"
 
       rescue:
         - name: Set default ffmpeg_arch
           ansible.builtin.set_fact:
-            ffmpeg_arch: "{{ ansible_architecture }}"
+            configure_ffmpeg_arch: "{{ ansible_architecture }}"
 
     - name: Print out multiline entry (multi line string)
       ansible.builtin.debug:
