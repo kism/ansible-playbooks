@@ -17,17 +17,7 @@ Run
 Run without server onboarding block
 `ansible-playbook build_ent.yml -i inventory.yml --extra-vars "skip_onboard=true"`
 
-## Vault
-
-No need for `--vault-password-file=/tmp/ansiblevaultpassword` since its in config
-
-Ensure the secrets repo is cloned
-
-```bash
-touch /tmp/ansiblevaultpassword && chmod 600 /tmp/ansiblevaultpassword && echo password > /tmp/ansiblevaultpassword
-ansible-vault encrypt ../ansible-playbooks-secrets/secrets*
-ansible-vault decrypt ../ansible-playbooks-secrets/secrets*
-```
+````
 
 ## Code Quality
 
@@ -35,7 +25,7 @@ ansible-vault decrypt ../ansible-playbooks-secrets/secrets*
 
 ```text
 
-```
+````
 
 Searches for vscode to find code quality issues that don't get caught by ansible-lint
 
@@ -69,7 +59,7 @@ skip_ansible_lint
 
 ```
 
-### Good style things to do
+## Good style things to do
 
 - Comment every one of those code quality searches when used
 - Comment ever changed_when
@@ -104,10 +94,6 @@ skip_ansible_lint
   - Proxmox grab lxc <https://images.linuxcontainers.org/>
 - Unmount, chmod, remount disks to ensure perms
 - setup cert
-- better server packages install
-- nginx log rotation
-
-## do ~~later~~ never
 
 ````bash
 ansible-galaxy collection install ansible.windows

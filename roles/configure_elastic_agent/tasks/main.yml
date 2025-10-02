@@ -8,7 +8,7 @@
 - name: Kill all filebeat processes
   ansible.builtin.command:
     cmd: killall filebeat
-  failed_when: false
+  failed_when: false # Only if needeed
   register: configure_elastic_agent_kill_output # Only if needed
   changed_when: configure_elastic_agent_kill_output.rc == 0
 

@@ -39,4 +39,4 @@
         name: motd-news.service
         state: stopped
         enabled: false
-      failed_when: false
+      failed_when: false # Okay with it not existing

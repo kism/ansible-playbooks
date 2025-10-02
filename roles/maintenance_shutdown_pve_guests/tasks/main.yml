@@ -23,4 +23,4 @@
     state: stopped
     force: false
   loop: "{{ maintenance_shutdown_pve_guests_guests.proxmox_vms }}"
-  failed_when: false
+  failed_when: false # We ball

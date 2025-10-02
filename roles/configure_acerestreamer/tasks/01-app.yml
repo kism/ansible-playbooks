@@ -8,7 +8,7 @@
 - name: Run uv setup script
   ansible.builtin.command:
     cmd: "/tmp/uv_setup.sh"
-  changed_when: true
+  changed_when: true # Don't want to program this
   register: configure_acerestreamer_uv_setup
 
 - name: Print uv_setup
