@@ -1,6 +1,6 @@
 ---
 - name: Setup Proxmox hosts for NFS
-  hosts: proxmoxhosts,dpshub
+  hosts: proxmoxhosts
   gather_facts: true
   become: true
   roles:

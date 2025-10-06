@@ -43,7 +43,7 @@
     depth: 1
   register: configure_nfs_client_nfs_files
   with_dict: "{{ nfs_client_mounts }}"
-  failed_when: configure_nfs_client_nfs_files.matched > 0
+  failed_when: configure_nfs_client_nfs_files.matched > 0 and item.key != 'backups' # lol proxmox
 
 - name: For each mount set the unmounted folder's permissions
   ansible.builtin.file:
