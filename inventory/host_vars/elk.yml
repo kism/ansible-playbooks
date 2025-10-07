@@ -6,3 +6,4 @@ target_host_mac_address: 00:D0:F1:33:77:CC
 proxmox_ct_disk: "local-lvm:60"
 proxmox_ct_memory: 24576
 proxmox_ct_cores: 12
+secret_cloudflare_api_dns: "{{ lookup('bitwarden.secrets.lookup', '918264b9-1582-45d6-8029-b36f00549cff') }}"
