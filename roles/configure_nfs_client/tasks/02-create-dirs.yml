@@ -39,7 +39,7 @@
 - name: For each mount, check if there are any files or subfolders
   ansible.builtin.find:
     paths: /tmp/mnt/{{ item.key }}
-    file_type: any
+    file_type: file
     depth: 1
   register: configure_nfs_client_nfs_files
   with_dict: "{{ nfs_client_mounts }}"

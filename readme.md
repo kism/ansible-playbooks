@@ -94,6 +94,7 @@ skip_ansible_lint
   - Proxmox grab lxc <https://images.linuxcontainers.org/>
 - Unmount, chmod, remount disks to ensure perms
 - setup cert
+- docker arr health check for mount
 
 ````bash
 ansible-galaxy collection install ansible.windows
