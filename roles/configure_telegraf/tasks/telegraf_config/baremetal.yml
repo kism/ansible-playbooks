@@ -16,7 +16,6 @@
       ansible.builtin.package:
         pkg:
           - nvme-cli
-          - lm-sensors
           - smartmontools
         state: present
       when: ansible_distribution != "Archlinux"
@@ -25,10 +24,23 @@
       ansible.builtin.package:
         pkg:
           - nvme-cli
-          - lm_sensors
           - smartmontools
         state: present
       when: ansible_distribution == "Archlinux"
+
+    - name: Install lm-sensors apt
+      ansible.builtin.package:
+        pkg:
+          - lm-sensors
+        state: present
+      when: ansible_pkg_mgr == "apt"
+
+    - name: Install lm_sensors dnf
+      ansible.builtin.package:
+        pkg:
+          - lm_sensors
+        state: present
+      when: ansible_pkg_mgr == "dnf"
 
     - name: Copy the telegraf sudoers rule baremetal hosts
       ansible.builtin.copy:
