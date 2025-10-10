@@ -73,3 +73,11 @@
       net.ipv4.ping_group_range=0 1100
     mode: "0644"
   when: configure_misc_sysctl_d_stat.stat.exists
+
+- name: Disable core dump
+  ansible.builtin.copy:
+    dest: /etc/security/limits.d/99-disable-core-dump.conf
+    content: |
+      * hard core 0
+      * soft core 0
+    mode: "0644"
