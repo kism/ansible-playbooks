@@ -9,7 +9,7 @@
 
     - name: If needed, Create new container with minimal options
       delegate_to: localhost
-      community.general.proxmox:
+      community.proxmox.proxmox:
         node: "{{ proxmox_target_node }}"
         api_user: root@pam
         api_password: "{{ secret_proxmox_password }}"
@@ -50,7 +50,7 @@
 
     - name: Start container
       delegate_to: localhost
-      community.general.proxmox:
+      community.proxmox.proxmox:
         vmid: "{{ maintenance_gather_facts_pve_guest.vmid }}"
         node: "{{ proxmox_target_node }}"
         api_user: root@pam

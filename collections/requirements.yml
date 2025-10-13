@@ -20,3 +20,6 @@ collections:
 
   - name: hetzner.hcloud
     source: https://galaxy.ansible.com
+
+  - name: community.proxmox
+    source: https://galaxy.ansible.com

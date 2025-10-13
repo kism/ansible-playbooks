@@ -5,7 +5,7 @@
 Install collections
 
 ```bash
-ansible-galaxy collection install -r collections/requirements.yml --upgrade
+ansible-galaxy collection install --requirements-file collections/requirements.yml --upgrade
 ```
 
 Running on macos
@@ -95,8 +95,3 @@ skip_ansible_lint
 - Unmount, chmod, remount disks to ensure perms
 - setup cert
 - docker arr health check for mount
-
-````bash
-ansible-galaxy collection install ansible.windows
-ansible-galaxy collection install community.windows```
-````
