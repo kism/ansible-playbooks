@@ -11,6 +11,11 @@
     dest: /tmp/influxdata-archive.key
     mode: "0644"
 
+- name: Remove old key if exists
+  ansible.builtin.file:
+    path: /tmp/influxdata-archive.key.gpg
+    state: absent
+
 - name: Dearmour the key
   ansible.builtin.command:
     cmd: gpg --dearmor -o /tmp/influxdata-archive.key.gpg /tmp/influxdata-archive.key
@@ -19,7 +24,7 @@
 - name: Copy the key to the correct location
   ansible.builtin.copy:
     src: /tmp/influxdata-archive.key.gpg
-    dest: /etc/apt/keyrings/influxdata-archive.gpg
+    dest: /usr/share/keyrings/influxdata-archive.gpg
     mode: "0644"
     remote_src: true
 
@@ -27,7 +32,7 @@
   ansible.builtin.apt_repository:
     repo: |-
       deb
-      [arch=amd64,arm64 signed-by=/etc/apt/keyrings/influxdata-archive.gpg]
+      [arch=amd64,arm64 signed-by=/usr/share/keyrings/influxdata-archive.gpg]
       https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main
     filename: telegraf
     state: present
