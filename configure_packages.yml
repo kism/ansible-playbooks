@@ -1,0 +1,8 @@
+---
+- name: Install packages
+  hosts: ansible_main
+  gather_facts: true
+  become: true
+  roles:
+    - configure_package_manager
+    - configure_packages

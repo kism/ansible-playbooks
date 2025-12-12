@@ -11,3 +11,6 @@
 
 - name: Include tasks for fastfetch
   ansible.builtin.include_tasks: "04-fastfetch.yml"
+
+- name: Include tasks for latest python versions
+  ansible.builtin.include_tasks: "05-latest-python.yml"

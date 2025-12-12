@@ -1,30 +1,30 @@
 ---
 # Make sure you are in tmux, and not jumping via ent.kg.lan
 # ansible-playbook maintenance_update.yml -i inventory/main.yml -i inventory/podc_hcloud.yml -i inventory/stream_hcloud.yml
-# - name: Update all packages with maintenance_update_all role
-#   hosts: proxmoxvms, proxmoxhosts, publiccloudvms, baremetal
-#   gather_facts: true
-#   become: true
-#   roles:
-#     - maintenance_update_packages
+- name: Update all packages with maintenance_update_all role
+  hosts: proxmoxvms, proxmoxhosts, publiccloudvms, baremetal
+  gather_facts: true
+  become: true
+  roles:
+    - maintenance_update_packages
 
-# - name: Shutdown hosts in hypervisors that I control
-#   hosts: proxmoxvms
-#   become: true
-#   roles:
-#     - maintenance_shutdown
+- name: Shutdown hosts in hypervisors that I control
+  hosts: proxmoxvms
+  become: true
+  roles:
+    - maintenance_shutdown
 
-# - name: Shutdown other hosts
-#   hosts: proxmoxhosts
-#   become: false
-#   roles:
-#     - maintenance_shutdown_pve_guests
+- name: Shutdown other hosts
+  hosts: proxmoxhosts
+  become: false
+  roles:
+    - maintenance_shutdown_pve_guests
 
-# - name: Restart others (baremetal and public cloud)
-#   hosts: publiccloudvms, baremetal
-#   become: true
-#   roles:
-#     - maintenance_reboot
+- name: Restart others (baremetal and public cloud)
+  hosts: publiccloudvms, baremetal
+  become: true
+  roles:
+    - maintenance_reboot
 
 - name: Setup nvidia driver on hosts
   hosts: pvematt,kismnas
