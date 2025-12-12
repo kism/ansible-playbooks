@@ -11,3 +11,6 @@ exclude_paths:
 
 skip_list:
   - yaml[comments-indentation]
+
+quiet: true
+strict: true
