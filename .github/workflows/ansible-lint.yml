@@ -14,7 +14,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
 
       - name: Install ansible
         run: pipx install ansible-base
@@ -27,12 +27,6 @@ jobs:
 
       - name: Install Ansible-Galaxy Requirements
         run: ansible-galaxy collection install --requirements-file collections/requirements.yml
-
-      - name: "Remove the vault_password_file entry from ansible.cfg. Avoid: 'ERROR! The vault password file <> was not found'"
-        run: sed -i '/vault_password_file\s*=/d' ansible.cfg && cat ansible.cfg
-
-      - name: Temp
-        run: sed -i '/- configure_archivepodcast_secrets/d' build_podc.yml && cat build_podc.yml
 
       - name: Run ansible-lint
         run: ansible-lint
