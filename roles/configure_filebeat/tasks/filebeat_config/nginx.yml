@@ -8,7 +8,7 @@
     - name: Check if /var/log/nginx/vhosts exists
       ansible.builtin.stat:
         path: /var/log/nginx/vhosts
-      register: vhosts_dir
+      register: configure_filebeat_vhosts_dir
 
     - name: "Copy filebeat nginx config"
       ansible.builtin.copy:

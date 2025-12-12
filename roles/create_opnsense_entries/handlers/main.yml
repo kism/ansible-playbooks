@@ -10,9 +10,9 @@
         force_basic_auth: true
         user: "{{ secret_opnsense_api_key }}"
         password: "{{ secret_opnsense_api_secret }}"
-      register: kea_dhcp_reconfigure
+      register: create_opnsense_entries_kea_dhcp_reconfigure
       when: create_opnsense_entries_entry.changed
-      failed_when: kea_dhcp_reconfigure.status != 200 or kea_dhcp_reconfigure.json.result != "saved"
+      failed_when: create_opnsense_entries_kea_dhcp_reconfigure.status != 200 or create_opnsense_entries_kea_dhcp_reconfigure.json.result != "saved"
 
     - name: Reconfigure kea
       delegate_to: localhost
@@ -23,6 +23,6 @@
         force_basic_auth: true
         user: "{{ secret_opnsense_api_key }}"
         password: "{{ secret_opnsense_api_secret }}"
-      register: kea_dhcp_reconfigure
+      register: create_opnsense_entries_kea_dhcp_reconfigure
       when: create_opnsense_entries_entry.changed
-      failed_when: kea_dhcp_reconfigure.status != 200 or kea_dhcp_reconfigure.json.status != "ok"
+      failed_when: create_opnsense_entries_kea_dhcp_reconfigure.status != 200 or create_opnsense_entries_kea_dhcp_reconfigure.json.status != "ok"

@@ -1,8 +1,0 @@
----
-plugin: hetzner.hcloud.hcloud
-api_token: "{{ lookup('bitwarden.secrets.lookup', 'c59c0264-e837-4a52-b405-b222005546da') }}"
-groups:
-  all: true
-  ansible_main: true
-  publiccloudvms: true
-hostname: "podc"

@@ -1,7 +1,0 @@
----
-- name: Create or modify journald.conf
-  ansible.builtin.copy:
-    src: files/journald.conf
-    dest: /etc/systemd/journald.conf
-    mode: "0644"
-  notify: Restart systemd-journald
