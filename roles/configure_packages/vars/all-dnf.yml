@@ -4,10 +4,4 @@ configure_packages_to_install:
   - pipx
   - xz
 
-configure_packages_to_remove:
-  - libwayland-client
-  - libX11
-  - x11-common
-  - xorg-x11-server-Xorg
-  - xserver-xorg-core
-  - xorg
+configure_packages_to_remove: []

@@ -5,7 +5,4 @@ configure_packages_to_install:
   - xz-utils
   - apt-transport-https # Specific to ubuntu
 
-configure_packages_to_remove:
-  - libwayland-client
-  - libX11
-  - xorg-x11-server-Xorg
+configure_packages_to_remove: []
