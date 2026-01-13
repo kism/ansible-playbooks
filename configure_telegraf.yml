@@ -1,6 +1,7 @@
 ---
 - name: Setup telegraf on all hosts
-  hosts: ansible_main
+  # hosts: ansible_main
+  hosts: pvematt, pvewill
   gather_facts: true
   become: true
   roles:

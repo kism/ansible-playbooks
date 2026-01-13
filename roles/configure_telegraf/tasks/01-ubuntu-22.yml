@@ -1,12 +1,15 @@
 ---
-- name: Remove apt key if needed
-  ansible.builtin.apt_key:
-    id: "9D53 9D90 D332 8DC7 D6C8  D3B9 D8FF 8E1F 7DF8 B07E"
+- name: Remove old apt lists
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/{{ item }}
     state: absent
+  loop:
+    - influxdb.list
+    - telegraf.list
 
 - name: Ensure old repo listing is removed
   ansible.builtin.lineinfile:
-    path: /etc/apt/sources.list.d/influxdb.list
+    path: /etc/apt/sources.list.d/influxdata.list
     line: deb https://repos.influxdata.com/debian stable main
     state: absent
 
@@ -22,5 +25,5 @@
       deb
       [arch=amd64,arm64 signed-by=/etc/apt/keyrings/influxdata-archive.gpg]
       https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main
-    filename: telegraf
+    filename: influxdata
     state: present

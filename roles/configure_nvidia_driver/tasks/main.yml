@@ -69,6 +69,8 @@
         state: present
       loop:
         - build-essential
+        - pkg-config
+        - libglvnd-dev
         - proxmox-headers-{{ ansible_facts['kernel'] }}
 
     - name: Run the installer silently for host

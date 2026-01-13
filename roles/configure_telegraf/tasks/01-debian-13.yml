@@ -1,9 +1,12 @@
 ---
-- name: Ensure old repo listing is removed
-  ansible.builtin.lineinfile:
-    path: /etc/apt/sources.list.d/influxdb.list
-    line: deb https://repos.influxdata.com/debian stable main
+- name: Remove old apt lists
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/{{ item }}
     state: absent
+  loop:
+    - influxdb.list
+    - telegraf.list
+    - influxdata.list
 
 - name: Copy over apt key
   ansible.builtin.get_url:
@@ -32,7 +35,7 @@
   ansible.builtin.apt_repository:
     repo: |-
       deb
-      [arch=amd64,arm64 signed-by=/usr/share/keyrings/influxdata-archive.gpg]
+      [signed-by=/usr/share/keyrings/influxdata-archive.gpg]
       https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main
-    filename: telegraf
+    filename: influxdata
     state: present
