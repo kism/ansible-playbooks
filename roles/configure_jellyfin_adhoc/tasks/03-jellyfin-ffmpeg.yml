@@ -20,6 +20,16 @@
     remote_src: true
   notify: Restart Jellyfin
 
+- name: Set file permissions for jellyfin-ffmpeg files
+  ansible.builtin.file:
+    path: "/opt/jellyfin-ffmpeg/{{ item }}"
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - ffmpeg
+    - ffprobe
+
 - name: Symlink ffmpeg and friends to /usr/bin
   ansible.builtin.file:
     src: "/opt/jellyfin-ffmpeg/{{ item }}"
