@@ -6,7 +6,7 @@
   roles:
     # Preflight
     - maintenance_gather_facts_pve
-    - create_proxmox_ct
+    # - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
@@ -14,11 +14,11 @@
 
     # Purpose specific
     - configure_nginx
-    - configure_fail2ban
+    # - configure_fail2ban
     - configure_reverse_proxy
-    - configure_allowlistapp
-    - configure_ansibleinventorycmdb
+    # - configure_allowlistapp
+    # - configure_ansibleinventorycmdb
 
     # End
-    - configure_telegraf
-    - configure_elastic_agent
+    # - configure_telegraf
+    # - configure_elastic_agent

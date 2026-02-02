@@ -5,10 +5,10 @@
     dest: /etc/yum.repos.d/influxdb.repo
     mode: "644"
 
-- name: Import InfluxDB GPG key
-  ansible.builtin.rpm_key:
-    state: present
-    key: https://repos.influxdata.com/influxdb.key
+- name: Remove old file lol
+  ansible.builtin.file:
+    path: /etc/pki/rpm-gpg/RPM-GPG-KEY-influxdata
+    state: absent
 
 - name: Install telegraf
   ansible.builtin.dnf:

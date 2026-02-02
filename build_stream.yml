@@ -15,11 +15,13 @@
     # - meta_onboard
 
     # Configure Server
-    - configure_nginx
-    - configure_nginx_certbot
-    - configure_docker
+    # - configure_nginx
+    # - configure_nginx_certbot
+    # - configure_docker
 
     # Purpose specific
-    - configure_acerestreamer
+    # - configure_acerestreamer
 
+    # Telegraf
+    - configure_telegraf
     # End
