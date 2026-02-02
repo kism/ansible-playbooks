@@ -6,26 +6,11 @@
       - python3.11-pip
     state: present
 
-- name: Install pipx
-  become: true
-  become_user: nginx
-  ansible.builtin.pip:
-    name: pipx
-    state: present
-    executable: pip3.11
-
 - name: Download uv setup script to tmp
   ansible.builtin.get_url:
     url: "https://astral.sh/uv/install.sh"
     dest: "/tmp/uv_setup.sh"
     mode: "0755"
-
-- name: Install poetry python package
-  become: true
-  become_user: nginx
-  ansible.builtin.command:
-    cmd: "/tmp/uv_setup.sh"
-  changed_when: true # Don't want to program this
 
 - name: Create ansibleinventorycmdb directory
   ansible.builtin.file:
@@ -44,24 +29,6 @@
     mode: "0664"
   notify: Restart ansibleinventorycmdb
 
-- name: Git config ansibleinventorycmdb
-  community.general.git_config:
-    name: safe.directory
-    value: /opt/ansibleinventorycmdb
-
-- name: Clone ansibleinventorycmdb
-  ansible.builtin.git:
-    repo: https://github.com/kism/ansible-inventory-cmdb
-    dest: /opt/ansibleinventorycmdb
-    single_branch: true
-    version: main
-  notify: Restart ansibleinventorycmdb
-
-- name: Remove venv
-  ansible.builtin.file:
-    path: /opt/ansibleinventorycmdb/.venv
-    state: absent
-
 - name: Ensure that all files are readable by nginx user
   ansible.builtin.file:
     path: /opt/ansibleinventorycmdb
@@ -71,12 +38,43 @@
     recurse: true
     mode: u+rwX,g+rwX,o=
 
-- name: Run uv sync
-  ansible.builtin.command:
-    cmd: ~/.local/bin/uv sync --frozen --no-install-project --no-group dev --no-group test
-    chdir: /opt/ansibleinventorycmdb
-  notify: Restart ansibleinventorycmdb
-  changed_when: true # Safe assumption, no way to know
+- name: Block to run as nginx user
+  become: true
+  become_user: nginx
+  block:
+    - name: Git config ansibleinventorycmdb
+      community.general.git_config:
+        name: safe.directory
+        value: /opt/ansibleinventorycmdb
+
+    - name: Install uv
+      ansible.builtin.command:
+        cmd: "/tmp/uv_setup.sh"
+      changed_when: true # Don't want to program this
+
+    - name: Clone ansibleinventorycmdb
+      ansible.builtin.git:
+        repo: https://github.com/kism/ansible-inventory-cmdb
+        dest: /opt/ansibleinventorycmdb
+        single_branch: true
+        version: main
+      notify: Restart ansibleinventorycmdb
+
+    - name: Run uv sync
+      ansible.builtin.command:
+        cmd: ~/.local/bin/uv sync --frozen --no-install-project --no-group dev --no-group test
+        chdir: /opt/ansibleinventorycmdb
+      notify: Restart ansibleinventorycmdb
+      changed_when: true # Safe assumption, no way to know
+
+- name: Ensure that all files are readable by nginx user again
+  ansible.builtin.file:
+    path: /opt/ansibleinventorycmdb
+    state: directory
+    owner: nginx
+    group: nginx
+    recurse: true
+    mode: u+rwX,g+rwX,o=
 
 - name: Fix selinux
   ansible.builtin.command: restorecon -Rv /opt/ansibleinventorycmdb

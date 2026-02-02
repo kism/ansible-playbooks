@@ -1,7 +1,6 @@
 ---
 configure_packages_to_install:
   - cmatrix
-  - pipx
   - xz-utils
   - apt-transport-https # Specific to ubuntu
 
