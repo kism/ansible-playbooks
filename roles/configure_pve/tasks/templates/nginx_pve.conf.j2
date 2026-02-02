@@ -1,0 +1,13 @@
+#server {
+#    return 301 https://{{ inventory_hostname }}.{{ homelab_domain_external }}:8006$request_uri;
+#    server_name {{ inventory_hostname }}.{{ homelab_domain_external }};
+#    listen 80;
+#}
+
+server {
+    return 301 https://{{ inventory_hostname }}.{{ homelab_domain_external }}:8006$request_uri;
+    server_name {{ inventory_hostname }}.{{ homelab_domain_external }};
+    listen 443 ssl;
+    ssl_certificate /etc/ssl/certs/pveproxy-fetched.cer; # This is due to not being able to find the public key
+    ssl_certificate_key /etc/pve/local/pveproxy-ssl.key;
+}

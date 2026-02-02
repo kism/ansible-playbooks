@@ -16,9 +16,6 @@ ansible_main:
     graf:
       ansible_host: graf.kg.lan
       ansible_host_description: Grafana
-    # cert:
-    #   ansible_host: cert.kg.lan
-    #   ansible_host_description: Certificate Authority
     kismnas:
       ansible_host: kismnas.kg.lan
       ansible_host_description: Network Attached Storage
