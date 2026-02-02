@@ -34,10 +34,6 @@
     mode: "0644"
   notify: Reload nginx
 
-- name: Print the homelab_domain_external
-  ansible.builtin.debug:
-    msg: "The homelab_domain_external is {{ homelab_domain_external }}"
-
 - name: Script to copy cert file
   ansible.builtin.copy:
     src: files/fetch_pvessl_cert.sh
