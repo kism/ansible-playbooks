@@ -1,7 +1,7 @@
 /var/log/nginx/vhosts/* {
     create 0640 nginx root
     daily
-    rotate 10
+    rotate 3
     missingok
     notifempty
     compress

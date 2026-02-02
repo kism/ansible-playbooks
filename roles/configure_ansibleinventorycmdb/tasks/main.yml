@@ -45,6 +45,7 @@
     - name: Git config ansibleinventorycmdb
       community.general.git_config:
         name: safe.directory
+        scope: global
         value: /opt/ansibleinventorycmdb
 
     - name: Install uv
