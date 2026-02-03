@@ -52,7 +52,7 @@
 
     - name: Run uv sync
       ansible.builtin.command:
-        cmd: uv sync --frozen --no-install-project --no-group dev --no-group test
+        cmd: "/usr/local/bin/uv sync --frozen --no-install-project --no-group dev --no-group test"
         chdir: /opt/ansibleinventorycmdb
       notify: Restart ansibleinventorycmdb
       changed_when: true # Safe assumption, no way to know
