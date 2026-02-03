@@ -114,3 +114,8 @@ nonansible:
       ansible_host_description: MiSTER Pi
       target_host_ip_address: 10.42.0.82
       target_host_mac_address: ea:c8:21:56:e3:43
+    hass:
+      ansible_host: hass.kg.lan
+      ansible_host_description: Home Assistant
+      target_host_ip_address: 10.42.0.24
+      target_host_mac_address: 6e:16:40:41:57:d4

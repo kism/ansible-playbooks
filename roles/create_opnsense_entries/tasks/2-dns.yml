@@ -10,5 +10,6 @@
     hostname: "{{ inventory_hostname | lower }}"
     domain: "{{ homelab_domain_internal }}"
     value: "{{ target_host_ip_address }}"
-    description: "Ansible: {{ ansible_host_description }} {{ now(fmt='%Y-%m-%d') }}"
+    description: "{{ now(fmt='%Y-%m-%d') }}: {{ ansible_host_description }}"
     match_fields: ["hostname", "domain"]
+  notify: Reload unbound config

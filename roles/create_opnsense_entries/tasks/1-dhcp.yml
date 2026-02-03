@@ -1,73 +1,14 @@
 ---
-- name: Get the subnet information that we need from opnsense
-  delegate_to: localhost
-  become: false
-  ansible.builtin.uri:
-    url: "https://{{ opnsense_firewall }}/api/kea/dhcpv4/searchSubnet"
-    method: GET
-    force_basic_auth: true
-    user: "{{ secret_opnsense_api_key }}"
-    password: "{{ secret_opnsense_api_secret }}"
-  register: create_opnsense_entries_dhcp_subnets
-
-- name: Get the subnet uuid for the subnet that we need
-  ansible.builtin.set_fact:
-    create_opnsense_entries_dhcp_uuid: "{{ item.uuid }}"
-  with_items: "{{ create_opnsense_entries_dhcp_subnets.json.rows }}"
-  when: item.subnet == target_host_subnet
-  loop_control:
-    label: "{{ item.subnet }}"
-
-- name: Assert that the subnet was found
-  ansible.builtin.fail:
-    msg: "The subnet was not found"
-  when: create_opnsense_entries_dhcp_uuid is not defined
-
-- name: Get existing Kea dhcp entries from the api
-  delegate_to: localhost
-  become: false
-  ansible.builtin.uri:
-    url: "https://{{ opnsense_firewall }}/api/kea/dhcpv4/searchReservation"
-    method: GET
-    force_basic_auth: true
-    user: "{{ secret_opnsense_api_key }}"
-    password: "{{ secret_opnsense_api_secret }}"
-  register: create_opnsense_entries_dhcp_entries
-
-- name: Check if the hostname is in the list
-  ansible.builtin.set_fact:
-    create_opnsense_entries_dhcp_create_opnsense_entries_dhcp_entry_exists: true
-  when: item.hostname == inventory_hostname
-  with_items: "{{ create_opnsense_entries_dhcp_entries.json.rows }}"
-  loop_control:
-    label: "{{ item.hostname }}"
-
-- name: Print whether the dhcp entry exists
-  ansible.builtin.debug:
-    var: create_opnsense_entries_dhcp_create_opnsense_entries_dhcp_entry_exists
-
 - name: Create a new dhcp entry if needed
-  when: not create_opnsense_entries_dhcp_create_opnsense_entries_dhcp_entry_exists
   delegate_to: localhost
   become: false
-  ansible.builtin.uri:
-    url: "https://{{ opnsense_firewall }}/api/kea/dhcpv4/addReservation"
-    method: POST
-    force_basic_auth: true
-    user: "{{ secret_opnsense_api_key }}"
-    password: "{{ secret_opnsense_api_secret }}"
-    body_format: json
-    body:
-      reservation:
-        hostname: "{{ inventory_hostname }}"
-        ip_address: "{{ target_host_ip_address }}"
-        hw_address: "{{ target_host_mac_address }}"
-        subnet: "{{ create_opnsense_entries_dhcp_uuid }}"
-        description: "Ansible: {{ ansible_host_description }}"
-  register: create_opnsense_entries_dhcp_entry
-  changed_when: create_opnsense_entries_dhcp_entry.status == 200
-  failed_when: create_opnsense_entries_dhcp_entry.status != 200 or create_opnsense_entries_dhcp_entry.json.result != "saved"
-  notify: Reconfigure kea
-
-- name: Flush handlers, as we need dhcp applied if needed
-  ansible.builtin.meta: flush_handlers
+  ansibleguy.opnsense.dhcp_reservation:
+    firewall: "{{ opnsense_firewall }}"
+    api_key: "{{ secret_opnsense_api_key }}"
+    api_secret: "{{ secret_opnsense_api_secret }}"
+    subnet: "{{ target_host_subnet }}"
+    hostname: "{{ inventory_hostname }}"
+    ip: "{{ target_host_ip_address }}"
+    mac: "{{ target_host_mac_address }}"
+    description: "{{ now(fmt='%Y-%m-%d') }}: {{ ansible_host_description }}"
+  notify: Reload kea config

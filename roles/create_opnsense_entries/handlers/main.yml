@@ -1,28 +1,20 @@
 ---
-- name: Apply kea
-  block:
-    - name: Set kea
-      delegate_to: localhost
-      become: false
-      ansible.builtin.uri:
-        url: "https://{{ opnsense_firewall }}/api/kea/service/set"
-        method: POST
-        force_basic_auth: true
-        user: "{{ secret_opnsense_api_key }}"
-        password: "{{ secret_opnsense_api_secret }}"
-      register: create_opnsense_entries_kea_dhcp_reconfigure
-      when: create_opnsense_entries_entry.changed
-      failed_when: create_opnsense_entries_kea_dhcp_reconfigure.status != 200 or create_opnsense_entries_kea_dhcp_reconfigure.json.result != "saved"
+- name: Reload kea config
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansibleguy.opnsense.reload:
+    firewall: "{{ opnsense_firewall }}"
+    api_key: "{{ secret_opnsense_api_key }}"
+    api_secret: "{{ secret_opnsense_api_secret }}"
+    target: "kea"
 
-    - name: Reconfigure kea
-      delegate_to: localhost
-      become: false
-      ansible.builtin.uri:
-        url: "https://{{ opnsense_firewall }}/api/kea/service/reconfigure"
-        method: POST
-        force_basic_auth: true
-        user: "{{ secret_opnsense_api_key }}"
-        password: "{{ secret_opnsense_api_secret }}"
-      register: create_opnsense_entries_kea_dhcp_reconfigure
-      when: create_opnsense_entries_entry.changed
-      failed_when: create_opnsense_entries_kea_dhcp_reconfigure.status != 200 or create_opnsense_entries_kea_dhcp_reconfigure.json.status != "ok"
+- name: Reload unbound config
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansibleguy.opnsense.reload:
+    firewall: "{{ opnsense_firewall }}"
+    api_key: "{{ secret_opnsense_api_key }}"
+    api_secret: "{{ secret_opnsense_api_secret }}"
+    target: "unbound"

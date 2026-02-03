@@ -2,6 +2,7 @@
 # ansible-playbook configure_opensense_for_host.yml -i inventory/main.yml --limit mrpi
 - name: Setup opnsense config for host
   hosts: all
+  serial: 10 # Right now bitwarden secrets manager gets overloaded otherwise
   gather_facts: false
   become: true
   roles:
