@@ -17,3 +17,4 @@
     maintenance_gather_facts_pve_guest: "{{ item }}"
   when: item.name == inventory_hostname
   loop: "{{ maintenance_gather_facts_pve_guests.proxmox_vms }}"
+  no_log: true

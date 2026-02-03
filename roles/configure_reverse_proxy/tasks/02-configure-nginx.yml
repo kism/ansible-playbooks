@@ -18,7 +18,7 @@
 - name: Include tasks for sites-enabled
   ansible.builtin.include_tasks: 02a-configure-nginx-sites.yml
 
-- name: Ensure dirs exist
+- name: Ensure nginx static dirs exist
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory

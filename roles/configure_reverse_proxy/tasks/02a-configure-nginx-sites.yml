@@ -25,20 +25,16 @@
     file_type: file
   register: configure_reverse_proxy_existing_files
 
-- name: Debug expected files
-  ansible.builtin.debug:
-    var: configure_reverse_proxy_expected_files
-
-- name: Debug existing files
-  ansible.builtin.debug:
-    var: configure_reverse_proxy_existing_files.files
+- name: Set fact, mapping the existing files
+  ansible.builtin.set_fact:
+    configure_reverse_proxy_existing_file_names: "{{ configure_reverse_proxy_existing_files.files | map(attribute='path') | map('basename') | list }}"
 
 - name: Remove nginx configs that are no longer needed
   ansible.builtin.file:
-    path: "{{ item.path }}"
+    path: "/etc/nginx/sites-available/{{ item }}"
     state: absent
-  loop: "{{ configure_reverse_proxy_existing_files.files }}"
-  when: item.path | basename not in configure_reverse_proxy_expected_files
+  loop: "{{ configure_reverse_proxy_existing_file_names }}"
+  when: item not in configure_reverse_proxy_expected_files
   notify:
     - Restart nginx
 
@@ -48,12 +44,16 @@
     file_type: link
   register: configure_reverse_proxy_existing_symlinks
 
+- name: Set fact, mapping the existing symlinks
+  ansible.builtin.set_fact:
+    configure_reverse_proxy_existing_symlink_names: "{{ configure_reverse_proxy_existing_symlinks.files | map(attribute='path') | map('basename') | list }}"
+
 - name: Remove symlinks that are no longer needed
   ansible.builtin.file:
-    path: "{{ item.path }}"
+    path: "/etc/nginx/sites-enabled/{{ item }}"
     state: absent
-  loop: "{{ configure_reverse_proxy_existing_symlinks.files }}"
-  when: item.path | basename not in configure_reverse_proxy_expected_files
+  loop: "{{ configure_reverse_proxy_existing_symlink_names }}"
+  when: item not in configure_reverse_proxy_expected_files
   notify:
     - Restart nginx
 
@@ -74,11 +74,15 @@
     file_type: file
   register: configure_reverse_proxy_config_files_found
 
+- name: Extract config file paths
+  ansible.builtin.set_fact:
+    configure_reverse_proxy_config_paths: "{{ configure_reverse_proxy_config_files_found.files | map(attribute='path') | list }}"
+
 - name: Create symbolic links to make sites available
   ansible.builtin.file:
-    src: /etc/nginx/sites-available/{{ item.path | basename }}
-    dest: /etc/nginx/sites-enabled/{{ item.path | basename }}
+    src: "{{ item }}"
+    dest: /etc/nginx/sites-enabled/{{ item | basename }}
     state: link
   notify:
     - Restart nginx
-  loop: "{{ configure_reverse_proxy_config_files_found.files }}"
+  loop: "{{ configure_reverse_proxy_config_paths }}"
