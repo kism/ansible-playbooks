@@ -6,12 +6,6 @@
       - python3.11-pip
     state: present
 
-- name: Download uv setup script to tmp
-  ansible.builtin.get_url:
-    url: "https://astral.sh/uv/install.sh"
-    dest: "/tmp/uv_setup.sh"
-    mode: "0755"
-
 - name: Create ansibleinventorycmdb directory
   ansible.builtin.file:
     path: /opt/ansibleinventorycmdb
@@ -48,11 +42,6 @@
         scope: global
         value: /opt/ansibleinventorycmdb
 
-    - name: Install uv
-      ansible.builtin.command:
-        cmd: "/tmp/uv_setup.sh"
-      changed_when: true # Don't want to program this
-
     - name: Clone ansibleinventorycmdb
       ansible.builtin.git:
         repo: https://github.com/kism/ansible-inventory-cmdb
@@ -63,7 +52,7 @@
 
     - name: Run uv sync
       ansible.builtin.command:
-        cmd: ~/.local/bin/uv sync --frozen --no-install-project --no-group dev --no-group test
+        cmd: uv sync --frozen --no-install-project --no-group dev --no-group test
         chdir: /opt/ansibleinventorycmdb
       notify: Restart ansibleinventorycmdb
       changed_when: true # Safe assumption, no way to know

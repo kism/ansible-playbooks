@@ -1,20 +1,4 @@
 ---
-- name: Download uv setup script to tmp
-  ansible.builtin.get_url:
-    url: "https://astral.sh/uv/install.sh"
-    dest: "/tmp/uv_setup.sh"
-    mode: "0755"
-
-- name: Run uv setup script
-  ansible.builtin.command:
-    cmd: "/tmp/uv_setup.sh"
-  changed_when: true # Don't want to program this
-  register: configure_acerestreamer_uv_setup
-
-- name: Print uv_setup
-  ansible.builtin.debug:
-    msg: "{{ configure_acerestreamer_uv_setup.stdout }}"
-
 # - name: Clone repo
 #   ansible.builtin.git:
 #     repo: "https://github.com/kism/acerestreamer"
@@ -25,12 +9,12 @@
 
 - name: Setup virtual environment
   ansible.builtin.command:
-    cmd: "/root/.local/bin/uv venv"
+    cmd: "/usr/local/bin/uv venv"
     chdir: "{{ configure_acerestreamer_directory }}"
   changed_when: true
 
 - name: Sync uv packages
   ansible.builtin.command:
-    cmd: "/root/.local/bin/uv sync"
+    cmd: "/usr/local/bin/uv sync"
     chdir: "{{ configure_acerestreamer_directory }}"
   changed_when: true

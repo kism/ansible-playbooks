@@ -1,0 +1,3 @@
+---
+configure_uv_path: /opt/uv
+configure_uv_bin: "{{ configure_uv_path }}/uv"

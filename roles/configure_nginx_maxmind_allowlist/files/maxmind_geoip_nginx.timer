@@ -1,0 +1,11 @@
+[Unit]
+Description="To run maxmind_geoip_nginx"
+
+[Timer]
+Unit=maxmind_geoip_nginx.service
+Persistent=true
+# Run every day at 2am
+OnCalendar=*-*-* 02:20:00
+
+[Install]
+WantedBy=timers.target

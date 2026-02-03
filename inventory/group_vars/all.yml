@@ -39,3 +39,6 @@ secret_hetzner_cloud_token_test: "{{ lookup('bitwarden.secrets.lookup', 'e3664c5
 secret_hetzner_cloud_token_prod: "{{ lookup('bitwarden.secrets.lookup', 'c59c0264-e837-4a52-b405-b222005546da') }}"
 
 secret_ip_addresses: "{{ lookup('bitwarden.secrets.lookup', 'f20ca68b-1907-4d74-823d-b2250052b1ff') | split(',') }}"
+
+secret_maxmind_id: "{{ lookup('bitwarden.secrets.lookup', '4e1a7c83-0626-47c9-8928-b3e60009ccff') }}"
+secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-929b-b3e60009e73f') }}"

@@ -1,0 +1,13 @@
+---
+- name: Download uv setup script to tmp
+  ansible.builtin.get_url:
+    url: "https://astral.sh/uv/install.sh"
+    dest: "/tmp/uv_setup.sh"
+    mode: "0755"
+
+- name: Install uv
+  ansible.builtin.command:
+    cmd: "/tmp/uv_setup.sh"
+  environment:
+    XDG_BIN_HOME: "{{ configure_uv_path }}"
+  changed_when: true # True if we are here

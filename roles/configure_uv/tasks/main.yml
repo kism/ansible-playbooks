@@ -1,0 +1,56 @@
+---
+- name: Remove existing uv installs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /root/.local/bin/uv
+    - /home/kism/.local/bin/uv
+
+- name: Ensure uv install directory exists
+  ansible.builtin.file:
+    path: "{{ configure_uv_path }}"
+    state: directory
+    mode: "0755"
+
+- name: Stat uv bin path
+  ansible.builtin.stat:
+    path: "{{ configure_uv_bin }}"
+  register: configure_uv_bin_stat
+
+- name: Block for fresh install of uv
+  when: not configure_uv_bin_stat.stat.exists
+  block:
+    - name: Include tasks to install uv
+      ansible.builtin.include_tasks: 01-install.yml
+
+- name: Otherwise, update
+  when: configure_uv_bin_stat.stat.exists
+  block:
+    - name: Update uv installation
+      ansible.builtin.command:
+        cmd: "{{ configure_uv_bin }} self update"
+      register: configure_uv_update_result
+      changed_when: false or "Upgraded uv" in configure_uv_update_result.stdout
+  rescue:
+    - name: Install again since upgrade failed
+      ansible.builtin.include_tasks: 01-install.yml
+
+- name: Ensure symlink to uv in /usr/local/bin
+  ansible.builtin.file:
+    src: "{{ configure_uv_bin }}"
+    dest: "/usr/local/bin/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - "uv"
+    - "uvx"
+
+- name: Ensure /etc/profile.d/usr-local-bin.sh exists
+  ansible.builtin.copy:
+    dest: /etc/profile.d/usr-local-bin.sh
+    content: >
+      if [ -d /usr/local/bin ] && [[ ":$PATH:" != *":/usr/local/bin:"* ]]; then
+          export PATH="/usr/local/bin:$PATH"
+      fi
+    mode: "0755"

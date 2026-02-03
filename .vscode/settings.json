@@ -29,5 +29,6 @@
     "CMDB",
     "firewalld",
     "navidrome"
-  ]
+  ],
+  "ansible.mcpServer.enabled": true
 }

@@ -1,0 +1,10 @@
+[Unit]
+Description=Maxmind Geoip Nginx Conf generator
+StartLimitIntervalSec=10
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=/opt/maxmind_geoip_nginx
+ExecStart=/opt/maxmind_geoip_nginx/.venv/bin/python -m geoip_nginx --countries au

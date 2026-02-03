@@ -1,0 +1,46 @@
+---
+- name: Clone git repository
+  ansible.builtin.git:
+    repo: "https://github.com/kism/maxmind_geoip_nginx"
+    dest: "/opt/maxmind_geoip_nginx"
+    version: "main"
+    force: true
+    update: true
+
+- name: Generate .env file for maxmind nginx module
+  ansible.builtin.template:
+    src: "templates/maxmind_env.j2"
+    dest: "/opt/maxmind_geoip_nginx/.env"
+    mode: "0600"
+
+- name: Create venv for maxmind nginx
+  ansible.builtin.command:
+    cmd: "/usr/local/bin/uv venv"
+    chdir: "/opt/maxmind_geoip_nginx"
+  changed_when: true # Don't want to program this
+
+- name: Sync packages
+  ansible.builtin.command:
+    cmd: "/usr/local/bin/uv sync"
+    chdir: "/opt/maxmind_geoip_nginx"
+  changed_when: true # Don't want to program this
+
+- name: Copy service and timer files
+  ansible.builtin.copy:
+    src: "files/{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: "0644"
+  loop:
+    - "maxmind_geoip_nginx.service"
+    - "maxmind_geoip_nginx.timer"
+
+- name: Enable and start maxmind nginx geoip updater timer
+  ansible.builtin.systemd:
+    name: "maxmind_geoip_nginx.timer"
+    enabled: true
+    state: started
+
+- name: Run the service adhoc to populate the databases first time
+  ansible.builtin.systemd:
+    name: "maxmind_geoip_nginx.service"
+    state: restarted
