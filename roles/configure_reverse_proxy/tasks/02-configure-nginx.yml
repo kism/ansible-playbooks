@@ -15,48 +15,8 @@
   notify:
     - Restart nginx
 
-- name: Remove file (delete file)
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/nginx/sites-available
-    - /etc/nginx/sites-enabled
-
-- name: Create a directory if it does not exist
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0755"
-  loop:
-    - /etc/nginx/sites-available
-    - /etc/nginx/sites-enabled
-
-# Suffix any files you don't want at the minute with .bak
-- name: Copy nginx site confs
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: /etc/nginx/sites-available/
-    mode: "0660"
-  with_fileglob:
-    - "files/hosts/{{ ansible_hostname }}/sites-available/*.conf"
-  notify:
-    - Restart nginx
-
-- name: Build list of nginx configs
-  ansible.builtin.find:
-    paths: /etc/nginx/sites-available/
-    file_type: file
-  register: configure_reverse_proxy_config_files_found
-
-- name: Create symbolic links to make sites available
-  ansible.builtin.file:
-    src: /etc/nginx/sites-available/{{ item.path | basename }}
-    dest: /etc/nginx/sites-enabled/{{ item.path | basename }}
-    state: link
-  notify:
-    - Restart nginx
-  loop: "{{ configure_reverse_proxy_config_files_found.files }}"
+- name: Include tasks for sites-enabled
+  ansible.builtin.include_tasks: 02a-configure-nginx-sites.yml
 
 - name: Ensure dirs exist
   ansible.builtin.file:
@@ -90,11 +50,11 @@
       set -o pipefail
       curl -LsS https://github.com/kism/zy.css/releases/download/main/grab.sh | bash
     chdir: /usr/share/nginx/html/
-  changed_when: false # Next task will always be true rip
+  changed_when: false # Sigh
 
 - name: Fix perms
   ansible.builtin.file:
     path: /usr/share/nginx/html/
     recurse: true
     mode: "u=rwX,g=rwX,o=rX"
-# TODO copy root cert
+  changed_when: false # Sigh
