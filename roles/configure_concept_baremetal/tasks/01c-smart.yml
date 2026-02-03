@@ -27,9 +27,3 @@
       - libatasmart-bin
     state: present
   when: ansible_pkg_mgr == 'dnf'
-
-- name: Copy SMART check script
-  ansible.builtin.copy:
-    src: files/checksmart.sh
-    dest: /root/checksmart.sh
-    mode: "0700"
