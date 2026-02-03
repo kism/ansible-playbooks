@@ -4,6 +4,9 @@
     path: /usr/share/nginx/html/pki
     state: directory
     mode: "0755"
+    owner: root
+    group: root
+  changed_when: false # God knows
 
 - name: Set cloudflare key
   ansible.builtin.copy:

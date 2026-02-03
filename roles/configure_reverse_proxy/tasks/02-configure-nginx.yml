@@ -28,6 +28,7 @@
   loop:
     - /usr/share/nginx/html/
     - /usr/share/nginx/html/private/
+  changed_when: false # God knows
 
 - name: Copy public index.html
   ansible.builtin.copy:
