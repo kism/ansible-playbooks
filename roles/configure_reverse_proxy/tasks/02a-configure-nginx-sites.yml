@@ -1,12 +1,4 @@
 ---
-- name: Remove file (delete file)
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/nginx/sites-available
-    - /etc/nginx/sites-enabled
-
 - name: Create a directory if it does not exist
   ansible.builtin.file:
     path: "{{ item }}"
@@ -15,6 +7,55 @@
   loop:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
+
+- name: Build list of source nginx config files
+  ansible.builtin.find:
+    paths: "{{ role_path }}/files/hosts/{{ ansible_hostname }}/sites-available/"
+    patterns: "*.conf"
+  delegate_to: localhost
+  register: configure_reverse_proxy_source_files
+
+- name: Build list of expected config filenames
+  ansible.builtin.set_fact:
+    configure_reverse_proxy_expected_files: "{{ configure_reverse_proxy_source_files.files | map(attribute='path') | map('basename') | list }}"
+
+- name: Find existing nginx config files
+  ansible.builtin.find:
+    paths: /etc/nginx/sites-available/
+    file_type: file
+  register: configure_reverse_proxy_existing_files
+
+- name: Debug expected files
+  ansible.builtin.debug:
+    var: configure_reverse_proxy_expected_files
+
+- name: Debug existing files
+  ansible.builtin.debug:
+    var: configure_reverse_proxy_existing_files.files
+
+- name: Remove nginx configs that are no longer needed
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ configure_reverse_proxy_existing_files.files }}"
+  when: item.path | basename not in configure_reverse_proxy_expected_files
+  notify:
+    - Restart nginx
+
+- name: Find existing symlinks in sites-enabled
+  ansible.builtin.find:
+    paths: /etc/nginx/sites-enabled/
+    file_type: link
+  register: configure_reverse_proxy_existing_symlinks
+
+- name: Remove symlinks that are no longer needed
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ configure_reverse_proxy_existing_symlinks.files }}"
+  when: item.path | basename not in configure_reverse_proxy_expected_files
+  notify:
+    - Restart nginx
 
 # Suffix any files you don't want at the minute with .bak
 - name: Copy nginx site confs
