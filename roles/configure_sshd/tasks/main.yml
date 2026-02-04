@@ -7,3 +7,13 @@
 - name: Run sshd setup on non-pve hosts
   ansible.builtin.include_tasks: "01-nonpve.yml"
   when: not configure_sshd_pve_status.stat.exists
+
+- name: Enable forwarding for COLORTERM
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/99-colorterm.conf
+    content: |
+      AcceptEnv COLORTERM
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload sshd
