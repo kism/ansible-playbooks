@@ -8,8 +8,11 @@ if [[ ! -o interactive ]]; then
     return
 fi
 
+# Load colors
+autoload -U colors && colors
+
 # Create prompt
-local current_dir='%{$terminfo[bold]$fg[green]%}%~ %{$reset_color%}'
+local current_dir="%{$terminfo[bold]$fg[green]%}%~ %{$reset_color%}"
 PROMPT="${current_dir}"
 
 # region: history
