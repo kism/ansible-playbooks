@@ -1,0 +1,2 @@
+---
+configure_jumpbox_cf_dyndns_script_dest: /opt/cf_dyndns/update-cloudflare-dns.sh

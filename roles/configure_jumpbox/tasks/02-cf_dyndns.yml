@@ -1,0 +1,38 @@
+---
+# Duckdns
+- name: Create a /opt/cf_dyndns if it does not exist
+  ansible.builtin.file:
+    path: /opt/cf_dyndns/
+    state: directory
+    mode: "0755"
+
+- name: Download the CF dynamic dns update script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/fire1ce/DDNS-Cloudflare-Bash/refs/heads/main/update-cloudflare-dns.sh
+    dest: "{{ configure_jumpbox_cf_dyndns_script_dest }}"
+    mode: "0755"
+    checksum: sha256:dbd59f73fd13e0e46843bfd11de1683eaf6e54be2cf8a621561521b161864f8d
+
+- name: Copy cloudflare dynamic dns renew conf
+  ansible.builtin.template:
+    src: templates/update-cloudflare-dns.conf.j2
+    dest: /opt/cf_dyndns/update-cloudflare-dns.conf
+    mode: "0774"
+
+- name: Copy cloudflare dynamic dns systemd units
+  ansible.builtin.template:
+    src: templates/{{ item }}
+    dest: /etc/systemd/system/{{ item | replace('.j2', '') }}
+    mode: "0644"
+    owner: root
+    group: root
+  loop:
+    - cf_dyndns.service.j2
+    - cf_dyndns.timer.j2
+
+- name: Enable cloudflare dynamic dns renew timer
+  ansible.builtin.systemd_service:
+    name: cf_dyndns.timer
+    enabled: true
+    daemon_reload: true
+    state: started

@@ -1,8 +1,8 @@
 [Unit]
-Description="Timer for duck dns renew script"
+Description="Timer for cloudflare dns renew script"
 
 [Timer]
-Unit=duckdns_renew.service
+Unit=cf_dyndns.service
 Persistent=true
 # Run every day at 4am
 OnCalendar=*-*-* 04:20:00

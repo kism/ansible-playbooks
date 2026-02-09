@@ -3,7 +3,7 @@
   ansible.builtin.include_tasks: "01-basic.yml"
 
 - name: DuckDNS Setup
-  ansible.builtin.include_tasks: "02-duckdns.yml"
+  ansible.builtin.include_tasks: "02-cf_dyndns.yml"
 
 - name: Zsh Setup
   ansible.builtin.include_tasks: "03-zsh.yml"

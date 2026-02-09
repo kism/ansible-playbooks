@@ -1,7 +1,0 @@
-[Unit]
-Description="Service to renew duck dns"
-Requires=duckdns_renew.timer
-
-[Service]
-Type=simple
-ExecStart=/opt/duckdns/duck.sh

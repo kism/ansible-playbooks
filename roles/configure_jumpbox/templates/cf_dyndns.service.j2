@@ -1,0 +1,7 @@
+[Unit]
+Description="Service to renew cloudflare dns"
+Requires=cf_dyndns.timer
+
+[Service]
+Type=simple
+ExecStart={{ configure_jumpbox_cf_dyndns_script_dest }}
