@@ -84,14 +84,3 @@ skip_ansible_lint
 | build\_         | Build a VM                                          |
 | configure\_     | Apply a configure\_ role or two to some VMs         |
 | maintenance\_   | No changes, other than patching                     |
-
-## TODO
-
-- Proxmox
-  - Proxmox Set IP address, MAC in DNS, DHCP in opnsense
-    <https://docs.opnsense.org/development/api/core/unbound.html>
-    <https://docs.opnsense.org/development/api/core/kea.html>
-  - Proxmox grab lxc <https://images.linuxcontainers.org/>
-- Unmount, chmod, remount disks to ensure perms
-- setup cert
-- docker arr health check for mount
