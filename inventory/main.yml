@@ -59,46 +59,78 @@ baremetal:
 
 nonansible:
   hosts:
+    # Servers
     opnsense:
       ansible_host: opnsense.kg.lan
       ansible_host_description: OPNsense Router
       target_host_ip_address: 10.42.0.1
       target_host_mac_address: 58:9C:FC:10:FF:D0
+    hass:
+      ansible_host: hass.kg.lan
+      ansible_host_description: Home Assistant
+      target_host_ip_address: 10.42.0.24
+      target_host_mac_address: 6e:16:40:41:57:d4
+    # Laptop WiFi
     sallys-air:
       ansible_host: sallys-air.kg.lan
       ansible_host_description: Sally's MacBook Air
       target_host_ip_address: 10.42.0.45
       target_host_mac_address: C4:B3:01:AD:99:FC
-    worklaptop:
-      ansible_host: worklaptop.kg.lan
-      ansible_host_description: Work Laptop
+    kmbp_wifi:
+      ansible_host: kmbp_wifi.kg.lan
+      ansible_host_description: Kieran's MacBook Pro M4 WiFi
       target_host_ip_address: 10.42.0.46
-      target_host_mac_address: c4:03:a8:08:77:94
+      target_host_mac_address: 4a:41:fd:34:b1:45
     kpbp:
       ansible_host: kpbp.kg.lan
       ansible_host_description: Kieran's Pinebook Pro
       target_host_ip_address: 10.42.0.69
       target_host_mac_address: C0:84:7D:2E:EC:32
-    kobo:
-      ansible_host: kobo.kg.lan
-      ansible_host_description: Kieran's Kobo Clara HD
-      target_host_ip_address: 10.42.0.73
-      target_host_mac_address: 58:B0:D4:4A:4B:75
-    kmbp:
-      ansible_host: kmbp.kg.lan
-      ansible_host_description: Kieran's MacBook Pro (Ethernet)
-      target_host_ip_address: 10.42.0.74
-      target_host_mac_address: 6c:1f:f7:19:7a:df
+    # Device WiFI
     kgns:
       ansible_host: kgns.kg.lan
       ansible_host_description: Kieran's Nintendo Switch
       target_host_ip_address: 10.42.0.81
       target_host_mac_address: 98:B6:E9:BA:C8:D3
+    kgns2:
+      ansible_host: kgns2.kg.lan
+      ansible_host_description: Kieran's Nintendo Switch 2
+      target_host_ip_address: 10.42.0.82
+      target_host_mac_address: c8:48:05:49:32:29
+    starstarstar:
+      ansible_host: starstarstar.kg.lan
+      ansible_host_description: Samsung TV
+      target_host_ip_address: 10.42.0.83
+      target_host_mac_address: 04:e4:b6:4e:72:c8
+    kobo:
+      ansible_host: kobo.kg.lan
+      ansible_host_description: Kieran's Kobo Clara HD
+      target_host_ip_address: 10.42.0.84
+      target_host_mac_address: 58:B0:D4:4A:4B:75
+
+    # Device Ethernet
+    kmbp:
+      ansible_host: kmbp.kg.lan
+      ansible_host_description: Kieran's MacBook Pro M4 (Ethernet)
+      target_host_ip_address: 10.42.0.74
+      target_host_mac_address: 6c:1f:f7:19:7a:df
+    mrpi:
+      ansible_host: mrpi.kg.lan
+      ansible_host_description: MiSTER Pi
+      target_host_ip_address: 10.42.0.82
+      target_host_mac_address: ea:c8:21:56:e3:43
+
+    # Network device ethernet
     uggbe01:
       ansible_host: uggbe01.kg.lan
       ansible_host_description: Black UGreen USB 3.0 GBE
       target_host_ip_address: 10.42.0.91
       target_host_mac_address: F8:E4:3B:A9:4B:6F
+    uggbe02:
+      ansible_host: uggbe02.kg.lan
+      ansible_host_description: Black UGreen USB 3.0 GBE
+      target_host_ip_address: 10.42.0.92
+      target_host_mac_address: C8:A3:62:7D:DB:35
     gss:
       ansible_host: gss.kg.lan
       ansible_host_description: NetGear GSS108E
@@ -109,13 +141,3 @@ nonansible:
       ansible_host_description: OpenWRT Wireless Access Point
       target_host_ip_address: 10.42.0.99
       target_host_mac_address: 24:F5:A2:BA:81:33
-    mrpi:
-      ansible_host: mrpi.kg.lan
-      ansible_host_description: MiSTER Pi
-      target_host_ip_address: 10.42.0.82
-      target_host_mac_address: ea:c8:21:56:e3:43
-    hass:
-      ansible_host: hass.kg.lan
-      ansible_host_description: Home Assistant
-      target_host_ip_address: 10.42.0.24
-      target_host_mac_address: 6e:16:40:41:57:d4
