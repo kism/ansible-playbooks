@@ -16,8 +16,14 @@ local current_dir="%{$terminfo[bold]$fg[green]%}%~ %{$reset_color%}"
 PROMPT="${current_dir}"
 
 # region: history
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=10000
+
+setopt append_history        # append to HISTFILE, don't overwrite
+setopt inc_append_history    # write to HISTFILE immediately (per-command)
+setopt hist_fcntl_lock       # safer concurrent history writes
+setopt hist_reduce_blanks    # trim extra blanks in commands
 ## History command configuration, from oh-my-zsh
 setopt extended_history       # record timestamp of command in HISTFILE
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
