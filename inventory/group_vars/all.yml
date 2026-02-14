@@ -21,7 +21,8 @@ secret_influxdb_telegraf_read: "{{ lookup('bitwarden.secrets.lookup', '77b66880-
 secret_notification_email: "{{ lookup('bitwarden.secrets.lookup', '349598d5-69dc-44c6-9558-b22200701c06') }}"
 secret_notification_email_password: "{{ lookup('bitwarden.secrets.lookup', '9bba64c2-4a77-4bcf-8262-b222007038a8') }}"
 
-secret_mullvad_user: "{{ lookup('bitwarden.secrets.lookup', '27ece857-7df1-42ee-ac10-b2220070b91c') }}"
+secret_mullvad_wireguard_private_key: "{{ lookup('bitwarden.secrets.lookup', '75c666e8-7ba1-421e-85c7-b3f1004f15c9') }}"
+secret_mullvad_wireguard_address: "{{ lookup('bitwarden.secrets.lookup', 'fc10a3fc-9343-4f1d-a0fd-b3f1004f2e5f') }}"
 
 secret_filebeats_service_user: svc_filebeats
 secret_filebeats_service_password: "{{ lookup('bitwarden.secrets.lookup', 'b65ffe2a-8cc8-4dc5-9d0a-b2220070e592') }}"

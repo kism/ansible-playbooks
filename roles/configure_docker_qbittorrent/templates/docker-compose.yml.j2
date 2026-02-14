@@ -13,7 +13,9 @@ services:
       - /dev/net/tun:/dev/net/tun
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
-      - OPENVPN_USER={{ secret_mullvad_user }}
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY={{ secret_mullvad_wireguard_private_key }}
+      - WIREGUARD_ADDRESSES={{ secret_mullvad_wireguard_address }}
       - SERVER_CITIES=Singapore
       - FIREWALL_VPN_INPUT_PORTS=6881
       - DOT=on
