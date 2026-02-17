@@ -1,0 +1,20 @@
+---
+- name: Setup quest questdb host
+  hosts: quest
+  gather_facts: false
+  become: true
+  roles:
+    # Preflight
+    - maintenance_gather_facts_pve
+    - create_proxmox_ct
+    - maintenance_gather_facts
+
+    # Onboard Server
+    - meta_onboard
+
+    # Purpose specific
+    - configure_quest_db
+
+    # End
+    # - configure_telegraf
+    # - configure_elastic_agent
