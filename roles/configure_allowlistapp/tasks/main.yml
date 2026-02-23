@@ -1,21 +1,11 @@
 ---
-- name: Install python-related packages
-  ansible.builtin.package:
-    name:
-      - python3.11
-      - python3.11-pip
-    state: present
-
-- name: Install poetry python package
-  ansible.builtin.pip:
-    name: poetry
-
 - name: Create allowlistapp directory
   ansible.builtin.file:
     path: /opt/allowlistapp
     state: directory
     owner: nginx
     group: nginx
+    recurse: true
     mode: u=rwX,g=rwX,o=
 
 - name: Create allowlistapp log file
@@ -52,7 +42,7 @@
   become: true
   become_user: nginx
   ansible.builtin.command:
-    cmd: /usr/local/bin/poetry install --sync --only main
+    cmd: /usr/local/bin/uv sync
     chdir: /opt/allowlistapp
   notify: Restart allowlistapp
   changed_when: true # Safe assumption, no way to know
