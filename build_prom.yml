@@ -1,6 +1,6 @@
 ---
-- name: Setup quest questdb host
-  hosts: quest
+- name: Setup prometheus host
+  hosts: prom
   gather_facts: false
   become: true
   roles:
@@ -15,7 +15,7 @@
 
     # Purpose specific
     - configure_docker
-    - configure_docker_quest_db
+    - configure_docker_prometheus
 
     # End
     # - configure_telegraf

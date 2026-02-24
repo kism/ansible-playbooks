@@ -1,0 +1,37 @@
+---
+- name: Allow prometheus through firewalld
+  ansible.posix.firewalld:
+    service: prometheus
+    zone: public
+    permanent: true
+    state: enabled
+  notify:
+    - Reload firewalld
+
+- name: Create directory for Prometheus
+  ansible.builtin.file:
+    path: /var/lib/prometheus
+    state: directory
+    owner: 65534
+    group: 65534
+    mode: "0755"
+
+- name: Ensure docker-compose directory exists
+  ansible.builtin.file:
+    path: /opt/prometheus
+    state: directory
+    mode: "0755"
+
+- name: Copy docker-compose file
+  ansible.builtin.copy:
+    src: docker-compose.yml
+    dest: /opt/prometheus/docker-compose.yml
+    mode: "0644"
+
+- name: Ensure config exists
+  ansible.builtin.file:
+    path: /opt/prometheus/prometheus.yml
+    state: touch
+    owner: 65534
+    group: 65534
+    mode: "0644"

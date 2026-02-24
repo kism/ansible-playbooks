@@ -1,0 +1,11 @@
+---
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9090:9090 # Web console
+    volumes:
+      - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /var/lib/prometheus:/prometheus
+    restart: always

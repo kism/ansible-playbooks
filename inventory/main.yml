@@ -13,9 +13,9 @@ ansible_main:
     ifdb:
       ansible_host: ifdb.kg.lan
       ansible_host_description: InfluxDB2
-    quest:
-      ansible_host: quest.kg.lan
-      ansible_host_description: QuestDB
+    prom:
+      ansible_host: prom.kg.lan
+      ansible_host_description: Prometheus
     graf:
       ansible_host: graf.kg.lan
       ansible_host_description: Grafana

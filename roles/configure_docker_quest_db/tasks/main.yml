@@ -1,5 +1,5 @@
 ---
-- name: Allow qBittorrent through firewalld
+- name: Allow questdb through firewalld
   ansible.posix.firewalld:
     service: questdb
     zone: public

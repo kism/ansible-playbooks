@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Prometheus Telegraf Client</short>
+  <description>Telegraf pull metrics for Prometheus</description>
+  <port protocol="tcp" port="9273" />
+</service>
