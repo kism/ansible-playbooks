@@ -1,0 +1,13 @@
+---
+services:
+  questdb:
+    image: questdb/questdb:latest
+    container_name: questdb
+    ports:
+      - 9000:9000 # Web console
+      - 9009:9009 # InfluxDB line protocol
+      - 8812:8812 # Postgres wire protocol
+      - 9003:9003 # Min Health Server
+    volumes:
+      - /var/lib/questdb:/var/lib/questdb
+    restart: always

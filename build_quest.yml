@@ -15,7 +15,7 @@
 
     # Purpose specific
     - configure_docker
-    - configure_quest_db
+    - configure_docker_quest_db
 
     # End
     # - configure_telegraf

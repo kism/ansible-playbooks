@@ -1,0 +1,7 @@
+---
+- name: Ensure fs max
+  ansible.posix.sysctl:
+    name: fs.file-max
+    value: 1048576
+    state: present
+    reload: yes

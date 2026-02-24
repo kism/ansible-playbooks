@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>QuestDB</short>
+  <description>QuestDB open-source time series database</description>
+  <port protocol="tcp" port="9000" />
+  <port protocol="tcp" port="9009" />
+  <port protocol="tcp" port="8812" />
+  <port protocol="tcp" port="9003" />
+</service>
