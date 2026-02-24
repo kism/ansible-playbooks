@@ -5,6 +5,7 @@ proxmox_target_node: pvewill
 proxmox_ct_disk: "local-lvm:40"
 proxmox_ct_memory: 2048
 proxmox_ct_cores: 2
+proxmox_ct_unprivileged: true
 proxmox_ct_features:
   - nesting=1
   - fuse=1

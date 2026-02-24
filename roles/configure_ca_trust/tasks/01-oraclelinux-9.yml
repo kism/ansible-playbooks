@@ -1,7 +1,0 @@
----
-- name: Copy the kg.lan root ca certificate rule {{ ansible_distribution | lower + ' ' + ansible_distribution_major_version }}
-  ansible.builtin.copy:
-    src: files/kglan_root.cer
-    dest: /usr/share/pki/ca-trust-source/anchors/kglan_root.crt
-    mode: "0444"
-  notify: Update CA certs dnf

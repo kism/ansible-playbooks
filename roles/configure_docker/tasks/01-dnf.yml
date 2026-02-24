@@ -33,5 +33,4 @@
   ansible.builtin.pip:
     name:
       - docker
-      - docker-compose
     state: present

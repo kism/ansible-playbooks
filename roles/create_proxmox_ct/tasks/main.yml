@@ -16,7 +16,8 @@
         api_host: "{{ proxmox_api_host }}"
         pubkey: "{{ lookup('ansible.builtin.url', ssh_keys_url, split_lines=False) }}"
         hostname: "{{ inventory_hostname | lower }}"
-        ostemplate: "Amarant_Backups_NFS:vztmpl/rockylinux-10-default_20251001_amd64.tar.xz" # https://images.linuxcontainers.org/images
+        ostemplate: "Amarant_Backups_NFS:vztmpl/ol9_rootfs.tar.xz" # https://images.linuxcontainers.org/images
+        # ostemplate: "local:vztmpl/oraclelinux_10.tar"
         netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ target_host_mac_address }}"}'
         features: "{{ proxmox_ct_features }}"
         disk: "{{ proxmox_ct_disk }}"

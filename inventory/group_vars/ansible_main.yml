@@ -1,4 +1,5 @@
 ---
+ansible_python_interpreter: /usr/bin/python3
 reminder_list: []
 proxmox_api_host: pvewill
 timezone: awst

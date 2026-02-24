@@ -1,0 +1,29 @@
+---
+- name: Update DNF Cache
+  ansible.builtin.dnf:
+    update_cache: true
+    state: installed
+
+- name: Oracle Linux Block
+  when: ansible_distribution == "OracleLinux"
+  block:
+    - name: Remove duplicate repo definition lol
+      ansible.builtin.file:
+        path: /etc/yum.repos.d/oracle-appstream-ol9.repo
+        state: absent
+
+    - name: Enable EPEL and appstream
+      community.general.dnf_config_manager:
+        name: "{{ item }}"
+        state: enabled
+      loop:
+        - "ol{{ ansible_distribution_major_version }}_appstream"
+
+- name: Enable epel
+  ansible.builtin.dnf:
+    name: oracle-epel-release-el{{ ansible_distribution_major_version }}
+    state: present
+
+- name: Update DNF Cache
+  ansible.builtin.dnf:
+    update_cache: true

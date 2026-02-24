@@ -1,3 +1,0 @@
----
-- name: Include tasks per distro
-  ansible.builtin.include_tasks: "01-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"

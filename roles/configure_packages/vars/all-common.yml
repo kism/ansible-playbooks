@@ -9,7 +9,6 @@ configure_packages_to_install:
   - ncdu
   - nload
   - rsync
-  - stow
   - tar
   - tmux
   - tree
