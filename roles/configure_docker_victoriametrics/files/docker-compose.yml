@@ -1,0 +1,10 @@
+---
+services:
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:latest
+    container_name: victoriametrics
+    ports:
+      - 8428:8428 # Web console
+    volumes:
+      - /var/lib/victoriametrics:/victoria-metrics-data
+    restart: always

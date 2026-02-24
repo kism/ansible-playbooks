@@ -13,9 +13,9 @@ ansible_main:
     ifdb:
       ansible_host: ifdb.kg.lan
       ansible_host_description: InfluxDB2
-    prom:
-      ansible_host: prom.kg.lan
-      ansible_host_description: Prometheus
+    vic:
+      ansible_host: vic.kg.lan
+      ansible_host_description: VictoriaMetrics
     graf:
       ansible_host: graf.kg.lan
       ansible_host_description: Grafana

@@ -1,6 +1,6 @@
 ---
-- name: Setup prometheus host
-  hosts: prom
+- name: Setup victoria metrics host
+  hosts: vic
   gather_facts: false
   become: true
   roles:
@@ -15,7 +15,7 @@
 
     # Purpose specific
     - configure_docker
-    - configure_docker_prometheus
+    - configure_docker_victoriametrics
 
     # End
     # - configure_telegraf
