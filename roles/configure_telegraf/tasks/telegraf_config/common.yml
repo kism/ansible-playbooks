@@ -18,3 +18,23 @@
     group: telegraf
   notify:
     - Restart telegraf
+
+- name: "Copy telegraf agent config: common"
+  ansible.builtin.copy:
+    src: files/telegraf.d/05-agent-common.conf
+    dest: /etc/telegraf/telegraf.d/05-agent-common.conf
+    mode: "0644"
+    owner: root
+    group: telegraf
+  notify:
+    - Restart telegraf
+
+- name: Empty out the default config file
+  ansible.builtin.copy:
+    content: ""
+    dest: /etc/telegraf/telegraf.conf
+    mode: "0644"
+    owner: root
+    group: telegraf
+  notify:
+    - Restart telegraf
