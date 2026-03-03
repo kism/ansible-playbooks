@@ -16,6 +16,9 @@ ansible_main:
     vic:
       ansible_host: vic.kg.lan
       ansible_host_description: VictoriaMetrics
+    df:
+      ansible_host: df.kg.lan
+      ansible_host_description: Discord File Server
     graf:
       ansible_host: graf.kg.lan
       ansible_host_description: Grafana
