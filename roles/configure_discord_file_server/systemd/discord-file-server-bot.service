@@ -1,0 +1,14 @@
+[Unit]
+Description=Discord File Server Bot
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=kism
+Group=kism
+Type=simple
+WorkingDirectory=/opt/discord-file-server-bot
+ExecStart=/opt/discord-file-server-bot/.venv/bin/discord-file-server
+Restart=on-failure

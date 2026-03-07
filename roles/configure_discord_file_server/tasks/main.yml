@@ -1,1 +1,35 @@
 ---
+- name: Copy nginx config to sites available
+  ansible.builtin.copy:
+    src: nginx/discord-file-server-bot.conf
+    dest: /etc/nginx/sites-available/discord-file-server-bot.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Enable nginx site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/discord-file-server-bot.conf
+    dest: /etc/nginx/sites-enabled/discord-file-server-bot.conf
+    state: link
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Copy systemd service file
+  ansible.builtin.copy:
+    src: systemd/discord-file-server-bot.service
+    dest: /etc/systemd/system/discord-file-server-bot.service
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Enable and start discord file server service
+  ansible.builtin.systemd:
+    name: discord-file-server-bot
+    enabled: true
+    state: started
