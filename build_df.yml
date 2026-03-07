@@ -15,6 +15,7 @@
 
     # Actual
     - configure_nginx
+    - configure_discord_file_server
 
     # End
     # - configure_telegraf
