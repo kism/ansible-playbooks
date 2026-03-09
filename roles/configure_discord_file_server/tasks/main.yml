@@ -26,7 +26,7 @@
 
 - name: Reload systemd daemon
   ansible.builtin.systemd:
-    daemon_reload: yes
+    daemon_reload: true
 
 - name: Enable and start discord file server service
   ansible.builtin.systemd:

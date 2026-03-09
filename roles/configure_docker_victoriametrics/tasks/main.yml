@@ -27,4 +27,3 @@
     src: docker-compose.yml
     dest: /opt/victoriametrics/docker-compose.yml
     mode: "0644"
-

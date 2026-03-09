@@ -4,4 +4,4 @@
     name: fs.file-max
     value: 1048576
     state: present
-    reload: yes
+    reload: true
