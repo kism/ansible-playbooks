@@ -1,27 +1,19 @@
 ---
-- name: Setup acerestreamer on stream
+- name: Setup discord file server host
   hosts: stream
   gather_facts: false
   become: true
-  vars:
-    configure_swap_file_size: 4G
   roles:
     # Preflight
-    - meta_pre_flight_checks
+    - maintenance_gather_facts_pve
+    - create_opnsense_entries
+    - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
-    # - configure_swap_file
-    # - meta_onboard
+    - meta_onboard
 
-    # Configure Server
-    # - configure_nginx
-    # - configure_nginx_certbot
-    # - configure_docker
 
-    # Purpose specific
-    # - configure_acerestreamer
-
-    # Telegraf
-    - configure_telegraf
     # End
+    # - configure_telegraf
+    # - configure_elastic_agent

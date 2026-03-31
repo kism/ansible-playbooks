@@ -1,0 +1,3 @@
+---
+configure_nginx_certbot_cloudflare_dns_api: "{{ secret_cloudflare_api_dns }}"
+secret_domain: "stream.autist.network"

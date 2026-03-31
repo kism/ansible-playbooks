@@ -1,3 +1,13 @@
 ---
-configure_nginx_certbot_cloudflare_dns_api: "{{ secret_cloudflare_api_dns }}"
-secret_domain: "stream.autist.network"
+target_host_ip_address: 10.42.0.12
+target_host_mac_address: 00:D0:F1:55:55:55
+proxmox_target_node: pvematt
+proxmox_ct_disk: "local-lvm:15"
+proxmox_ct_memory: 2048
+proxmox_ct_cores: 2
+proxmox_ct_unprivileged: false
+proxmox_ct_conf_extra:
+  - "lxc.cgroup2.devices.allow: c 10:200 rwm"
+  - "lxc.mount.entry: /dev/net dev/net none bind,create=dir"
+proxmox_ct_features:
+  - nesting=true

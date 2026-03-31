@@ -40,6 +40,9 @@ ansible_main:
     x230t:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
+    stream:
+      ansible_host: stream.kg.lan
+      ansible_host_description: Streamer
 
 # Server Type
 proxmoxvms:
