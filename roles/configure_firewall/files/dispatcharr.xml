@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Dispatcharr</short>
+  <description>Dispatcharr is a tool that manages and proxies your IPTV streams.</description>
+  <port protocol="tcp"
+        port="9191"
+        />
+</service>
