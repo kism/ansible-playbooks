@@ -6,7 +6,7 @@
 
 - name: Copy over influxdata repo
   ansible.builtin.copy:
-    src: files/influxdb.repo
+    src: files/influxdata.repo
     dest: /etc/yum.repos.d/influxdata.repo
     mode: "644"
 
