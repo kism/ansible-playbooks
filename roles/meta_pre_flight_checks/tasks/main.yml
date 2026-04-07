@@ -18,6 +18,10 @@
           if you are in vscode with agent forwarding, run:
           export SSH_AUTH_SOCK=$(ls -t /tmp/ssh-**/* | head -1)
 
+    - name: Assert that secret_proxmox_password is set
+      ansible.builtin.assert:
+        that: secret_proxmox_password is defined
+        fail_msg: "secret_proxmox_password is not set! Please set it in your vault or environment variables."
 
 - name: Test become
   become: true
