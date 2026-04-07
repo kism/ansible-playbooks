@@ -19,11 +19,11 @@
     dest: /etc/apt/keyrings/influxdata-archive.gpg
     mode: "0644"
 
-- name: Add Telegraf repository {{ ansible_distribution | lower }}
+- name: Add Telegraf repository {{ ansible_facts['distribution'] | lower }}
   ansible.builtin.apt_repository:
     repo: |-
       deb
       [arch=amd64,arm64 signed-by=/etc/apt/keyrings/influxdata-archive.gpg]
-      https://repos.influxdata.com/{{ ansible_distribution | lower }} stable main
+      https://repos.influxdata.com/{{ ansible_facts['distribution'] | lower }} stable main
     filename: influxdata
     state: present

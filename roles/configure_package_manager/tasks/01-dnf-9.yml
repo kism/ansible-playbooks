@@ -10,7 +10,7 @@
     state: present
 
 - name: Oracle Linux Block
-  when: ansible_distribution == "OracleLinux"
+  when: ansible_facts['distribution'] == "OracleLinux"
   block:
     - name: Remove duplicate repo definition lol
       ansible.builtin.file:
@@ -22,8 +22,8 @@
         name: "{{ item }}"
         state: enabled
       loop:
-        - "ol{{ ansible_distribution_major_version }}_appstream"
-        - "ol{{ ansible_distribution_major_version }}_developer_EPEL"
+        - "ol{{ ansible_facts['distribution_major_version'] }}_appstream"
+        - "ol{{ ansible_facts['distribution_major_version'] }}_developer_EPEL"
 
 - name: Update DNF Cache
   ansible.builtin.dnf:

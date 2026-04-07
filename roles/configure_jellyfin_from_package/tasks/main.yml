@@ -1,12 +1,12 @@
 ---
 - name: Enable CodeReady repo DNF
   community.general.dnf_config_manager:
-    name: "ol{{ ansible_distribution_major_version }}_codeready_builder"
+    name: "ol{{ ansible_facts['distribution_major_version'] }}_codeready_builder"
     state: enabled
 
 - name: Add RPM Fusion free repository
   ansible.builtin.dnf:
-    name: "https://download1.rpmfusion.org/{{ item }}/el/rpmfusion-{{ item }}-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    name: "https://download1.rpmfusion.org/{{ item }}/el/rpmfusion-{{ item }}-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
     disable_gpg_check: true # These contain the repo key, if https validates on this I trust it.
     state: present
   loop:

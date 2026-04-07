@@ -1,6 +1,6 @@
 ---
 - name: Run samba install tasks
-  ansible.builtin.include_tasks: "01-samba-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"
+  ansible.builtin.include_tasks: "01-samba-{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] }}.yml"
 
 - name: Run samba install tasks
   ansible.builtin.include_tasks: "02-samba-common.yml"

@@ -1,11 +1,11 @@
 ---
 - name: Setup telegraf on all hosts
-  # hosts: ansible_main
-  hosts: pvematt, pvewill
+  hosts: ansible_main
   gather_facts: true
   become: true
   roles:
     # Preflight
+    - meta_pre_flight_checks
 
     # Purpose specific
     - configure_telegraf

@@ -18,7 +18,7 @@
           - nvme-cli
           - smartmontools
         state: present
-      when: ansible_distribution != "Archlinux"
+      when: ansible_facts['distribution'] != "Archlinux"
 
     - name: Install packages
       ansible.builtin.package:
@@ -26,7 +26,7 @@
           - nvme-cli
           - smartmontools
         state: present
-      when: ansible_distribution == "Archlinux"
+      when: ansible_facts['distribution'] == "Archlinux"
 
     - name: Install lm-sensors apt
       ansible.builtin.package:

@@ -1,14 +1,14 @@
 ---
-- name: Copy over influxdb repo
+- name: Remove old yum repo
+  ansible.builtin.file:
+    path: /etc/yum.repos.d/influxdb.repo
+    state: absent
+
+- name: Copy over influxdata repo
   ansible.builtin.copy:
     src: files/influxdb.repo
-    dest: /etc/yum.repos.d/influxdb.repo
+    dest: /etc/yum.repos.d/influxdata.repo
     mode: "644"
-
-- name: Remove old file lol
-  ansible.builtin.file:
-    path: /etc/pki/rpm-gpg/RPM-GPG-KEY-influxdata
-    state: absent
 
 - name: Install telegraf
   ansible.builtin.dnf:

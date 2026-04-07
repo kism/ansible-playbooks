@@ -18,7 +18,7 @@
     state: absent
 
 - name: Include tasks, Repository
-  ansible.builtin.include_tasks: "01-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}.yml"
+  ansible.builtin.include_tasks: "01-{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] }}.yml"
 
 - name: Copy the root cert for elastic-agent
   ansible.builtin.copy:
