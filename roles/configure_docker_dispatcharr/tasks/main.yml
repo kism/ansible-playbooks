@@ -5,6 +5,7 @@
     state: directory
     owner: root
     group: root
+    mode: "0755"
 
 - name: Copy docker compose file
   ansible.builtin.copy:
@@ -15,7 +16,7 @@
     mode: "0644"
 
 - name: Allow dispatcharr through firewall
-  ansible.builtin.firewalld:
+  ansible.posix.firewalld:
     service: dispatcharr
     permanent: true
     state: enabled
