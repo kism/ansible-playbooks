@@ -26,7 +26,7 @@
   become: false
   delegate_to: localhost
   block:
-    # Start outputting to a ansible_facts['distribution']_file_variety
+    # Start outputting to a ansible_facts['distribution_file_variety']
     - name: Make temp var so we capture the ansible_facts key
       ansible.builtin.set_fact:
         maintenance_gather_facts_debug_yaml: {}
@@ -69,10 +69,10 @@
           host_things:
             ansible_hostname: "{{ ansible_hostname }}"
             ansible_default_ipv4_address: "{{ ansible_default_ipv4.address | default('<Not Defined>') }}"
-            ansible_facts['distribution']_file_variety: "{{ ansible_facts['distribution']_file_variety }}"
+            ansible_facts['distribution_file_variety']: "{{ ansible_facts['distribution_file_variety'] }}"
             ansible_facts['distribution']: "{{ ansible_facts['distribution'] }}"
             ansible_facts['distribution_major_version']: "{{ ansible_facts['distribution_major_version'] }}"
-            ansible_facts['distribution']_release: "{{ ansible_facts['distribution']_release }}"
+            ansible_facts['distribution_release']: "{{ ansible_facts['distribution_release'] }}"
             ansible_architecture: "{{ ansible_architecture }}"
             ansible_pkg_mgr: "{{ ansible_pkg_mgr }}"
           local_things:
