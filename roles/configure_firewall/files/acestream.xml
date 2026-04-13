@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>AceStream</short>
+  <description>AceStream is a peer-to-peer streaming protocol that allows users to watch live and on-demand video content.</description>
+  <port protocol="udp" port="8621" />
+  <port protocol="tcp" port="8621" />
+</service>
