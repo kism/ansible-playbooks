@@ -1,0 +1,3 @@
+---
+configure_nvidia_driver_new_version: "575"
+configure_nvidia_driver_new_kernel_modules: "proprietary" # open or proprietary
