@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>AceReStreamer</short>
+  <description>AceReStreamer is my fun reverse proxy for AceStream.</description>
+  <port protocol="tcp"
+        port="5100"
+        />
+</service>

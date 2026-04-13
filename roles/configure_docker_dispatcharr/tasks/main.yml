@@ -28,3 +28,10 @@
     permanent: true
     state: enabled
     immediate: true
+
+- name: Allow AceReStreamer through firewall
+  ansible.posix.firewalld:
+    service: acerestreamer
+    permanent: true
+    state: enabled
+    immediate: true
