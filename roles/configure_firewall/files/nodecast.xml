@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>NodeCast</short>
+  <description>NodeCast is an IPTV web player.</description>
+  <port protocol="tcp"
+        port="3000"
+        />
+</service>

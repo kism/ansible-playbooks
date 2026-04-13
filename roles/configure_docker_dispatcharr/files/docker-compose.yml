@@ -41,6 +41,18 @@ services:
     #                count: all
     #                capabilities: [gpu]
 
+  nodecast-tv:
+    build: https://github.com/technomancer702/nodecast-tv.git#main
+    container_name: nodecast-tv
+    ports:
+      - "3000:3000" # Host:Container
+    volumes:
+      - nodecast_data:/app/data
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000 # Optional: Internal container port
+
   acestream-http-proxy:
     image: ghcr.io/martinbjeldbak/acestream-http-proxy:3.1
     container_name: acestream-http-proxy
@@ -80,13 +92,21 @@ services:
       - acerestreamer_instance:/app/instance
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://127.0.0.1:5100/api/v1/health"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "--silent",
+          "--show-error",
+          "http://127.0.0.1:5100/api/v1/health",
+        ]
       interval: 60s
       timeout: 10s
       retries: 3
       start_period: 30s
 
-
 volumes:
   dispatcharr_data:
   acerestreamer_instance:
+  nodecast_data:

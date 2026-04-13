@@ -35,3 +35,10 @@
     permanent: true
     state: enabled
     immediate: true
+
+- name: Allow NodeCast through firewall
+  ansible.posix.firewalld:
+    service: nodecast
+    permanent: true
+    state: enabled
+    immediate: true
