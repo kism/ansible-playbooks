@@ -13,6 +13,7 @@
     # Onboard Server
     - meta_onboard
     - configure_docker
+    - configure_docker_dispatcharr
 
 
     # End

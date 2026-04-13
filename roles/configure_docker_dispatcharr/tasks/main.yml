@@ -21,3 +21,10 @@
     permanent: true
     state: enabled
     immediate: true
+
+- name: Allow AceStream through firewall
+  ansible.posix.firewalld:
+    service: acestream
+    permanent: true
+    state: enabled
+    immediate: true
