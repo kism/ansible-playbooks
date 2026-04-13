@@ -8,4 +8,4 @@
     # Preflight
 
     # Configure Nvidia drivers
-    - configure_nvidia_driver
+    - configure_nvidia_driver_new
