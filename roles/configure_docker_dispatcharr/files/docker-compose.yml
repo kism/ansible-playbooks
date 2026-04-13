@@ -41,6 +41,52 @@ services:
     #                count: all
     #                capabilities: [gpu]
 
+  acestream-http-proxy:
+    image: ghcr.io/martinbjeldbak/acestream-http-proxy:3.1
+    container_name: acestream-http-proxy
+    ports:
+      - "127.0.0.1:6878:6878" # WebUI / API
+      - "8621:8621" # P2P, let this through your firewall if you don't have UPNP
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "--silent",
+          "--show-error",
+          "http://127.0.0.1:6878/webui/api/service?method=get_version",
+        ]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  acerestreamer:
+    # image: acerestreamer:latest # docker buildx build --network=host --file docker/Dockerfile.combined . -t acerestreamer
+    image: ghcr.io/kism/acerestreamer:latest # From GitHub Container Registry
+    container_name: acerestreamer
+
+    environment:
+      ACERE_EXTERNAL_URL: "http://stream.kg.lan:5100" # Change to your domain
+      ACERE_FIRST_SUPERUSER_USERNAME: "admin"
+      ACERE_FIRST_SUPERUSER_PASSWORD: "" # This will only set the password on first run, if empty a random password will be generated and printed in the logs
+      ACERE_AUTH_DISABLED: "true"
+      ACERE_APP__ACE_ADDRESS: "http://acestream-http-proxy:6878" # Leave this as is
+    ports:
+      - "5100:5100"
+    volumes: # This is where the database and config is stored
+      - acerestreamer_instance:/app/instance
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://127.0.0.1:5100/api/v1/health"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 
 volumes:
   dispatcharr_data:
+  acerestreamer_instance:
