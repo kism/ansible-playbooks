@@ -19,3 +19,6 @@
       - "libnvidia-container-tools-{{ configure_nvidia_container_tools_version }}"
       - "libnvidia-container1-{{ configure_nvidia_container_tools_version }}"
     state: present
+  notify:
+    - Configure nvidia-ctk docker runtime
+    - Restart docker service

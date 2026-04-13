@@ -33,13 +33,13 @@ services:
     #  - /dev/dri:/dev/dri  # For Intel/AMD GPU acceleration (VA-API)
     # Uncomment the following lines for NVIDIA GPU support
     # NVidia GPU support (requires NVIDIA Container Toolkit)
-    #deploy:
-    #  resources:
-    #      reservations:
-    #          devices:
-    #              - driver: nvidia
-    #                count: all
-    #                capabilities: [gpu]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu, utility, video, compute]
 
   nodecast-tv:
     build: https://github.com/technomancer702/nodecast-tv.git#main
@@ -52,6 +52,13 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000 # Optional: Internal container port
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu, utility, video, compute]
 
   acestream-http-proxy:
     image: ghcr.io/martinbjeldbak/acestream-http-proxy:3.1
