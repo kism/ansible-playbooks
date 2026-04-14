@@ -5,6 +5,7 @@
   become: true
   roles:
     # Preflight
+    - meta_pre_flight_checks
     - maintenance_gather_facts_pve
     # - create_proxmox_ct
     # - create_opnsense_entries
@@ -15,6 +16,7 @@
 
     # Purpose specific
     # - configure_fail2ban
+    - configure_nginx
     - configure_reverse_proxy
     # - configure_nginx_maxmind_allowlist
     # - configure_allowlistapp

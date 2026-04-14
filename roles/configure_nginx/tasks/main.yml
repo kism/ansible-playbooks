@@ -1,22 +1,23 @@
 ---
-- name: Enable SELinux
-  ansible.posix.selinux:
-    policy: targeted
-    state: enforcing
-  when: ansible_selinux is defined and not ansible_selinux and ansible_selinux.status == 'enabled'
+- name: Validate supported nginx distro
+  ansible.builtin.assert:
+    that:
+      - >-
+        ansible_distribution in ['RedHat', 'Rocky', 'AlmaLinux', 'OracleLinux', 'CentOS', 'Debian', 'Ubuntu']
+    fail_msg: >-
+      configure_nginx supports RedHat/Rocky/AlmaLinux/OracleLinux/CentOS, Debian, and Ubuntu hosts for nginx.org mainline packages.
 
-- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
-  ansible.posix.seboolean:
-    name: httpd_can_network_connect
-    state: true
-    persistent: true
-  when: ansible_selinux is defined and not ansible_selinux and ansible_selinux.status == 'enabled'
+- name: Include RedHat tasks
+  ansible.builtin.include_tasks: 01-redhat.yml
+  when: ansible_distribution in ['RedHat', 'Rocky', 'AlmaLinux', 'OracleLinux', 'CentOS']
 
-- name: Install nginx
-  ansible.builtin.package:
-    name:
-      - nginx
-    state: present
+- name: Include Debian tasks
+  ansible.builtin.include_tasks: 01-debian.yml
+  when: ansible_distribution == 'Debian'
+
+- name: Include Ubuntu tasks
+  ansible.builtin.include_tasks: 01-ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Copy nginx.conf
   ansible.builtin.copy:
@@ -41,19 +42,8 @@
   ansible.builtin.systemd_service:
     name: nginx
     enabled: true
+    state: started
   notify: Restart nginx
-
-- name: Allow http and https
-  ansible.posix.firewalld:
-    service: "{{ item }}"
-    zone: public
-    permanent: true
-    state: enabled
-  loop:
-    - http
-    - https
-  notify:
-    - Reload firewalld
 
 - name: Copy logrotate config
   ansible.builtin.copy:

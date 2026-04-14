@@ -1,0 +1,74 @@
+---
+- name: Enable SELinux
+  ansible.posix.selinux:
+    policy: targeted
+    state: enforcing
+  when: ansible_selinux is defined and ansible_selinux.status == 'enabled'
+
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+  when: ansible_selinux is defined and ansible_selinux.status == 'enabled'
+
+- name: Install nginx repo prerequisites
+  ansible.builtin.package:
+    name: yum-utils
+    state: present
+
+- name: Configure nginx stable yum repository
+  ansible.builtin.yum_repository:
+    name: nginx-stable
+    description: nginx stable repo
+    baseurl: https://nginx.org/packages/centos/$releasever/$basearch/
+    gpgcheck: true
+    enabled: false
+    gpgkey: https://nginx.org/keys/nginx_signing.key
+    module_hotfixes: true
+
+- name: Configure nginx mainline yum repository
+  ansible.builtin.yum_repository:
+    name: nginx-mainline
+    description: nginx mainline repo
+    baseurl: https://nginx.org/packages/mainline/centos/$releasever/$basearch/
+    gpgcheck: true
+    enabled: true
+    gpgkey: https://nginx.org/keys/nginx_signing.key
+    module_hotfixes: true
+
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Set conflicting distro nginx package list
+  ansible.builtin.set_fact:
+    configure_nginx_redhat_conflicting_packages: >-
+      {{
+        ansible_facts.packages.keys()
+        | select('match', '^nginx(|-core|-files|-all-modules|-mod-.*)$')
+        | list
+      }}
+
+- name: Remove conflicting distro nginx packages
+  ansible.builtin.dnf:
+    name: "{{ configure_nginx_redhat_conflicting_packages }}"
+    state: absent
+  when: configure_nginx_redhat_conflicting_packages | length > 0
+
+- name: Install latest nginx mainline package
+  ansible.builtin.dnf:
+    name: nginx
+    state: latest
+
+- name: Allow http and https
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    zone: public
+    permanent: true
+    state: enabled
+  loop:
+    - http
+    - https
+  notify:
+    - Reload firewalld
