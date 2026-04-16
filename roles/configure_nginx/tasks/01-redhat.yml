@@ -59,7 +59,7 @@
 - name: Install latest nginx mainline package
   ansible.builtin.dnf:
     name: nginx
-    state: latest
+    state: present
 
 - name: Allow http and https
   ansible.posix.firewalld:

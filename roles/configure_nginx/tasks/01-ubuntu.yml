@@ -24,6 +24,7 @@
 - name: Dearmor nginx signing key
   ansible.builtin.command:
     cmd: gpg --dearmor --output /usr/share/keyrings/nginx-archive-keyring.gpg /tmp/nginx_signing.key
+  changed_when: true
 
 - name: Verify nginx signing key fingerprint
   ansible.builtin.command:
@@ -60,5 +61,5 @@
 - name: Install latest nginx mainline package
   ansible.builtin.apt:
     name: nginx
-    state: latest
+    state: present
     update_cache: true
