@@ -10,9 +10,9 @@ ansible_main:
     pvematt:
       ansible_host: pvematt.kg.lan
       ansible_host_description: Proxmox
-    ifdb:
-      ansible_host: ifdb.kg.lan
-      ansible_host_description: InfluxDB2
+    # ifdb:
+    #   ansible_host: ifdb.kg.lan
+    #   ansible_host_description: InfluxDB2
     vic:
       ansible_host: vic.kg.lan
       ansible_host_description: VictoriaMetrics
