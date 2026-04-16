@@ -42,7 +42,6 @@
   ansible.builtin.systemd_service:
     name: nginx
     enabled: true
-    state: started
   notify: Restart nginx
 
 - name: Copy logrotate config
