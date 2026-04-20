@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Prometheus Exporter</short>
+  <description>Prometheus Exporter for Dispatcharr.</description>
+  <port protocol="tcp"
+        port="9192"
+        />
+</service>

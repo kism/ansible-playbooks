@@ -36,9 +36,9 @@
     state: enabled
     immediate: true
 
-- name: Allow NodeCast through firewall
+- name: Allow Prometheus Exporter
   ansible.posix.firewalld:
-    service: nodecast
+    service: prometheus-exporter
     permanent: true
     state: enabled
     immediate: true

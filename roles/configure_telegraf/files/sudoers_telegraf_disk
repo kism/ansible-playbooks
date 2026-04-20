@@ -5,3 +5,7 @@ Defaults!SMARTCTL !logfile, !syslog, !pam_session
 Cmnd_Alias NVME = /usr/sbin/nvme
 telegraf  ALL=(ALL) NOPASSWD: NVME
 Defaults!NVME !logfile, !syslog, !pam_session
+
+Cmnd_Alias LVM = /usr/sbin/pvs *, /usr/sbin/vgs *, /usr/sbin/lvs *
+telegraf  ALL=(root) NOPASSWD: LVM
+Defaults!LVM !logfile, !syslog, !pam_session
