@@ -6,7 +6,7 @@
   ansible.builtin.package:
     name: "{{ configure_packages_to_install }}"
     state: present
-  when: ansible_pkg_mgr != 'apt'
+  when: ansible_facts["pkg_mgr"] != 'apt'
   register: configure_packages_installed_non_apt
 
 - name: Install all-common packages (APT)
@@ -14,7 +14,7 @@
     name: "{{ configure_packages_to_install }}"
     install_recommends: false
     state: present
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_facts["pkg_mgr"] == 'apt'
   register: configure_packages_installed_apt
 
 - name: Remove not-wanted all-common packages
@@ -24,13 +24,13 @@
 
 # Re-include vars
 - name: Include vars for all-(package manager)
-  ansible.builtin.include_vars: "all-{{ ansible_pkg_mgr }}.yml"
+  ansible.builtin.include_vars: "all-{{ ansible_facts["pkg_mgr"] }}.yml"
 
 - name: Install all-(package manager) packages (NON APT)
   ansible.builtin.package:
     name: "{{ configure_packages_to_install }}"
     state: present
-  when: ansible_pkg_mgr != 'apt'
+  when: ansible_facts["pkg_mgr"] != 'apt'
   register: configure_packages_installed_non_apt
 
 - name: Install all-(package manager) packages (APT)
@@ -38,7 +38,7 @@
     name: "{{ configure_packages_to_install }}"
     install_recommends: false
     state: present
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_facts["pkg_mgr"] == 'apt'
   register: configure_packages_installed_apt
 
 - name: Remove not-wanted all-(package manager) packages

@@ -3,13 +3,13 @@
   ansible.builtin.package:
     name: python3.11
     state: present
-  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'dnf'
+  when: ansible_facts["pkg_mgr"] == 'apt' or ansible_facts["pkg_mgr"] == 'dnf'
 
 - name: Install modern python for pacman
   community.general.pacman:
     name: python
     state: present
-  when: ansible_pkg_mgr == 'pacman'
+  when: ansible_facts["pkg_mgr"] == 'pacman'
 
 - name: Block to run as user
   become: true

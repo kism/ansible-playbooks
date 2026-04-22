@@ -21,7 +21,7 @@
 
     state: present
     install_weak_deps: false
-  when: ansible_pkg_mgr == 'dnf'
+  when: ansible_facts["pkg_mgr"] == 'dnf'
 
 - name: Install xrdp apt
   ansible.builtin.apt:
@@ -31,7 +31,7 @@
       - xfwm4
     state: present
     install_recommends: false
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_facts["pkg_mgr"] == 'apt'
 
 - name: Add xrdp to the ssl group
   ansible.builtin.user:

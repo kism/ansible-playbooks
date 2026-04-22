@@ -1,8 +1,8 @@
 ---
 - name: Include tasks for pacman based hosts
   ansible.builtin.include_tasks: "01-pacman.yml"
-  when: ansible_pkg_mgr == 'pacman'
+  when: ansible_facts["pkg_mgr"] == 'pacman'
 
 - name: Include tasks for NON pacman based hosts
   ansible.builtin.include_tasks: "01-others.yml"
-  when: ansible_pkg_mgr != 'pacman'
+  when: ansible_facts["pkg_mgr"] != 'pacman'

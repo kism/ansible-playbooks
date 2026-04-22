@@ -12,7 +12,7 @@
   loop:
     - free
     - nonfree
-  when: ansible_pkg_mgr == "dnf"
+  when: ansible_facts["pkg_mgr"] == "dnf"
 
 - name: Install Jellyfin
   ansible.builtin.package:

@@ -33,14 +33,14 @@
         pkg:
           - lm-sensors
         state: present
-      when: ansible_pkg_mgr == "apt"
+      when: ansible_facts["pkg_mgr"] == "apt"
 
     - name: Install lm_sensors dnf
       ansible.builtin.package:
         pkg:
           - lm_sensors
         state: present
-      when: ansible_pkg_mgr == "dnf"
+      when: ansible_facts["pkg_mgr"] == "dnf"
 
     - name: Copy the telegraf sudoers rule baremetal hosts
       ansible.builtin.copy:

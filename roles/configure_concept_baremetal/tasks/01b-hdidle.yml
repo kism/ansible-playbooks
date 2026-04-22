@@ -16,4 +16,4 @@
 # - name: Download and install hd-idle
 #   ansible.builtin.apt:
 #     deb: "{{ configure_concept_baremetal_hdidle_url }}"
-#   when: ansible_pkg_mgr == 'apt'
+#   when: ansible_facts["pkg_mgr"] == 'apt'

@@ -5,13 +5,13 @@
       - langpacks-en.noarch
       - langpacks-core-en.noarch
     state: installed
-  when: ansible_pkg_mgr == 'dnf'
+  when: ansible_facts["pkg_mgr"] == 'dnf'
 
 - name: Ensure a locale exists
   community.general.locale_gen:
     name: en_AU.UTF-8
     state: present
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_facts["pkg_mgr"] == 'apt'
 
 - name: Configure locale to en_AU.UTF-8 and language to en_AU.UTF-8
   ansible.builtin.copy:

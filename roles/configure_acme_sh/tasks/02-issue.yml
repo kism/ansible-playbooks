@@ -18,7 +18,7 @@
     - name: Print first three characters of the client secret, azure shows us this anyway
       ansible.builtin.debug:
         msg: |-
-          Cloudflare API Key   : {{ secret_cloudflare_api_dns[0:3] }}******************
+          Cloudflare API Token : {{ secret_cloudflare_api_dns[0:3] }}******************
           Cloudflare Email     : {{ secret_email }}
           Domains:
             {% for domain in acme_domains %}{{ domain }}
@@ -43,8 +43,8 @@
       ansible.builtin.command:
         cmd: "{{ configure_acme_sh_command_one }}"
       environment:
-        CF_Key: "{{ secret_cloudflare_api_dns }}"
-        CF_Email: "{{ secret_email }}"
+        CF_Token: "{{ secret_cloudflare_api_dns }}"
+        CF_Account_ID: "{{ secret_cloudflare_account_id }}"
       changed_when: configure_acme_sh_output.rc != 2
       register: configure_acme_sh_output
       failed_when: configure_acme_sh_output.rc not in [0, 2]
@@ -70,7 +70,7 @@
         cmd: "{{ configure_acme_sh_command_two }}"
       environment:
         CF_Key: "{{ secret_cloudflare_api_dns }}"
-        CF_Email: "{{ secret_email }}"
+        CF_Account_ID: "{{ secret_cloudflare_account_id }}"
       changed_when: configure_acme_sh_output.rc != 2
       register: configure_acme_sh_output
       failed_when: configure_acme_sh_output.rc not in [0, 2]

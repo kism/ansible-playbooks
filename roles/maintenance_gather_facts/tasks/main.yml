@@ -74,7 +74,7 @@
             ansible_facts['distribution_major_version']: "{{ ansible_facts['distribution_major_version'] }}"
             ansible_facts['distribution_release']: "{{ ansible_facts['distribution_release'] }}"
             ansible_architecture: "{{ ansible_architecture }}"
-            ansible_pkg_mgr: "{{ ansible_pkg_mgr }}"
+            ansible_facts['pkg_mgr']: "{{ ansible_facts['pkg_mgr'] }}"
           local_things:
             inventory_hostname: "{{ inventory_hostname }}"
             inventory_hostname_short: "{{ inventory_hostname_short }}"
@@ -104,7 +104,7 @@
       changed_when: false # Grabbing information to store locally
 
 - name: Run pacman audit for pacman
-  when: ansible_pkg_mgr == 'pacman'
+  when: ansible_facts["pkg_mgr"] == 'pacman'
   block:
     - name: Run fun audit command
       ansible.builtin.command:

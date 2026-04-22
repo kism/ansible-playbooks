@@ -52,7 +52,7 @@
     owner: nobody
     group: nogroup
     mode: "0000"
-  when: ansible_pkg_mgr != 'pacman'
+  when: ansible_facts["pkg_mgr"] != 'pacman'
   with_dict: "{{ nfs_client_mounts }}"
 
 - name: For each mount set the unmounted folder's permissions
@@ -62,7 +62,7 @@
     owner: nobody
     group: nobody
     mode: "0000"
-  when: ansible_pkg_mgr == 'pacman'
+  when: ansible_facts["pkg_mgr"] == 'pacman'
   with_dict: "{{ nfs_client_mounts }}"
 
 - name: For the sake of output, ls -lah /tmp/mnt

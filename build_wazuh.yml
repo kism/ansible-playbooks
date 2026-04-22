@@ -11,8 +11,8 @@
     - maintenance_gather_facts
 
     # Onboard Server
-    - meta_onboard
-    # - configure_acme_sh
+    # - meta_onboard
+    - configure_acme_sh
     - configure_wazuh
 
     # End

@@ -47,3 +47,17 @@
     group: wazuh
     mode: "0640"
   notify: Restart Wazuh manager
+
+- name: Set cert for dashboard
+  ansible.builtin.lineinfile:
+    path: /etc/wazuh-dashboard/opensearch_dashboards.yml
+    regexp: "^server.ssl.certificate:.*"
+    line: 'server.ssl.certificate: "/etc/acme_sh/{{ acme_domains[0] }}_fullchain.pem"'
+  notify: Restart Wazuh manager
+
+- name: Set cert key for dashboard
+  ansible.builtin.lineinfile:
+    path: /etc/wazuh-dashboard/opensearch_dashboards.yml
+    regexp: "^server.ssl.key:.*"
+    line: 'server.ssl.key: "/etc/acme_sh/{{ acme_domains[0] }}_privkey.pem"'
+  notify: Restart Wazuh manager

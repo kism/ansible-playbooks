@@ -3,16 +3,16 @@
   ansible.builtin.apt:
     name: nfs-common
     state: present
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_facts["pkg_mgr"] == 'apt'
 
 - name: Install NFS client dnf
   ansible.builtin.dnf:
     name: nfs-utils
     state: present
-  when: ansible_pkg_mgr == 'dnf'
+  when: ansible_facts["pkg_mgr"] == 'dnf'
 
 - name: Install NFS client pacman
   community.general.pacman:
     name: nfs-utils
     state: present
-  when: ansible_pkg_mgr == 'pacman'
+  when: ansible_facts["pkg_mgr"] == 'pacman'

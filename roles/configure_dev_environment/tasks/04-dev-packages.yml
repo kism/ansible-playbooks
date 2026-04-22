@@ -3,7 +3,7 @@
   community.general.dnf_config_manager:
     name: "ol{{ ansible_facts['distribution_major_version'] }}_codeready_builder"
     state: enabled
-  when: ansible_pkg_mgr == 'dnf'
+  when: ansible_facts["pkg_mgr"] == 'dnf'
 
 - name: Install GCC
   ansible.builtin.dnf:
@@ -12,7 +12,7 @@
       - mingw64-gcc
       - gnupg2
     state: installed
-  when: ansible_pkg_mgr == 'dnf'
+  when: ansible_facts["pkg_mgr"] == 'dnf'
 
 - name: Install GCC
   ansible.builtin.apt:
@@ -20,7 +20,7 @@
       - build-essential
       - gnupg2
     state: present
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_facts["pkg_mgr"] == 'apt'
 
 - name: Install dev tools
   community.general.pacman:
@@ -28,4 +28,4 @@
       - base-devel
       - gnupg
     state: installed
-  when: ansible_pkg_mgr == 'pacman'
+  when: ansible_facts["pkg_mgr"] == 'pacman'

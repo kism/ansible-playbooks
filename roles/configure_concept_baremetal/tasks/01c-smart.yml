@@ -16,7 +16,7 @@
       - rsync
       - libatasmart-bin
     state: present
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_facts["pkg_mgr"] == 'apt'
 
 - name: Install some hdd related packages
   ansible.builtin.dnf:
@@ -26,4 +26,4 @@
       - rsync
       - libatasmart-bin
     state: present
-  when: ansible_pkg_mgr == 'dnf'
+  when: ansible_facts["pkg_mgr"] == 'dnf'
