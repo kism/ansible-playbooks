@@ -15,7 +15,6 @@
     - configure_docker
     - configure_docker_dispatcharr
 
-
     # End
     # - configure_telegraf
     # - configure_wazuh_agent

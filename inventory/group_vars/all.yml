@@ -47,4 +47,4 @@ secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-9
 
 secret_wazuh_agent_password: "{{ lookup('bitwarden.secrets.lookup', 'baa1216d-fd91-4b24-b2fd-b434005de235') }}"
 
-secret_cloudflare_account_id:  "{{ lookup('bitwarden.secrets.lookup', 'b75c1d08-0e86-409d-9e5b-b43400aae766') }}"
+secret_cloudflare_account_id: "{{ lookup('bitwarden.secrets.lookup', 'b75c1d08-0e86-409d-9e5b-b43400aae766') }}"

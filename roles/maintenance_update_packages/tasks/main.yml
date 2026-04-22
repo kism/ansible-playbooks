@@ -1,6 +1,6 @@
 ---
 - name: Run appropiate update routine for package manager
-  ansible.builtin.include_tasks: "01-{{ ansible_facts["pkg_mgr"] }}.yml"
+  ansible.builtin.include_tasks: '01-{{ ansible_facts["pkg_mgr"] }}.yml'
 
 - name: Run pipx update routine if needed
   ansible.builtin.include_tasks: "02-pipx.yml"

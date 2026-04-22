@@ -17,7 +17,8 @@
   block:
     - name: Setup Microsoft repo APT
       ansible.builtin.apt:
-        name: https://packages.microsoft.com/config/{{ ansible_facts['distribution'] | lower }}/{{ ansible_facts['distribution_major_version'] }}/packages-microsoft-prod.deb
+        name: https://packages.microsoft.com/config/{{ ansible_facts['distribution'] | lower }}/{{ ansible_facts['distribution_major_version']
+          }}/packages-microsoft-prod.deb
 
     - name: Install powershell
       ansible.builtin.apt:

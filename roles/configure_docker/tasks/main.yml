@@ -1,6 +1,6 @@
 ---
 - name: Configure Docker repo APT
-  ansible.builtin.include_tasks: "01-{{ ansible_facts["pkg_mgr"] }}.yml"
+  ansible.builtin.include_tasks: '01-{{ ansible_facts["pkg_mgr"] }}.yml'
 
 # - name: Install packages required for ansible docker collection
 #   ansible.builtin.package:

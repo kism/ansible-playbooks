@@ -22,7 +22,7 @@
 
 # Re-include vars
 - name: Include vars for baremetal-(package manager)
-  ansible.builtin.include_vars: "all-{{ ansible_facts["pkg_mgr"] }}.yml"
+  ansible.builtin.include_vars: 'all-{{ ansible_facts["pkg_mgr"] }}.yml'
 
 - name: Install baremetal-(package manager) packages (NON APT)
   ansible.builtin.package:
