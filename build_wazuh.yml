@@ -1,22 +1,19 @@
 ---
-- name: Setup ollama host
-  hosts: llama
+- name: Setup stream server
+  hosts: wazuh
   gather_facts: false
   become: true
   roles:
     # Preflight
     - maintenance_gather_facts_pve
+    - create_opnsense_entries
     - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
     - meta_onboard
-
-    # Purpose specific
-    - configure_docker
-    - configure_nvidia_driver
-    - configure_llama_tabby
+    - configure_wazuh
 
     # End
     - configure_telegraf
-    - configure_elastic_agent
+    # - configure_wazuh_agent

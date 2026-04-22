@@ -18,8 +18,8 @@
   },
   // Needed for ansible-lint to trigger for roles
   "files.associations": {
-    "*.yml": "yaml",
-    "*.yaml": "yaml",
+    "*.yml": "ansible",
+    "*.yaml": "ansible",
     ".ansible-lint": "yaml",
     ".ansible-lint.yml": "yaml",
     "*.md.j2": "markdown"

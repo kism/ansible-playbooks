@@ -12,4 +12,4 @@
 
     # End
     - configure_telegraf
-    - configure_elastic_agent
+    - configure_wazuh_agent

@@ -10,9 +10,6 @@ ansible_main:
     pvematt:
       ansible_host: pvematt.kg.lan
       ansible_host_description: Proxmox
-    # ifdb:
-    #   ansible_host: ifdb.kg.lan
-    #   ansible_host_description: InfluxDB2
     vic:
       ansible_host: vic.kg.lan
       ansible_host_description: VictoriaMetrics
@@ -34,9 +31,9 @@ ansible_main:
     yoho:
       ansible_host: yoho.kg.lan
       ansible_host_description: No one knows
-    elk:
-      ansible_host: elk.kg.lan
-      ansible_host_description: ELK (Elastic Search, Logstash, Kibana)
+    wazuh:
+      ansible_host: wazuh.kg.lan
+      ansible_host_description: Wazuh SIEM
     x230t:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
