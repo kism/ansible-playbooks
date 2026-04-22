@@ -12,8 +12,8 @@
 
     # Onboard Server
     # - meta_onboard
-    # - configure_acme_sh
-    - configure_wazuh
+    - configure_acme_sh
+    # - configure_wazuh
 
     # End
     # - configure_telegraf
