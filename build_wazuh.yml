@@ -12,7 +12,7 @@
 
     # Onboard Server
     # - meta_onboard
-    - configure_acme_sh
+    # - configure_acme_sh
     - configure_wazuh
 
     # End

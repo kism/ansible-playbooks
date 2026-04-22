@@ -3,3 +3,8 @@
   ansible.builtin.service:
     name: wazuh-manager
     state: restarted
+
+- name: Restart Wazuh dashboard
+  ansible.builtin.service:
+    name: wazuh-dashboard
+    state: restarted

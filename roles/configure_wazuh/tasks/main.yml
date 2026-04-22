@@ -35,8 +35,8 @@
 - name: Enable agent password in Wazuh config
   ansible.builtin.lineinfile:
     path: /var/ossec/etc/ossec.conf
-    regexp: '<use_password>no</use_password>'
-    line: '<use_password>yes</use_password>'
+    regexp: "<use_password>no</use_password>"
+    line: "<use_password>yes</use_password>"
   notify: Restart Wazuh manager
 
 - name: Set password file
@@ -48,16 +48,32 @@
     mode: "0640"
   notify: Restart Wazuh manager
 
+- name: Set permissions for cert for wazuh-dashboard user
+  ansible.builtin.file:
+    path: "/etc/acme_sh/{{ acme_domains[0] }}_fullchain.pem"
+    owner: root
+    group: wazuh-dashboard
+    mode: "0640"
+  notify: Restart Wazuh dashboard
+
+- name: Set permissions for cert key for wazuh-dashboard user
+  ansible.builtin.file:
+    path: "/etc/acme_sh/{{ acme_domains[0] }}_privkey.pem"
+    owner: root
+    group: wazuh-dashboard
+    mode: "0640"
+  notify: Restart Wazuh dashboard
+
 - name: Set cert for dashboard
   ansible.builtin.lineinfile:
     path: /etc/wazuh-dashboard/opensearch_dashboards.yml
     regexp: "^server.ssl.certificate:.*"
     line: 'server.ssl.certificate: "/etc/acme_sh/{{ acme_domains[0] }}_fullchain.pem"'
-  notify: Restart Wazuh manager
+  notify: Restart Wazuh dashboard
 
 - name: Set cert key for dashboard
   ansible.builtin.lineinfile:
     path: /etc/wazuh-dashboard/opensearch_dashboards.yml
     regexp: "^server.ssl.key:.*"
     line: 'server.ssl.key: "/etc/acme_sh/{{ acme_domains[0] }}_privkey.pem"'
-  notify: Restart Wazuh manager
+  notify: Restart Wazuh dashboard
