@@ -3,6 +3,7 @@ opnsense_firewall: "opnsense.{{ homelab_domain_external }}"
 homelab_domain_external: kierangee.au
 homelab_domain_internal: kg.lan
 target_host_subnet: 10.42.0.0/24
+wazuh_manager: wazuh.kg.lan
 
 # Bitwarden secrets
 secret_email: "{{ lookup('bitwarden.secrets.lookup', '265a4fee-d565-4bee-aad8-b222006d3a0e') }}"
@@ -43,3 +44,5 @@ secret_ip_addresses: "{{ lookup('bitwarden.secrets.lookup', 'f20ca68b-1907-4d74-
 
 secret_maxmind_id: "{{ lookup('bitwarden.secrets.lookup', '4e1a7c83-0626-47c9-8928-b3e60009ccff') }}"
 secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-929b-b3e60009e73f') }}"
+
+secret_wazuh_agent_password: "{{ lookup('bitwarden.secrets.lookup', 'baa1216d-fd91-4b24-b2fd-b434005de235') }}"

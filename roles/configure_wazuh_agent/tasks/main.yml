@@ -1,0 +1,49 @@
+---
+- name: Import rpm key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+  when: ansible_facts['pkg_mgr'] == 'dnf'
+
+- name: Download Wazuh agent rpm
+  ansible.builtin.get_url:
+    url: "{{ configure_wazuh_agent_rpm_url }}"
+    dest: /tmp/wazuh-agent.rpm
+    mode: "0644"
+  changed_when: false
+  when: ansible_facts['pkg_mgr'] == 'dnf'
+
+- name: Install Wazuh agent rpm
+  ansible.builtin.dnf:
+    name: /tmp/wazuh-agent.rpm
+    state: present
+  environment:
+    WAZUH_MANAGER: "{{ wazuh_manager }}"
+  when: ansible_facts['pkg_mgr'] == 'dnf'
+  notify: Restart Wazuh Agent
+
+- name: Download Wazuh agent deb
+  ansible.builtin.get_url:
+    url: "{{ configure_wazuh_agent_deb_url }}"
+    dest: /tmp/wazuh-agent.deb
+    mode: "0644"
+  changed_when: false
+  when: ansible_facts['pkg_mgr'] == 'apt'
+
+- name: Install Wazuh agent deb
+  ansible.builtin.apt:
+    deb: /tmp/wazuh-agent.deb
+    state: present
+  environment:
+    WAZUH_MANAGER: "{{ wazuh_manager }}"
+  when: ansible_facts['pkg_mgr'] == 'apt'
+  notify: Restart Wazuh Agent
+
+- name: Set password file
+  ansible.builtin.copy:
+    content: "{{ secret_wazuh_agent_password }}"
+    dest: /var/ossec/etc/authd.pass
+    owner: root
+    group: wazuh
+    mode: "0640"
+  notify: Restart Wazuh Agent

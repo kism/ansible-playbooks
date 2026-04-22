@@ -1,0 +1,45 @@
+---
+- name: Ensure that cron is installed
+  ansible.builtin.package:
+    name: cronie
+    state: present
+
+- name: Grab acme.sh
+  ansible.builtin.get_url:
+    url: https://get.acme.sh
+    dest: /tmp/install_acme.sh
+    mode: "0750"
+  changed_when: false # We are in tmp
+
+- name: Check if acme.sh is installed
+  ansible.builtin.stat:
+    path: /root/.acme.sh/acme.sh
+  register: configure_acme_sh_installed
+
+- name: Get hash of installed acme.sh
+  ansible.builtin.command:
+    cmd: sha256sum /root/.acme.sh/acme.sh
+  register: configure_acme_sh_hash
+  changed_when: false # Just chacking
+  when: configure_acme_sh_installed.stat.exists
+
+- name: Set fact of acme_sh_hash
+  ansible.builtin.set_fact:
+    configure_acme_sh_hash: "{{ configure_acme_sh_hash.stdout }}"
+  when: configure_acme_sh_installed.stat.exists
+
+- name: Set fact if acme.sh not installed
+  ansible.builtin.set_fact:
+    configure_acme_sh_hash: ""
+  when: not configure_acme_sh_installed.stat.exists
+
+- name: Install acme.sh
+  ansible.builtin.command:
+    cmd: /tmp/install_acme.sh email={{ secret_email }}
+  changed_when: false # Checked later
+
+- name: Get hash again, set 'changed' if needed
+  ansible.builtin.command:
+    cmd: sha256sum /root/.acme.sh/acme.sh
+  register: configure_acme_sh_new_hash
+  changed_when: configure_acme_sh_new_hash.stdout != configure_acme_sh_hash

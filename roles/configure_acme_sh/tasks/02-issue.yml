@@ -1,0 +1,76 @@
+---
+- name: Assert acme_domains is defined
+  ansible.builtin.assert:
+    that:
+      - acme_domains is defined
+      - acme_domains | length > 0
+
+- name: Create folders in etc
+  ansible.builtin.file:
+    path: "/etc/acme_sh"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Real acme block
+  block:
+    - name: Print first three characters of the client secret, azure shows us this anyway
+      ansible.builtin.debug:
+        msg: |-
+          Cloudflare API Key   : {{ secret_cloudflare_api_dns[0:3] }}******************
+          Cloudflare Email     : {{ secret_email }}
+          Domains:
+            {% for domain in acme_domains %}{{ domain }}
+            {% endfor %}
+
+    # You seem to need two commands to install a cert, I wasted an hour to try do otherwise.
+    ## Issue
+    - name: Build command for debug reasons
+      ansible.builtin.set_fact:
+        configure_acme_sh_command_one: >-
+          /root/.acme.sh/acme.sh
+          --server https://acme-v02.api.letsencrypt.org/directory
+          --issue
+          --keylength 2048
+          --dns dns_cf {% for domain in acme_domains %} -d {{ domain }} {% endfor %}
+
+    - name: Print acme issue command
+      ansible.builtin.debug:
+        msg: "{{ configure_acme_sh_command_one }}"
+
+    - name: Run acme.sh to issue
+      ansible.builtin.command:
+        cmd: "{{ configure_acme_sh_command_one }}"
+      environment:
+        CF_Key: "{{ secret_cloudflare_api_dns }}"
+        CF_Email: "{{ secret_email }}"
+      changed_when: configure_acme_sh_output.rc != 2
+      register: configure_acme_sh_output
+      failed_when: configure_acme_sh_output.rc not in [0, 2]
+
+    ## Install
+    - name: Build command for debug reasons
+      ansible.builtin.set_fact:
+        configure_acme_sh_command_two: >-
+          /root/.acme.sh/acme.sh
+          --server https://acme-v02.api.letsencrypt.org/directory
+          --install-cert
+          --keylength 2048
+          --fullchain-file /etc/acme_sh/{{ acme_domains[0] }}_fullchain.pem
+          --key-file /etc/acme_sh/{{ acme_domains[0] }}_privkey.pem
+          --dns dns_cf {% for domain in acme_domains %} -d {{ domain }} {% endfor %}
+
+    - name: Print command for installing
+      ansible.builtin.debug:
+        msg: "{{ configure_acme_sh_command_two }}"
+
+    - name: Run acme.sh to install
+      ansible.builtin.command:
+        cmd: "{{ configure_acme_sh_command_two }}"
+      environment:
+        CF_Key: "{{ secret_cloudflare_api_dns }}"
+        CF_Email: "{{ secret_email }}"
+      changed_when: configure_acme_sh_output.rc != 2
+      register: configure_acme_sh_output
+      failed_when: configure_acme_sh_output.rc not in [0, 2]

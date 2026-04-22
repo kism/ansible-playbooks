@@ -5,15 +5,16 @@
   become: true
   roles:
     # Preflight
-    - maintenance_gather_facts_pve
-    - create_opnsense_entries
-    - create_proxmox_ct
+    # - maintenance_gather_facts_pve
+    # - create_opnsense_entries
+    # - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
     - meta_onboard
+    # - configure_acme_sh
     - configure_wazuh
 
     # End
-    - configure_telegraf
+    # - configure_telegraf
     # - configure_wazuh_agent

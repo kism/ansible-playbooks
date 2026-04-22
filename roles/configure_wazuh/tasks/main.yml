@@ -1,0 +1,49 @@
+---
+- name: Download Wazuh install script
+  ansible.builtin.get_url:
+    url: "{{ configure_wazuh_script_url }}"
+    dest: /tmp/wazuh-install.sh
+    mode: "0755"
+  changed_when: false
+
+- name: Run script to install Wazuh
+  ansible.builtin.command:
+    cmd: /tmp/wazuh-install.sh -a
+  register: configure_wazuh_script_result
+  changed_when: configure_wazuh_script_result.rc == 0 and 'already installed' not in configure_wazuh_script_result.stdout
+  failed_when: configure_wazuh_script_result.rc != 0 and 'already installed' not in configure_wazuh_script_result.stdout
+
+- name: Print the output of the Wazuh install script, this will have the admin password if it was just installed
+  ansible.builtin.debug:
+    var: configure_wazuh_script_result.stdout
+  when: configure_wazuh_script_result.rc == 0 and 'already installed' not in configure_wazuh_script_result.stdout
+
+- name: Allow https service through firewalld
+  ansible.posix.firewalld:
+    service: https
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Allow wazuh-server service through firewalld
+  ansible.posix.firewalld:
+    service: wazuh-server
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Enable agent password in Wazuh config
+  ansible.builtin.lineinfile:
+    path: /var/ossec/etc/ossec.conf
+    regexp: '<use_password>no</use_password>'
+    line: '<use_password>yes</use_password>'
+  notify: Restart Wazuh manager
+
+- name: Set password file
+  ansible.builtin.copy:
+    content: "{{ secret_wazuh_agent_password }}"
+    dest: /var/ossec/etc/authd.pass
+    owner: root
+    group: wazuh
+    mode: "0640"
+  notify: Restart Wazuh manager

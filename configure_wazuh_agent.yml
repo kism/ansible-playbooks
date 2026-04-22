@@ -1,0 +1,11 @@
+---
+- name: Setup wazuh agent on all hosts
+  hosts: ansible_main,!wazuh
+  gather_facts: true
+  become: true
+  roles:
+    # Preflight
+    - meta_pre_flight_checks
+
+    # Purpose specific
+    - configure_wazuh_agent

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Wazuh</short>
+  <description>Wazuh Security Information and Event Management (SIEM) server</description>
+  <port protocol="tcp" port="1514" />
+  <port protocol="tcp" port="1515" />
+  <port protocol="tcp" port="55000" />
+</service>
