@@ -48,7 +48,7 @@
 - name: Remove smtp_tls_security_level
   ansible.builtin.lineinfile:
     path: /etc/postfix/main.cf
-    regexp: '^smtp_tls_security_level\s*=.may$'
+    regexp: "^smtp_tls_security_level\\s*=.may$"
     line: "# smtp_tls_security_level ="
   notify: Restart postfix
 
