@@ -77,3 +77,21 @@
     regexp: "^server.ssl.key:.*"
     line: 'server.ssl.key: "/etc/acme_sh/{{ acme_domains[0] }}_privkey.pem"'
   notify: Restart Wazuh dashboard
+
+- name: Copy opnsense decoders to wazuh manager
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/decoders/opnsense_decoders.xml"
+    dest: /var/ossec/etc/decoders/opnsense_decoders.xml
+    owner: root
+    group: wazuh
+    mode: "0640"
+  notify: Restart Wazuh manager
+
+- name: Copy opnsense rules to wazuh manager
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/etc/rules/opnsense_rules.xml"
+    dest: /var/ossec/etc/rules/opnsense_rules.xml
+    owner: root
+    group: wazuh
+    mode: "0640"
+  notify: Restart Wazuh manager

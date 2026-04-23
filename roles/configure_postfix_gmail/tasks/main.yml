@@ -3,12 +3,33 @@
 # https://gist.github.com/tomdaley92/9315b9326d4589c9652ce0307c9c38a3
 
 - name: Install dependancies apt
-  ansible.builtin.package:
-    pkg:
+  ansible.builtin.apt:
+    package:
+      - postfix
       - libsasl2-modules
       - mailutils
     state: present
   notify: Restart postfix
+  when: ansible_facts["pkg_mgr"] == 'apt'
+
+- name: Install dependancies dnf
+  ansible.builtin.dnf:
+    name:
+      - postfix
+      - cyrus-sasl
+      - cyrus-sasl-plain
+      - cyrus-sasl-lib
+      - openssl
+    state: present
+  notify: Restart postfix
+  when: ansible_facts["pkg_mgr"] == 'dnf'
+
+- name: Enable postfix service
+  ansible.builtin.systemd_service:
+    service: postfix
+    enabled: true
+    state: started
+    daemon_reload: true
 
 - name: Creating a file with content
   ansible.builtin.copy:
@@ -24,6 +45,13 @@
   changed_when: configure_postfix_gmail_copy_sasl_passwd.changed
   notify: Restart postfix
 
+- name: Remove smtp_tls_security_level
+  ansible.builtin.lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '^smtp_tls_security_level\s*=.may$'
+    line: "# smtp_tls_security_level ="
+  notify: Restart postfix
+
 - name: Insert Postfix Config
   ansible.builtin.blockinfile:
     path: /etc/postfix/main.cf
@@ -32,9 +60,9 @@
       relayhost = smtp.gmail.com:587
       smtp_use_tls = yes
       smtp_sasl_auth_enable = yes
+      smtp_tls_security_level = encrypt
       smtp_sasl_security_options =
       smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
-      smtp_tls_CAfile = /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
       smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
       smtp_tls_session_cache_timeout = 3600s
   notify: Restart postfix
