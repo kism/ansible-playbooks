@@ -44,15 +44,12 @@ ansible_main:
 # Server Type
 proxmoxvms:
   hosts:
-    ifdb:
     graf:
     ent:
     kismnas:
     rproxy:
     code:
     yoho:
-    # llama:
-    elk:
 proxmoxhosts:
   hosts:
     pvewill:
