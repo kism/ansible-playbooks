@@ -2,7 +2,7 @@
 
 import json
 from urllib.request import urlopen
-from pathlib import Path
+from datetime import datetime
 
 ANSIBLE_JSON_URL = (
     "https://cmdb.kierangee.au/inventory/kism_main/group/ansible_main/json"
@@ -172,5 +172,5 @@ MOTD_INTRO = r"""Art by jgs / Joan Stark
 """
 
 
-motd_content = MOTD_INTRO + "\n" + build_motd_table(data) + "\n"
+motd_content = "Generated: " + datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S") + " | " + MOTD_INTRO + "\n" + build_motd_table(data) + "\n"
 print(motd_content)
