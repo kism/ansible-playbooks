@@ -50,6 +50,8 @@ proxmoxvms:
     rproxy:
     code:
     yoho:
+    stream:
+    wazuh:
 proxmoxhosts:
   hosts:
     pvewill:
