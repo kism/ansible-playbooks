@@ -5,4 +5,7 @@
   <port protocol="tcp"
         port="9191"
         />
+  <port protocol="tcp"
+        port="9192"
+        />
 </service>
