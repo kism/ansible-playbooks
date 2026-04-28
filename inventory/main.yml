@@ -6,10 +6,10 @@ ansible_main:
       ansible_host_description: SSH Jumpbox
     pvewill:
       ansible_host: pvewill.kg.lan
-      ansible_host_description: Proxmox Topton NAS
+      ansible_host_description: Proxmox Topton
     pvematt:
       ansible_host: pvematt.kg.lan
-      ansible_host_description: Proxmox ASRock NAS
+      ansible_host_description: Proxmox ASRock
     vic:
       ansible_host: vic.kg.lan
       ansible_host_description: VictoriaMetrics
@@ -21,7 +21,7 @@ ansible_main:
       ansible_host_description: Grafana
     kismnas:
       ansible_host: kismnas.kg.lan
-      ansible_host_description: Network Attached Storage
+      ansible_host_description: NAS
     rproxy:
       ansible_host: rproxy.kg.lan
       ansible_host_description: Reverse Proxy
