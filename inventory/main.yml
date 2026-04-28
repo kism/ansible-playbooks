@@ -3,13 +3,13 @@ ansible_main:
   hosts:
     ent:
       ansible_host: ent.kg.lan
-      ansible_host_description: Jumpbox
+      ansible_host_description: SSH Jumpbox
     pvewill:
       ansible_host: pvewill.kg.lan
-      ansible_host_description: Proxmox
+      ansible_host_description: Proxmox Topton NAS
     pvematt:
       ansible_host: pvematt.kg.lan
-      ansible_host_description: Proxmox
+      ansible_host_description: Proxmox ASRock NAS
     vic:
       ansible_host: vic.kg.lan
       ansible_host_description: VictoriaMetrics
@@ -39,7 +39,7 @@ ansible_main:
     #   ansible_host_description: Lenovo x230t Tablet
     stream:
       ansible_host: stream.kg.lan
-      ansible_host_description: Streamer
+      ansible_host_description: Dispatcharr
 
 # Server Type
 proxmoxvms:
