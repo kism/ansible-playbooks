@@ -97,11 +97,12 @@ nonansible:
       ansible_host_description: Kieran's Nintendo Switch
       target_host_ip_address: 10.42.0.81
       target_host_mac_address: 98:B6:E9:BA:C8:D3
-    kgns2:
-      ansible_host: kgns2.kg.lan
-      ansible_host_description: Kieran's Nintendo Switch 2
+
+    mrpi:
+      ansible_host: mrpi.kg.lan
+      ansible_host_description: MiSTER Pi
       target_host_ip_address: 10.42.0.82
-      target_host_mac_address: c8:48:05:49:32:29
+      target_host_mac_address: ea:c8:21:56:e3:43
     starstarstar:
       ansible_host: starstarstar.kg.lan
       ansible_host_description: Samsung TV
@@ -112,6 +113,15 @@ nonansible:
       ansible_host_description: Kieran's Kobo Clara HD
       target_host_ip_address: 10.42.0.84
       target_host_mac_address: 58:B0:D4:4A:4B:75
+    kgns2:
+      ansible_host: kgns2.kg.lan
+      ansible_host_description: Kieran's Nintendo Switch 2
+      target_host_ip_address: 10.42.0.85
+      target_host_mac_address: c8:48:05:49:32:29
+    ps2:
+      ansible_host: ps2.kg.lan
+      ansible_host_description: PlayStation 2
+      target_host_ip_address: 10.42.0.86
 
     # Device Ethernet
     kmbp:
@@ -119,11 +129,7 @@ nonansible:
       ansible_host_description: Kieran's MacBook Pro M4 (Ethernet)
       target_host_ip_address: 10.42.0.74
       target_host_mac_address: 6c:1f:f7:19:7a:df
-    mrpi:
-      ansible_host: mrpi.kg.lan
-      ansible_host_description: MiSTER Pi
-      target_host_ip_address: 10.42.0.82
-      target_host_mac_address: ea:c8:21:56:e3:43
+
 
     # Network device ethernet
     uggbe01:
@@ -146,3 +152,4 @@ nonansible:
       ansible_host_description: OpenWRT Wireless Access Point
       target_host_ip_address: 10.42.0.99
       target_host_mac_address: 24:F5:A2:BA:81:33
+
