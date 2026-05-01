@@ -131,7 +131,6 @@ nonansible:
       target_host_ip_address: 10.42.0.74
       target_host_mac_address: 6c:1f:f7:19:7a:df
 
-
     # Network device ethernet
     uggbe01:
       ansible_host: uggbe01.kg.lan
@@ -153,4 +152,3 @@ nonansible:
       ansible_host_description: OpenWRT Wireless Access Point
       target_host_ip_address: 10.42.0.99
       target_host_mac_address: 24:F5:A2:BA:81:33
-
