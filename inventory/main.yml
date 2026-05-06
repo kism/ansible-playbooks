@@ -52,6 +52,8 @@ proxmoxvms:
     yoho:
     stream:
     wazuh:
+    df:
+    vic:
 proxmoxhosts:
   hosts:
     pvewill:
