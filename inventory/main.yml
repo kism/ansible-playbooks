@@ -40,6 +40,9 @@ ansible_main:
     stream:
       ansible_host: stream.kg.lan
       ansible_host_description: Dispatcharr
+    myr:
+      ansible_host: myr.kg.lan
+      ansible_host_description: Myrient
 
 # Server Type
 proxmoxvms:
@@ -54,6 +57,7 @@ proxmoxvms:
     wazuh:
     df:
     vic:
+    myr:
 proxmoxhosts:
   hosts:
     pvewill:
