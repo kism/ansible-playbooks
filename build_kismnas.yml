@@ -14,9 +14,8 @@
 
     # Purpose specific
     # - configure_cifs_server
-    - configure_jellyfin_adhoc
-    - configure_firewall
-    # - remove_navidrome
+    # - configure_jellyfin_adhoc
+    - configure_docker
 
     # End
     # - configure_telegraf
