@@ -51,6 +51,7 @@
 
     - name: Start container
       delegate_to: localhost
+      become: false
       community.proxmox.proxmox:
         vmid: "{{ maintenance_gather_facts_pve_guest.vmid }}"
         node: "{{ proxmox_target_node }}"
