@@ -11,7 +11,7 @@ services:
       - TZ=Australia/Perth
       - WEBUI_PORT=8080
     volumes:
-      - /opt/qbittorrent/config:/config
-      - /srv/Beatrix/downloads:/downloads
+      - {{arr_settings_base_dir}}/qbittorrent/config:/config
+      - {{arr_downloads_base_dir}}/torrent:/downloads
       - /var/log/qbittorrent:/config/log
     restart: unless-stopped
