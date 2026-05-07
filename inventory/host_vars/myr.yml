@@ -2,6 +2,7 @@
 proxmox_target_node: pvewill
 target_host_mac_address: 00:00:96:00:00:00
 target_host_ip_address: 10.42.0.10
+proxmox_ct_unprivileged: false
 proxmox_ct_features:
   - nesting=true
 proxmox_ct_disk: "local-lvm:30"
