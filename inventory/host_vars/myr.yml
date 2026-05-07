@@ -5,6 +5,7 @@ target_host_ip_address: 10.42.0.10
 proxmox_ct_unprivileged: false
 proxmox_ct_features:
   - nesting=true
+  - "mp0: /srv/Beatrix,mp=/srv/Beatrix"
 proxmox_ct_disk: "local-lvm:30"
 proxmox_ct_memory: 2048
 proxmox_ct_cores: 2
