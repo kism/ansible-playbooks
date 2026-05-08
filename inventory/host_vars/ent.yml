@@ -1,6 +1,6 @@
 ---
 duckdns_domain: kism
-proxmox_target_node: pvewill
+proxmox_target_node: pvematt
 target_host_ip_address: 10.42.0.2
 target_host_mac_address: 4A:24:F7:A8:5C:5C
 proxmox_ct_disk: "local-lvm:10"
