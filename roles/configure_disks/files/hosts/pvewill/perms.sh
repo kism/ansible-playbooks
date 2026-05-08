@@ -2,7 +2,7 @@
 
 set -e
 
-partition_list=(Quina Marcus Blank Beatrix Steiner)
+partition_list=(Quina Blank Beatrix Steiner)
 
 # region /srv
 echo -- /srv
@@ -38,15 +38,16 @@ echo - Set ACLs
 
 sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Quina/z
 sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Quina/downloads
+sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Beatrix/downloads
 
 echo - Set Permissions
 
 chown -R kism:content_private /srv/Quina/z
 chown -R qbtuser:qbtuser /srv/Quina/downloads
+chown -R qbtuser:qbtuser /srv/Beatrix/downloads
 
-chown -R root:root /srv/Marcus
+
 chown -R root:root /srv/Blank
-chown -R root:root /srv/Beatrix
 chown -R root:root /srv/Steiner
 
 # endregion
