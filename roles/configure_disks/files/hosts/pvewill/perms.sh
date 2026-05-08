@@ -44,7 +44,7 @@ echo - Set Permissions
 
 chown -R kism:content_private /srv/Quina/z
 chown -R qbtuser:qbtuser /srv/Quina/downloads
-chown -R qbtuser:qbtuser /srv/Beatrix/downloads
+chown -R qbtuser:content_public /srv/Beatrix/downloads
 
 
 chown -R root:root /srv/Blank
