@@ -41,12 +41,17 @@
   ansible.builtin.package_facts:
     manager: auto
 
-- name: Set conflicting distro nginx package list
+- name: Set conflicting distro nginx package list, bit of a hack
   ansible.builtin.set_fact:
     configure_nginx_redhat_conflicting_packages: >-
       {{
-        ansible_facts.packages.keys()
-        | select('match', '^nginx(|-core|-files|-all-modules|-mod-.*)$')
+        ansible_facts.packages
+        | dict2items
+        | selectattr('key', 'match', '^nginx(|-core|-files|-all-modules|-mod-.*)$')
+        | map(attribute='value')
+        | map('first')
+        | rejectattr('release', 'search', '\.ngx')
+        | map(attribute='name')
         | list
       }}
 
