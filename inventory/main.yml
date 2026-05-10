@@ -41,10 +41,10 @@ ansible_main:
       ansible_host: stream.kg.lan
       ansible_host_description: Dispatcharr
     myr:
-      ansible_host: 10.42.0.10
+      ansible_host: myr.kg.lan
       ansible_host_description: Myrient
     bigbilly:
-      ansible_host: 192.168.24.27
+      ansible_host: bigbilly.home.kingking9.com
       ansible_host_description: Big Billy
 
 
