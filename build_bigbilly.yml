@@ -1,6 +1,6 @@
 ---
 - name: Setup cert host
-  hosts: cert
+  hosts: bigbilly
   gather_facts: false
   become: true
   roles:
@@ -9,7 +9,3 @@
 
     # Onboard Server
     - meta_onboard
-
-    # End
-    - configure_telegraf
-    - configure_wazuh_agent

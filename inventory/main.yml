@@ -129,6 +129,9 @@ nonansible:
       ansible_host_description: PlayStation 2
       target_host_ip_address: 10.42.0.86
       target_host_mac_address: 00:15:c1:6e:8e:44
+    bigbilly:
+      ansible_host: bigbilly.home.kingking9.com
+      ansible_host_description: Big Billy
 
     # Device Ethernet
     kmbp:
