@@ -9,3 +9,6 @@
 
     # Onboard Server
     - meta_onboard
+
+    # Configure Disks
+    - configure_disks
