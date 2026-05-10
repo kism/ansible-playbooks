@@ -10,5 +10,6 @@
     # Onboard Server
     - meta_onboard
 
-    # Configure Disks
+    # NAS Functinality
     - configure_disks
+    # - configure_cifs_server
