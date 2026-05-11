@@ -14,9 +14,7 @@ ExecStart=/usr/bin/mergerfs \
   -o category.create=pfrd \
   -o func.getattr=newest \
   -o dropcacheonclose=false \
-{% for source in configure_mergerfs_sources %}
-  {{ source }} \
-{% endfor %}
+  {{ configure_mergerfs_sources | join(':') }} \
   {{ configure_mergerfs_mountpoint }}
 ExecStop=/usr/bin/umount {{ configure_mergerfs_mountpoint }}
 Restart=on-failure
