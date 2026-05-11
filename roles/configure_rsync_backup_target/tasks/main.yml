@@ -36,3 +36,8 @@
     owner: backup_svc
     group: backup_svc
     mode: "0600"
+
+- name: Give backup_svc a shell of bash since rsync needs it
+  ansible.builtin.user:
+    name: backup_svc
+    shell: /bin/bash
