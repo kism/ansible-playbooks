@@ -43,6 +43,7 @@ sudo setfacl -d -R -m u::rwX,g::rwX,o::0 /srv/Beatrix/downloads
 echo - Set Permissions
 
 chown -R kism:content_private /srv/Quina/z
+find /srv/Quina/z -type f -exec chmod a-x {} +
 chown -R qbtuser:qbtuser /srv/Quina/downloads
 chown -R qbtuser:content_public /srv/Beatrix/downloads
 
