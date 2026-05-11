@@ -1,0 +1,5 @@
+---
+- name: Restart mergerfs
+  ansible.builtin.systemd:
+    name: mergerfs
+    state: restarted

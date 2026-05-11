@@ -2,3 +2,12 @@ disks_btrfs:
   kism-bak-1: 42b6eb01-5cf6-4f00-8257-48801ec0ae8a
   kism-bak-2: a5916daa-6fac-46d1-b262-6176c3fcb595
   kism-bak-3: 6d802cd7-dc98-4591-bc4a-496d7bc30c68
+
+bigbilly_share_folder_name: "{{ lookup('bitwarden.secrets.lookup', '84eb91b9-ad0b-4682-a048-b44700080e45') }}"
+
+configure_mergerfs_sources:
+  - /srv/kism-bak-1/{{ bigbilly_share_folder_name }}
+  - /srv/kism-bak-2/{{ bigbilly_share_folder_name }}
+  - /srv/kism-bak-3/{{ bigbilly_share_folder_name }}
+configure_mergerfs_mountpoint: /mnt/{{ bigbilly_share_folder_name }}
+configure_mergerfs_readonly: true

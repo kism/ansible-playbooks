@@ -1,0 +1,4 @@
+---
+configure_mergerfs_sources: []
+configure_mergerfs_mountpoint: /mnt/pool
+configure_mergerfs_readonly: false

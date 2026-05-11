@@ -1,0 +1,28 @@
+---
+- name: Install MergerFS
+  ansible.builtin.apt:
+    name: mergerfs
+    state: present
+    update_cache: true
+
+- name: Ensure mergerfs mountpoint exists
+  ansible.builtin.file:
+    path: "{{ configure_mergerfs_mountpoint }}"
+    state: directory
+    mode: "0755"
+
+- name: Template mergerfs systemd service
+  ansible.builtin.template:
+    src: mergerfs.service.j2
+    dest: /etc/systemd/system/mergerfs.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart mergerfs
+
+- name: Enable and start mergerfs service
+  ansible.builtin.systemd:
+    name: mergerfs
+    enabled: true
+    state: started
+    daemon_reload: true

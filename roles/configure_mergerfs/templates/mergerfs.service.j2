@@ -1,0 +1,25 @@
+[Unit]
+Description=mergerfs {{ configure_mergerfs_mountpoint }} service
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+KillMode=none
+ExecStart=/usr/bin/mergerfs \
+  -f \
+{% if configure_mergerfs_readonly %}
+  -o ro \
+{% endif %}
+  -o cache.files=off \
+  -o category.create=pfrd \
+  -o func.getattr=newest \
+  -o dropcacheonclose=false \
+{% for source in configure_mergerfs_sources %}
+  {{ source }} \
+{% endfor %}
+  {{ configure_mergerfs_mountpoint }}
+ExecStop=/usr/bin/umount {{ configure_mergerfs_mountpoint }}
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
