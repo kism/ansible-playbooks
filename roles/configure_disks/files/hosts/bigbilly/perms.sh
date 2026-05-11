@@ -8,6 +8,6 @@ for partition in "${partition_list[@]}"; do
 done
 
 for partition in "${partition_list[@]}"; do
-    chown -R kism:content_public /srv/"$partition"/*
-    chmod -R u=rwX,g=rX,o=rX /srv/"$partition"/*
+    chown -R kism:content_private /srv/"$partition"/*
+    chmod -R u=rwX,g=rwX,o=rX /srv/"$partition"/*
 done

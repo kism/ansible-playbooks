@@ -41,3 +41,9 @@
   ansible.builtin.user:
     name: backup_svc
     shell: /bin/bash
+
+- name: Add backup_svc to content_public and content_public groups
+  ansible.builtin.user:
+    name: backup_svc
+    groups: content_public,content_private
+    append: true
