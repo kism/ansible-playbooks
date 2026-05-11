@@ -11,13 +11,13 @@
     dest: /opt/scripts/dfree_pool_min
     mode: "0775"
 
-# - name: Copy smb config
-#   ansible.builtin.template:
-#     src: templates/hosts/{{ ansible_hostname }}/smb.conf.j2
-#     dest: /etc/samba/smb.conf
-#     mode: "0744"
-#   notify:
-#     - Restart smbd
+- name: Copy smb config
+  ansible.builtin.template:
+    src: templates/hosts/{{ ansible_hostname }}/smb.conf.j2
+    dest: /etc/samba/smb.conf
+    mode: "0744"
+  notify:
+    - Restart smbd
 
 - name: Copy avahi config
   ansible.builtin.copy:
