@@ -5,6 +5,7 @@ After=local-fs.target network.target
 [Service]
 Type=simple
 KillMode=none
+ExecStartPre=/usr/bin/umount {{ configure_mergerfs_mountpoint }} || true
 ExecStart=/usr/bin/mergerfs \
   -f \
 {% if configure_mergerfs_readonly %}
