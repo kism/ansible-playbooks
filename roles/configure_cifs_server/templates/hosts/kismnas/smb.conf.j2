@@ -173,9 +173,9 @@ force directory mode = 0775
 hide special files = yes
 follow symlinks = yes
 hide dot files = yes
-valid users = "backup_svc","kism",@"kism"
+valid users = "backup_svc","kism",@"kism",@"content_public"
 invalid users =
-read list =
+read list = "@content_public"
 write list = "backup_svc","kism",@"kism"
 
 [TimeMachine]
