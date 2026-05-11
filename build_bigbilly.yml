@@ -1,5 +1,5 @@
 ---
-- name: Setup cert host
+- name: Setup bigbilly backup host
   hosts: bigbilly
   gather_facts: false
   become: true
@@ -11,7 +11,10 @@
     - meta_onboard
 
     # NAS Functinality
-    - configure_disks
-    - configure_mergerfs
-    - configure_cifs_server
-    - configure_rsync_backup_target
+    # - configure_disks
+    # - configure_mergerfs
+    # - configure_cifs_server
+    # - configure_rsync_backup_target
+
+    # End
+    - configure_telegraf
