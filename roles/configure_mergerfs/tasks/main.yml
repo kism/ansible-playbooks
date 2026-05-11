@@ -5,11 +5,17 @@
     state: present
     update_cache: true
 
-- name: Ensure mergerfs mountpoint exists
+- name: Stat mergerfs mountpoint
+  ansible.builtin.stat:
+    path: "{{ configure_mergerfs_mountpoint }}"
+  register: configure_mergerfs_mountpoint_stat
+
+- name: Ensure mergerfs mountpoint exists, don't bother if it already exists since it might be read only
   ansible.builtin.file:
     path: "{{ configure_mergerfs_mountpoint }}"
     state: directory
     mode: "0755"
+  when: not configure_mergerfs_mountpoint_stat.stat.exists
 
 - name: Template mergerfs systemd service
   ansible.builtin.template:
