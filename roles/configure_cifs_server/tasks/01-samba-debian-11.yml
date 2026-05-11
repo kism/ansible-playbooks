@@ -1,5 +1,5 @@
 ---
-- name: Install packages for samba apt deb 11
+- name: Install packages for samba apt {{ ansible_distribution + " " + ansible_distribution_version }}
   ansible.builtin.apt:
     name:
       - samba
@@ -9,7 +9,7 @@
   notify:
     - Print smb reminder
 
-- name: Enable services deb 11
+- name: Enable services {{ ansible_distribution + " " + ansible_distribution_version }}
   ansible.builtin.systemd_service:
     name: "{{ item }}"
     enabled: true
@@ -19,7 +19,7 @@
   notify:
     - Print smb reminder
 
-- name: Allow samba and wsdd through firewalld deb 11
+- name: Allow samba and wsdd through firewalld {{ ansible_distribution + " " + ansible_distribution_version }}
   ansible.posix.firewalld:
     service: "{{ item }}"
     zone: public

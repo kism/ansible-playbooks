@@ -1,5 +1,5 @@
 ---
-- name: Install packages for samba dnf
+- name: Install packages for samba {{ ansible_distribution + " " + ansible_distribution_version }}
   ansible.builtin.dnf:
     name:
       - samba
@@ -20,7 +20,7 @@
   notify:
     - Print smb reminder
 
-- name: Allow samba and wsdd through firewalld
+- name: Allow samba and wsdd through firewalld {{ ansible_distribution + " " + ansible_distribution_version }}
   ansible.posix.firewalld:
     service: "{{ item }}"
     zone: public

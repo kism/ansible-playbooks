@@ -5,7 +5,7 @@
       - samba
       - samba-vfs-modules
       - rsync
-      - wsdd
+      - wsdd2
       - avahi-daemon
     state: present
   notify:
@@ -17,7 +17,7 @@
     enabled: true
   loop:
     - smbd
-    - wsdd
+    - wsdd2
     - avahi-daemon
   notify:
     - Print smb reminder

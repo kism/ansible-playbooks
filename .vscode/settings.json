@@ -22,7 +22,9 @@
     "*.yaml": "ansible",
     ".ansible-lint": "yaml",
     ".ansible-lint.yml": "yaml",
-    "*.md.j2": "markdown"
+    "*.md.j2": "jinja-md",
+    "*.conf.j2": "jinja-properties",
+    "*.service.j2": "jinja-systemd"
   },
   "ansible.python.interpreterPath": "${workspaceFolder}/.venv/bin/python",
   "cSpell.words": [

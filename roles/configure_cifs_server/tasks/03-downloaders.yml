@@ -1,14 +1,4 @@
 ---
-- name: Non better place, Install fun downloaders
-  become: true
-  become_user: kism
-  community.general.pipx:
-    name: "{{ item }}"
-    state: install
-  loop:
-    - internetarchive
-    - yt-dlp
-
 - name: Install mc
   ansible.builtin.package:
     name: mc
