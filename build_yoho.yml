@@ -18,7 +18,9 @@
     # - configure_docker_qbittorrent
     # - configure_docker_sabnzbd
     # - configure_docker_arr
-    - configure_ffmpeg
+    # - configure_ffmpeg
+    - configure_rsync_backup_source
+
 
     # End
     # - configure_telegraf

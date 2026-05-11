@@ -1,0 +1,38 @@
+---
+- name: Enable backup_svc account to use btrfs command without sudo password
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/backup_svc_btrfs
+    content: "backup_svc ALL=(ALL) NOPASSWD: /usr/bin/btrfs"
+    owner: root
+    group: root
+    mode: "0440"
+
+- name: Install rsync
+  ansible.builtin.package:
+    name: rsync
+    state: present
+    update_cache: true
+
+- name: Create home folder for backup_svc
+  ansible.builtin.file:
+    path: /home/backup_svc
+    state: directory
+    owner: backup_svc
+    group: backup_svc
+    mode: "0750"
+
+- name: Create .ssh folder for backup_svc
+  ansible.builtin.file:
+    path: /home/backup_svc/.ssh
+    state: directory
+    owner: backup_svc
+    group: backup_svc
+    mode: "0700"
+
+- name: Ensure that backup_svc has an authorized_keys file
+  ansible.builtin.file:
+    path: /home/backup_svc/.ssh/authorized_keys
+    state: touch
+    owner: backup_svc
+    group: backup_svc
+    mode: "0600"

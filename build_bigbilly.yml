@@ -11,6 +11,7 @@
     - meta_onboard
 
     # NAS Functinality
-    - configure_disks
-    - configure_mergerfs
-    - configure_cifs_server
+    # - configure_disks
+    # - configure_mergerfs
+    # - configure_cifs_server
+    - configure_rsync_backup_target
