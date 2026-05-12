@@ -1,3 +1,6 @@
 users:
-- bearer_token: "testtoken"
-  url_prefix: "http://localhost:8428"
+{% for token in secret_victoriametrics_tokens %}
+# {{ token.name }}
+- bearer_token: "{{ token.token }}"
+  url_prefix: "{{ token.url_prefix }}"
+{% endfor %}
