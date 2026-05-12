@@ -3,7 +3,8 @@ opnsense_firewall: "opnsense.{{ homelab_domain_external }}"
 homelab_domain_external: kierangee.au
 homelab_domain_internal: kg.lan
 target_host_subnet: 10.42.0.0/24
-wazuh_manager: wazuh.kg.lan
+wazuh_manager: wazuh.{{ homelab_domain_internal }}
+victoriametrics_url: http://vic.{{ homelab_domain_internal }}:8427
 
 # Bitwarden secrets
 secret_email: "{{ lookup('bitwarden.secrets.lookup', '265a4fee-d565-4bee-aad8-b222006d3a0e') }}"
@@ -48,3 +49,24 @@ secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-9
 secret_wazuh_agent_password: "{{ lookup('bitwarden.secrets.lookup', 'baa1216d-fd91-4b24-b2fd-b434005de235') }}"
 
 secret_cloudflare_account_id: "{{ lookup('bitwarden.secrets.lookup', 'b75c1d08-0e86-409d-9e5b-b43400aae766') }}"
+
+secret_telegraf_victoriametrics_rw_token: "{{ lookup('bitwarden.secrets.lookup', '81aa257d-0bfe-47b2-8cd7-b448002df31a') }}"
+
+secret_victoriametrics_tokens:
+  - name: "kg-lan-telegraf-rw"
+    token: "{{ lookup('bitwarden.secrets.lookup', '81aa257d-0bfe-47b2-8cd7-b448002df31a') }}"
+    url_prefix: "http://victoriametrics:8428"
+  - name: "home-kingking9-telegraf-rw"
+    token: "{{ lookup('bitwarden.secrets.lookup', '01748172-5e0f-4fb3-8952-b448002e015a') }}"
+    url_prefix: "http://victoriametrics:8428"
+
+secret_victoriametrics_users:
+  - name: "admin"
+    token: "{{ lookup('bitwarden.secrets.lookup', '89164830-8d15-4c05-a830-b44800458e4b') }}"
+    url_prefix: "http://victoriametrics:8428"
+  - name: "grafana"
+    token: "{{ lookup('bitwarden.secrets.lookup', 'fa8193b3-973e-4c58-9c69-b448004abbd8') }}"
+    url_prefix: "http://victoriametrics:8428"
+  - name: "opnsense"
+    token: "{{ lookup('bitwarden.secrets.lookup', 'dcd71327-2325-47d6-9f0a-b448004b5480') }}"
+    url_prefix: "http://victoriametrics:8428"

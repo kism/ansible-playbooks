@@ -11,3 +11,5 @@ configure_mergerfs_sources:
   - /srv/kism-bak-3/{{ bigbilly_share_folder_name }}
 configure_mergerfs_mountpoint: /mnt/{{ bigbilly_share_folder_name }}
 configure_mergerfs_readonly: true
+
+secret_telegraf_victoriametrics_rw_token: "{{ lookup('bitwarden.secrets.lookup', '01748172-5e0f-4fb3-8952-b448002e015a') }}"

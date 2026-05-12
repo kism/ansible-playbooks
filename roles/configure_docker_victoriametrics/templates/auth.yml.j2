@@ -1,0 +1,12 @@
+users:
+{% for token in secret_victoriametrics_tokens %}
+# {{ token.name }}
+- bearer_token: "{{ token.token }}"
+  url_prefix: "{{ token.url_prefix }}"
+{% endfor %}
+{% for user in secret_victoriametrics_users %}
+# {{ user.name }}
+- username: "{{ user.name }}"
+  password: "{{ user.token }}"
+  url_prefix: "{{ user.url_prefix }}"
+{% endfor %}
