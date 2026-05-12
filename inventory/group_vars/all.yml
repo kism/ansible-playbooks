@@ -48,3 +48,11 @@ secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-9
 secret_wazuh_agent_password: "{{ lookup('bitwarden.secrets.lookup', 'baa1216d-fd91-4b24-b2fd-b434005de235') }}"
 
 secret_cloudflare_account_id: "{{ lookup('bitwarden.secrets.lookup', 'b75c1d08-0e86-409d-9e5b-b43400aae766') }}"
+
+secret_victoriametrics_tokens:
+  - name: "kg-lan-telegraf-rw"
+    token: "{{ lookup('bitwarden.secrets.lookup', '81aa257d-0bfe-47b2-8cd7-b448002df31a') }}"
+    url_prefix: "http://victoriametrics:8428"
+  - name: "home-kingking9-telegraf-rw"
+    token: "{{ lookup('bitwarden.secrets.lookup', '01748172-5e0f-4fb3-8952-b448002e015a') }}"
+    url_prefix: "http://victoriametrics:8428"

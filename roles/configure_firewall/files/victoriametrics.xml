@@ -3,4 +3,5 @@
   <short>VictoriaMetrics</short>
   <description>WebUI for VictoriaMetrics</description>
   <port protocol="tcp" port="8428" />
+  <port protocol="tcp" port="8427" />
 </service>
