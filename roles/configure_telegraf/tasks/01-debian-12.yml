@@ -1,12 +1,4 @@
 ---
-- name: Remove old apt lists
-  ansible.builtin.file:
-    path: /etc/apt/sources.list.d/{{ item }}
-    state: absent
-  loop:
-    - influxdb.list
-    - telegraf.list
-
 - name: Ensure old repo listing is removed
   ansible.builtin.lineinfile:
     path: /etc/apt/sources.list.d/influxdata.list

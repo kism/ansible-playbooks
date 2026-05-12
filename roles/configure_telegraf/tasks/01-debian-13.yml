@@ -1,13 +1,4 @@
 ---
-- name: Remove old apt lists
-  ansible.builtin.file:
-    path: /etc/apt/sources.list.d/{{ item }}
-    state: absent
-  loop:
-    - influxdb.list
-    - telegraf.list
-    - influxdata.list
-
 - name: Copy over apt key
   ansible.builtin.get_url:
     url: https://repos.influxdata.com/influxdata-archive.key
