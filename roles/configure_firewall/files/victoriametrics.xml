@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <service>
   <short>VictoriaMetrics</short>
-  <description>WebUI for VictoriaMetrics</description>
-  <port protocol="tcp" port="8428" />
+  <description>WebUI for VictoriaMetrics, (vmauth proxy)</description>
   <port protocol="tcp" port="8427" />
 </service>

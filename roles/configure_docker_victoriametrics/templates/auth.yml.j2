@@ -4,3 +4,6 @@ users:
 - bearer_token: "{{ token.token }}"
   url_prefix: "{{ token.url_prefix }}"
 {% endfor %}
+- username: "admin"
+  password: "{{ secret_victoriametrics_admin_password }}"
+  url_prefix: "http://victoriametrics:8428"
