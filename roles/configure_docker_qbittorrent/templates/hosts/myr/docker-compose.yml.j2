@@ -15,3 +15,11 @@ services:
       - {{arr_downloads_base_dir}}/torrent:/downloads
       - /var/log/qbittorrent:/config/log
     restart: unless-stopped
+    networks:
+      - qbt-myr
+
+networks:
+  qbt-myr:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-qbt-myr
