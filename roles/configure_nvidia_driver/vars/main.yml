@@ -2,6 +2,6 @@
 # https://www.nvidia.com/en-us/drivers/
 # https://www.nvidia.com/en-us/drivers/details/247720/
 configure_nvidia_driver_url: https://us.download.nvidia.com/XFree86/Linux-x86_64
-configure_nvidia_driver_version: "580.142"
-configure_nvidia_driver_file_name: NVIDIA-Linux-x86_64-580.142.run
-configure_nvidia_driver_checksum: 20915fcf3ffe89c3550cf93b60a04a285453150d92e2468e1911a43620447563
+configure_nvidia_driver_version: "580.159.03"
+configure_nvidia_driver_file_name: NVIDIA-Linux-x86_64-580.159.03.run
+configure_nvidia_driver_checksum: 32c85d99b0f640c9501f61b39ddad208fd0288d015c4fbc5fd0435c07783fa77
