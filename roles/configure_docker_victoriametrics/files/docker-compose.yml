@@ -5,6 +5,8 @@ services:
     container_name: victoriametrics
     # ports:
     #   - 8428:8428 # Web console (no auth), we don't expose this since docker will punch this through iptables
+    command:
+      - -retentionPeriod=1y
     volumes:
       - /var/lib/victoriametrics:/victoria-metrics-data
     restart: always
