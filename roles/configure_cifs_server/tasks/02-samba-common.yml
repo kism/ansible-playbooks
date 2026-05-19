@@ -15,7 +15,7 @@
   ansible.builtin.template:
     src: templates/hosts/{{ ansible_hostname }}/smb.conf.j2
     dest: /etc/samba/smb.conf
-    mode: "0744"
+    mode: "0644"
   notify:
     - Restart smbd
 
