@@ -1,0 +1,25 @@
+---
+target_host_ip_address: 10.42.0.22
+target_host_mac_address: 00:25:DF:91:99:19
+proxmox_target_node: pvematt
+proxmox_ct_disk: "local-lvm:20"
+proxmox_ct_memory: 4096
+proxmox_ct_cores: 3
+proxmox_ct_unprivileged: false
+proxmox_ct_conf_extra:
+  - "lxc.cgroup2.devices.allow: c 195:* rwm"
+  - "lxc.cgroup2.devices.allow: c 511:* rwm"
+  - "lxc.cgroup2.devices.allow: c 236:* rwm"
+  - "lxc.mount.entry: /dev/nvidia0 dev/nvidia0 none bind,optional,create=file"
+  - "lxc.mount.entry: /dev/nvidiactl dev/nvidiactl none bind,optional,create=file"
+  - "lxc.mount.entry: /dev/nvidia-modeset dev/nvidia-modeset none bind,optional,create=file"
+  - "lxc.mount.entry: /dev/nvidia-uvm dev/nvidia-uvm none bind,optional,create=file"
+  - "lxc.mount.entry: /dev/nvidia-uvm-tools dev/nvidia-uvm-tools none bind,optional,create=file"
+  - "lxc.mount.entry: /dev/nvidia-caps/nvidia-cap1 dev/nvidia-caps/nvidia-cap1 none bind,optional,create=file"
+  - "lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-caps/nvidia-cap2 none bind,optional,create=file"
+  - "mp0: /srv/Amarant,mp=/srv/Amarant"
+  - "mp1: /srv/Garnet,mp=/srv/Garnet"
+  - "mp2: /srv/Freya,mp=/srv/Freya"
+  - "mp3: /srv/Vivi,mp=/srv/Vivi"
+proxmox_ct_features:
+  - nesting=true

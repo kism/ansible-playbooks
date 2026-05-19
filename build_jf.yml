@@ -1,20 +1,19 @@
 ---
-- name: Setup kismnas samba host
-  hosts: kismnas
+- name: Setup jellyfin host
+  hosts: jf
   gather_facts: false
   become: true
   roles:
     # Preflight
-    - maintenance_gather_facts_pve
-    - create_proxmox_ct
+    # - maintenance_gather_facts_pve
+    # - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
-    # - meta_onboard
+    - meta_onboard
 
     # Purpose specific
-    - configure_cifs_server
-    - configure_docker
+    - configure_jellyfin_adhoc
 
     # End
     # - configure_telegraf
