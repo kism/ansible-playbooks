@@ -80,11 +80,17 @@ nonansible:
       ansible_host_description: OPNsense Router
       target_host_ip_address: 10.42.0.1
       target_host_mac_address: 58:9C:FC:10:FF:D0
+    jf:
+      ansible_host: jf.kg.lan
+      ansible_host_description: Alternate kismnas IP for Jellyfin
+      target_host_ip_address: 10.42.0.22
+      target_host_mac_address: 00:25:DF:91:99:19
     hass:
       ansible_host: hass.kg.lan
       ansible_host_description: Home Assistant
       target_host_ip_address: 10.42.0.24
       target_host_mac_address: 6e:16:40:41:57:d4
+
     # Laptop WiFi
     sallys-air:
       ansible_host: sallys-air.kg.lan
@@ -133,7 +139,6 @@ nonansible:
       ansible_host_description: PlayStation 2
       target_host_ip_address: 10.42.0.86
       target_host_mac_address: 00:15:c1:6e:8e:44
-
 
     # Device Ethernet
     kmbp:
