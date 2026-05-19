@@ -17,6 +17,8 @@ services:
       - REDIS_HOST=localhost
       - CELERY_BROKER_URL=redis://localhost:6379/0
       - DISPATCHARR_LOG_LEVEL=info
+    networks:
+     - dispatcharr
     deploy:
       resources:
         reservations:
@@ -69,3 +71,9 @@ volumes:
   dispatcharr_data:
   acerestreamer_instance:
   nodecast_data:
+
+networks:
+  dispatcharr:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-dispatcharr
