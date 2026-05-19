@@ -11,48 +11,12 @@ services:
       - 9191:9191
     volumes:
       - dispatcharr_data:/data
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - DISPATCHARR_ENV=aio
       - REDIS_HOST=localhost
       - CELERY_BROKER_URL=redis://localhost:6379/0
       - DISPATCHARR_LOG_LEVEL=info
-      # Legacy CPU Support (Optional)
-      # Uncomment to enable legacy NumPy build for older CPUs (circa 2009)
-      # that lack support for newer baseline CPU features
-      #- USE_LEGACY_NUMPY=true
-      # Process Priority Configuration (Optional)
-      # Lower values = higher priority. Range: -20 (highest) to 19 (lowest)
-      # Negative values require cap_add: SYS_NICE (uncomment below)
-      #- UWSGI_NICE_LEVEL=-5   # uWSGI/FFmpeg/Streaming (default: 0, recommended: -5 for high priority)
-      #- CELERY_NICE_LEVEL=5   # Celery/EPG/Background tasks (default: 5, low priority)
-    #
-    # Uncomment to enable high priority for streaming (required if UWSGI_NICE_LEVEL < 0)
-    #cap_add:
-    #  - SYS_NICE
-    # Optional for hardware acceleration
-    #devices:
-    #  - /dev/dri:/dev/dri  # For Intel/AMD GPU acceleration (VA-API)
-    # Uncomment the following lines for NVIDIA GPU support
-    # NVidia GPU support (requires NVIDIA Container Toolkit)
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu, utility, video, compute]
-
-  nodecast-tv:
-    build: https://github.com/technomancer702/nodecast-tv.git#main
-    container_name: nodecast-tv
-    ports:
-      - "3000:3000" # Host:Container
-    volumes:
-      - nodecast_data:/app/data
-    restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - PORT=3000 # Optional: Internal container port
     deploy:
       resources:
         reservations:
@@ -67,6 +31,8 @@ services:
     ports:
       - "127.0.0.1:6878:6878" # WebUI / API
       - "8621:8621" # P2P, let this through your firewall if you don't have UPNP
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://127.0.0.1:6878/webui/api/service?method=get_version"]
@@ -90,6 +56,7 @@ services:
       - "5100:5100"
     volumes: # This is where the database and config is stored
       - acerestreamer_instance:/app/instance
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://127.0.0.1:5100/api/v1/health"]
