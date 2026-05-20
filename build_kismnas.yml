@@ -13,9 +13,10 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_cifs_server
-    - configure_docker
+    - configure_ffmpeg
+    # - configure_cifs_server
+    # - configure_docker
 
     # End
-    - configure_telegraf
-    - configure_wazuh_agent
+    # - configure_telegraf
+    # - configure_wazuh_agent

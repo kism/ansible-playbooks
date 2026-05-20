@@ -17,9 +17,6 @@ nfs_client_mounts:
   Blank:
     host: pvewill.kg.lan
     share: /srv/Blank
-  backups:
-    host: pvematt.kg.lan
-    share: /srv/Amarant/backups
 nfs_server_exports: |-
   /srv/Amarant/backups pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash) pvematt.kg.lan(rw,sync,no_subtree_check,no_root_squash)
   /srv/Amarant         pvewill.kg.lan(rw,sync,no_subtree_check,no_root_squash) dpshub.kg.lan(rw,sync,no_subtree_check,no_root_squash) kmbp.kg.lan(rw,sync,no_subtree_check,no_root_squash)
