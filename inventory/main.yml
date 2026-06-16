@@ -57,6 +57,7 @@ proxmoxvms:
     rproxy:
     code:
     yoho:
+    jf:
     stream:
     wazuh:
     vic:

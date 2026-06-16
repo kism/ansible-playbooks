@@ -21,3 +21,5 @@ proxmox_ct_conf_extra:
   - "lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-caps/nvidia-cap2 none bind,optional,create=file"
 proxmox_ct_features:
   - nesting=true
+docker_compose_paths:
+  - /opt/dispatcharr

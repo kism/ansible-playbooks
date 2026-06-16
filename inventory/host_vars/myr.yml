@@ -11,3 +11,5 @@ proxmox_ct_memory: 2048
 proxmox_ct_cores: 2
 arr_settings_base_dir: /opt
 arr_downloads_base_dir: /srv/Beatrix/downloads
+docker_compose_paths:
+  - /opt/qbittorrent
