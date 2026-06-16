@@ -70,3 +70,6 @@ secret_victoriametrics_users:
   - name: "opnsense"
     token: "{{ lookup('bitwarden.secrets.lookup', 'dcd71327-2325-47d6-9f0a-b448004b5480') }}"
     url_prefix: "http://victoriametrics:8428"
+  - name: "homeassistant"
+    token: "{{ lookup('bitwarden.secrets.lookup', 'ac55e399-e5b7-4e1a-a840-b44900d0796a') }}"
+    url_prefix: "http://victoriametrics:8428"
