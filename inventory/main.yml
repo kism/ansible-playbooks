@@ -59,7 +59,6 @@ proxmoxvms:
     yoho:
     stream:
     wazuh:
-    df:
     vic:
     myr:
 proxmoxhosts:
