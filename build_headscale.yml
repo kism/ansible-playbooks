@@ -14,7 +14,8 @@
     - meta_onboard
 
     # Purpose specific
+    - configure_headscale
 
     # End
-    - configure_telegraf
-    - configure_wazuh_agent
+    # - configure_telegraf
+    # - configure_wazuh_agent

@@ -1,0 +1,7 @@
+---
+# https://github.com/juanfont/headscale/releases
+configure_headscale_version: "0.29.1"
+configure_headscale_install_dir: "/opt/headscale"
+configure_headscale_arch_map:
+  x86_64: amd64
+  aarch64: arm64

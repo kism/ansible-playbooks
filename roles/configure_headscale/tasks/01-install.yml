@@ -1,0 +1,52 @@
+---
+- name: Set architecture for download
+  ansible.builtin.set_fact:
+    configure_headscale_arch: "{{ configure_headscale_arch_map[ansible_architecture] }}"
+
+- name: Set binary filename
+  ansible.builtin.set_fact:
+    configure_headscale_binary_name: "headscale_{{ configure_headscale_version }}_linux_{{ configure_headscale_arch }}"
+
+- name: Create install directory
+  ansible.builtin.file:
+    path: "{{ configure_headscale_install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Check if binary already exists
+  ansible.builtin.stat:
+    path: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"
+  register: configure_headscale_binary_stat
+
+- name: Download and verify headscale binary
+  when: not configure_headscale_binary_stat.stat.exists
+  block:
+    - name: Fetch checksums.txt
+      ansible.builtin.uri:
+        url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_version }}/checksums.txt"
+        return_content: true
+      register: configure_headscale_checksums
+
+    - name: Extract checksum for binary
+      ansible.builtin.set_fact:
+        configure_headscale_checksum: >-
+          {{ (configure_headscale_checksums.content.splitlines()
+              | select('search', configure_headscale_binary_name ~ '$')
+              | first).split()[0] }}
+
+    - name: Download headscale binary
+      ansible.builtin.get_url:
+        url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_version }}/{{ configure_headscale_binary_name }}"
+        dest: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"
+        checksum: "sha256:{{ configure_headscale_checksum }}"
+        owner: root
+        group: root
+        mode: "0755"
+
+- name: Symlink headscale to /usr/local/bin
+  ansible.builtin.file:
+    src: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"
+    dest: /usr/local/bin/headscale
+    state: link

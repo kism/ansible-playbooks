@@ -14,11 +14,11 @@ secret_myuser_password_hash: "{{ lookup('bitwarden.secrets.lookup', '3ab33d3c-23
 
 secret_duckdns: "{{ lookup('bitwarden.secrets.lookup', 'b7d9f383-d025-4c26-93ca-b222006eb3f2') }}"
 
-secret_influxdb_admin_username: "admin"
-secret_influxdb_admin_password: "{{ lookup('bitwarden.secrets.lookup', '86f8482d-8c5c-40ac-9d20-b222006eebd2') }}"
-secret_influxdb_admin_token: "{{ lookup('bitwarden.secrets.lookup', 'e8d9b1d8-2a78-414f-bda0-b222006f0304') }}"
-secret_influxdb_telegraf_write: "{{ lookup('bitwarden.secrets.lookup', 'faa9a6bd-c10c-49ea-b3d0-b222006f40c8') }}"
-secret_influxdb_telegraf_read: "{{ lookup('bitwarden.secrets.lookup', '77b66880-231b-4df5-9e3d-b222006f76e7') }}"
+# secret_influxdb_admin_username: "admin"
+# secret_influxdb_admin_password: "{{ lookup('bitwarden.secrets.lookup', '86f8482d-8c5c-40ac-9d20-b222006eebd2') }}"
+# secret_influxdb_admin_token: "{{ lookup('bitwarden.secrets.lookup', 'e8d9b1d8-2a78-414f-bda0-b222006f0304') }}"
+# secret_influxdb_telegraf_write: "{{ lookup('bitwarden.secrets.lookup', 'faa9a6bd-c10c-49ea-b3d0-b222006f40c8') }}"
+# secret_influxdb_telegraf_read: "{{ lookup('bitwarden.secrets.lookup', '77b66880-231b-4df5-9e3d-b222006f76e7') }}"
 
 secret_notification_email: "{{ lookup('bitwarden.secrets.lookup', '349598d5-69dc-44c6-9558-b22200701c06') }}"
 secret_notification_email_password: "{{ lookup('bitwarden.secrets.lookup', '9bba64c2-4a77-4bcf-8262-b222007038a8') }}"
