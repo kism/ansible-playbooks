@@ -46,7 +46,9 @@ ansible_main:
     bigbilly:
       ansible_host: bigbilly.home.kingking9.com
       ansible_host_description: Big Billy
-
+    hs:
+      ansible_host: hs.kg.lan
+      ansible_host_description: Headscale
 
 # Server Type
 proxmoxvms:
@@ -62,6 +64,7 @@ proxmoxvms:
     wazuh:
     vic:
     myr:
+    hs:
 proxmoxhosts:
   hosts:
     pvewill:

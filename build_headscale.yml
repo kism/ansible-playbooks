@@ -1,6 +1,6 @@
 ---
-- name: Setup graf grafana host
-  hosts: graf
+- name: Setup hs headscale host
+  hosts: hs
   gather_facts: false
   become: true
   roles:
@@ -14,8 +14,7 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_grafana
 
     # End
     - configure_telegraf
-    - configure_wazuh_agent
+    # - configure_wazuh_agent

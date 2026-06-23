@@ -1,0 +1,8 @@
+---
+target_host_ip_address: 10.42.0.4
+target_host_mac_address: 00:25:DF:81:11:18
+proxmox_target_node: pvewill
+proxmox_ct_disk: "local-lvm:20"
+proxmox_ct_memory: 1024
+proxmox_ct_cores: 2
+proxmox_ct_unprivileged: true
