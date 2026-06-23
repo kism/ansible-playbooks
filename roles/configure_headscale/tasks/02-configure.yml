@@ -5,17 +5,32 @@
     home: /var/lib/headscale
     create_home: true
     system: true
-    group: headscale
     shell: /usr/sbin/nologin
 
 - name: Copy systemd service file for headscale
-  ansible.builtin.template:
-    src: headscale.service.j2
+  ansible.builtin.copy:
+    src: headscale.service
     dest: /etc/systemd/system/headscale.service
     owner: root
     group: root
     mode: "0644"
   notify: Reload systemd
+
+- name: Create headscale configuration directory
+  ansible.builtin.file:
+    path: /etc/headscale
+    state: directory
+    owner: headscale
+    group: headscale
+    mode: "0755"
+
+- name: Copy headscale configuration file
+  ansible.builtin.copy:
+    src: config.yaml
+    dest: /etc/headscale/config.yaml
+    owner: headscale
+    group: headscale
+    mode: "0644"
 
 - name: Enable and start headscale service
   ansible.builtin.systemd_service:
