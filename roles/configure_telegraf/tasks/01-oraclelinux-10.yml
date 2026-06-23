@@ -1,0 +1,11 @@
+---
+- name: Copy over influxdata repo
+  ansible.builtin.copy:
+    src: files/influxdata.repo
+    dest: /etc/yum.repos.d/influxdata.repo
+    mode: "644"
+
+- name: Install telegraf
+  ansible.builtin.dnf:
+    name: telegraf
+    state: present

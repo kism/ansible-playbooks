@@ -1,5 +1,5 @@
 ---
-- name: Include tasks for {{ ansible_facts['distribution'] | lower + "" + ansible_facts['distribution_major_version'] }}
+- name: Include tasks for {{ ansible_facts['distribution'] | lower + "-" + ansible_facts['distribution_major_version'] }}
   ansible.builtin.include_tasks: "01-{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] }}.yml"
 
 - name: Install telegraf

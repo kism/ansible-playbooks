@@ -1,6 +1,0 @@
----
-- name: Install InfluxDB2
-  ansible.builtin.include_tasks: "01-influxdb.yml"
-
-- name: Install InfluxDB2
-  ansible.builtin.include_tasks: "02-influxpingscan.yml"
