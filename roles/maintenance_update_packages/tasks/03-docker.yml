@@ -18,6 +18,7 @@
         cmd: "docker compose -f {{ item }}/docker-compose.yml pull"
       loop: "{{ docker_compose_paths }}"
       changed_when: true
+      throttle: 1
 
     - name: Prune old docker images
       ansible.builtin.command:

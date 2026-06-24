@@ -22,8 +22,8 @@
   roles:
     - maintenance_shutdown_pve_guests
 
-- name: Restart others (baremetal and public cloud)
-  hosts: baremetal
-  become: true
-  roles:
-    - maintenance_reboot
+# - name: Restart others (baremetal and public cloud)
+#   hosts: baremetal
+#   become: true
+#   roles:
+#     - maintenance_reboot
