@@ -3,19 +3,16 @@
   ansible.builtin.user:
     name: factorio
     shell: /bin/false
-    append: true
 
 - name: Add the user 'minecraft' without a shell FIXME TODO???????????
   ansible.builtin.user:
     name: minecraft
     shell: /bin/false
-    append: true
 
 - name: Add friends linux accounts
   ansible.builtin.user:
     name: "{{ item }}"
     shell: /bin/bash
-    append: true
   loop: "{{ configure_concept_gameserver_users }}"
 
 - name: Set authorized keys taken from url using lookup
