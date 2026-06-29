@@ -43,6 +43,7 @@ services:
       - {{ arr_settings_base_dir }}/qbittorrent/watch:/watch
       - {{ arr_downloads_base_dir }}/torrent:/downloads
       - /var/log/qbittorrent:/config/log
+    stop_grace_period: 30s
     restart: unless-stopped
     depends_on:
       gluetun:
