@@ -11,6 +11,10 @@ services:
       - {{ arr_settings_base_dir }}/sabnzbd/config:/config
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
       - {{ arr_downloads_base_dir }}/usenet/incomplete:/incomplete-downloads
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     ports:
       - 8081:8080
     networks:
