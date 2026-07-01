@@ -45,8 +45,8 @@
         group: root
         mode: "0755"
 
-- name: Symlink headscale to /usr/local/bin
+- name: Symlink headscale
   ansible.builtin.file:
     src: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"
-    dest: /usr/local/bin/headscale
+    dest: /usr/local/sbin/headscale
     state: link

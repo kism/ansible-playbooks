@@ -11,4 +11,8 @@ dependencies = [
     "python-dateutil",
     "requests",
     "ansible-lint",
+    "ansible-taste",
 ]
+
+[tool.uv.sources]
+ansible-taste = { git = "https://github.com/kism/ansible-taste", branch = "develop" }
