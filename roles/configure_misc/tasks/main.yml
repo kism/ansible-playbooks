@@ -74,6 +74,12 @@
     mode: "0644"
   when: configure_misc_sysctl_d_stat.stat.exists
 
+- name: Create dir for limits.d
+  ansible.builtin.file:
+    path: /etc/security/limits.d
+    state: directory
+    owner: root
+
 - name: Disable core dump
   ansible.builtin.copy:
     dest: /etc/security/limits.d/99-disable-core-dump.conf
