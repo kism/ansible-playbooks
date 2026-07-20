@@ -8,9 +8,7 @@
     - maintenance_gather_facts
 
     # Onboard Server
-    # - configure_users
-    - configure_package_manager
-    - configure_packages
+    - meta_onboard
 
     # End
     - configure_telegraf
