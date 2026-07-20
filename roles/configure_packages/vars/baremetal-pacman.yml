@@ -2,16 +2,12 @@
 configure_packages_to_install:
   - lm_sensors
   - ffmpeg
-  - lsix
   - pacman-contrib # for pactree
   - terminus-font
-  - ly # display manager
   # Graphical applications
   - firefox
   - avahi
-  - mousepad
   - hwinfo
-  - gnome-keyring
   - blueman # bluetooth manager
   # Fonts
   - noto-fonts
