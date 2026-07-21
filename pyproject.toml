@@ -4,7 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.13, <3.15"
 dependencies = [
     "ansible",           # https://endoflife.date/ansible
-    "ansible-core<=2.21", # https://endoflife.date/ansible-core Only restrict on this
+    "ansible-core<=2.21.2", # https://endoflife.date/ansible-core Only restrict on this
     "proxmoxer",
     "httpx",
     "bitwarden-sdk",
