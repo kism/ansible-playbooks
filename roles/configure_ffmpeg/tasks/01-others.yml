@@ -1,1 +1,90 @@
 ---
+- name: Clone/update ffmpeg-build-script on localhost
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansible.builtin.git:
+    repo: https://github.com/markus-perl/ffmpeg-build-script.git
+    dest: "{{ configure_ffmpeg_local_repo_dir }}"
+    version: master
+    update: true
+
+- name: Stat cached ffmpeg build on localhost
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansible.builtin.stat:
+    path: "{{ configure_ffmpeg_build_cache_dir }}/ffmpeg"
+  register: configure_ffmpeg_cached_bin
+
+- name: Build ffmpeg via docker on localhost
+  when: not configure_ffmpeg_cached_bin.stat.exists
+  delegate_to: localhost
+  become: false
+  run_once: true
+  block:
+    - name: Build ffmpeg docker image
+      ansible.builtin.command:
+        cmd: >
+          docker build
+          --tag configure_ffmpeg:{{ configure_ffmpeg_version }}
+          --build-arg FFMPEG_VERSION={{ configure_ffmpeg_version }}
+          --file {{ role_path }}/files/Dockerfile
+          {{ configure_ffmpeg_local_repo_dir }}
+      changed_when: true
+
+    - name: Ensure local build cache directory exists
+      ansible.builtin.file:
+        path: "{{ configure_ffmpeg_build_cache_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Create container from ffmpeg image
+      ansible.builtin.command:
+        cmd: "docker create --name configure_ffmpeg_extract configure_ffmpeg:{{ configure_ffmpeg_version }}"
+      changed_when: true
+
+    - name: Copy built binaries out of the container
+      ansible.builtin.command:
+        cmd: "docker cp configure_ffmpeg_extract:/app/workspace/bin/. {{ configure_ffmpeg_build_cache_dir }}/"
+      changed_when: true
+  always:
+    - name: Remove extraction container
+      ansible.builtin.command:
+        cmd: "docker rm --force configure_ffmpeg_extract"
+      changed_when: true
+      failed_when: false
+
+- name: Ensure ffmpeg install directory exists
+  ansible.builtin.file:
+    path: "{{ configure_ffmpeg_install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy ffmpeg binaries to host
+  ansible.builtin.copy:
+    src: "{{ configure_ffmpeg_build_cache_dir }}/{{ item }}"
+    dest: "{{ configure_ffmpeg_install_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - ffmpeg
+    - ffprobe
+    - ffplay
+
+- name: Symlink ffmpeg binaries into /usr/local/bin
+  ansible.builtin.file:
+    src: "{{ configure_ffmpeg_install_dir }}/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    state: link
+    force: true
+    owner: root
+    group: root
+    follow: false
+  loop:
+    - ffmpeg
+    - ffprobe
+    - ffplay

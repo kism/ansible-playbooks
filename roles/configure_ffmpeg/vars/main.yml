@@ -1,4 +1,0 @@
----
-configure_ffmpeg_arch_map: # uname (ansible) -> BtbN/FFmpeg-Builds arch name
-  x86_64: linux64
-  aarch64: linuxarm64

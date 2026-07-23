@@ -1,2 +1,5 @@
 ---
 configure_ffmpeg_version: "8.1"
+configure_ffmpeg_local_repo_dir: "{{ lookup('env', 'HOME') }}/src/ffmpeg-build-script"
+configure_ffmpeg_build_cache_dir: /tmp/ffmpeg
+configure_ffmpeg_install_dir: /opt/ffmpeg
