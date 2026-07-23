@@ -1,7 +1,4 @@
 ---
-configure_ffmpeg_arch_map: # uname (ansible), whatever ffmpeg uses
-  x86_64: amd64
-  aarch64: arm64
-  armv6l: armel
-  armv7l: armel
-  armv8l: armel
+configure_ffmpeg_arch_map: # uname (ansible) -> BtbN/FFmpeg-Builds arch name
+  x86_64: linux64
+  aarch64: linuxarm64

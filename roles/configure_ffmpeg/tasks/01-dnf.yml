@@ -1,0 +1,11 @@
+---
+- name: Enable CodeReady repo DNF
+  community.general.dnf_config_manager:
+    name: "ol{{ ansible_facts['distribution_major_version'] }}_codeready_builder"
+    state: enabled
+  when: ansible_facts["pkg_mgr"] == 'dnf'
+
+- name: Install ffmpeg
+  ansible.builtin.dnf:
+    name: ffmpeg-free
+    state: present
