@@ -15,4 +15,4 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-ansible-taste = { git = "https://github.com/kism/ansible-taste", branch = "develop" }
+ansible-taste = { git = "https://github.com/kism/ansible-taste", branch = "main" }
