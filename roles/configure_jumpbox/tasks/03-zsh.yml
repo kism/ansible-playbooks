@@ -1,11 +1,11 @@
 ---
-- name: Install zsh
+- name: Install zsh for jumpbox
   ansible.builtin.dnf:
     name:
       - zsh
     state: present
 
-- name: Get user info facts
+- name: Get user info facts for jumpbox zsh
   ansible.builtin.getent:
     database: passwd
     key: "{{ homelab_my_username }}"

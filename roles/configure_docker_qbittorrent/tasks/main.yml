@@ -1,5 +1,5 @@
 ---
-- name: Create settings folder structure
+- name: Create settings folder structure qbt
   ansible.builtin.file:
     path: "{{ arr_settings_base_dir }}/{{ item }}"
     state: directory
@@ -12,7 +12,7 @@
     - qbittorrent/watch
     - gluetun
 
-- name: Create downloads folder structure
+- name: Create downloads folder structure qbt
   ansible.builtin.file:
     path: "{{ arr_downloads_base_dir }}/torrent"
     state: directory
@@ -20,7 +20,7 @@
     owner: qbtuser
     group: qbtuser
 
-- name: Copy docker-compose.yml
+- name: Copy docker-compose.yml qbt
   ansible.builtin.template:
     src: templates/hosts/{{ inventory_hostname }}/docker-compose.yml.j2
     dest: "{{ arr_settings_base_dir }}/qbittorrent/docker-compose.yml"
@@ -28,7 +28,7 @@
     owner: root
     group: qbtuser
 
-- name: Pull images for docker-compose
+- name: Pull images for docker-compose qbittorrent
   community.docker.docker_compose_v2_pull:
     project_src: "{{ arr_settings_base_dir }}/qbittorrent/"
 
@@ -42,13 +42,13 @@
     - Reload firewalld
     - Restart docker
 
-- name: Copy systemd service
+- name: Copy systemd service qbt
   ansible.builtin.template:
     src: templates/docker-qbittorrent.service.j2
     dest: /etc/systemd/system/docker-qbittorrent.service
     mode: "0644"
 
-- name: Prepare service
+- name: Prepare service qbittorrent
   ansible.builtin.systemd_service:
     service: docker-qbittorrent
     enabled: true

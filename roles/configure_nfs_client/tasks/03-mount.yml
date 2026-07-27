@@ -11,7 +11,7 @@
   ansible.builtin.set_fact:
     configure_nfs_client_after_nfs_server: "nfs-server.service"
 
-- name: Copy systemd mount files
+- name: Copy systemd mount files nfs
   ansible.builtin.copy:
     dest: /etc/systemd/system/mnt-{{ item.key }}.mount
     content: |-

@@ -8,7 +8,7 @@
 - name: Include tasks for setting up jellyfin-ffmpeg
   ansible.builtin.include_tasks: "03-jellyfin-ffmpeg.yml"
 
-- name: Start Jellyfin
+- name: Start Jellyfin systemd
   ansible.builtin.service:
     name: jellyfin
     state: started

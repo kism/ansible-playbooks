@@ -38,7 +38,7 @@
     enabled: true
     state: started
 
-- name: Allow dispatcharr through firewall
+- name: Allow headscale through firewall
   ansible.posix.firewalld:
     service: http-alt
     permanent: true

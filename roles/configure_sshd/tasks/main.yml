@@ -1,5 +1,5 @@
 ---
-- name: Check if /etc/pve exists
+- name: Check if /etc/pve exists, don't reconfigure proxmox ssh
   ansible.builtin.stat:
     path: /etc/pve
   register: configure_sshd_pve_status

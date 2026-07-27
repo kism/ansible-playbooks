@@ -5,7 +5,7 @@
     state: enabled
   when: ansible_facts["pkg_mgr"] == 'dnf'
 
-- name: Install GCC
+- name: Install GCC dnf
   ansible.builtin.dnf:
     name:
       - gcc
@@ -14,7 +14,7 @@
     state: installed
   when: ansible_facts["pkg_mgr"] == 'dnf'
 
-- name: Install GCC
+- name: Install GCC apt
   ansible.builtin.apt:
     name:
       - build-essential

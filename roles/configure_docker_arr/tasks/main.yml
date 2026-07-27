@@ -1,5 +1,5 @@
 ---
-- name: Create settings folder structure
+- name: Create settings folder structure arr
   ansible.builtin.file:
     path: "{{ arr_settings_base_dir }}/{{ item }}"
     state: directory
@@ -23,7 +23,7 @@
     - jellyseerr
     - jellyseerr/config
 
-- name: Create downloads folder structure
+- name: Create downloads folder structure for arr
   ansible.builtin.file:
     path: "{{ arr_downloads_base_dir }}/{{ item }}"
     state: directory
@@ -35,7 +35,7 @@
     - usenet/complete
     - usenet/incomplete
 
-- name: Copy docker-compose.yml
+- name: Copy docker-compose.yml arr
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
     dest: "{{ arr_settings_base_dir }}/arr/docker-compose.yml"
@@ -45,7 +45,7 @@
   notify:
     - Restart docker-arr
 
-- name: Pull images for docker-compose
+- name: Pull images for docker-compose arr
   community.docker.docker_compose_v2_pull:
     project_src: "{{ arr_settings_base_dir }}/arr/"
 
@@ -63,7 +63,7 @@
   notify:
     - Reload firewalld
 
-- name: Copy systemd service
+- name: Copy systemd service arr
   ansible.builtin.template:
     src: templates/docker-arr.service.j2
     dest: /etc/systemd/system/docker-arr.service
@@ -71,7 +71,7 @@
   notify:
     - Restart docker-arr
 
-- name: Prepare service
+- name: Prepare service docker-arr
   ansible.builtin.systemd_service:
     service: docker-arr.service
     enabled: true

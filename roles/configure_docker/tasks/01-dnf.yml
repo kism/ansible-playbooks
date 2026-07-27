@@ -17,7 +17,7 @@
   ansible.builtin.dnf:
     update_cache: true
 
-- name: Install docker packages
+- name: Install docker packages dnf
   ansible.builtin.package:
     pkg:
       - docker-ce

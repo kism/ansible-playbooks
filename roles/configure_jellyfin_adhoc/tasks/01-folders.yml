@@ -6,7 +6,7 @@
       - libicu
     state: present
 
-- name: Create folders
+- name: Create folders for jellyfin adhoc
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -23,7 +23,7 @@
     - "/etc/jellyfin"
     - "/opt/jellyfin-ffmpeg"
 
-- name: Add user accounts
+- name: Add user accounts for jellyfin
   ansible.builtin.user:
     name: "jellyfin"
     create_home: false

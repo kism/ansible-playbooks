@@ -61,7 +61,7 @@
     state: absent
   when: configure_nginx_redhat_conflicting_packages | length > 0
 
-- name: Install latest nginx mainline package
+- name: Install latest nginx mainline package dnf
   ansible.builtin.dnf:
     name: nginx
     state: present

@@ -1,5 +1,5 @@
 ---
-- name: Install nginx apt prerequisites
+- name: Install nginx apt prerequisites ubuntu
   ansible.builtin.apt:
     name:
       - curl
@@ -10,35 +10,35 @@
     state: present
     update_cache: true
 
-- name: Download nginx signing key
+- name: Download nginx signing key ubuntu
   ansible.builtin.get_url:
     url: https://nginx.org/keys/nginx_signing.key
     dest: /tmp/nginx_signing.key
     mode: "0644"
 
-- name: Remove old dearmored nginx signing key
+- name: Remove old dearmored nginx signing key ubuntu
   ansible.builtin.file:
     path: /usr/share/keyrings/nginx-archive-keyring.gpg
     state: absent
 
-- name: Dearmor nginx signing key
+- name: Dearmor nginx signing key ubuntu
   ansible.builtin.command:
     cmd: gpg --dearmor --output /usr/share/keyrings/nginx-archive-keyring.gpg /tmp/nginx_signing.key
   changed_when: true
 
-- name: Verify nginx signing key fingerprint
+- name: Verify nginx signing key fingerprint ubuntu
   ansible.builtin.command:
     cmd: gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
   register: configure_nginx_gpg_check
   changed_when: false
 
-- name: Assert nginx signing key fingerprint
+- name: Assert nginx signing key fingerprint ubuntu
   ansible.builtin.assert:
     that:
       - "'573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' in configure_nginx_gpg_check.stdout"
     fail_msg: nginx signing key fingerprint mismatch
 
-- name: Configure nginx mainline apt repository
+- name: Configure nginx mainline apt repository ubuntu
   ansible.builtin.apt_repository:
     repo: >-
       deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg]
@@ -46,7 +46,7 @@
     filename: nginx
     state: present
 
-- name: Pin nginx.org packages
+- name: Pin nginx.org packages ubuntu
   ansible.builtin.copy:
     dest: /etc/apt/preferences.d/99nginx
     owner: root
@@ -58,7 +58,7 @@
       Pin: release o=nginx
       Pin-Priority: 900
 
-- name: Install latest nginx mainline package
+- name: Install latest nginx mainline package apt ubuntu
   ansible.builtin.apt:
     name: nginx
     state: present

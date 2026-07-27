@@ -1,5 +1,5 @@
 ---
-- name: Add Elastic yum repo
+- name: Add Elastic yum repo "{{ ansible_facts['distribution'] }}"
   ansible.builtin.yum_repository:
     name: elasticsearch
     description: Elastic repository for Elastic 8 packages

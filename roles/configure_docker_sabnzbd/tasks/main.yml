@@ -1,5 +1,5 @@
 ---
-- name: Create settings folder structure
+- name: Create settings folder structure sabnzbd
   ansible.builtin.file:
     path: "{{ arr_settings_base_dir }}/sabnzbd/config"
     state: directory
@@ -19,7 +19,7 @@
     - usenet/complete
     - usenet/incomplete
 
-- name: Copy docker-compose.yml
+- name: Copy docker-compose.yml sabnzbd
   ansible.builtin.template:
     src: templates/docker-compose.yml.j2
     dest: "{{ arr_settings_base_dir }}/sabnzbd/docker-compose.yml"
@@ -27,7 +27,7 @@
     owner: root
     group: qbtuser
 
-- name: Pull images for docker-compose
+- name: Pull images for docker-compose sabnzbd
   community.docker.docker_compose_v2_pull:
     project_src: "{{ arr_settings_base_dir }}/sabnzbd/"
 
@@ -40,13 +40,13 @@
   notify:
     - Reload firewalld
 
-- name: Copy systemd service
+- name: Copy systemd service sab
   ansible.builtin.template:
     src: templates/docker-sabnzbd.service.j2
     dest: /etc/systemd/system/docker-sabnzbd.service
     mode: "0644"
 
-- name: Prepare service
+- name: Prepare service sabnzbd
   ansible.builtin.systemd_service:
     service: docker-sabnzbd
     enabled: true

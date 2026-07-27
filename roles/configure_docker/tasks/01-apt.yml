@@ -42,7 +42,7 @@
     state: present
   when: ansible_architecture == "aarch64"
 
-- name: Install docker packages
+- name: Install docker packages apt
   ansible.builtin.package:
     pkg:
       - docker-ce

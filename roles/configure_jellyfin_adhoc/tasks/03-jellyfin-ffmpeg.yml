@@ -8,7 +8,7 @@
       {{- configure_jellyfin_adhoc_ffmpeg_version -}}
       _portable_linux64-gpl.tar.xz
 
-- name: Print download url
+- name: Print download url for Jellyfin ffmpeg
   run_once: true
   ansible.builtin.debug:
     var: configure_jellyfin_adhoc_ffmpeg_download_url

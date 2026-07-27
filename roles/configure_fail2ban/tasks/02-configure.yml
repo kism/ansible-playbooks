@@ -12,7 +12,7 @@
   notify: Restart fail2ban
   when: configure_fail2ban_nginx_status["status"]["LoadState"] != "not-found"
 
-- name: Copy jail
+- name: Copy jail, nginx-kism
   ansible.builtin.template:
     src: templates/jail.d/nginx-kism.conf.j2
     dest: /etc/fail2ban/jail.d/nginx-kism.conf
@@ -20,7 +20,7 @@
   notify: Restart fail2ban
   when: configure_fail2ban_nginx_status["status"]["LoadState"] != "not-found"
 
-- name: Copy jail
+- name: Copy jail, sshd
   ansible.builtin.template:
     src: templates/jail.d/sshd.conf.j2
     dest: /etc/fail2ban/jail.d/sshd.conf

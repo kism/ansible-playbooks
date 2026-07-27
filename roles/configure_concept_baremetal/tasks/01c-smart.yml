@@ -1,5 +1,5 @@
 ---
-- name: Install packages
+- name: Install packages for sensors and nvme
   ansible.builtin.apt:
     install_recommends: false
     pkg:
@@ -7,7 +7,7 @@
       - lm-sensors
     state: present
 
-- name: Install some hdd related packages
+- name: Install some hdd related packages apt
   ansible.builtin.apt:
     install_recommends: false
     pkg:
@@ -18,7 +18,7 @@
     state: present
   when: ansible_facts["pkg_mgr"] == 'apt'
 
-- name: Install some hdd related packages
+- name: Install some hdd related packages dnf
   ansible.builtin.dnf:
     pkg:
       - hdparm

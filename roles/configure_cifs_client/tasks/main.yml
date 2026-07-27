@@ -4,7 +4,7 @@
     name: cifs-utils
     state: present
 
-- name: Copy systemd mount files
+- name: Copy systemd mount files for cifs
   ansible.builtin.copy:
     dest: /etc/systemd/system/mnt-{{ item.value.mount_folder }}.mount
     content: |-

@@ -1,5 +1,5 @@
 ---
-- name: Check if /etc/pve exists
+- name: Check if /etc/pve exists, no firewalld for pve
   ansible.builtin.stat:
     path: /etc/pve
   register: configure_firewall_pve_status

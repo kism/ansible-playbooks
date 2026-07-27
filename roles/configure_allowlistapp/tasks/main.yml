@@ -47,18 +47,18 @@
   notify: Restart allowlistapp
   changed_when: true # Safe assumption, no way to know
 
-- name: Fix selinux
+- name: Fix selinux for allowlistapp
   ansible.builtin.command: restorecon -Rv /opt/allowlistapp
   changed_when: true # This command only matters if another task has changed files
 
-- name: Copy systemd service
+- name: Copy systemd service allowlistapp
   ansible.builtin.copy:
     src: files/allowlistapp.service
     dest: /etc/systemd/system/allowlistapp.service
     mode: "0644"
   notify: Restart allowlistapp
 
-- name: Enable systemd service
+- name: Enable systemd service allowlistapp
   ansible.builtin.systemd_service:
     name: allowlistapp.service
     enabled: true

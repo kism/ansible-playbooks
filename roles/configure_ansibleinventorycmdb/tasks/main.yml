@@ -66,18 +66,18 @@
     recurse: true
     mode: u+rwX,g+rwX,o=
 
-- name: Fix selinux
+- name: Fix selinux for ansibleinventorycmdb
   ansible.builtin.command: restorecon -Rv /opt/ansibleinventorycmdb
   changed_when: true # This command only matters if another task has changed files
 
-- name: Copy systemd service
+- name: Copy systemd service ansibleinventorycmdb
   ansible.builtin.copy:
     src: files/ansibleinventorycmdb.service
     dest: /etc/systemd/system/ansibleinventorycmdb.service
     mode: "0644"
   notify: Restart ansibleinventorycmdb
 
-- name: Enable systemd service
+- name: Enable systemd service ansibleinventorycmdb
   ansible.builtin.systemd_service:
     name: ansibleinventorycmdb.service
     enabled: true

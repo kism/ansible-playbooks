@@ -20,11 +20,11 @@
   notify:
     - Reload firewalld
 
-- name: Flush handlers
+- name: Flush handlers for some reason, don't know why Jellyfin apparently needs it
   ansible.builtin.meta: flush_handlers
 
 # Systemd
-- name: Copy systemd service
+- name: Copy systemd service jf
   ansible.builtin.template:
     src: files/systemd/jellyfin.service
     dest: /usr/lib/systemd/system/jellyfin.service

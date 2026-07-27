@@ -1,12 +1,12 @@
 ---
-- name: Include zsh tasks
+- name: Include zsh tasks for dev
   ansible.builtin.include_tasks: 01-zsh.yml
 
-- name: Include zsh tasks
+- name: Include python tasks for dev
   ansible.builtin.include_tasks: 02-python.yml
 
-- name: Include zsh tasks
+- name: Include powershell tasks for dev
   ansible.builtin.include_tasks: 03-powershell.yml
 
-- name: Include zsh tasks
+- name: Include tasks for installing dev packages
   ansible.builtin.include_tasks: 04-dev-packages.yml

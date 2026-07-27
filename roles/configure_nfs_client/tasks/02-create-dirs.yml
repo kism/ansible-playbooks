@@ -55,7 +55,7 @@
   when: ansible_facts["pkg_mgr"] != 'pacman'
   with_dict: "{{ nfs_client_mounts }}"
 
-- name: For each mount set the unmounted folder's permissions
+- name: For each mount set the unmounted folder's permissions pacman
   ansible.builtin.file:
     path: /tmp/mnt/{{ item.key }}
     state: directory

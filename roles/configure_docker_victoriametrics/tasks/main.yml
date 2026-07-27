@@ -22,7 +22,7 @@
     state: directory
     mode: "0755"
 
-- name: Copy docker-compose file
+- name: Copy docker-compose file victoriametrics
   ansible.builtin.copy:
     src: docker-compose.yml
     dest: /opt/victoriametrics/docker-compose.yml

@@ -11,7 +11,7 @@
     regexp: "^After="
     line: "After=network-online.target remote-fs.target nss-lookup.target pveproxy.service"
 
-- name: Nginx enabled and running
+- name: Nginx enabled and running pve
   ansible.builtin.systemd_service:
     name: nginx
     enabled: true
