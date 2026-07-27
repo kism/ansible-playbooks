@@ -110,7 +110,7 @@ requires-dist = [
 [[package]]
 name = "ansible-taste"
 version = "0.0.1"
-source = { git = "https://github.com/kism/ansible-taste?branch=main#856afc27332c196c1757d832182c48e89a5c7727" }
+source = { git = "https://github.com/kism/ansible-taste?branch=main#48547d27d06b1a17a7f761c537b63dc1479e6222" }
 dependencies = [
     { name = "pyyaml" },
     { name = "rich" },

@@ -1,11 +1,11 @@
 ---
-- name: Ensure old repo listing is removed
+- name: Ensure old repo listing is removed {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.lineinfile:
     path: /etc/apt/sources.list.d/influxdata.list
     line: deb https://repos.influxdata.com/debian stable main
     state: absent
 
-- name: Copy over apt key
+- name: Copy over apt key {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.get_url:
     url: https://repos.influxdata.com/influxdata-archive.key
     dest: /etc/apt/keyrings/influxdata-archive.key

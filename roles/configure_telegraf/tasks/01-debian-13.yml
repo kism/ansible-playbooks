@@ -1,21 +1,21 @@
 ---
-- name: Copy over apt key
+- name: Copy over apt key {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.get_url:
     url: https://repos.influxdata.com/influxdata-archive.key
     dest: /tmp/influxdata-archive.key
     mode: "0644"
 
-- name: Remove old key if exists
+- name: Remove old key if exists {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.file:
     path: /tmp/influxdata-archive.key.gpg
     state: absent
 
-- name: Dearmour the key
+- name: Dearmour the key {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.command:
     cmd: gpg --dearmor -o /tmp/influxdata-archive.key.gpg /tmp/influxdata-archive.key
   changed_when: false
 
-- name: Copy the key to the correct location
+- name: Copy the key to the correct location {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.copy:
     src: /tmp/influxdata-archive.key.gpg
     dest: /usr/share/keyrings/influxdata-archive.gpg

@@ -1,5 +1,5 @@
 ---
-- name: Enable backup_svc account to use btrfs command without sudo password
+- name: Rsync Target - Enable backup_svc account to use btrfs command without sudo password
   ansible.builtin.copy:
     dest: /etc/sudoers.d/backup_svc_btrfs
     content: "backup_svc ALL=(ALL) NOPASSWD: /usr/bin/btrfs"
@@ -7,13 +7,13 @@
     group: root
     mode: "0440"
 
-- name: Install rsync
+- name: Rsync Target - Install rsync
   ansible.builtin.package:
     name: rsync
     state: present
     update_cache: true
 
-- name: Create home folder for backup_svc
+- name: Rsync Target - Create home folder for backup_svc
   ansible.builtin.file:
     path: /home/backup_svc
     state: directory
@@ -21,7 +21,7 @@
     group: backup_svc
     mode: "0750"
 
-- name: Create .ssh folder for backup_svc
+- name: Rsync Target - Create .ssh folder for backup_svc
   ansible.builtin.file:
     path: /home/backup_svc/.ssh
     state: directory
@@ -29,7 +29,7 @@
     group: backup_svc
     mode: "0700"
 
-- name: Ensure that backup_svc has an authorized_keys file
+- name: Rsync Target - Ensure that backup_svc has an authorized_keys file
   ansible.builtin.file:
     path: /home/backup_svc/.ssh/authorized_keys
     state: touch
@@ -37,12 +37,12 @@
     group: backup_svc
     mode: "0600"
 
-- name: Give backup_svc a shell of bash since rsync needs it
+- name: Rsync Target - Give backup_svc a shell of bash since rsync needs it
   ansible.builtin.user:
     name: backup_svc
     shell: /bin/bash
 
-- name: Add backup_svc to content_public and content_public groups
+- name: Rsync Target - Add backup_svc to content_public and content_public groups
   ansible.builtin.user:
     name: backup_svc
     groups: content_public,content_private

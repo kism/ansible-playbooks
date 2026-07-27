@@ -1,5 +1,5 @@
 ---
-- name: Get Proxmox Guests
+- name: Get Proxmox Guests to shut down
   delegate_to: localhost
   become: false
   run_once: true

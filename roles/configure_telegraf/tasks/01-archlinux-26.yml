@@ -1,5 +1,5 @@
 ---
-- name: Install telegraf
+- name: Install telegraf {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   become: true
   become_method: ansible.builtin.sudo
   become_user: "{{ homelab_my_username }}"

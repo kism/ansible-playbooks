@@ -1,16 +1,16 @@
 ---
-- name: Copy over influxdb repo
+- name: Copy over influxdb repo {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.copy:
     src: files/influxdb.repo
     dest: /etc/yum.repos.d/influxdb.repo
     mode: "644"
 
-- name: Remove old file lol
+- name: Remove old file lol {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.file:
     path: /etc/pki/rpm-gpg/RPM-GPG-KEY-influxdata
     state: absent
 
-- name: Install telegraf
+- name: Install telegraf {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.dnf:
     name: telegraf
     state: present

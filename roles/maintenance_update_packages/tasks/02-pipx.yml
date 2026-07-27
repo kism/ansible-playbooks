@@ -1,7 +1,7 @@
 ---
 - name: Check if pipx is installed
   ansible.builtin.stat:
-    path: /usr/local/bin/pipx # Adjust the path based on your installation
+    path: /usr/local/bin/pipx
   register: maintenance_update_packages_pipx_check
 
 - name: Run pipx update routine if needed

@@ -20,7 +20,7 @@
     mode: "0600"
   register: configure_nvidia_driver_blocklist_copy
 
-- name: Block for vm host
+- name: Block for vm host initramfs
   when: configure_nvidia_driver_nouveau_loaded.rc == 0 and ansible_facts['virtualization_role'] == 'host'
   block:
     - name: Run Initramfs update
@@ -60,7 +60,7 @@
     dest: "/tmp/{{ configure_nvidia_driver_file_name }}"
     mode: "0744"
 
-- name: Block for vm host
+- name: Block for vm host packages
   when: ansible_facts['virtualization_role'] == 'host'
   block:
     - name: Install packages

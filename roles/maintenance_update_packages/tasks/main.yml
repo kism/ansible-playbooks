@@ -2,7 +2,7 @@
 - name: Run appropiate update routine for package manager
   ansible.builtin.include_tasks: '01-{{ ansible_facts["pkg_mgr"] }}.yml'
 
-- name: Run pipx update routine if needed
+- name: Include tasks for pipx
   ansible.builtin.include_tasks: "02-pipx.yml"
 
 - name: Append diff variable to file # Can we do a wild combine() here? (no)

@@ -16,24 +16,24 @@
     autoclean: true
     autoremove: true
 
-- name: Get list of upgradable packages
+- name: Get list of apt upgradable packages
   ansible.builtin.command:
     cmd: apt list --upgradable
   register: maintenance_update_packages_apt_after
   changed_when: false # Only getting info
 
-- name: Set facts to do a diff
+- name: Set facts to do a diff part 1 {{ ansible_facts["pkg_mgr"] }}
   ansible.builtin.set_fact:
     maintenance_update_packages_apt_before: "{{ maintenance_update_packages_apt_before.stdout_lines | difference(['Listing...']) }}"
     maintenance_update_packages_apt_after: "{{ maintenance_update_packages_apt_after.stdout_lines | difference(['Listing...']) }}"
 
-- name: Set facts to do a diff
+- name: Set facts to do a diff part 2 {{ ansible_facts["pkg_mgr"] }}
   ansible.builtin.set_fact:
     maintenance_update_packages_apt_upgraded: "{{ maintenance_update_packages_apt_before | difference(maintenance_update_packages_apt_after) }}"
     maintenance_update_packages_apt_not_upgraded: "{{ maintenance_update_packages_apt_after | difference(maintenance_update_packages_apt_before) }}"
     maintenance_update_packages_changed: {}
 
-- name: Set fact for maintenance_update_packages_changed
+- name: Set fact for maintenance_update_packages_changed {{ ansible_facts["pkg_mgr"] }}
   ansible.builtin.set_fact:
     maintenance_update_packages_changed:
       host: "{{ ansible_hostname }}"

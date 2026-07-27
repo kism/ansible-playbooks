@@ -39,7 +39,7 @@
     line: "<use_password>yes</use_password>"
   notify: Restart Wazuh manager
 
-- name: Set password file
+- name: Set password file authd.pass
   ansible.builtin.copy:
     content: "{{ secret_wazuh_agent_password }}"
     dest: /var/ossec/etc/authd.pass

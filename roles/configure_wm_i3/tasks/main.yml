@@ -1,9 +1,9 @@
 ---
-- name: Install sway and friends
+- name: Install i3 and friends
   ansible.builtin.package:
     name: "{{ configure_wm_i3_packages_pacman }}"
 
-- name: Install aur packages
+- name: Install aur packages for i3
   become: true
   become_method: ansible.builtin.sudo
   become_user: "{{ homelab_my_username }}"

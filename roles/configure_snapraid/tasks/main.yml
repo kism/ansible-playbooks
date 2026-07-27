@@ -23,7 +23,7 @@
     regexp: '^EMAIL_ADDRESS="'
     line: "EMAIL_ADDRESS={{ secret_email }}"
 
-- name: Copy systemd units
+- name: Copy systemd units for snapraid
   ansible.builtin.copy:
     src: files/{{ item }}
     dest: /etc/systemd/system/{{ item }}
