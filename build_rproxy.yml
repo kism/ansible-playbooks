@@ -18,7 +18,6 @@
     # - configure_fail2ban
     - configure_nginx
     # - configure_fail2ban
-    - configure_nginx_certbot
     - configure_reverse_proxy
     # - configure_allowlistapp
     # - configure_ansibleinventorycmdb
