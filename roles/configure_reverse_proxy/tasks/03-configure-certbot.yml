@@ -49,7 +49,7 @@
   block:
     - name: Grab nginx ssl options from github
       ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+        url: https://raw.githubusercontent.com/certbot/certbot/refs/heads/main/certbot/src/certbot/_internal/plugins/nginx/tls_configs/options-ssl-nginx.conf
         dest: /etc/letsencrypt/options-ssl-nginx.conf
         mode: "0644"
   rescue:
