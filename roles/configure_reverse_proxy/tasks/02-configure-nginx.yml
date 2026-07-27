@@ -26,14 +26,14 @@
     owner: root
     group: root
   loop:
-    - /usr/share/nginx/html/
-    - /usr/share/nginx/html/private/
+    - /usr/share/nginx/html/site/
+    - /usr/share/nginx/html/site/private/
   changed_when: false # God knows
 
 - name: Copy public index.html
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: /usr/share/nginx/html/{{ item | basename }}
+    dest: /usr/share/nginx/html/site/{{ item | basename }}
     mode: "0664"
   with_fileglob: "files/hosts/{{ ansible_hostname }}/public/*"
   notify:
@@ -42,7 +42,7 @@
 - name: Copy private index.html
   ansible.builtin.copy:
     src: files/hosts/{{ ansible_hostname }}/private/index.html
-    dest: /usr/share/nginx/html/private/index.html
+    dest: /usr/share/nginx/html/site/private/index.html
     mode: "0664"
   notify:
     - Restart nginx
@@ -52,7 +52,7 @@
     cmd: |-
       set -o pipefail
       curl -LsS https://github.com/kism/zy.css/releases/download/main/grab.sh | bash
-    chdir: /usr/share/nginx/html/
+    chdir: /usr/share/nginx/html/site/
   changed_when: false # Sigh
 
 - name: Fix perms

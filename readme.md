@@ -88,3 +88,4 @@ skip_ansible_lint
 ## Todo
 
 - UV Tool update
+- Separate role for certbot setup
