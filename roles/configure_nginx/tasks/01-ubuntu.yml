@@ -13,7 +13,7 @@
 - name: Download nginx signing key ubuntu
   ansible.builtin.get_url:
     url: https://nginx.org/keys/nginx_signing.key
-    dest: /tmp/nginx_signing.key
+    dest: /etc/apt/keyrings/nginx-archive-keyring.asc
     mode: "0644"
 
 - name: Remove old dearmored nginx signing key ubuntu
@@ -21,14 +21,14 @@
     path: /usr/share/keyrings/nginx-archive-keyring.gpg
     state: absent
 
-- name: Dearmor nginx signing key ubuntu
-  ansible.builtin.command:
-    cmd: gpg --dearmor --output /usr/share/keyrings/nginx-archive-keyring.gpg /tmp/nginx_signing.key
-  changed_when: true
+- name: Remove old nginx repo listing ubuntu
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/nginx.list
+    state: absent
 
 - name: Verify nginx signing key fingerprint ubuntu
   ansible.builtin.command:
-    cmd: gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+    cmd: gpg --dry-run --quiet --no-keyring --import --import-options import-show /etc/apt/keyrings/nginx-archive-keyring.asc
   register: configure_nginx_gpg_check
   changed_when: false
 
@@ -39,11 +39,14 @@
     fail_msg: nginx signing key fingerprint mismatch
 
 - name: Configure nginx mainline apt repository ubuntu
-  ansible.builtin.apt_repository:
-    repo: >-
-      deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg]
-      https://nginx.org/packages/mainline/ubuntu {{ ansible_distribution_release }} nginx
-    filename: nginx
+  ansible.builtin.deb822_repository:
+    name: nginx
+    types: deb
+    uris: https://nginx.org/packages/mainline/ubuntu
+    suites: "{{ ansible_distribution_release }}"
+    components: nginx
+    signed_by: /etc/apt/keyrings/nginx-archive-keyring.asc
+    install_python_debian: true
     state: present
 
 - name: Pin nginx.org packages ubuntu

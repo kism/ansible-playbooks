@@ -1,32 +1,21 @@
 ---
-- name: Copy over apt key {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
-  ansible.builtin.get_url:
-    url: https://repos.influxdata.com/influxdata-archive.key
-    dest: /tmp/influxdata-archive.key
-    mode: "0644"
-
-- name: Remove old key if exists {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
+- name: Ensure old repo listing is removed {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
   ansible.builtin.file:
-    path: /tmp/influxdata-archive.key.gpg
+    path: /etc/apt/sources.list.d/influxdata.list
     state: absent
 
-- name: Dearmour the key {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
-  ansible.builtin.command:
-    cmd: gpg --dearmor -o /tmp/influxdata-archive.key.gpg /tmp/influxdata-archive.key
-  changed_when: false
-
-- name: Copy the key to the correct location {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
-  ansible.builtin.copy:
-    src: /tmp/influxdata-archive.key.gpg
-    dest: /usr/share/keyrings/influxdata-archive.gpg
-    mode: "0644"
-    remote_src: true
+- name: Ensure old apt key is removed {{ ansible_facts["distribution"] + ansible_facts["pkg_mgr"] }}
+  ansible.builtin.file:
+    path: /usr/share/keyrings/influxdata-archive.gpg
+    state: absent
 
 - name: Add Telegraf repository {{ ansible_facts['distribution'] | lower }}
-  ansible.builtin.apt_repository:
-    repo: |-
-      deb
-      [signed-by=/usr/share/keyrings/influxdata-archive.gpg]
-      https://repos.influxdata.com/{{ ansible_facts['distribution'] | lower }} stable main
-    filename: influxdata
+  ansible.builtin.deb822_repository:
+    name: influxdata
+    types: deb
+    uris: https://repos.influxdata.com/{{ ansible_facts['distribution'] | lower }}
+    suites: stable
+    components: main
+    signed_by: https://repos.influxdata.com/influxdata-archive.key
+    install_python_debian: true
     state: present
