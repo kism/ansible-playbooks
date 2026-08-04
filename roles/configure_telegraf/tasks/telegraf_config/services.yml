@@ -46,6 +46,14 @@
         groups: docker
         append: true
 
+- name: "Remove telegraf config: input, docker"
+  when: ansible_facts['services']['docker.service'] is not defined
+  ansible.builtin.file:
+    path: /etc/telegraf/telegraf.d/20-docker.conf
+    state: absent
+  notify:
+    - Restart telegraf
+
 - name: Nvidia Monitoring
   when: ansible_facts['services']['nvidia-persistenced.service'] is defined
   ansible.builtin.copy:
@@ -54,3 +62,11 @@
     mode: "0644"
     owner: root
     group: telegraf
+
+- name: "Remove telegraf config: input, nvidia"
+  when: ansible_facts['services']['nvidia-persistenced.service'] is not defined
+  ansible.builtin.file:
+    path: /etc/telegraf/telegraf.d/20-nvidia.conf
+    state: absent
+  notify:
+    - Restart telegraf
