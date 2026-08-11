@@ -2,6 +2,7 @@
 - name: Create a new dhcp entry if needed
   delegate_to: localhost
   become: false
+  when: target_host_ip_address is defined
   ansibleguy.opnsense.dhcp_reservation:
     firewall: "{{ opnsense_firewall }}"
     api_key: "{{ secret_opnsense_api_key }}"
