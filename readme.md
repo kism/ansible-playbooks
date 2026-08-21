@@ -17,15 +17,9 @@ Run
 Run without server onboarding block
 `ansible-playbook build_ent.yml -i inventory.yml --extra-vars "skip_onboard=true"`
 
-````
-
 ## Code Quality
 
 ### Code quality searches
-
-```text
-
-````
 
 Searches for vscode to find code quality issues that don't get caught by ansible-lint
 
@@ -56,7 +50,6 @@ skip_ansible_lint
 
 # Tasks with same name
 <no regex yet>
-
 ```
 
 ## Good style things to do

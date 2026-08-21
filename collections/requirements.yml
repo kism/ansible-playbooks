@@ -9,7 +9,7 @@ collections:
   - name: community.docker
     source: https://galaxy.ansible.com
 
-  - name: ansibleguy.opnsense
+  - name: oxlorg.opnsense
     source: https://galaxy.ansible.com
 
   - name: kewlfft.aur
