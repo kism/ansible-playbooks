@@ -97,7 +97,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "ansible" },
-    { name = "ansible-core", specifier = "<=2.21.3" },
+    { name = "ansible-core", specifier = "<=2.22.0" },
     { name = "ansible-lint" },
     { name = "ansible-taste", git = "https://github.com/kism/ansible-taste?branch=main" },
     { name = "bitwarden-sdk" },
@@ -110,7 +110,7 @@ requires-dist = [
 [[package]]
 name = "ansible-taste"
 version = "0.0.1"
-source = { git = "https://github.com/kism/ansible-taste?branch=main#48547d27d06b1a17a7f761c537b63dc1479e6222" }
+source = { git = "https://github.com/kism/ansible-taste?branch=main#d661d09ad00be50385558cf97b80415b0ea120d6" }
 dependencies = [
     { name = "pyyaml" },
     { name = "rich" },

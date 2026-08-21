@@ -1,8 +1,0 @@
----
-# ansible-playbook configure_opnsense.yml -i inventory/main.yml
-- name: Configure opnsense itself
-  hosts: opnsense
-  gather_facts: false
-  become: false
-  roles:
-    - configure_opnsense_acme

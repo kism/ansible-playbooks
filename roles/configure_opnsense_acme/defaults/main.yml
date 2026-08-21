@@ -1,8 +1,0 @@
----
-configure_opnsense_acme_account_name: "letsencrypt"
-configure_opnsense_acme_validation_name: "cloudflare-dns01"
-configure_opnsense_acme_action_name: "restart-gui"
-
-configure_opnsense_acme_certificates:
-  - name: "{{ opnsense_firewall }}"
-    description: "OPNsense GUI"
