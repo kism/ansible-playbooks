@@ -8,14 +8,14 @@
     - meta_pre_flight_checks
     - configure_users
 
-- name: Setup ent jumpbox
+- name: Setup ent jumpbox (user uses zsh)
   hosts: ent
   gather_facts: false
   become: true
   roles:
     - configure_jumpbox
 
-- name: Setup remotecode
+- name: Setup remotecode (user uses zsh)
   hosts: code
   gather_facts: true
   become: true
