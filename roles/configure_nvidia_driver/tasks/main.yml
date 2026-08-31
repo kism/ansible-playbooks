@@ -51,7 +51,6 @@
   ansible.builtin.get_url:
     url: "{{ configure_nvidia_driver_url }}/{{ configure_nvidia_driver_version }}/{{ configure_nvidia_driver_file_name }}"
     dest: "/tmp/ansible/{{ configure_nvidia_driver_file_name }}"
-    checksum: "sha256:{{ configure_nvidia_driver_checksum }}"
     mode: "0660"
 
 - name: Copy driver to target
