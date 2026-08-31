@@ -2,7 +2,7 @@
 - name: Create qbt-shaper service account
   ansible.builtin.user:
     name: qbt-shaper
-    home: /opt/qbt-shaper
+    home: /home/qbt-shaper
     shell: /sbin/nologin
     system: true
 
@@ -43,6 +43,9 @@
       ansible.builtin.command:
         cmd: /usr/local/bin/uv sync --frozen
         chdir: /opt/qbt-shaper
+      environment: # Keep the interpreter and cache in /opt/qbt-shaper, the only path the hardened unit can see
+        HOME: /opt/qbt-shaper
+        UV_PYTHON_INSTALL_DIR: /opt/qbt-shaper/.python
       notify: Restart qbt-shaper
       changed_when: true # Safe assumption, no way to know
 
