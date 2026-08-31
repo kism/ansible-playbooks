@@ -1,6 +1,7 @@
 # Kieran's Ansible Playbooks
 
 [![Ansible Lint](https://github.com/kism/ansible-playbooks/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/kism/ansible-playbooks/actions/workflows/ansible-lint.yml)
+[![Ansible Taste](https://github.com/kism/ansible-playbooks/actions/workflows/ansible-taste.yml/badge.svg)](https://github.com/kism/ansible-playbooks/actions/workflows/ansible-taste.yml)
 
 Install collections
 

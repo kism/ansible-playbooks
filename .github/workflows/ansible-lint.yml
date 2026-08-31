@@ -28,14 +28,3 @@ jobs:
 
       - name: Run ansible-lint
         run: ansible-lint
-
-  taste:
-    name: Ansible Taste
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-python@v7
-
-      - name: Install ansible-taste
-        run: pipx run git+https://github.com/kism/ansible-taste
