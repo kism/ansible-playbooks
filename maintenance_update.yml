@@ -8,40 +8,37 @@
 #   gather_facts: true
 #   become: true
 #   roles:
+#     - meta_pre_flight_checks
 #     - configure_nvidia_driver
 
-- name: Update all packages with maintenance_update_all role
-  hosts: proxmoxvms, proxmoxhosts, baremetal
-  gather_facts: true
-  become: true
-  roles:
-    - meta_pre_flight_checks
-    - maintenance_update_packages
-
-- name: Shutdown hosts in hypervisors that I control
-  hosts: proxmoxvms
-  become: true
-  roles:
-    - maintenance_shutdown
-
-- name: Shutdown other hosts
-  hosts: proxmoxhosts
-  become: false
-  roles:
-    - maintenance_shutdown_pve_guests
-
-- name: Restart others (baremetal and public cloud)
-  hosts: baremetal
-  become: true
-  roles:
-    - maintenance_reboot
-
-# - name: Setup nvidia driver on hosts
-#   hosts: pvematt,jf,stream
+# - name: Update all packages with maintenance_update_all role
+#   hosts: proxmoxvms, proxmoxhosts, baremetal
 #   gather_facts: true
 #   become: true
 #   roles:
-#     # Preflight
+#     - maintenance_update_packages
 
-#     # Configure Nvidia drivers
-#     - configure_nvidia_driver
+# - name: Shutdown hosts in hypervisors that I control
+#   hosts: proxmoxvms
+#   become: true
+#   roles:
+#     - maintenance_shutdown
+
+# - name: Shutdown other hosts
+#   hosts: proxmoxhosts
+#   become: false
+#   roles:
+#     - maintenance_shutdown_pve_guests
+
+# - name: Restart others (baremetal and public cloud)
+#   hosts: baremetal
+#   become: true
+#   roles:
+#     - maintenance_reboot
+
+- name: Setup nvidia driver on hosts again
+  hosts: pvematt,jf,stream
+  gather_facts: true
+  become: true
+  roles:
+    - configure_nvidia_driver
