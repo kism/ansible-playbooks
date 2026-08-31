@@ -1,0 +1,13 @@
+[Unit]
+Description=qbt-shaper qBittorrent bandwidth shaper
+After=network.target
+
+[Service]
+User=qbt-shaper
+WorkingDirectory=/opt/qbt-shaper
+Environment=QBT_SHAPER_CONFIG_PATH=/opt/qbt-shaper/config.json
+ExecStart=/opt/qbt-shaper/.venv/bin/qbt-shaper
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

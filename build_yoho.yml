@@ -21,6 +21,7 @@
     # - configure_docker_arr
     # - configure_ffmpeg
     - configure_rsync_backup_source
+    - configure_qbt_shaper
 
 
     # End

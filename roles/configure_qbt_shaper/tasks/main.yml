@@ -1,0 +1,66 @@
+---
+- name: Create qbt-shaper service account
+  ansible.builtin.user:
+    name: qbt-shaper
+    home: /opt/qbt-shaper
+    shell: /sbin/nologin
+    system: true
+
+- name: Ensure qbt-shaper directory is owned by the service account
+  ansible.builtin.file:
+    path: /opt/qbt-shaper
+    state: directory
+    owner: qbt-shaper
+    group: qbt-shaper
+    mode: u=rwX,g=rX,o=
+
+- name: Check for qbt-shaper config
+  ansible.builtin.stat:
+    path: /opt/qbt-shaper/config.json
+  register: configure_qbt_shaper_config_stat
+  changed_when: not configure_qbt_shaper_config_stat.stat.exists
+  notify: ⚠️ Remind about qbt-shaper config
+
+- name: Block to run as qbt-shaper user
+  become: true
+  become_user: qbt-shaper
+  block:
+    - name: Git config qbt-shaper
+      community.general.git_config:
+        name: safe.directory
+        scope: global
+        value: /opt/qbt-shaper
+
+    - name: Clone qbt-shaper
+      ansible.builtin.git:
+        repo: https://github.com/kism/qbt-shaper
+        dest: /opt/qbt-shaper
+        single_branch: true
+        version: main
+      notify: Restart qbt-shaper
+
+    - name: Run uv sync
+      ansible.builtin.command:
+        cmd: /usr/local/bin/uv sync --frozen
+        chdir: /opt/qbt-shaper
+      notify: Restart qbt-shaper
+      changed_when: true # Safe assumption, no way to know
+
+- name: Fix selinux for qbt-shaper
+  ansible.builtin.command: restorecon -Rv /opt/qbt-shaper
+  changed_when: true # This command only matters if another task has changed files
+
+- name: Copy systemd service qbt-shaper
+  ansible.builtin.copy:
+    src: files/qbt-shaper.service
+    dest: /etc/systemd/system/qbt-shaper.service
+    mode: "0644"
+  notify: Restart qbt-shaper
+
+- name: Enable systemd service qbt-shaper
+  ansible.builtin.systemd_service:
+    name: qbt-shaper.service
+    enabled: true
+    daemon_reload: true
+    state: started
+    masked: false

@@ -1,0 +1,10 @@
+---
+- name: Restart qbt-shaper
+  ansible.builtin.systemd_service:
+    name: qbt-shaper
+    daemon_reload: true
+    state: restarted
+
+- name: ⚠️ Remind about qbt-shaper config
+  ansible.builtin.debug:
+    msg: "qbt-shaper: no config at /opt/qbt-shaper/config.json, a default one will have been written, go fill it in"
