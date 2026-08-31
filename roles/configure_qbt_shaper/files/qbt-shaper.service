@@ -9,5 +9,33 @@ Environment=QBT_SHAPER_CONFIG_PATH=/opt/qbt-shaper/config.json
 ExecStart=/opt/qbt-shaper/.venv/bin/qbt-shaper
 Restart=always
 
+# Filesystem: read-only everything, /opt/qbt-shaper is the only writable path
+ProtectSystem=strict
+ReadWritePaths=/opt/qbt-shaper
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+
+# Network: outbound IP only, AF_UNIX for the journal, AF_NETLINK for DNS resolution
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+
+# Everything else
+CapabilityBoundingSet=
+NoNewPrivileges=yes
+PrivateUsers=yes
+PrivateIPC=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+
 [Install]
 WantedBy=multi-user.target
