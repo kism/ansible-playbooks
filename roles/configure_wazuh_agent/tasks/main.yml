@@ -10,7 +10,7 @@
     url: "{{ configure_wazuh_agent_rpm_url }}"
     dest: /tmp/wazuh-agent.rpm
     mode: "0644"
-  changed_when: false
+  changed_when: false # We are in /tmp/
   when: ansible_facts['pkg_mgr'] == 'dnf'
 
 - name: Install Wazuh agent rpm
@@ -27,7 +27,7 @@
     url: "{{ configure_wazuh_agent_deb_url }}"
     dest: /tmp/wazuh-agent.deb
     mode: "0644"
-  changed_when: false
+  changed_when: false # We are in /tmp/
   when: ansible_facts['pkg_mgr'] == 'apt'
 
 - name: Install Wazuh agent deb

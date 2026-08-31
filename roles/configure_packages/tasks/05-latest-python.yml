@@ -2,19 +2,18 @@
 - name: Set fact for python version list
   ansible.builtin.set_fact:
     configure_packages_python_versions:
+      - "3.15"
       - "3.14"
       - "3.13"
       - "3.12"
       - "3.11"
-      - "3.10"
-      - "3.9"
 
 - name: Install every version of python packages dnf
   ansible.builtin.dnf:
     name: "python{{ item }}"
     state: present
   loop: "{{ configure_packages_python_versions }}"
-  failed_when: false
+  failed_when: false # Some will fail, just install whatever is around
   when: ansible_facts['pkg_mgr'] == 'dnf'
 
 - name: Install every version of python packages apt
@@ -23,5 +22,5 @@
     state: present
     install_recommends: false
   loop: "{{ configure_packages_python_versions }}"
-  failed_when: false
+  failed_when: false # Just install whatever is available
   when: ansible_facts['pkg_mgr'] == 'apt'

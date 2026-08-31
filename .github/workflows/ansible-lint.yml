@@ -6,15 +6,13 @@ on:
       - main
 
 jobs:
-  build:
+  lint:
     name: Ansible Lint # Naming the build is important to use it as a status check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v7
-        with:
-          python-version: "3.14"
 
       - name: Install ansible
         run: pipx install ansible-base
@@ -30,3 +28,14 @@ jobs:
 
       - name: Run ansible-lint
         run: ansible-lint
+
+  taste:
+    name: Ansible Taste
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+
+      - name: Install ansible-taste
+        run: pipx run git+https://github.com/kism/ansible-taste

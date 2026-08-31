@@ -75,7 +75,7 @@
     - name: Run the installer silently for host
       ansible.builtin.command:
         cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --dkms --allow-installation-with-running-driver"
-      changed_when: true
+      changed_when: true # Safe assumption, too difficult to figure out
 
     - name: Set to load nvidia modules into the kernel
       ansible.builtin.copy:
@@ -93,7 +93,7 @@
   ansible.builtin.command:
     cmd: "/tmp/{{ configure_nvidia_driver_file_name }} -s --no-kernel-module --allow-installation-with-running-driver"
   when: ansible_facts['virtualization_role'] == 'guest'
-  changed_when: true
+  changed_when: true # Safe assumption, too difficult to figure out
 
 - name: Another block for vm host
   when: ansible_facts['virtualization_role'] == 'host'

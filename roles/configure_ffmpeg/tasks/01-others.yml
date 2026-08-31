@@ -31,7 +31,7 @@
           --build-arg FFMPEG_VERSION={{ configure_ffmpeg_version }}
           --file {{ role_path }}/files/Dockerfile
           {{ configure_ffmpeg_local_repo_dir }}
-      changed_when: true
+      changed_when: true # It's a change if we are in this block
 
     - name: Ensure local build cache directory exists
       ansible.builtin.file:
@@ -42,18 +42,18 @@
     - name: Create container from ffmpeg image
       ansible.builtin.command:
         cmd: "docker create --name configure_ffmpeg_extract configure_ffmpeg:{{ configure_ffmpeg_version }}"
-      changed_when: true
+      changed_when: true # It's a change if we are in this block
 
     - name: Copy built binaries out of the container
       ansible.builtin.command:
         cmd: "docker cp configure_ffmpeg_extract:/app/workspace/bin/. {{ configure_ffmpeg_build_cache_dir }}/"
-      changed_when: true
+      changed_when: true # It's a change if we are in this block
   always:
     - name: Remove extraction container
       ansible.builtin.command:
         cmd: "docker rm --force configure_ffmpeg_extract"
-      changed_when: true
-      failed_when: false
+      changed_when: false # Hard call, but the change gets flagged elsewhere
+      failed_when: false # Just removing if possible
 
 - name: Ensure ffmpeg install directory exists
   ansible.builtin.file:

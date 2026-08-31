@@ -23,7 +23,6 @@
     # - configure_rsync_backup_source
     - configure_qbt_shaper
 
-
     # End
     # - configure_telegraf
     # - configure_wazuh_agent

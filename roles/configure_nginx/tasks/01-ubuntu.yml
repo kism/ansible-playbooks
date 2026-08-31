@@ -30,7 +30,7 @@
   ansible.builtin.command:
     cmd: gpg --dry-run --quiet --no-keyring --import --import-options import-show /etc/apt/keyrings/nginx-archive-keyring.asc
   register: configure_nginx_gpg_check
-  changed_when: false
+  changed_when: false # Dry run
 
 - name: Assert nginx signing key fingerprint ubuntu
   ansible.builtin.assert:

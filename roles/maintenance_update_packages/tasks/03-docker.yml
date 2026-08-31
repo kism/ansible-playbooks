@@ -6,10 +6,10 @@
       ansible.builtin.command:
         cmd: "docker compose -f {{ item }}/docker-compose.yml pull"
       loop: "{{ docker_compose_paths }}"
-      changed_when: true
+      changed_when: true # Safe assumption, no way to know
       throttle: 1
 
     - name: Prune old docker images
       ansible.builtin.command:
         cmd: "docker image prune -f"
-      changed_when: true
+      changed_when: true # Safe assumption, no way to know

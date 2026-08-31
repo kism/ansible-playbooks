@@ -4,7 +4,7 @@
     url: "{{ configure_wazuh_script_url }}"
     dest: /tmp/wazuh-install.sh
     mode: "0755"
-  changed_when: false
+  changed_when: false # We are in /tmp/
 
 - name: Run script to install Wazuh
   ansible.builtin.command:

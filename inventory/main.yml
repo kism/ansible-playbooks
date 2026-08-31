@@ -74,7 +74,6 @@ baremetal:
     pvewill:
     pvematt:
     bigbilly:
-
 nonansible:
   hosts:
     # Servers
