@@ -2,8 +2,9 @@
 - name: Basic Setup
   ansible.builtin.include_tasks: "01-basic.yml"
 
-- name: DuckDNS Setup
+- name: CF Dynamic DNS Setup
   ansible.builtin.include_tasks: "02-cf_dyndns.yml"
+  when: configure_jumpbox_only_shell is not defined or not configure_jumpbox_only_shell
 
 - name: Zsh Setup
   ansible.builtin.include_tasks: "03-zsh.yml"

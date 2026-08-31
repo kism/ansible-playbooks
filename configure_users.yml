@@ -12,6 +12,8 @@
   hosts: ent
   gather_facts: false
   become: true
+  vars:
+    configure_jumpbox_only_shell: true
   roles:
     - configure_jumpbox
 
