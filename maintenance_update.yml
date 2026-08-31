@@ -2,6 +2,14 @@
 # ---
 # Make sure you are in tmux, and not jumping via ent.kg.lan
 # ansible-playbook maintenance_update.yml -i inventory/main.yml
+
+# - name: Setup nvidia driver on hosts
+#   hosts: pvematt,jf,stream
+#   gather_facts: true
+#   become: true
+#   roles:
+#     - configure_nvidia_driver
+
 - name: Update all packages with maintenance_update_all role
   hosts: proxmoxvms, proxmoxhosts, baremetal
   gather_facts: true
@@ -28,12 +36,12 @@
   roles:
     - maintenance_reboot
 
-- name: Setup nvidia driver on hosts
-  hosts: pvematt,jf,stream
-  gather_facts: true
-  become: true
-  roles:
-    # Preflight
+# - name: Setup nvidia driver on hosts
+#   hosts: pvematt,jf,stream
+#   gather_facts: true
+#   become: true
+#   roles:
+#     # Preflight
 
-    # Configure Nvidia drivers
-    - configure_nvidia_driver
+#     # Configure Nvidia drivers
+#     - configure_nvidia_driver
