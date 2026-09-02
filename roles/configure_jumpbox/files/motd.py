@@ -9,7 +9,7 @@ ANSIBLE_JSON_URL = (
 )
 
 with urlopen(
-    Request(ANSIBLE_JSON_URL, headers={"User-Agent": "curl/8.5.0"})
+    Request(ANSIBLE_JSON_URL, headers={"User-Agent": "curl/8.5.0"}) # Thanks Cloudflare
 ) as response:
     data = json.loads(response.read())
 
