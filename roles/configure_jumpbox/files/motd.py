@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 import json
-from urllib.request import urlopen
 from datetime import datetime
+from urllib.request import Request, urlopen
 
 ANSIBLE_JSON_URL = (
     "https://cmdb.kierangee.au/inventory/kism_main/group/ansible_main/json"
 )
 
-with urlopen(ANSIBLE_JSON_URL) as response:
+with urlopen(
+    Request(ANSIBLE_JSON_URL, headers={"User-Agent": "curl/8.5.0"})
+) as response:
     data = json.loads(response.read())
 
 
@@ -172,5 +174,13 @@ MOTD_INTRO = r"""Art by jgs / Joan Stark
 """
 
 
-motd_content = "Generated: " + datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S") + " | " + MOTD_INTRO + "\n" + build_motd_table(data) + "\n"
+motd_content = (
+    "Generated: "
+    + datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+    + " | "
+    + MOTD_INTRO
+    + "\n"
+    + build_motd_table(data)
+    + "\n"
+)
 print(motd_content)
