@@ -1,0 +1,7 @@
+---
+- name: Install pipes
+  ansible.builtin.include_tasks: _script.yml
+  vars:
+    configure_terminal_art_name: pipes
+    configure_terminal_art_url: https://raw.githubusercontent.com/pipeseroni/pipes.sh/master/pipes.sh
+    configure_terminal_art_sha256: 59ba9cdb0620054e80fb0af981a6ecbe24478a35548dc356f0db082c3dd89de0

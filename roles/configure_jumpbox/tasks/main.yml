@@ -9,7 +9,3 @@
 - name: Zsh Setup
   ansible.builtin.include_tasks: "03-zsh.yml"
 
-- name: Terminal Art Setup
-  ansible.builtin.include_role:
-    name: configure_terminal_art
-  when: configure_jumpbox_only_shell is not defined or not configure_jumpbox_only_shell
