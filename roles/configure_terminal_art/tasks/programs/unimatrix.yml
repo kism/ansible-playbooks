@@ -1,0 +1,7 @@
+---
+- name: Install unimatrix
+  ansible.builtin.include_tasks: _script.yml
+  vars:
+    configure_terminal_art_name: unimatrix
+    configure_terminal_art_url: https://raw.githubusercontent.com/will8211/unimatrix/master/unimatrix.py
+    configure_terminal_art_sha256: 0bd73f1fc3625aa50402df84c3efd76f5c6929630e00fc6a90c163b645812546

@@ -1,0 +1,7 @@
+---
+- name: Install maze
+  ansible.builtin.include_tasks: _script.yml
+  vars:
+    configure_terminal_art_name: maze
+    configure_terminal_art_url: https://raw.githubusercontent.com/pipeseroni/maze.py/master/maze.py
+    configure_terminal_art_sha256: f84043274ff9949fe464759802abda882cd1f9d3e2a76dbc0734dd7592830f43

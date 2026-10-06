@@ -1,0 +1,7 @@
+---
+- name: Install pipesX
+  ansible.builtin.include_tasks: _script.yml
+  vars:
+    configure_terminal_art_name: pipesX
+    configure_terminal_art_url: https://raw.githubusercontent.com/pipeseroni/pipesX.sh/master/pipesX.sh
+    configure_terminal_art_sha256: 32c92a9f07a5b990cff2c7c27d1fb5a142271a3957329cf0cbf21d60772dd681

@@ -1,0 +1,62 @@
+---
+- name: Install asciiquarium from pacman
+  community.general.pacman:
+    name: asciiquarium
+    state: present
+  when: ansible_facts["pkg_mgr"] == "pacman"
+
+# Not packaged on Debian or Oracle Linux, neither is Term::Animation (pure perl, so just the .pm files)
+- name: Install asciiquarium script and Term::Animation
+  when: ansible_facts["pkg_mgr"] != "pacman"
+  vars:
+    configure_terminal_art_path: "{{ configure_terminal_art_dir }}/asciiquarium"
+  block:
+    - name: Install asciiquarium perl dependencies (apt)
+      ansible.builtin.apt:
+        name: libcurses-perl
+        state: present
+      when: ansible_facts["pkg_mgr"] == "apt"
+
+    - name: Install asciiquarium perl dependencies (dnf, perl-Curses is from EPEL)
+      ansible.builtin.dnf:
+        name:
+          - perl-Curses
+          - perl-Carp
+          - perl-Data-Dumper
+          - perl-Getopt-Std
+        state: present
+      when: ansible_facts["pkg_mgr"] in ["dnf", "dnf5"]
+
+    - name: Install asciiquarium script
+      ansible.builtin.include_tasks: _script.yml
+      vars:
+        configure_terminal_art_name: asciiquarium
+        configure_terminal_art_url: https://raw.githubusercontent.com/cmatsuoka/asciiquarium/master/asciiquarium
+        configure_terminal_art_sha256: 34b2613e559618aece477071f89d4120b58692582d5fc9c0c89ab8de62935926
+        configure_terminal_art_link: false # Wrapper below instead, to add Term::Animation to perl's path
+
+    - name: Ensure Term::Animation lib directory exists
+      ansible.builtin.file:
+        path: "{{ configure_terminal_art_path }}/lib/Term/Animation"
+        state: directory
+        mode: "0755"
+
+    - name: Download Term::Animation with pinned hash
+      ansible.builtin.get_url:
+        url: "https://fastapi.metacpan.org/source/KBAUCOM/Term-Animation-2.6/lib/{{ item.file }}"
+        dest: "{{ configure_terminal_art_path }}/lib/{{ item.file }}"
+        checksum: "sha256:{{ item.sha256 }}"
+        mode: "0644"
+      loop:
+        - file: Term/Animation.pm
+          sha256: ba85bf8132b7c8187e3f485ef8bfaedc7972d7f11cab4b6f49499d211552d7c8
+        - file: Term/Animation/Entity.pm
+          sha256: 19379a42c795bd23c0d5da491df25aa665ca85e5f826fd51be49e62b3c0085e2
+
+    - name: Install asciiquarium wrapper into /usr/local/bin
+      ansible.builtin.copy:
+        dest: /usr/local/bin/asciiquarium
+        content: |
+          #!/bin/sh
+          exec perl -I {{ configure_terminal_art_path }}/lib {{ configure_terminal_art_path }}/asciiquarium "$@"
+        mode: "0755"

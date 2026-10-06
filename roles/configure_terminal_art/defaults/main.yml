@@ -1,0 +1,3 @@
+---
+configure_terminal_art_dir: /opt/_terminal-eyecandy
+configure_terminal_art_build_dir: /tmp/terminal_art_build

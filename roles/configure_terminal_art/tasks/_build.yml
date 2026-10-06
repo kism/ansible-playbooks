@@ -1,0 +1,81 @@
+---
+# Expects: configure_terminal_art_name, configure_terminal_art_bin, configure_terminal_art_sources (list of url/sha256)
+# Optional: configure_terminal_art_make_args (list)
+# Built statically in an alpine container on localhost so hosts don't need a compiler
+- name: Build on localhost and copy binary to host
+  vars:
+    configure_terminal_art_src: "{{ configure_terminal_art_build_dir }}/{{ configure_terminal_art_name }}"
+    configure_terminal_art_path: "{{ configure_terminal_art_dir }}/{{ configure_terminal_art_name }}"
+  block:
+    - name: Build static binary on localhost
+      delegate_to: localhost
+      become: false
+      run_once: true
+      block:
+        - name: Ensure local build directory exists
+          ansible.builtin.file:
+            path: "{{ configure_terminal_art_src }}"
+            state: directory
+            mode: "0755"
+
+        # force: true so upstream changes are caught every run, not just on first install
+        - name: Download source with pinned hash
+          ansible.builtin.get_url:
+            url: "{{ item.url }}"
+            dest: "{{ configure_terminal_art_src }}/{{ item.url | basename }}"
+            checksum: "sha256:{{ item.sha256 }}"
+            force: true
+            mode: "0644"
+          loop: "{{ configure_terminal_art_sources }}"
+          register: configure_terminal_art_download
+
+        - name: Stat built binary
+          ansible.builtin.stat:
+            path: "{{ configure_terminal_art_src }}/{{ configure_terminal_art_bin }}"
+          register: configure_terminal_art_bin_stat
+
+        - name: Build static binary in alpine container
+          ansible.builtin.command:
+            argv: "{{ configure_terminal_art_docker + [configure_terminal_art_bin, 'LDFLAGS=-static'] + configure_terminal_art_make_args | default([]) }}"
+          vars:
+            configure_terminal_art_docker:
+              - docker
+              - run
+              - --rm
+              - --volume
+              - "{{ configure_terminal_art_src }}:/src"
+              - --workdir
+              - /src
+              - alpine:3
+              - sh
+              - -c
+              - apk add --quiet build-base ncurses-dev ncurses-static && make -B "$@"
+              - sh
+          when: configure_terminal_art_download is changed or not configure_terminal_art_bin_stat.stat.exists
+          changed_when: true # Only here if source changed or binary missing
+
+    - name: Ensure install directory exists
+      ansible.builtin.file:
+        path: "{{ configure_terminal_art_path }}"
+        state: directory
+        mode: "0755"
+
+    - name: Copy binary to host
+      ansible.builtin.copy:
+        src: "{{ configure_terminal_art_src }}/{{ configure_terminal_art_bin }}"
+        dest: "{{ configure_terminal_art_path }}/{{ configure_terminal_art_bin }}"
+        mode: "0755"
+
+    - name: Symlink binary into /usr/local/bin
+      ansible.builtin.file:
+        src: "{{ configure_terminal_art_path }}/{{ configure_terminal_art_bin }}"
+        dest: "/usr/local/bin/{{ configure_terminal_art_bin }}"
+        state: link
+        force: true
+  rescue:
+    - name: Warn that the program could not be installed
+      ansible.builtin.debug:
+        msg: >-
+          WARNING: {{ configure_terminal_art_name }} not installed/updated, upstream source probably changed.
+          Check {{ configure_terminal_art_sources | map(attribute='url') | join(' ') }} and update the sha256 in the role.
+          {{ ansible_failed_result.msg | default('') }}

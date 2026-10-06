@@ -1,0 +1,7 @@
+---
+- name: Install blue-ocean
+  ansible.builtin.include_tasks: _script.yml
+  vars:
+    configure_terminal_art_name: blue-ocean
+    configure_terminal_art_url: https://raw.githubusercontent.com/lbgists/blue-ocean/master/blue-ocean.sh
+    configure_terminal_art_sha256: 0fc5cd1fa5e390aaab75fa15b00d203c08e3f5fd93d24cd8ca38ebe07dabf74e

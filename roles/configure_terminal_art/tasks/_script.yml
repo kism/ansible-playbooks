@@ -1,0 +1,33 @@
+---
+# Expects: configure_terminal_art_name, configure_terminal_art_url, configure_terminal_art_sha256
+# force: true so upstream changes are caught every run, not just on first install
+- name: Install script to /opt and symlink it
+  block:
+    - name: Ensure install directory exists
+      ansible.builtin.file:
+        path: "{{ configure_terminal_art_dir }}/{{ configure_terminal_art_name }}"
+        state: directory
+        mode: "0755"
+
+    - name: Download script with pinned hash
+      ansible.builtin.get_url:
+        url: "{{ configure_terminal_art_url }}"
+        dest: "{{ configure_terminal_art_dir }}/{{ configure_terminal_art_name }}/{{ configure_terminal_art_url | basename }}"
+        checksum: "sha256:{{ configure_terminal_art_sha256 }}"
+        force: true
+        mode: "0755"
+
+    - name: Symlink script into /usr/local/bin
+      ansible.builtin.file:
+        src: "{{ configure_terminal_art_dir }}/{{ configure_terminal_art_name }}/{{ configure_terminal_art_url | basename }}"
+        dest: "/usr/local/bin/{{ configure_terminal_art_name }}"
+        state: link
+        force: true
+      when: configure_terminal_art_link | default(true)
+  rescue:
+    - name: Warn that the script could not be installed
+      ansible.builtin.debug:
+        msg: >-
+          WARNING: {{ configure_terminal_art_name }} not installed/updated, upstream file probably changed.
+          Check {{ configure_terminal_art_url }} and update the sha256 in the role.
+          {{ ansible_failed_result.msg | default('') }}

@@ -1,0 +1,13 @@
+---
+# Built from source since it is not packaged for Oracle Linux 9/10, config.h replaced with -D flags
+- name: Install cmatrix
+  ansible.builtin.include_tasks: _build.yml
+  vars:
+    configure_terminal_art_name: cmatrix
+    configure_terminal_art_bin: cmatrix
+    configure_terminal_art_sources:
+      - url: https://raw.githubusercontent.com/abishekvashok/cmatrix/v2.0/cmatrix.c
+        sha256: 30e0f9e827cc30107ed084c23a7810512c3cba26f1c700efabda212c3b63f2d8
+    configure_terminal_art_make_args:
+      - 'CFLAGS=-DVERSION=\"2.0\" -DEXCLUDE_CONFIG_H -DHAVE_NCURSES_H -DHAVE_GETOPT_H -DHAVE_SYS_IOCTL_H -DHAVE_UNISTD_H -DHAVE_TERMIOS_H -DHAVE_RESIZETERM -DHAVE_WRESIZE'
+      - LDLIBS=-lncursesw

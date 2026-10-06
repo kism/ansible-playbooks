@@ -1,0 +1,16 @@
+---
+- name: Install tfire
+  ansible.builtin.include_tasks: _script.yml
+  vars:
+    configure_terminal_art_name: tfire
+    configure_terminal_art_url: https://raw.githubusercontent.com/tech-chad/tfire/master/tfire.py
+    configure_terminal_art_sha256: 1a990490695bbeb1f5b364d989f2fe8fb6a2a6572846f046a48c6230f8f63e59
+    configure_terminal_art_link: false # No shebang, wrapper below instead
+
+- name: Install tfire wrapper into /usr/local/bin
+  ansible.builtin.copy:
+    dest: /usr/local/bin/tfire
+    content: |
+      #!/bin/sh
+      exec python3 {{ configure_terminal_art_dir }}/tfire/tfire.py "$@"
+    mode: "0755"

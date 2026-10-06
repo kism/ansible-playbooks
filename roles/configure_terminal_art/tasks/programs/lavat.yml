@@ -1,0 +1,11 @@
+---
+- name: Install lavat
+  ansible.builtin.include_tasks: _build.yml
+  vars:
+    configure_terminal_art_name: lavat
+    configure_terminal_art_bin: lavat
+    configure_terminal_art_sources:
+      - url: https://raw.githubusercontent.com/AngelJumbo/lavat/main/lavat.c
+        sha256: 9cf75260043cb6dc2c62c84b185e7fcb33fb3fa2c38ad1ecfa7cc051368d3363
+      - url: https://raw.githubusercontent.com/AngelJumbo/lavat/main/termbox.h
+        sha256: 0ebef83bf8acfacea1cfc8ed78886eb46bd28f915e1217c07577bf08801a95b8

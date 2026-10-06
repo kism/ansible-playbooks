@@ -1,0 +1,11 @@
+---
+- name: Install ascii-rain
+  ansible.builtin.include_tasks: _build.yml
+  vars:
+    configure_terminal_art_name: ascii-rain
+    configure_terminal_art_bin: rain
+    configure_terminal_art_sources:
+      - url: https://raw.githubusercontent.com/nkleemann/ascii-rain/master/rain.c
+        sha256: e418771332a3ececc61d48031acfffdc1920fec6c6f981649c9ddfec9ca762e8
+    configure_terminal_art_make_args:
+      - LDLIBS=-lncursesw

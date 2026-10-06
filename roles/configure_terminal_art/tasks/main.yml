@@ -1,0 +1,33 @@
+---
+- name: Ensure terminal eyecandy directory exists
+  ansible.builtin.file:
+    path: "{{ configure_terminal_art_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Write list of provided programs
+  ansible.builtin.copy:
+    dest: "{{ configure_terminal_art_dir }}/README"
+    mode: "0644"
+    content: |
+      Installed by ansible role configure_terminal_art
+      https://github.com/mcthomas/awesome-terminal-art
+
+      asciiquarium  aquarium animation
+      blue-ocean    ocean waves
+      cmatrix       matrix rain
+      duckpond      ducks on a pond
+      lavat         lava lamp
+      maze          maze generator
+      pipesX        pipes screensaver
+      rain          ascii rain
+      termdvd       bouncing dvd logo
+      tfire         fire
+      unimatrix     matrix rain, more options
+
+- name: Include tasks, terminal art programs
+  ansible.builtin.include_tasks: "{{ configure_terminal_art_item }}"
+  with_fileglob:
+    - "tasks/programs/*"
+  loop_control:
+    loop_var: configure_terminal_art_item

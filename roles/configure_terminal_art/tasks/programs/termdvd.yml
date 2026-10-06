@@ -1,0 +1,7 @@
+---
+- name: Install termdvd
+  ansible.builtin.include_tasks: _script.yml
+  vars:
+    configure_terminal_art_name: termdvd
+    configure_terminal_art_url: https://raw.githubusercontent.com/nyankittone/termdvd/master/termdvd.py
+    configure_terminal_art_sha256: 4b2e35ba4542bab7040d3adf33c3e9a37f8cb9c207cf0c121ca5159f573d805f
