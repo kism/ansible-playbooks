@@ -264,6 +264,15 @@ fi
 # all jobs done, let's send output to user if configured
 if [ $EMAIL_ADDRESS ]; then
   echo "[`date`] Email address is set. Sending email report to <$EMAIL_ADDRESS>"
+  # OPTIONALLY, let's reduce the amount of status lines in output (applies to warning emails too).
+  if [ $TERSE -gt 1 ]; then
+    # Report progress in interval of tens %
+    sed -i '$!N; /^\([0-9]\).*\n\1.*$/!P; D'  $TMP_OUTPUT
+    sed -i '/^[1-8]%.*$/d'  $TMP_OUTPUT
+  elif [ $TERSE -gt 0 ]; then
+    # Report progress in interval of ones %
+    sed -i '$!N; /^\([0-9]*\)%.*\n\1.*$/!P; D'  $TMP_OUTPUT
+  fi
   # check if deleted count exceeded threshold
   if [ $DEL_COUNT -gt $DEL_THRESHOLD -a $DO_SYNC -eq 0 ]; then
     # YES, lets inform user with an appropriate subject line
@@ -275,15 +284,6 @@ if [ $EMAIL_ADDRESS ]; then
     # Scrub ran but did not complete successfully so lets warn the user
     $MAIL_BIN -s "$EMAIL_SUBJECT_PREFIX WARNING - SCRUB job ran but did not complete successfully" "$EMAIL_ADDRESS" < $TMP_OUTPUT
   else
-    # OPTIONALLY, let's reduce the amount of status lines in output.
-    if [ $TERSE -gt 1 ]; then
-      # Report progress in interval of tens %
-      sed -i '$!N; /^\([0-9]\).*\n\1.*$/!P; D'  $TMP_OUTPUT
-      sed -i '/^[1-8]%.*$/d'  $TMP_OUTPUT
-    elif [ $TERSE -gt 0 ]; then
-      # Report progress in interval of ones %
-      sed -i '$!N; /^\([0-9]*\)%.*\n\1.*$/!P; D'  $TMP_OUTPUT
-    fi
     $MAIL_BIN -s "$EMAIL_SUBJECT_PREFIX INFO - $JOBS_DONE Jobs COMPLETED" "$EMAIL_ADDRESS" < $TMP_OUTPUT
   fi
 fi
