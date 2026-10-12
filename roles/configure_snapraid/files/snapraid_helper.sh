@@ -290,9 +290,4 @@ fi
 
 echo "[`date`] All jobs ended."
 
-sleep 240
-
-hd-idle -t /dev/disk/by-label/Eiko
-hd-idle -t /dev/disk/by-label/Zidane
-
 exit 0;
