@@ -5,7 +5,7 @@ from datetime import datetime
 from urllib.request import Request, urlopen
 
 ANSIBLE_JSON_URL = (
-    "https://cmdb.kierangee.au/inventory/kism_main/group/ansible_main/json"
+    "https://cmdb-api.kierangee.au/inventory/kism_main/group/ansible_main/hosts.json"
 )
 
 with urlopen(
