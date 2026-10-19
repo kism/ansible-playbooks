@@ -59,7 +59,7 @@ export PATH="/usr/sbin:$PATH"
 ## USER DEFINED SETTINGS ##
 # address where the output of the jobs will be emailed to.
 # comment it out to disable email output
-EMAIL_ADDRESS="root"
+EMAIL_ADDRESS="{{ secret_email }}"
 
 # Set the threshold of deleted files to stop the sync job from running.
 # NOTE that depending on how active your filesystem is being used, a low
