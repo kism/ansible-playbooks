@@ -1,99 +1,39 @@
 ---
-- name: Get latest headplane release from github api
-  ansible.builtin.uri:
-    url: "https://api.github.com/repos/tale/headplane/releases/latest"
-  register: configure_headscale_headplane_github
-  when: configure_headscale_headplane_version == "latest"
-
-- name: Resolve headplane version
-  ansible.builtin.set_fact:
-    configure_headscale_headplane_resolved_version: >-
-      {{ configure_headscale_headplane_github.json.tag_name | regex_replace('^v', '')
-         if configure_headscale_headplane_version == "latest" else configure_headscale_headplane_version }}
-
-- name: Install headplane build dependencies
-  ansible.builtin.dnf:
-    name:
-      - nodejs24
-      - nodejs24-npm
-      - git
-      - gcc-c++
-      - make
-      - python3
-      - openssl
-    state: present
-
-# ponytail: nodejs24 only ships node-24/npm-24, build.sh and pnpm want plain `node`
-- name: Symlink node
+- name: Create headplane directories
   ansible.builtin.file:
-    src: /usr/bin/node-24
-    dest: /usr/local/bin/node
-    state: link
-
-- name: Install pnpm
-  community.general.npm:
-    name: pnpm@10
-    global: true
-    executable: /usr/bin/npm-24
-
-- name: Clone headplane
-  ansible.builtin.git:
-    repo: https://github.com/tale/headplane.git
-    dest: "{{ configure_headscale_headplane_install_dir }}"
-    version: "v{{ configure_headscale_headplane_resolved_version }}"
-    force: true
-  register: configure_headscale_headplane_git
-
-- name: Build headplane  # noqa: no-handler
-  when: configure_headscale_headplane_git.changed
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_facts['env']['PATH'] }}"
-    HEADPLANE_VERSION: "{{ configure_headscale_headplane_resolved_version }}"
-  block:
-    # ponytail: web ui only, add --wasm --agent (needs go) for browser ssh / agent
-    - name: Run headplane build script
-      ansible.builtin.command: ./build.sh --app
-      args:
-        chdir: "{{ configure_headscale_headplane_install_dir }}"
-      changed_when: true
-      notify: Restart headplane
-
-- name: Create headplane system user
-  ansible.builtin.user:
-    name: headplane
-    home: /var/lib/headplane
-    create_home: true
-    system: true
-    shell: /usr/sbin/nologin
-
-- name: Create headplane configuration directory
-  ansible.builtin.file:
-    path: /etc/headplane
+    path: "{{ item }}"
     state: directory
     owner: root
-    group: headplane
-    mode: "0750"
+    group: root
+    mode: "0700"
+  loop:
+    - /opt/headplane
+    - /opt/headplane/data
 
 - name: Generate headplane cookie secret
-  ansible.builtin.shell: umask 027 && openssl rand -hex 16 > /etc/headplane/cookie_secret
-  args:
-    creates: /etc/headplane/cookie_secret
-
-- name: Set headplane cookie secret permissions
-  ansible.builtin.file:
-    path: /etc/headplane/cookie_secret
-    owner: root
-    group: headplane
-    mode: "0640"
-
-- name: Copy headplane configuration file
   ansible.builtin.copy:
-    src: headplane.yaml
-    dest: /etc/headplane/config.yaml
+    content: "{{ lookup('ansible.builtin.password', '/dev/null', length=32, chars=['ascii_letters', 'digits']) }}"
+    dest: /opt/headplane/cookie_secret
+    force: false
     owner: root
-    group: headplane
-    mode: "0640"
+    group: root
+    mode: "0600"
+
+- name: Copy headplane config and docker compose file
+  ansible.builtin.copy:
+    src: "headplane/{{ item }}"
+    dest: "/opt/headplane/{{ item }}"
+    owner: root
+    group: root
+    mode: "0600"
+  loop:
+    - config.yaml
+    - docker-compose.yml
   notify: Restart headplane
+
+- name: Pull images for docker-compose headplane
+  community.docker.docker_compose_v2_pull:
+    project_src: /opt/headplane
 
 - name: Copy systemd service file for headplane
   ansible.builtin.copy:

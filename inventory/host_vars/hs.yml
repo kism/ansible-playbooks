@@ -8,3 +8,5 @@ proxmox_ct_cores: 2
 proxmox_ct_features:
   - nesting=true
 proxmox_ct_unprivileged: true
+docker_compose_paths:
+  - /opt/headplane

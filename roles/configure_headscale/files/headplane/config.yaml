@@ -10,4 +10,5 @@ server:
 
 headscale:
   url: "http://127.0.0.1:8080"
+  # Mounted read-only, settings are visible in the UI but not editable
   config_path: "/etc/headscale/config.yaml"

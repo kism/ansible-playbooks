@@ -5,15 +5,16 @@
   become: true
   roles:
     # Preflight
-    - maintenance_gather_facts_pve
-    - create_opnsense_entries
-    - create_proxmox_ct
+    # - maintenance_gather_facts_pve
+    # - create_opnsense_entries
+    # - create_proxmox_ct
     - maintenance_gather_facts
 
     # Onboard Server
     - meta_onboard
 
     # Purpose specific
+    - configure_docker
     - configure_headscale
 
     # End
