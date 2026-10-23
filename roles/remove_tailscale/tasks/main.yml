@@ -1,0 +1,20 @@
+---
+- name: Stop and disable tailscaled
+  ansible.builtin.systemd_service:
+    name: tailscaled
+    enabled: false
+    state: stopped
+  failed_when: false # ponytail: already gone is fine
+
+- name: Remove Tailscale
+  ansible.builtin.dnf:
+    name: tailscale
+    state: absent
+
+- name: Remove Tailscale Items
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/yum.repos.d/tailscale.repo
+    - /var/lib/tailscale
