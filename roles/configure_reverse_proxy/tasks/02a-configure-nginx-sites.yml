@@ -12,7 +12,7 @@
 
 - name: Build list of source nginx config files
   ansible.builtin.find:
-    paths: "{{ role_path }}/files/hosts/{{ ansible_hostname }}/sites-available/"
+    paths: "{{ role_path }}/files/hosts/{{ ansible_facts['hostname'] }}/sites-available/"
     patterns: "*.conf"
   delegate_to: localhost
   register: configure_reverse_proxy_source_files
@@ -66,7 +66,7 @@
     dest: /etc/nginx/sites-available/
     mode: "0660"
   with_fileglob:
-    - "files/hosts/{{ ansible_hostname }}/sites-available/*.conf"
+    - "files/hosts/{{ ansible_facts['hostname'] }}/sites-available/*.conf"
   notify:
     - Restart nginx
 

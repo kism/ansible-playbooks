@@ -1,6 +1,11 @@
 ---
 - name: Block with fun rescue
   block:
+    - name: Remove old influxdb key
+      ansible.builtin.rpm_key:
+        key: 9fc2f927
+        state: absent
+
     - name: Update DNF Cache, list updates
       ansible.builtin.dnf:
         update_cache: true
@@ -43,7 +48,7 @@
 - name: Get only installed # WIP telegraf-1.30.2-1.aarch64
   ansible.builtin.set_fact:
     maintenance_update_packages_changed:
-      host: "{{ ansible_hostname }}"
+      host: "{{ ansible_facts['hostname'] }}"
       packages: "{{ maintenance_update_packages_dnf_update.results | select('match', '^Installed: ') | map('regex_replace', '^Installed: ', '') | list }}"
 
 - name: Set fact for maintenance_update_packages_changed {{ ansible_facts["pkg_mgr"] }}

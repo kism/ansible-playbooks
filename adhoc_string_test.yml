@@ -16,12 +16,12 @@
       block:
         - name: Set target arch per map if possible
           ansible.builtin.set_fact:
-            configure_ffmpeg_arch: "{{  arch_map[ansible_architecture] }}"
+            configure_ffmpeg_arch: "{{  arch_map[ansible_facts['architecture']] }}"
 
       rescue:
         - name: Set default ffmpeg_arch
           ansible.builtin.set_fact:
-            configure_ffmpeg_arch: "{{ ansible_architecture }}"
+            configure_ffmpeg_arch: "{{ ansible_facts['architecture'] }}"
 
     - name: Print out multiline entry (multi line string)
       ansible.builtin.debug:

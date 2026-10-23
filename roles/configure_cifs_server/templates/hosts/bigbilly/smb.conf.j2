@@ -67,7 +67,7 @@
 #======================= Share Definitions =======================
 
 [{{ bigbilly_share_folder_name }}]
-   comment = {{ ansible_fqdn }} {{ bigbilly_share_folder_name }}
+   comment = {{ ansible_facts['fqdn'] }} {{ bigbilly_share_folder_name }}
    path = {{ configure_mergerfs_mountpoint }}
    browseable = yes
    read only = yes

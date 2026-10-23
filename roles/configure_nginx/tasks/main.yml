@@ -3,21 +3,21 @@
   ansible.builtin.assert:
     that:
       - >-
-        ansible_distribution in ['RedHat', 'Rocky', 'AlmaLinux', 'OracleLinux', 'CentOS', 'Debian', 'Ubuntu']
+        ansible_facts['distribution'] in ['RedHat', 'Rocky', 'AlmaLinux', 'OracleLinux', 'CentOS', 'Debian', 'Ubuntu']
     fail_msg: >-
       configure_nginx supports RedHat/Rocky/AlmaLinux/OracleLinux/CentOS, Debian, and Ubuntu hosts for nginx.org mainline packages.
 
 - name: Include RedHat tasks
   ansible.builtin.include_tasks: 01-redhat.yml
-  when: ansible_distribution in ['RedHat', 'Rocky', 'AlmaLinux', 'OracleLinux', 'CentOS']
+  when: ansible_facts['distribution'] in ['RedHat', 'Rocky', 'AlmaLinux', 'OracleLinux', 'CentOS']
 
 - name: Include Debian tasks
   ansible.builtin.include_tasks: 01-debian.yml
-  when: ansible_distribution == 'Debian'
+  when: ansible_facts['distribution'] == 'Debian'
 
 - name: Include Ubuntu tasks
   ansible.builtin.include_tasks: 01-ubuntu.yml
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: Copy nginx.conf
   ansible.builtin.copy:

@@ -13,7 +13,7 @@
 
 - name: Copy smb config
   ansible.builtin.template:
-    src: templates/hosts/{{ ansible_hostname }}/smb.conf.j2
+    src: templates/hosts/{{ ansible_facts['hostname'] }}/smb.conf.j2
     dest: /etc/samba/smb.conf
     mode: "0644"
   notify:

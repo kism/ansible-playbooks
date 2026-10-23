@@ -67,13 +67,13 @@
       ansible.builtin.set_fact:
         maintenance_gather_facts_print_vars:
           host_things:
-            ansible_hostname: "{{ ansible_hostname }}"
-            ansible_default_ipv4_address: "{{ ansible_default_ipv4.address | default('<Not Defined>') }}"
+            ansible_hostname: "{{ ansible_facts['hostname'] }}"
+            ansible_default_ipv4_address: "{{ ansible_facts['default_ipv4'].address | default('<Not Defined>') }}"
             ansible_facts['distribution_file_variety']: "{{ ansible_facts['distribution_file_variety'] }}"
             ansible_facts['distribution']: "{{ ansible_facts['distribution'] }}"
             ansible_facts['distribution_major_version']: "{{ ansible_facts['distribution_major_version'] }}"
             ansible_facts['distribution_release']: "{{ ansible_facts['distribution_release'] }}"
-            ansible_architecture: "{{ ansible_architecture }}"
+            ansible_architecture: "{{ ansible_facts['architecture'] }}"
             ansible_facts['pkg_mgr']: "{{ ansible_facts['pkg_mgr'] }}"
           local_things:
             inventory_hostname: "{{ inventory_hostname }}"

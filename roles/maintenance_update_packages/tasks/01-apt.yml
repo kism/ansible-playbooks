@@ -36,7 +36,7 @@
 - name: Set fact for maintenance_update_packages_changed {{ ansible_facts["pkg_mgr"] }}
   ansible.builtin.set_fact:
     maintenance_update_packages_changed:
-      host: "{{ ansible_hostname }}"
+      host: "{{ ansible_facts['hostname'] }}"
       packages: "{{ maintenance_update_packages_changed | combine({'maintenance_update_packages_apt_upgraded': maintenance_update_packages_apt_upgraded, 'maintenance_update_packages_apt_not_upgraded':
         maintenance_update_packages_apt_not_upgraded}) }}"
 

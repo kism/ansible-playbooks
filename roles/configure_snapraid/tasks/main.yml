@@ -7,7 +7,7 @@
 
 - name: Copy SnapRAID conf
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/snapraid.conf
+    src: files/hosts/{{ ansible_facts['hostname'] }}/snapraid.conf
     dest: /etc/snapraid.conf
     mode: "644"
 

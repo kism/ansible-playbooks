@@ -9,7 +9,7 @@
 
 - name: Copy nginx conf
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/nginx.conf
+    src: files/hosts/{{ ansible_facts['hostname'] }}/nginx.conf
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
@@ -35,13 +35,13 @@
     src: "{{ item }}"
     dest: /usr/share/nginx/html/site/{{ item | basename }}
     mode: "0664"
-  with_fileglob: "files/hosts/{{ ansible_hostname }}/public/*"
+  with_fileglob: "files/hosts/{{ ansible_facts['hostname'] }}/public/*"
   notify:
     - Restart nginx
 
 - name: Copy private index.html
   ansible.builtin.copy:
-    src: files/hosts/{{ ansible_hostname }}/private/index.html
+    src: files/hosts/{{ ansible_facts['hostname'] }}/private/index.html
     dest: /usr/share/nginx/html/site/private/index.html
     mode: "0664"
   notify:

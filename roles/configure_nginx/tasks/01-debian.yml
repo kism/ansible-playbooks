@@ -43,7 +43,7 @@
     name: nginx
     types: deb
     uris: https://nginx.org/packages/mainline/debian
-    suites: "{{ ansible_distribution_release }}"
+    suites: "{{ ansible_facts['distribution_release'] }}"
     components: nginx
     signed_by: /etc/apt/keyrings/nginx-archive-keyring.asc
     install_python_debian: true

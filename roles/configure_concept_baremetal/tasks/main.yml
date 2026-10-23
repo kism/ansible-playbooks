@@ -6,12 +6,12 @@
       block:
         - name: Set target arch per map if possible
           ansible.builtin.set_fact:
-            configure_concept_baremetal_github_arch: "{{ configure_concept_baremetal_arch_map[ansible_architecture] }}"
+            configure_concept_baremetal_github_arch: "{{ configure_concept_baremetal_arch_map[ansible_facts['architecture']] }}"
 
       rescue:
         - name: Set default configure_concept_baremetal_github_arch
           ansible.builtin.set_fact:
-            configure_concept_baremetal_github_arch: "{{ ansible_architecture }}"
+            configure_concept_baremetal_github_arch: "{{ ansible_facts['architecture'] }}"
 
     - name: Include HDD/fstab tasks
       ansible.builtin.include_tasks: "01-hdd.yml"

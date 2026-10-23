@@ -1,7 +1,7 @@
 ---
 - name: Set architecture for download
   ansible.builtin.set_fact:
-    configure_headscale_arch: "{{ configure_headscale_arch_map[ansible_architecture] }}"
+    configure_headscale_arch: "{{ configure_headscale_arch_map[ansible_facts['architecture']] }}"
 
 - name: Set binary filename
   ansible.builtin.set_fact:
