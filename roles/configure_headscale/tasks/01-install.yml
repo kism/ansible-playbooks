@@ -3,9 +3,21 @@
   ansible.builtin.set_fact:
     configure_headscale_arch: "{{ configure_headscale_arch_map[ansible_facts['architecture']] }}"
 
+- name: Get latest headscale release from github api
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/juanfont/headscale/releases/latest"
+  register: configure_headscale_github
+  when: configure_headscale_version == "latest"
+
+- name: Resolve headscale version
+  ansible.builtin.set_fact:
+    configure_headscale_resolved_version: >-
+      {{ configure_headscale_github.json.tag_name | regex_replace('^v', '')
+         if configure_headscale_version == "latest" else configure_headscale_version }}
+
 - name: Set binary filename
   ansible.builtin.set_fact:
-    configure_headscale_binary_name: "headscale_{{ configure_headscale_version }}_linux_{{ configure_headscale_arch }}"
+    configure_headscale_binary_name: "headscale_{{ configure_headscale_resolved_version }}_linux_{{ configure_headscale_arch }}"
 
 - name: Create install directory
   ansible.builtin.file:
@@ -25,7 +37,7 @@
   block:
     - name: Fetch checksums.txt
       ansible.builtin.uri:
-        url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_version }}/checksums.txt"
+        url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_resolved_version }}/checksums.txt"
         return_content: true
       register: configure_headscale_checksums
 
@@ -38,7 +50,7 @@
 
     - name: Download headscale binary
       ansible.builtin.get_url:
-        url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_version }}/{{ configure_headscale_binary_name }}"
+        url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_resolved_version }}/{{ configure_headscale_binary_name }}"
         dest: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"
         checksum: "sha256:{{ configure_headscale_checksum }}"
         owner: root

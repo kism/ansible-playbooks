@@ -4,3 +4,6 @@
 
 - name: Include tasks for configuring headscale
   ansible.builtin.include_tasks: "{{ role_path }}/tasks/02-configure.yml"
+
+- name: Include tasks for installing headplane
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/03-headplane.yml"

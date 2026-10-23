@@ -1,0 +1,13 @@
+---
+# https://github.com/tale/headplane/blob/main/config.example.yaml
+server:
+  host: "0.0.0.0"
+  port: 3000
+  base_url: "https://hs.kierangee.au"
+  cookie_secret_path: "/etc/headplane/cookie_secret"
+  cookie_secure: true
+  data_path: "/var/lib/headplane"
+
+headscale:
+  url: "http://127.0.0.1:8080"
+  config_path: "/etc/headscale/config.yaml"

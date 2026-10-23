@@ -1,0 +1,15 @@
+[Unit]
+Description=Headplane
+After=headscale.service
+
+[Service]
+Type=simple
+User=headplane
+Group=headplane
+WorkingDirectory=/opt/headplane
+ExecStart=/usr/bin/node-24 /opt/headplane/build/server/index.js
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
