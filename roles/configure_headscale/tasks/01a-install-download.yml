@@ -1,6 +1,7 @@
 ---
-- name: Set architecture for download
+- name: Set architecture and install method
   ansible.builtin.set_fact:
+    configure_headscale_use_deb: "{{ ansible_facts['os_family'] == 'Debian' }}"
     configure_headscale_arch: "{{ configure_headscale_arch_map[ansible_facts['architecture']] }}"
 
 - name: Get latest headscale release from github api
@@ -17,7 +18,8 @@
 
 - name: Set binary filename
   ansible.builtin.set_fact:
-    configure_headscale_binary_name: "headscale_{{ configure_headscale_resolved_version }}_linux_{{ configure_headscale_arch }}"
+    configure_headscale_binary_name: >-
+      headscale_{{ configure_headscale_resolved_version }}_linux_{{ configure_headscale_arch }}{{ '.deb' if configure_headscale_use_deb else '' }}
 
 - name: Create install directory
   ansible.builtin.file:
@@ -56,9 +58,3 @@
         owner: root
         group: root
         mode: "0755"
-
-- name: Symlink headscale
-  ansible.builtin.file:
-    src: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"
-    dest: /usr/local/sbin/headscale
-    state: link

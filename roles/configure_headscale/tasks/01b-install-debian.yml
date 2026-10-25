@@ -1,0 +1,4 @@
+---
+- name: Install headscale deb package
+  ansible.builtin.apt:
+    deb: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"

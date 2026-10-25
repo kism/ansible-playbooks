@@ -1,5 +1,7 @@
 ---
+# The deb package provides the headscale user and systemd unit
 - name: Create headscale system user
+  when: not configure_headscale_use_deb
   ansible.builtin.user:
     name: headscale
     home: /var/lib/headscale
@@ -8,6 +10,7 @@
     shell: /usr/sbin/nologin
 
 - name: Copy systemd service file for headscale
+  when: not configure_headscale_use_deb
   ansible.builtin.copy:
     src: headscale.service
     dest: /etc/systemd/system/headscale.service
@@ -31,6 +34,10 @@
     owner: headscale
     group: headscale
     mode: "0644"
+  notify: Restart headscale
+
+- name: Flush handlers so systemd sees headscale
+  ansible.builtin.meta: flush_handlers
 
 - name: Enable and start headscale service
   ansible.builtin.systemd_service:

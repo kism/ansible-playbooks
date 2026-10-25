@@ -1,6 +1,9 @@
 ---
-- name: Include tasks for installing headscale
-  ansible.builtin.include_tasks: "{{ role_path }}/tasks/01-install.yml"
+- name: Include tasks for downloading headscale
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/01a-install-download.yml"
+
+- name: Include tasks for installing headscale on {{ ansible_facts['os_family'] }}
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/01b-install-{{ ansible_facts['os_family'] | lower }}.yml"
 
 - name: Include tasks for configuring headscale
   ansible.builtin.include_tasks: "{{ role_path }}/tasks/02-configure.yml"
