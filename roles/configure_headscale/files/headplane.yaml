@@ -9,6 +9,13 @@ server:
   data_path: "/var/lib/headplane"
 
 headscale:
-  url: "http://127.0.0.1:8080"
-  # Mounted read-only, settings are visible in the UI but not editable
+  url: "http://headscale:8080"
+  config_strict: true
   config_path: "/etc/headscale/config.yaml"
+
+# Lets headplane find and restart the headscale container after config changes
+integration:
+  docker:
+    enabled: true
+    container_label: "me.tale.headplane.target=headscale"
+    socket_path: "unix:///var/run/docker.sock"

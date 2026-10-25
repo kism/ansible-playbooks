@@ -1,40 +1,76 @@
 ---
-- name: Get latest headscale release from github api
-  ansible.builtin.uri:
-    url: "https://api.github.com/repos/juanfont/headscale/releases/latest"
-  register: configure_headscale_github
-  when: configure_headscale_version == "latest"
-
-- name: Set headscale version and architecture
-  ansible.builtin.set_fact:
-    configure_headscale_arch: "{{ configure_headscale_arch_map[ansible_facts['architecture']] }}"
-    configure_headscale_resolved_version: >-
-      {{ configure_headscale_github.json.tag_name | regex_replace('^v', '')
-         if configure_headscale_version == "latest" else configure_headscale_version }}
-
-- name: Set headscale release url
-  ansible.builtin.set_fact:
-    configure_headscale_release_url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_resolved_version }}"
-    configure_headscale_binary_name: "headscale_{{ configure_headscale_resolved_version }}_linux_{{ configure_headscale_arch }}"
-
-- name: Create install directory
+- name: Create headscale directories
   ansible.builtin.file:
-    path: "{{ configure_headscale_install_dir }}"
+    path: "{{ item }}"
     state: directory
     owner: root
     group: root
-    mode: "0755"
+    mode: "0700"
+  loop:
+    - /opt/headscale
+    - /opt/headscale/headscale-data
+    - /opt/headscale/headplane-data
 
-- name: Include tasks for installing headscale deb
-  ansible.builtin.include_tasks: "01-deb.yml"
-  when: ansible_facts["pkg_mgr"] == 'apt'
+- name: Generate headplane cookie secret
+  ansible.builtin.copy:
+    content: "{{ lookup('ansible.builtin.password', '/dev/null', length=32, chars=['ascii_letters', 'digits']) }}"
+    dest: /opt/headscale/cookie_secret
+    force: false
+    owner: root
+    group: root
+    mode: "0600"
 
-- name: Include tasks for installing headscale binary
-  ansible.builtin.include_tasks: "01-other.yml"
-  when: ansible_facts["pkg_mgr"] != 'apt'
+# ponytail: force false on config.yaml since headplane edits it in place, delete it on the host to re-push
+- name: Copy headscale config
+  ansible.builtin.copy:
+    src: config.yaml
+    dest: /opt/headscale/config.yaml
+    force: false
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Restart headscale
 
-- name: Include tasks for configuring headscale
-  ansible.builtin.include_tasks: "02-configure.yml"
+- name: Copy headplane config and docker compose file
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/opt/headscale/{{ item }}"
+    owner: root
+    group: root
+    mode: "0600"
+  loop:
+    - headplane.yaml
+    - docker-compose.yml
+  notify: Restart headscale
 
-- name: Include tasks for installing headplane
-  ansible.builtin.include_tasks: "03-headplane.yml"
+- name: Pull images for docker-compose headscale
+  community.docker.docker_compose_v2_pull:
+    project_src: /opt/headscale
+
+- name: Copy systemd service file for headscale
+  ansible.builtin.copy:
+    src: headscale.service
+    dest: /etc/systemd/system/headscale.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Flush handlers so systemd sees headscale
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start headscale service
+  ansible.builtin.systemd_service:
+    name: headscale
+    enabled: true
+    state: started
+
+- name: Allow headscale and headplane through firewall
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+    immediate: true
+  loop:
+    - 8080/tcp
+    - 3000/tcp

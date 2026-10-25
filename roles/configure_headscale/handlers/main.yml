@@ -3,11 +3,6 @@
   ansible.builtin.systemd:
     daemon_reload: true
 
-- name: Restart headplane
-  ansible.builtin.systemd_service:
-    name: headplane
-    state: restarted
-
 - name: Restart headscale
   ansible.builtin.systemd_service:
     name: headscale
