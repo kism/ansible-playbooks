@@ -1,7 +1,7 @@
 ---
-- name: Remove old repo files
+- name: Remove old docker repo file
   ansible.builtin.file:
-    path: /etc/apt/sources.list.d
+    path: /etc/apt/sources.list.d/docker.list
     state: absent
 
 - name: Remove unofficial packages

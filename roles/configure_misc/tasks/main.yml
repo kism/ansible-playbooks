@@ -37,6 +37,7 @@
 - name: Check if /etc/vconsole.conf exists
   ansible.builtin.stat:
     path: /etc/vconsole.conf
+    follow: true # Debian symlinks this to default/keyboard, which may not exist
   register: configure_misc_vconsole_stat
 
 - name: Check if terminus is installed

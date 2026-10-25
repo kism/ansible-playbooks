@@ -6,7 +6,7 @@
     line: PermitRootLogin no
     state: present
   notify:
-    - Reload sshd
+    - Restart sshd
 
 - name: Ensure that /etc/ssh/sshd_config.d exists
   ansible.builtin.file:
@@ -20,11 +20,11 @@
     dest: /etc/ssh/sshd_config.d/90-sshnopasswordauth.conf
     mode: "0600"
   notify:
-    - Reload sshd
+    - Restart sshd
 
 - name: Remove 01-PermitRootLogin just incase, looking at you redhat
   ansible.builtin.file:
     path: /etc/ssh/sshd_config.d/01-permitrootlogin.conf
     state: absent
   notify:
-    - Reload sshd
+    - Restart sshd

@@ -1,6 +1,0 @@
----
-- name: Symlink headscale
-  ansible.builtin.file:
-    src: "{{ configure_headscale_install_dir }}/{{ configure_headscale_binary_name }}"
-    dest: /usr/local/sbin/headscale
-    state: link

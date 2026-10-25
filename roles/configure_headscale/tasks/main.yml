@@ -1,12 +1,40 @@
 ---
-- name: Include tasks for downloading headscale
-  ansible.builtin.include_tasks: "{{ role_path }}/tasks/01a-install-download.yml"
+- name: Get latest headscale release from github api
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/juanfont/headscale/releases/latest"
+  register: configure_headscale_github
+  when: configure_headscale_version == "latest"
 
-- name: Include tasks for installing headscale on {{ ansible_facts['os_family'] }}
-  ansible.builtin.include_tasks: "{{ role_path }}/tasks/01b-install-{{ ansible_facts['os_family'] | lower }}.yml"
+- name: Set headscale version and architecture
+  ansible.builtin.set_fact:
+    configure_headscale_arch: "{{ configure_headscale_arch_map[ansible_facts['architecture']] }}"
+    configure_headscale_resolved_version: >-
+      {{ configure_headscale_github.json.tag_name | regex_replace('^v', '')
+         if configure_headscale_version == "latest" else configure_headscale_version }}
+
+- name: Set headscale release url
+  ansible.builtin.set_fact:
+    configure_headscale_release_url: "https://github.com/juanfont/headscale/releases/download/v{{ configure_headscale_resolved_version }}"
+    configure_headscale_binary_name: "headscale_{{ configure_headscale_resolved_version }}_linux_{{ configure_headscale_arch }}"
+
+- name: Create install directory
+  ansible.builtin.file:
+    path: "{{ configure_headscale_install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Include tasks for installing headscale deb
+  ansible.builtin.include_tasks: "01-deb.yml"
+  when: ansible_facts["pkg_mgr"] == 'apt'
+
+- name: Include tasks for installing headscale binary
+  ansible.builtin.include_tasks: "01-other.yml"
+  when: ansible_facts["pkg_mgr"] != 'apt'
 
 - name: Include tasks for configuring headscale
-  ansible.builtin.include_tasks: "{{ role_path }}/tasks/02-configure.yml"
+  ansible.builtin.include_tasks: "02-configure.yml"
 
 - name: Include tasks for installing headplane
-  ansible.builtin.include_tasks: "{{ role_path }}/tasks/03-headplane.yml"
+  ansible.builtin.include_tasks: "03-headplane.yml"
