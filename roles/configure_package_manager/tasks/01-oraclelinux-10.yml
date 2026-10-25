@@ -12,10 +12,21 @@
         path: /etc/yum.repos.d/oracle-appstream-ol9.repo
         state: absent
 
-    - name: Enable EPEL and appstream
-      community.general.dnf_config_manager:
-        name: "AppStream"
-        state: enabled
+    - name: Check for stock repo file {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
+      ansible.builtin.stat:
+        path: /etc/yum.repos.d/oracle-linux-ol10.repo
+      register: configure_package_manager_ol10_stock_repo
+
+    # ponytail: minimal images (LXC) ship only baseos, stock installs already have ol10_appstream enabled
+    - name: Add appstream repo {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
+      when: not configure_package_manager_ol10_stock_repo.stat.exists
+      ansible.builtin.yum_repository:
+        name: ol10_appstream
+        description: Oracle Linux 10 Application Stream
+        baseurl: https://yum.oracle.com/repo/OracleLinux/OL10/appstream/$basearch/
+        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+        gpgcheck: true
+        enabled: true
 
 - name: Enable epel {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
   ansible.builtin.dnf:
