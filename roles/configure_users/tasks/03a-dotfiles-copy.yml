@@ -1,7 +1,7 @@
 ---
 - name: Get the user's home directory
   ansible.builtin.set_fact:
-    configure_users_user_home: "{{ getent_passwd[loop_user][4] }}"
+    configure_users_user_home: "{{ ansible_facts['getent_passwd'][loop_user][4] }}"
 
 - name: Copy files
   become: true

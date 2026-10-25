@@ -18,14 +18,14 @@
     - name: Copy bash config
       ansible.builtin.copy:
         src: files/jumpbox.zshrc
-        dest: "{{ getent_passwd[homelab_my_username][4] }}/.zshrc"
+        dest: "{{ ansible_facts['getent_passwd'][homelab_my_username][4] }}/.zshrc"
         owner: "{{ homelab_my_username }}"
         group: "{{ homelab_my_username }}"
         mode: "0644"
 
     - name: Add reminder in bashrc
       ansible.builtin.lineinfile:
-        path: "{{ getent_passwd[homelab_my_username][4] }}/.bashrc"
+        path: "{{ ansible_facts['getent_passwd'][homelab_my_username][4] }}/.bashrc"
         line: "echo 'run: sudo usermod --shell /bin/zsh kism'"
         insertafter: EOF
 

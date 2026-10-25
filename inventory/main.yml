@@ -49,6 +49,9 @@ ansible_main:
     hs:
       ansible_host: hs.kg.lan
       ansible_host_description: Headscale
+    gsb:
+      ansible_host: gsb.kg.lan
+      ansible_host_description: GSB Sync
 
 # Server Type
 proxmoxvms:
