@@ -1,4 +1,4 @@
 ---
-- name: Update APT cache
+- name: Update APT cache {{ ansible_distribution_release }}
   ansible.builtin.apt:
     update_cache: true
