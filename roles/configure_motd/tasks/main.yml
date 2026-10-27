@@ -25,6 +25,7 @@
     path: /etc/motd
   register: configure_motd_motd_found
 
+# Ubuntu ships without /etc/motd, but pam_motd still shows it after the update-motd.d output
 - name: Set MOTD /etc/motd
   ansible.builtin.include_tasks: "01-motd.yml"
-  when: configure_motd_motd_found.stat.exists
+  when: configure_motd_motd_found.stat.exists or configure_motd_update_motdd_found.stat.exists

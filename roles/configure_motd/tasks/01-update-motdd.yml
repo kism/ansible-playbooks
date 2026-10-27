@@ -29,7 +29,7 @@
         dest: /etc/update-motd.d/
         mode: "0755"
       loop:
-        - 00-header
+        - 10-header
         - 50-sysinfo
 
     - name: Disable motd-news

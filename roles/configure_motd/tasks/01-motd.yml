@@ -1,8 +1,6 @@
 ---
 - name: Set motd
-  ansible.builtin.copy:
-    dest: "/etc/motd"
-    content: |
-      {{ ansible_host }}, {{ ansible_host_description | default("") }}.
-      Unauthorised access is forbidden.
+  ansible.builtin.template:
+    src: motd.j2
+    dest: /etc/motd
     mode: "0644"
