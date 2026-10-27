@@ -1,0 +1,12 @@
+#!/bin/sh
+# {{ ansible_managed }}
+# Reapplies the motd cleanup; invoked directly by ansible and also wired
+# in as an apt Post-Invoke-Success hook so it self-heals after apt updates.
+set -e
+
+{% for f in configure_motd_apt_unwanted_files %}
+if [ -e "{{ f }}" ]; then
+    printf '%s\n' '# Removed by Kieran w/ansible' > "{{ f }}"
+    chmod 0444 "{{ f }}"
+fi
+{% endfor %}

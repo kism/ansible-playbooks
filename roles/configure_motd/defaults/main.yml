@@ -1,0 +1,15 @@
+---
+# Files that ubuntu/update-motd packages can (re)create; blanked out on apt systems
+# both immediately and via an apt Post-Invoke-Success hook, since apt upgrades
+# (e.g. update-notifier-common) can regenerate them.
+configure_motd_apt_unwanted_files:
+  - /etc/update-motd.d/10-help-text
+  - /etc/update-motd.d/10-help-text.dpkg-dist
+  - /etc/update-motd.d/10-uname
+  - /etc/update-motd.d/50-motd-news
+  - /etc/update-motd.d/50-landscape-sysinfo
+  - /etc/update-motd.d/85-fwupd
+  - /etc/update-motd.d/88-esm-announce
+  - /etc/update-motd.d/90-updates-available
+  - /etc/update-motd.d/91-release-upgrade
+  - /etc/update-motd.d/92-unattended-upgrades

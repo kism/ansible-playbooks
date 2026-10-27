@@ -1,0 +1,19 @@
+---
+- name: Template motd cleanup script for apt post-invoke hook
+  ansible.builtin.template:
+    src: kglan-motd-cleanup.sh.j2
+    dest: /usr/local/sbin/kglan-motd-cleanup.sh
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install apt post-invoke hook to reapply motd cleanup after package upgrades
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/99-kglan-motd-cleanup
+    content: |
+      // Reapplies the motd cleanup after every dpkg run, since package
+      // upgrades (e.g. update-notifier-common) can regenerate these files.
+      DPkg::Post-Invoke {"/usr/local/sbin/kglan-motd-cleanup.sh";};
+    owner: root
+    group: root
+    mode: "0644"
