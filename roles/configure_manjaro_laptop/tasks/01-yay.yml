@@ -1,0 +1,9 @@
+---
+# yay is packaged in the Manjaro repos, so no need to build it from the AUR
+- name: Install yay
+  community.general.pacman:
+    name:
+      - base-devel
+      - git
+      - yay
+    state: present

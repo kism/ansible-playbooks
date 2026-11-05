@@ -1,0 +1,15 @@
+---
+- name: Include tasks for installing yay
+  ansible.builtin.include_tasks: 01-yay.yml
+
+- name: Include tasks for installing toshy
+  ansible.builtin.include_tasks: 02-toshy.yml
+
+- name: Include tasks for installing the kde fullscreen spaces kwin script
+  ansible.builtin.include_tasks: 03-kde-fullscreen-spaces.yml
+
+- name: Include tasks for setting the kde wallpaper
+  ansible.builtin.include_tasks: 04-kde-wallpaper.yml
+
+- name: Include tasks for configuring kwin
+  ansible.builtin.include_tasks: 05-kde-kwin.yml

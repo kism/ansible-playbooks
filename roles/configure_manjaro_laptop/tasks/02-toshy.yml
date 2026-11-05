@@ -1,0 +1,39 @@
+---
+# Toshy's documented install is a curl | sh bootstrap script, which only asks
+# questions, downloads the source tarball and runs `setup_toshy.py install`.
+# We skip the bootstrap and do the same steps non-interactively, pinned to a ref.
+#
+# setup_toshy.py must run as the normal user (not root), it calls sudo itself
+# for the native package install.
+# https://github.com/RedBearAK/toshy/blob/main/scripts/bootstrap.sh
+
+- name: Create toshy source directory
+  ansible.builtin.file:
+    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.cache/toshy-src"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Unpack toshy source
+  ansible.builtin.unarchive:
+    src: "https://codeload.github.com/RedBearAK/toshy/tar.gz/{{ configure_manjaro_laptop_toshy_ref }}"
+    dest: "{{ lookup('ansible.builtin.env', 'HOME') }}/.cache/toshy-src"
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+    creates: "{{ lookup('ansible.builtin.env', 'HOME') }}/.cache/toshy-src/setup_toshy.py"
+  become: false
+
+- name: Run toshy installer
+  ansible.builtin.command:
+    argv:
+      - ./setup_toshy.py
+      - install
+      - --skip-update-check  # We assume the laptop is updated
+      - --admin-capable
+      - "yes"
+    # On KDE the installer asks about the macOS-like KWin app switcher, answer yes
+    stdin: "y"
+    chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/.cache/toshy-src"
+    creates: "{{ lookup('ansible.builtin.env', 'HOME') }}/.config/toshy"
+  become: false

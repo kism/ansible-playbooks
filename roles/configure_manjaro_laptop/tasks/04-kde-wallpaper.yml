@@ -1,0 +1,34 @@
+---
+# Solid dark grey wallpaper on every desktop, via the plasmashell scripting API.
+# The colour wallpaper plugin has no CLI tool like plasma-apply-wallpaperimage.
+# Needs to run from within the desktop session (session dbus), user level.
+
+- name: Check if the colour wallpaper is already set
+  ansible.builtin.command:
+    argv:
+      - grep
+      - --fixed-strings
+      - --quiet
+      - "Color={{ configure_manjaro_laptop_wallpaper_colour }}"
+      - "{{ lookup('ansible.builtin.env', 'HOME') }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
+  register: configure_manjaro_laptop_wallpaper_check
+  changed_when: false
+  failed_when: configure_manjaro_laptop_wallpaper_check.rc > 1  # rc 1 is not found, rc 2 is file missing/error
+  become: false
+
+- name: Set solid colour wallpaper
+  ansible.builtin.command:
+    argv:
+      - qdbus6
+      - org.kde.plasmashell
+      - /PlasmaShell
+      - org.kde.PlasmaShell.evaluateScript
+      - >-
+        desktops().forEach(function (d) {
+        d.wallpaperPlugin = 'org.kde.color';
+        d.currentConfigGroup = ['Wallpaper', 'org.kde.color', 'General'];
+        d.writeConfig('Color', '{{ configure_manjaro_laptop_wallpaper_colour }}');
+        });
+  when: configure_manjaro_laptop_wallpaper_check.rc != 0
+  changed_when: true  # Guarded by the check above
+  become: false

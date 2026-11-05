@@ -1,0 +1,33 @@
+---
+# KWin (window manager) settings, taken from the existing ~/.config/kwinrc.
+# Not managed here: [Desktops] and [Tiling] (per machine uuids), and the
+# applicationswitcher / toshy plugin entries (written by the toshy install).
+# User level, so no become.
+
+- name: Configure kwinrc
+  community.general.ini_file:
+    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.config/kwinrc"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+    mode: "0644"
+  loop:
+    # Meta alone does not open the launcher
+    - { section: ModifierOnlyShortcuts, option: Meta, value: "" }
+    - { section: Plugins, option: highlightwindowEnabled, value: "false" }
+    # Alt+Tab, applications mode, no delay, no window highlighting
+    - { section: TabBox, option: ApplicationsMode, value: "1" }
+    - { section: TabBox, option: DelayTime, value: "0" }
+    - { section: TabBox, option: HighlightWindows, value: "false" }
+    - { section: TabBox, option: OrderMinimizedMode, value: "1" }
+    - { section: TabBoxAlternative, option: DelayTime, value: "0" }
+    - { section: TabBoxAlternative, option: HighlightWindows, value: "false" }
+    - { section: TabBoxAlternative, option: LayoutName, value: thumbnail_grid }
+    - { section: TabBoxAlternative, option: OrderMinimizedMode, value: "1" }
+    - { section: Xwayland, option: Scale, value: "1" }
+    # macOS style window buttons on the left: close, minimize, maximize
+    - { section: org.kde.kdecoration2, option: ButtonsOnLeft, value: XIA }
+    - { section: org.kde.kdecoration2, option: ButtonsOnRight, value: ESMH }
+  become: false
+  notify: Reload kwin config

@@ -1,0 +1,6 @@
+---
+- name: Reload kwin config
+  ansible.builtin.command: qdbus6 org.kde.KWin /KWin reconfigure
+  changed_when: true  # Reload has no state to check
+  failed_when: false  # Best effort, no session bus when not run from the desktop, a re-login also loads it
+  become: false

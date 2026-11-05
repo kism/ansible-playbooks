@@ -1,0 +1,9 @@
+---
+# Toshy git ref (tag, branch or commit SHA) https://github.com/RedBearAK/toshy
+configure_manjaro_laptop_toshy_ref: Toshy_v26.08.0
+
+# https://github.com/geodro/kde-fullscreen-spaces (git ref, commit SHA pinned)
+configure_manjaro_laptop_fullscreen_spaces_ref: 6bd10dfa1a03beef4ffb3ab44ef26ed32cdaa094
+
+# Solid colour desktop wallpaper
+configure_manjaro_laptop_wallpaper_colour: "#2b2b2b"

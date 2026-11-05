@@ -1,0 +1,12 @@
+---
+# Run against this machine (localhost), prompting for the sudo password:
+# ansible-playbook build_manjaro_laptop.yml --connection local --ask-become-pass
+#
+# (the localhost inventory is implicit, so no -i is needed)
+
+- name: Setup Manjaro laptop
+  hosts: localhost
+  gather_facts: true
+  become: true
+  roles:
+    - configure_manjaro_laptop

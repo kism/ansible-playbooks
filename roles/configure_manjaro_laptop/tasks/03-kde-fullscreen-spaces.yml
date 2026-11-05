@@ -1,0 +1,68 @@
+---
+# https://github.com/geodro/kde-fullscreen-spaces
+# macOS style fullscreen Spaces for KDE Plasma 6, a KWin script.
+# This does what the repo's install.sh does, but pinned to a commit.
+# User level install, so no become.
+
+- name: Set fullscreen spaces facts
+  ansible.builtin.set_fact:
+    configure_manjaro_laptop_fs_src: "{{ lookup('ansible.builtin.env', 'HOME') }}/.cache/kde-fullscreen-spaces"
+    configure_manjaro_laptop_fs_dest: "{{ lookup('ansible.builtin.env', 'HOME') }}/.local/share/kwin/scripts/fullscreen-to-new-desktop"
+
+- name: Create fullscreen spaces source directory
+  ansible.builtin.file:
+    path: "{{ configure_manjaro_laptop_fs_src }}"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Unpack fullscreen spaces source
+  ansible.builtin.unarchive:
+    src: "https://codeload.github.com/geodro/kde-fullscreen-spaces/tar.gz/{{ configure_manjaro_laptop_fullscreen_spaces_ref }}"
+    dest: "{{ configure_manjaro_laptop_fs_src }}"
+    remote_src: true
+    extra_opts:
+      - --strip-components=1
+    creates: "{{ configure_manjaro_laptop_fs_src }}/metadata.json"
+  become: false
+
+- name: Create kwin script directory
+  ansible.builtin.file:
+    path: "{{ configure_manjaro_laptop_fs_dest }}"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Install fullscreen spaces kwin script files
+  ansible.builtin.copy:
+    src: "{{ configure_manjaro_laptop_fs_src }}/{{ item }}"
+    dest: "{{ configure_manjaro_laptop_fs_dest }}/"
+    remote_src: true
+    mode: preserve
+  loop:
+    - metadata.json
+    - contents
+  become: false
+  register: configure_manjaro_laptop_fs_files
+
+- name: Enable fullscreen spaces kwin script
+  community.general.ini_file:
+    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.config/kwinrc"
+    section: Plugins
+    option: fullscreen-to-new-desktopEnabled
+    value: "true"
+    no_extra_spaces: true
+    mode: "0644"
+  become: false
+  register: configure_manjaro_laptop_fs_enabled
+
+- name: Hot reload kwin scripting
+  ansible.builtin.command: "qdbus6 org.kde.KWin /Scripting {{ item }}"
+  loop:
+    - org.kde.kwin.Scripting.unloadScript fullscreen-to-new-desktop
+    - "org.kde.kwin.Scripting.loadScript {{ configure_manjaro_laptop_fs_dest }}/contents/code/main.js fullscreen-to-new-desktop"
+    - org.kde.kwin.Scripting.start
+  when: configure_manjaro_laptop_fs_files is changed or configure_manjaro_laptop_fs_enabled is changed
+  changed_when: true  # Reload is a command with no state to check
+  failed_when: false  # Best effort, no session bus when not run from the desktop, a re-login also loads it
+  become: false
