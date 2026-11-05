@@ -1,6 +1,6 @@
 ---
 # KWin (window manager) settings, taken from the existing ~/.config/kwinrc.
-# Not managed here: [Desktops] and [Tiling] (per machine uuids), and the
+# Not managed here: the desktop Id_N entries and [Tiling] (per machine uuids), and the
 # applicationswitcher / toshy plugin entries (written by the toshy install).
 # User level, so no become.
 
@@ -16,6 +16,9 @@
     # Meta alone does not open the launcher
     - { section: ModifierOnlyShortcuts, option: Meta, value: "" }
     - { section: Plugins, option: highlightwindowEnabled, value: "false" }
+    # Two virtual desktops in one row
+    - { section: Desktops, option: Number, value: "2" }
+    - { section: Desktops, option: Rows, value: "1" }
     # Alt+Tab, applications mode, no delay, no window highlighting
     - { section: TabBox, option: ApplicationsMode, value: "1" }
     - { section: TabBox, option: DelayTime, value: "0" }
