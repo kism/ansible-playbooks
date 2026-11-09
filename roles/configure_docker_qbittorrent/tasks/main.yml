@@ -32,7 +32,7 @@
   community.docker.docker_compose_v2_pull:
     project_src: "{{ arr_settings_base_dir }}/qbittorrent/"
 
-- name: Copy firewalld service files
+- name: Copy firewalld service files for qbittorrent
   ansible.builtin.copy:
     src: firewalld/
     dest: /etc/firewalld/services/
@@ -41,7 +41,7 @@
     mode: "0644"
   notify: Reload firewalld
 
-- name: Flush handlers so firewalld knows the new services
+- name: Flush handlers so firewalld knows the qbittorrent services
   ansible.builtin.meta: flush_handlers
 
 - name: Allow qBittorrent through firewalld

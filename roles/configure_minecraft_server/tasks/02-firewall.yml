@@ -1,5 +1,5 @@
 ---
-- name: Copy firewalld service files
+- name: Copy firewalld service files for minecraft
   ansible.builtin.copy:
     src: firewalld/
     dest: /etc/firewalld/services/
@@ -8,7 +8,7 @@
     mode: "0644"
   notify: Reload firewalld
 
-- name: Flush handlers so firewalld knows the new services
+- name: Flush handlers so firewalld knows the minecraft services
   ansible.builtin.meta: flush_handlers
 
 - name: Allow Minecraft through firewalld

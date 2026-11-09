@@ -12,7 +12,7 @@
     var: configure_jellyfin_adhoc_server_download_url
 
 # Firewalld
-- name: Copy firewalld service file
+- name: Copy firewalld service files for jellyfin
   ansible.builtin.copy:
     src: files/firewalld/jellyfin.xml
     dest: /usr/lib/firewalld/services/jellyfin.xml

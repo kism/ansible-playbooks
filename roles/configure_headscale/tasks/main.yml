@@ -65,7 +65,7 @@
     enabled: true
     state: started
 
-- name: Copy firewalld service file
+- name: Copy firewalld service files for headscale
   ansible.builtin.copy:
     src: firewalld/headscale.xml
     dest: /etc/firewalld/services/headscale.xml

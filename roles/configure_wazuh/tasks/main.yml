@@ -18,7 +18,7 @@
     var: configure_wazuh_script_result.stdout
   when: configure_wazuh_script_result.rc == 0 and 'already installed' not in configure_wazuh_script_result.stdout
 
-- name: Copy firewalld service files
+- name: Copy firewalld service files for wazuh
   ansible.builtin.copy:
     src: firewalld/
     dest: /etc/firewalld/services/
@@ -27,7 +27,7 @@
     mode: "0644"
   notify: Reload firewalld
 
-- name: Flush handlers so firewalld knows the new services
+- name: Flush handlers so firewalld knows the wazuh services
   ansible.builtin.meta: flush_handlers
 
 - name: Allow https service through firewalld

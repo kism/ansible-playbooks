@@ -13,15 +13,14 @@ uv sync                                    # install python deps (ansible, ansib
 ansible-galaxy collection install --requirements-file collections/requirements.yml --upgrade
 $(./zz_loadcreds)                          # export BWS_ACCESS_TOKEN for bitwarden secret lookups
 
-.venv/bin/ansible-lint                     # lint everything (strict mode, what CI runs)
-.venv/bin/ansible-lint roles/<role_name>   # lint one role
-.venv/bin/ansible-taste                    # style checker, also run in CI
+.venv/bin/ansible-lint roles/<role_name> build_<host>.yml   # lint only the roles/playbooks you touched
+.venv/bin/ansible-taste                    # style checker, run on the whole repo, also run in CI
 
 ansible-playbook build_<host>.yml -i inventory/main.yml
 ansible-playbook build_<host>.yml -i inventory/main.yml --extra-vars "skip_onboard=true"  # skip meta_onboard roles
 ```
 
-There are no tests; ansible-lint (`strict: true`, see `.ansible-lint`) and ansible-taste are the checks. `*.tmp.yml` files are excluded from lint and are scratch.
+There are no tests; ansible-lint (`strict: true`, see `.ansible-lint`) and ansible-taste are the checks. After changes, run ansible-taste on the whole repo and ansible-lint on only the new/changed roles and playbooks. Never run ansible-lint on the whole repo, it's slow and the user does that themselves. `*.tmp.yml` files are excluded from lint and are scratch.
 
 ## Architecture
 

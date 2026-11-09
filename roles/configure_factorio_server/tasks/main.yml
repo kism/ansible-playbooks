@@ -12,7 +12,7 @@
     state: stopped
     masked: false
 
-- name: Copy firewalld service files
+- name: Copy firewalld service files for factorio
   ansible.builtin.copy:
     src: firewalld/
     dest: /etc/firewalld/services/
@@ -21,7 +21,7 @@
     mode: "0644"
   notify: Reload firewalld
 
-- name: Flush handlers so firewalld knows the new services
+- name: Flush handlers so firewalld knows the factorio services
   ansible.builtin.meta: flush_handlers
 
 - name: Allow factorio through firewalld

@@ -12,7 +12,7 @@
       - "Color={{ configure_manjaro_laptop_wallpaper_colour }}"
       - "{{ lookup('ansible.builtin.env', 'HOME') }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
   register: configure_manjaro_laptop_wallpaper_check
-  changed_when: false
+  changed_when: false # Checking
   failed_when: configure_manjaro_laptop_wallpaper_check.rc > 1  # rc 1 is not found, rc 2 is file missing/error
   become: false
 

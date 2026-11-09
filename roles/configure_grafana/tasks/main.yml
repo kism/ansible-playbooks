@@ -21,7 +21,7 @@
     enabled: true
     state: started
 
-- name: Copy firewalld service files
+- name: Copy firewalld service files for grafana
   ansible.builtin.copy:
     src: firewalld/
     dest: /etc/firewalld/services/
@@ -30,7 +30,7 @@
     mode: "0644"
   notify: Reload firewalld
 
-- name: Flush handlers so firewalld knows the new services
+- name: Flush handlers so firewalld knows the grafana services
   ansible.builtin.meta: flush_handlers
 
 - name: Allow Grafana and nginx through firewalld
