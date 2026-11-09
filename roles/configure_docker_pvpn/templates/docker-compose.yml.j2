@@ -23,11 +23,9 @@ services:
     image: tailscale/tailscale:latest
     container_name: tailscale
     network_mode: service:gluetun
-    environment:
-      - TS_HOSTNAME=kg-protonvpn
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=true
-      - TS_EXTRA_ARGS=--login-server=https://hs.{{ homelab_domain_external }} --advertise-exit-node
+    # Plain tailscaled, not containerboot: containerboot gives up on interactive login after ~60s and restarts with a new nodekey.
+    # Login is done once by hand (see role handler), state and prefs persist in ./tailscale
+    entrypoint: ["tailscaled", "--tun=userspace-networking", "--statedir=/var/lib/tailscale"]
     volumes:
       - ./tailscale:/var/lib/tailscale
     restart: unless-stopped

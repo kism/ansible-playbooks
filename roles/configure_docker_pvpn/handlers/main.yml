@@ -11,8 +11,8 @@
 - name: Print tailscale login instructions
   ansible.builtin.debug:
     msg: |-
-      If pvpn isn't on the tailnet yet, get the register key from the tailscale container:
-        ssh {{ ansible_host }} sudo docker logs tailscale 2>&1 | grep -o 'https://[^ ]*/register/[^ ]*'
-      Then on hs:
-        sudo docker exec headscale headscale nodes register --user <user> --key <key from the url>
+      If pvpn isn't on the tailnet yet, log in (waits until registered):
+        ssh -t {{ ansible_host }} sudo docker exec -it tailscale tailscale up --login-server=https://hs.{{ homelab_domain_external }} --hostname=kg-protonvpn --advertise-exit-node
+      Then on hs, with the key from the printed url:
+        sudo docker exec headscale headscale nodes register --user <user> --key <key>
       Then approve the exit node in headplane.
