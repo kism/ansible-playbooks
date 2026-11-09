@@ -1,0 +1,14 @@
+---
+target_host_ip_address: 10.42.0.13
+target_host_mac_address: BC:24:11:50:F0:E3
+proxmox_target_node: pvewill
+proxmox_ct_features:
+  - nesting=true
+proxmox_ct_conf_extra: # /dev/net/tun for gluetun
+  - "lxc.cgroup2.devices.allow: c 10:200 rwm"
+  - "lxc.mount.entry: /dev/net dev/net none bind,create=dir"
+docker_compose_paths:
+  - /opt/pvpn
+
+secret_proton_wireguard_private_key: "{{ lookup('bitwarden.secrets.lookup', '61433894-f1a4-4317-849f-b4fd003559d3') }}"
+secret_proton_wireguard_address: "{{ lookup('bitwarden.secrets.lookup', '3cd44e13-dca4-4af1-befb-b4fd00346aa9') }}"

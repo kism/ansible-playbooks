@@ -28,3 +28,6 @@ arr_movies_dir: /mnt/Vivi/Video/Movies
 arr_movies_4k_dir: /mnt/Vivi/Video/Movies 4k
 arr_tv_documentary_dir: /mnt/Amarant/Video/Documentary Series
 arr_movies_documentary_dir: /mnt/Amarant/Video/Documentary Movies
+
+secret_proton_wireguard_private_key: "{{ lookup('bitwarden.secrets.lookup', '75c666e8-7ba1-421e-85c7-b3f1004f15c9') }}"
+secret_proton_wireguard_address: "{{ lookup('bitwarden.secrets.lookup', 'fc10a3fc-9343-4f1d-a0fd-b3f1004f2e5f') }}"

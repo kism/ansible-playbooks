@@ -4,3 +4,7 @@
 
 - name: Include tasks for dns
   ansible.builtin.include_tasks: 2-dns.yml
+
+# Later roles in the build need the DHCP reservation and DNS record to already be live
+- name: Reload kea and unbound now
+  ansible.builtin.meta: flush_handlers

@@ -3,7 +3,7 @@
 server:
   host: "0.0.0.0"
   port: 3000
-  base_url: "https://hs.kierangee.au"
+  base_url: "https://hp.kierangee.au"
   cookie_secret_path: "/etc/headplane/cookie_secret"
   cookie_secure: true
   data_path: "/var/lib/headplane"

@@ -52,6 +52,9 @@ ansible_main:
     gsb:
       ansible_host: gsb.kg.lan
       ansible_host_description: GSB Sync
+    pvpn:
+      ansible_host: pvpn.kg.lan
+      ansible_host_description: ProtonVPN NL tailscale exit node
 
 # Server Type
 proxmoxvms:
@@ -68,6 +71,7 @@ proxmoxvms:
     vic:
     myr:
     hs:
+    pvpn:
 proxmoxhosts:
   hosts:
     pvewill:

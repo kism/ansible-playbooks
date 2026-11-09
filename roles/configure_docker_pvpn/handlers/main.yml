@@ -1,0 +1,18 @@
+---
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart pvpn
+  ansible.builtin.systemd_service:
+    name: pvpn
+    state: restarted
+
+- name: Print tailscale login instructions
+  ansible.builtin.debug:
+    msg: |-
+      If pvpn isn't on the tailnet yet, get the register key from the tailscale container:
+        ssh {{ ansible_host }} sudo docker logs tailscale 2>&1 | grep -o 'https://[^ ]*/register/[^ ]*'
+      Then on hs:
+        sudo docker exec headscale headscale nodes register --user <user> --key <key from the url>
+      Then approve the exit node in headplane.
