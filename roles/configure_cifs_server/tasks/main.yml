@@ -1,4 +1,16 @@
 ---
+- name: Copy firewalld service files
+  ansible.builtin.copy:
+    src: firewalld/
+    dest: /etc/firewalld/services/
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload firewalld
+
+- name: Flush handlers so firewalld knows the new services
+  ansible.builtin.meta: flush_handlers
+
 - name: Run samba install tasks per distro
   ansible.builtin.include_tasks: "01-samba-{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] }}.yml"
 

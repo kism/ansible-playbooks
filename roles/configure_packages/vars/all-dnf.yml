@@ -1,7 +1,5 @@
 ---
 configure_packages_to_install:
-  # - cmatrix
-  - pipx
   - xz
   - gpg
 

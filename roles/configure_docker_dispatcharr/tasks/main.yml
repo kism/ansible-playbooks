@@ -15,6 +15,18 @@
     group: root
     mode: "0644"
 
+- name: Copy firewalld service files
+  ansible.builtin.copy:
+    src: firewalld/
+    dest: /etc/firewalld/services/
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload firewalld
+
+- name: Flush handlers so firewalld knows the new services
+  ansible.builtin.meta: flush_handlers
+
 - name: Allow dispatcharr through firewall
   ansible.posix.firewalld:
     service: dispatcharr

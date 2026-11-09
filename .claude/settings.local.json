@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/bin/ansible-lint roles/configure_telegraf roles/configure_nginx roles/configure_docker)"
+    ]
+  }
+}

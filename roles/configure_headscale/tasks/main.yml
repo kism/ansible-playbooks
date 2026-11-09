@@ -65,12 +65,22 @@
     enabled: true
     state: started
 
+- name: Copy firewalld service file
+  ansible.builtin.copy:
+    src: firewalld/headscale.xml
+    dest: /etc/firewalld/services/headscale.xml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload firewalld
+
+- name: Flush handlers so firewalld knows the headscale service
+  ansible.builtin.meta: flush_handlers
+
 - name: Allow headscale and headplane through firewall
   ansible.posix.firewalld:
-    port: "{{ item }}"
+    service: headscale
+    zone: public
     permanent: true
     state: enabled
-    immediate: true
-  loop:
-    - 8080/tcp
-    - 3000/tcp
+  notify: Reload firewalld

@@ -49,6 +49,18 @@
   community.docker.docker_compose_v2_pull:
     project_src: "{{ arr_settings_base_dir }}/arr/"
 
+- name: Copy firewalld service files
+  ansible.builtin.copy:
+    src: firewalld/
+    dest: /etc/firewalld/services/
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload firewalld
+
+- name: Flush handlers so firewalld knows the new services
+  ansible.builtin.meta: flush_handlers
+
 - name: Allow arr services through firewalld
   ansible.posix.firewalld:
     service: "{{ item }}"

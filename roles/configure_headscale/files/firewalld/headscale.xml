@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Headscale</short>
+  <description>Headscale control server and Headplane UI.</description>
+  <port protocol="tcp" port="8080"/>
+  <port protocol="tcp" port="3000"/>
+</service>

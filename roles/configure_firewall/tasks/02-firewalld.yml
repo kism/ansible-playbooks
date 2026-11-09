@@ -5,17 +5,6 @@
       - firewalld
     state: present
 
-- name: Copy firewalld configs
-  ansible.builtin.copy:
-    src: files/
-    dest: /etc/firewalld/services
-    mode: "0644"
-  notify:
-    - Reload firewalld
-
-- name: Run handlers now
-  ansible.builtin.meta: flush_handlers
-
 - name: Set public as default policy
   ansible.builtin.lineinfile:
     path: /etc/firewalld/firewalld.conf
