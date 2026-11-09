@@ -11,10 +11,11 @@
     - /etc/nginx/sites-enabled
 
 - name: Build list of source nginx config files
+  delegate_to: localhost
+  become: false
   ansible.builtin.find:
     paths: "{{ role_path }}/files/hosts/{{ ansible_facts['hostname'] }}/sites-available/"
     patterns: "*.conf"
-  delegate_to: localhost
   register: configure_reverse_proxy_source_files
 
 - name: Build list of expected config filenames
