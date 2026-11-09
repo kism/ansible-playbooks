@@ -1,0 +1,42 @@
+---
+- name: Create /opt/cf_dyndns
+  ansible.builtin.file:
+    path: /opt/cf_dyndns
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Copy cloudflare dynamic dns script
+  ansible.builtin.copy:
+    src: cf_dyndns.py
+    dest: /opt/cf_dyndns/cf_dyndns.py
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy cloudflare dynamic dns env file
+  ansible.builtin.template:
+    src: cf_dyndns.env.j2
+    dest: /opt/cf_dyndns/cf_dyndns.env
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Copy cloudflare dynamic dns systemd units
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ item }}
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - cf_dyndns.service
+    - cf_dyndns.timer
+
+- name: Enable cloudflare dynamic dns timer
+  ansible.builtin.systemd_service:
+    name: cf_dyndns.timer
+    enabled: true
+    daemon_reload: true
+    state: started

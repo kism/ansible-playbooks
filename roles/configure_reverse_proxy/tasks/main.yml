@@ -7,3 +7,6 @@
 
 - name: Include configure certbot tasks
   ansible.builtin.include_tasks: 03-configure-certbot.yml
+
+- name: Include cloudflare dynamic dns tasks
+  ansible.builtin.include_tasks: 04-cf_dyndns.yml

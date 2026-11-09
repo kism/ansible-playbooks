@@ -1,0 +1,9 @@
+[Unit]
+Description=Update cloudflare A/AAAA records to this host's public IPs
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/cf_dyndns/cf_dyndns.env
+ExecStart=/usr/bin/python3.9 /opt/cf_dyndns/cf_dyndns.py
