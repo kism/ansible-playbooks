@@ -25,4 +25,4 @@
     - configure_locale
     - configure_firewall
     - configure_motd
-  when: skip_onboard is not defined or not (skip_onboard | bool)
+  when: skip_onboard is not defined or not (skip_onboard | bool) # -e skip_onboard=true

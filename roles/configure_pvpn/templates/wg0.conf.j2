@@ -9,8 +9,9 @@ PostUp = ip route replace default dev %i table 51820
 # Kill switch: the unreachable routes and the rules are never removed, so with wg0 down exit traffic is dropped, not leaked out the LAN.
 PostUp = ip route replace unreachable default metric 4096 table 51820
 PostUp = ip -6 route replace unreachable default table 51820
-PostUp = ip rule del priority 100 2>/dev/null; ip rule add iif tailscale0 lookup 51820 priority 100
-PostUp = ip -6 rule del priority 100 2>/dev/null; ip -6 rule add iif tailscale0 lookup 51820 priority 100
+# wg-quick runs hooks with set -e, so the del (no rule on first up) needs || true
+PostUp = ip rule del priority 100 2>/dev/null || true; ip rule add iif tailscale0 lookup 51820 priority 100
+PostUp = ip -6 rule del priority 100 2>/dev/null || true; ip -6 rule add iif tailscale0 lookup 51820 priority 100
 
 [Peer]
 PublicKey = {{ proton_wireguard_peer_public_key }}
