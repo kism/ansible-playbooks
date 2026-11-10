@@ -6,4 +6,4 @@ After=network-online.target
 [Service]
 Type=oneshot
 EnvironmentFile=/opt/cf_dyndns/cf_dyndns.env
-ExecStart=/usr/bin/python3.9 /opt/cf_dyndns/cf_dyndns.py
+ExecStart={{ ansible_python_interpreter | default('/usr/bin/python3') }} /opt/cf_dyndns/cf_dyndns.py

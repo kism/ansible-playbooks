@@ -2,5 +2,5 @@
 <service>
   <short>Tailscale</short>
   <description>Tailscale direct peer connections.</description>
-  <port protocol="udp" port="41641"/>
+  <port protocol="udp" port="41642"/>
 </service>

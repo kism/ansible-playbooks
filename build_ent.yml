@@ -16,7 +16,8 @@
     # Purpose specific
     # - configure_fail2ban
     - configure_jumpbox
-    - configure_terminal_art
+    - configure_cf_dyndns
+    # - configure_terminal_art
 
     # End
     # - configure_telegraf

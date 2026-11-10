@@ -44,6 +44,13 @@
     - Restart tailscaled
     - Print tailscale login instructions
 
+- name: Set tailscaled port, 41641 is opnsense's own tailscale behind the same ipv4
+  ansible.builtin.lineinfile:
+    path: /etc/default/tailscaled
+    regexp: ^PORT=
+    line: PORT="41642"
+  notify: Restart tailscaled
+
 - name: Copy firewalld service files for pvpn
   ansible.builtin.copy:
     src: firewalld/

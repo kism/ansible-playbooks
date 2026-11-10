@@ -7,3 +7,5 @@ proxmox_ct_disk: "local-lvm:10"
 proxmox_ct_memory: 512
 proxmox_ct_cores: 1
 secret_cloudflare_api_dns: "{{ lookup('bitwarden.secrets.lookup', '403c608c-85a3-487f-92ec-b22200708cd5') }}"
+secret_cloudflare_api_dns_zone: "{{ lookup('bitwarden.secrets.lookup', 'ffba4513-7464-4a57-9961-b3ec0044a7e5') }}"
+configure_cf_dyndns_record: "ssh.{{ homelab_domain_external }}" # AAAA is ent's own address, A is the shared NAT address (port forwarded to ent)

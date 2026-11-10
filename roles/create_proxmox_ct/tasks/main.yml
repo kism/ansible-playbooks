@@ -18,7 +18,7 @@
         hostname: "{{ inventory_hostname | lower }}"
         ostemplate: "Amarant_Backups_NFS:vztmpl/ol10_rootfs.tar.xz" # https://images.linuxcontainers.org/images
         # ostemplate: "local:vztmpl/oraclelinux_10.tar"
-        netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,firewall=1,hwaddr={{ target_host_mac_address }}"}'
+        netif: '{"net0":"name=eth0,bridge=vmbr0,type=veth,ip=dhcp,ip6=auto,firewall=1,hwaddr={{ target_host_mac_address }}"}'
         features: "{{ proxmox_ct_features }}"
         disk: "{{ proxmox_ct_disk }}"
         memory: "{{ proxmox_ct_memory }}"
