@@ -108,18 +108,24 @@ services:
     restart: unless-stopped
 
   # Misc
-  jellyseerr:
-      image: fallenbagel/jellyseerr:latest
-      container_name: jellyseerr
-      user: 1086:1086
-      environment:
-          - LOG_LEVEL=info
-          - TZ=Australia/Perth
-      ports:
-          - 5055:5055
-      volumes:
-          - {{ arr_settings_base_dir }}/jellyseerr/config:/app/config
-      restart: unless-stopped
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    init: true
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Australia/Perth
+    ports:
+      - 5055:5055
+    volumes:
+      - {{ arr_settings_base_dir }}/jellyseerr/config:/app/config # ponytail: kept old jellyseerr path, seerr migrates it in place
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/settings/public || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
 
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest

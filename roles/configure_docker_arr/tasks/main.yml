@@ -20,8 +20,14 @@
     - sonarr-documentary/config
     - prowlarr
     - prowlarr/config
-    - jellyseerr
-    - jellyseerr/config
+
+- name: Set seerr config ownership, container runs as node (uid 1000)
+  ansible.builtin.file:
+    path: "{{ arr_settings_base_dir }}/jellyseerr/config"
+    state: directory
+    recurse: true
+    owner: "1000"
+    group: "1000"
 
 - name: Create downloads folder structure for arr
   ansible.builtin.file:
