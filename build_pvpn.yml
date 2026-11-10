@@ -14,8 +14,8 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_docker
-    - configure_docker_pvpn
+    - configure_tailscale
+    - configure_pvpn
 
     # End
     # - configure_telegraf

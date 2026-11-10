@@ -1,0 +1,75 @@
+---
+- name: Install wireguard-tools
+  ansible.builtin.package:
+    name: wireguard-tools
+    state: present
+
+- name: Enable IP forwarding for the exit node
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: "1"
+    sysctl_file: /etc/sysctl.d/99-pvpn.conf
+    state: present
+    reload: true
+  loop:
+    - net.ipv4.ip_forward
+    - net.ipv6.conf.all.forwarding
+
+- name: Copy Proton wireguard config
+  ansible.builtin.template:
+    src: wg0.conf.j2
+    dest: /etc/wireguard/wg0.conf
+    mode: "0600"
+  notify: Restart wg-quick
+
+- name: Enable and start wg-quick
+  ansible.builtin.systemd_service:
+    name: wg-quick@wg0
+    enabled: true
+    state: started
+
+- name: Create tailscaled drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/tailscaled.service.d
+    state: directory
+    mode: "0755"
+
+- name: Make tailscaled depend on the Proton tunnel
+  ansible.builtin.copy:
+    src: tailscaled-pvpn.conf
+    dest: /etc/systemd/system/tailscaled.service.d/pvpn.conf
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart tailscaled
+    - Print tailscale login instructions
+
+- name: Copy firewalld service files for pvpn
+  ansible.builtin.copy:
+    src: firewalld/
+    dest: /etc/firewalld/services/
+    mode: "0644"
+  notify: Reload firewalld
+
+- name: Flush handlers so firewalld knows the tailscale service
+  ansible.builtin.meta: flush_handlers
+
+- name: Allow tailscale direct connections through firewall
+  ansible.posix.firewalld:
+    service: tailscale
+    zone: public
+    permanent: true
+    state: enabled
+  notify: Reload firewalld
+
+# ponytail: trusted lets exit node traffic forward from tailscale0, also opens the host to the tailnet. Headscale ACLs if that matters.
+- name: Put tailscale0 in trusted and wg0 in external (masquerade) zones
+  ansible.posix.firewalld:
+    interface: "{{ item.interface }}"
+    zone: "{{ item.zone }}"
+    permanent: true
+    state: enabled
+  loop:
+    - { interface: tailscale0, zone: trusted }
+    - { interface: wg0, zone: external }
+  notify: Reload firewalld
