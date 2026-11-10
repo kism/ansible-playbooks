@@ -13,12 +13,6 @@
     dest: "/opt/maxmind_geoip_nginx/.env"
     mode: "0600"
 
-- name: Create venv for maxmind nginx
-  ansible.builtin.command:
-    cmd: "/usr/local/bin/uv venv"
-    chdir: "/opt/maxmind_geoip_nginx"
-  changed_when: true # Don't want to program this
-
 - name: Sync packages
   ansible.builtin.command:
     cmd: "/usr/local/bin/uv sync"
