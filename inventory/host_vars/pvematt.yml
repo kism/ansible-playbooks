@@ -11,9 +11,9 @@ nfs_client_mounts:
   Quina:
     host: pvewill.kg.lan
     share: /srv/Quina
-  Marcus:
-    host: pvewill.kg.lan
-    share: /srv/Marcus
+  # Marcus:
+  #   host: pvewill.kg.lan
+  #   share: /srv/Marcus
   Blank:
     host: pvewill.kg.lan
     share: /srv/Blank
