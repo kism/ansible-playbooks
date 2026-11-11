@@ -1,10 +1,15 @@
 ---
 - name: Block with fun rescue
   block:
+    # ponytail: rpm_key can't see this key (librpm refuses to parse it), so erase it directly; delete once all hosts are clean
     - name: Remove old influxdb key
-      ansible.builtin.rpm_key:
-        key: 9fc2f927
-        state: absent
+      ansible.builtin.command:
+        argv: [rpm, --erase, --allmatches, gpg-pubkey-9fc2f927]
+      register: maintenance_update_packages_influx_key
+      changed_when: maintenance_update_packages_influx_key.rc == 0 # rc 0 means the key was present and removed
+      failed_when: # Already-absent key is fine
+        - maintenance_update_packages_influx_key.rc != 0
+        - "'is not installed' not in maintenance_update_packages_influx_key.stderr"
 
     - name: Update DNF Cache, list updates
       ansible.builtin.dnf:
