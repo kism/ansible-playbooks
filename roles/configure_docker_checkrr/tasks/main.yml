@@ -1,0 +1,64 @@
+---
+# Unit must exist before flush_handlers fires Restart checkrr
+- name: Copy systemd service checkrr
+  ansible.builtin.copy:
+    src: docker-checkrr.service
+    dest: /etc/systemd/system/docker-checkrr.service
+    mode: "0644"
+  notify: Restart checkrr
+
+- name: Create dir for checkrr
+  ansible.builtin.file:
+    path: /opt/checkrr
+    state: directory
+    mode: "0755"
+
+- name: Create empty checkrr db file
+  ansible.builtin.copy:
+    content: ""
+    dest: /opt/checkrr/checkrr.db
+    force: false
+    mode: "0644"
+
+- name: Copy checkrr config
+  ansible.builtin.template:
+    src: checkrr.yaml.j2
+    dest: /opt/checkrr/checkrr.yaml
+    mode: "0644"
+  notify: Restart checkrr
+
+- name: Copy docker-compose.yml checkrr
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: /opt/checkrr/docker-compose.yml
+    mode: "0644"
+  notify: Restart checkrr
+
+- name: Pull images for docker-compose checkrr
+  community.docker.docker_compose_v2_pull:
+    project_src: /opt/checkrr
+
+- name: Copy firewalld service files for checkrr
+  ansible.builtin.copy:
+    src: firewalld/
+    dest: /etc/firewalld/services/
+    mode: "0644"
+  notify: Reload firewalld
+
+- name: Flush handlers so firewalld knows the checkrr services
+  ansible.builtin.meta: flush_handlers
+
+- name: Allow checkrr through firewalld
+  ansible.posix.firewalld:
+    service: checkrr
+    zone: public
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: Enable and start service checkrr
+  ansible.builtin.systemd_service:
+    service: docker-checkrr
+    enabled: true
+    state: started
+    daemon_reload: true

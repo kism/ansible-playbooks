@@ -13,3 +13,7 @@ proxmox_ct_conf_extra:
   - "mp3: /srv/Vivi,mp=/srv/Vivi"
 proxmox_ct_features:
   - nesting=true
+configure_docker_checkrr_checkpaths:
+  - /srv/Amarant/Video
+  - /srv/Garnet/Video
+  - /srv/Vivi/Video

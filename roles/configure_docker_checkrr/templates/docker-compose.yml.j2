@@ -1,0 +1,21 @@
+---
+services:
+  checkrr:
+    image: aetaric/checkrr:latest
+    container_name: checkrr
+    volumes:
+      - /opt/checkrr/checkrr.yaml:/etc/checkrr.yaml:ro
+      - /opt/checkrr/checkrr.db:/checkrr.db
+{% for path in configure_docker_checkrr_checkpaths %}
+      - "{{ path }}:{{ path }}:ro"
+{% endfor %}
+    ports:
+      - 8585:8585
+    networks:
+      net-checkrr:
+    restart: unless-stopped
+
+networks:
+  net-checkrr:
+    driver_opts:
+      com.docker.network.bridge.name: br-checkrr

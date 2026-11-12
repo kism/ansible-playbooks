@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>checkrr</short>
+  <description>checkrr scans media libraries for corrupt files.</description>
+  <port protocol="tcp" port="8585"/>
+</service>

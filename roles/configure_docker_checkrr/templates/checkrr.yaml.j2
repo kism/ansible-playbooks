@@ -1,0 +1,31 @@
+---
+lang: "en-us"
+checkrr:
+  checkpath:
+{% for path in configure_docker_checkrr_checkpaths %}
+    - "{{ path }}"
+{% endfor %}
+  database: /checkrr.db
+  debug: false
+  cron: "@weekly"
+  ignorehidden: true
+  ffprobe: true
+  ignoreexts:
+    - .txt
+    - .nfo
+    - .nzb
+    - .url
+    - .jpg
+    - .png
+    - .srt
+    - .db
+    - .md5
+logs:
+  stdout:
+    out: stdout
+    formatter: default
+# ponytail: report-only, media is mounted read-only and no arr section. Add arr: (with mappings /srv/X -> /mnt/X for yoho) once API keys are in bitwarden.
+webserver:
+  port: 8585
+  tls: false
+  baseurl: "/"

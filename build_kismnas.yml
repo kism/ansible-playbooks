@@ -13,9 +13,10 @@
     - meta_onboard
 
     # Purpose specific
-    - configure_ffmpeg
+    # - configure_ffmpeg
     # - configure_cifs_server
-    # - configure_docker
+    - configure_docker
+    - configure_docker_checkrr
 
     # End
     # - configure_telegraf
