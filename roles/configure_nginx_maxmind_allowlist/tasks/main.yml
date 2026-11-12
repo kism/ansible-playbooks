@@ -13,6 +13,12 @@
     dest: "/opt/maxmind_geoip_nginx/.env"
     mode: "0600"
 
+- name: Copy maxmind nginx config
+  ansible.builtin.copy:
+    src: "files/config.toml"
+    dest: "/opt/maxmind_geoip_nginx/config.toml"
+    mode: "0644"
+
 - name: Sync packages
   ansible.builtin.command:
     cmd: "/usr/local/bin/uv sync"
@@ -33,6 +39,7 @@
     name: "maxmind_geoip_nginx.timer"
     enabled: true
     state: started
+    daemon_reload: true
 
 - name: Run the service adhoc to populate the databases first time
   ansible.builtin.systemd:
