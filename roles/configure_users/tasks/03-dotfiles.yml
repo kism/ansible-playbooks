@@ -43,13 +43,17 @@
       changed_when: false # This is not happening on the remote
       loop: "{{ configure_users_dotfiles }}"
 
-- name: Copy dotfiles taks, run for each user # Is this needed?
-  ansible.builtin.include_tasks: "03a-dotfiles-copy.yml"
+- name: Copy dotfiles to each user's home
+  become: true # partial-become lint wants it next to become_user
+  become_user: "{{ item }}"
+  ansible.builtin.copy:
+    src: "{{ configure_users_dotfiles_temp_dir }}/"
+    dest: "{{ ansible_facts['getent_passwd'][item][4] }}/"
+    mode: "0660"
+    directory_mode: "0700"
   loop:
     - kism
     - root
-  loop_control:
-    loop_var: loop_user
 
 - name: Replace some values in tmux.conf for root
   ansible.builtin.replace:

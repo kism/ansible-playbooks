@@ -10,6 +10,7 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/sonarr-main/config:/config
+      - {{ arr_downloads_base_dir }}/_recycled/sonarr-main:/recycled
 {% for key, value in arr_tv_dirs.items() %}
       - {{ value + ":/tv/" + key }}
 {% endfor %}
@@ -30,6 +31,7 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/sonarr-documentary/config:/config
+      - {{ arr_downloads_base_dir }}/_recycled/sonarr-documentary:/recycled
       - {{ arr_tv_documentary_dir }}:/tv
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
       - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
@@ -49,6 +51,7 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/radarr-main/config:/config
+      - {{ arr_downloads_base_dir }}/_recycled/radarr-main:/recycled
       - {{ arr_movies_dir }}:/movies
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
       - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
@@ -67,6 +70,7 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/radarr-4k/config:/config
+      - {{ arr_downloads_base_dir }}/_recycled/radarr-4k:/recycled
       - {{ arr_movies_4k_dir }}:/movies
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
       - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent
@@ -85,6 +89,7 @@ services:
       - TZ=Australia/Perth
     volumes:
       - {{ arr_settings_base_dir }}/radarr-documentary/config:/config
+      - {{ arr_downloads_base_dir }}/_recycled/radarr-documentary:/recycled
       - {{ arr_movies_documentary_dir }}:/movies
       - {{ arr_downloads_base_dir }}/usenet/complete:/downloads
       - {{ arr_downloads_base_dir }}/torrent:/downloads_torrent

@@ -14,8 +14,8 @@ services:
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
       - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY={{ secret_proton_wireguard_private_key_yoho }}
-      - WIREGUARD_ADDRESSES={{ secret_proton_wireguard_address_yoho }}
+      - WIREGUARD_PRIVATE_KEY={{ secret_proton_wireguard_private_key }}
+      - WIREGUARD_ADDRESSES={{ secret_proton_wireguard_address }}
       - SERVER_CITIES=Singapore
       - FIREWALL_VPN_INPUT_PORTS=6881
       - DOT=on

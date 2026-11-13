@@ -5,7 +5,7 @@ configure_packages_to_install:
   - file
   - git
   - htop
-  - iotop
+  - iotop-c
   - ncdu
   - nload
   - rsync

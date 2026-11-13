@@ -2,6 +2,16 @@
 - name: Include vars for all-common
   ansible.builtin.include_vars: "all-common.yml"
 
+# ponytail: TEMP migration iotop -> iotop-c, delete these two tasks once all hosts have run
+- name: TEMP Gather package facts for iotop migration
+  ansible.builtin.package_facts:
+
+- name: TEMP Remove python iotop so iotop-c can be installed
+  ansible.builtin.package:
+    name: iotop
+    state: absent
+  when: "'iotop' in ansible_facts['packages']" # keyed by real name, iotop-c only *provides* iotop
+
 - name: Install all-common packages (NON APT)
   ansible.builtin.package:
     name: "{{ configure_packages_to_install }}"

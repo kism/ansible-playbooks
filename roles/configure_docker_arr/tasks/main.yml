@@ -10,8 +10,8 @@
     - arr
     - radarr-main
     - radarr-main/config
-    - radarr-hq
-    - radarr-hq/config
+    - radarr-4k
+    - radarr-4k/config
     - radarr-documentary
     - radarr-documentary/config
     - sonarr-main
@@ -40,6 +40,12 @@
     - usenet
     - usenet/complete
     - usenet/incomplete
+    - _recycled
+    - _recycled/sonarr-main
+    - _recycled/sonarr-documentary
+    - _recycled/radarr-main
+    - _recycled/radarr-4k
+    - _recycled/radarr-documentary
 
 - name: Copy docker-compose.yml arr
   ansible.builtin.template:

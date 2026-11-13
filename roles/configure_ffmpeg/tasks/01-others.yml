@@ -6,7 +6,7 @@
   ansible.builtin.git:
     repo: https://github.com/markus-perl/ffmpeg-build-script.git
     dest: "{{ configure_ffmpeg_local_repo_dir }}"
-    version: master
+    version: main
     update: true
 
 - name: Stat cached ffmpeg build on localhost
