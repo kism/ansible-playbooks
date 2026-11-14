@@ -51,7 +51,7 @@
   ansible.builtin.shell:
     cmd: |-
       set -o pipefail
-      curl -LsS https://github.com/kism/zy.css/releases/download/main/grab.sh | bash
+      curl -LsS https://github.com/kism/zysystem.css/releases/download/main/grab.sh | bash
     chdir: /usr/share/nginx/html/site/
   changed_when: false # Sigh
 
