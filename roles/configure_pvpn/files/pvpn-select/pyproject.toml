@@ -1,0 +1,9 @@
+[project]
+name = "pvpn-select"
+version = "0.1.0"
+requires-python = ">=3.12"
+# proton-core on PyPI is a 0.0.1 placeholder, install the real one from git
+dependencies = ["proton-core @ git+https://github.com/ProtonVPN/python-proton-core@v0.7.4"]
+
+[tool.uv]
+package = false

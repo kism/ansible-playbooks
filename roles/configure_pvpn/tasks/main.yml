@@ -15,11 +15,13 @@
     - net.ipv4.ip_forward
     - net.ipv6.conf.all.forwarding
 
+# ponytail: force false so pvpn-select's server choice survives ansible runs. Changing the key/address means deleting wg0.conf on the box first.
 - name: Copy Proton wireguard config
   ansible.builtin.template:
     src: wg0.conf.j2
     dest: /etc/wireguard/wg0.conf
     mode: "0600"
+    force: false
   notify: Restart wg-quick
 
 - name: Enable and start wg-quick
@@ -80,3 +82,37 @@
     - { interface: tailscale0, zone: trusted }
     - { interface: wg0, zone: external }
   notify: Reload firewalld
+
+- name: Install gnupg2, proton-core verifies the login SRP modulus with gpg
+  ansible.builtin.package:
+    name: gnupg2
+    state: present
+
+- name: Create pvpn-select directory
+  ansible.builtin.file:
+    path: /opt/pvpn-select
+    state: directory
+    mode: "0755"
+
+- name: Copy pvpn-select pyproject and script
+  ansible.builtin.copy:
+    src: pvpn-select/{{ item.name }}
+    dest: /opt/pvpn-select/{{ item.name }}
+    mode: "{{ item.mode }}"
+  loop:
+    - { name: pyproject.toml, mode: "0644" }
+    - { name: pvpn_select.py, mode: "0755" }
+
+- name: Run uv sync for pvpn-select
+  ansible.builtin.command:
+    cmd: /usr/local/bin/uv sync
+    chdir: /opt/pvpn-select
+  environment: # Interpreter inside /opt so the venv doesn't point into /root
+    UV_PYTHON_INSTALL_DIR: /opt/pvpn-select/.python
+  changed_when: true # Safe assumption, no way to know
+
+- name: Symlink pvpn-select into /usr/local/bin
+  ansible.builtin.file:
+    src: /opt/pvpn-select/pvpn_select.py
+    dest: /usr/local/bin/pvpn-select
+    state: link
