@@ -15,7 +15,7 @@
     # - meta_onboard
 
     # Purpose specific
-    # - configure_nginx
+    - configure_nginx
     # - configure_fail2ban
     - configure_reverse_proxy
     # - configure_cf_dyndns
