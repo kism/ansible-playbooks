@@ -5,7 +5,8 @@ After=network.target
 [Service]
 User=nginx
 WorkingDirectory=/opt/allowlistapp
-ExecStart=/opt/allowlistapp/.venv/bin/waitress-serve --listen "127.0.0.1:8080" --trusted-proxy '127.0.0.1' --trusted-proxy-headers 'x-forwarded-for' --log-untrusted-proxy-headers --clear-untrusted-proxy-headers --threads 2 --call allowlistapp:create_app
+# Single process on purpose, the allowlist lives in memory. X-Forwarded-For is only trusted from 127.0.0.1 (the default).
+ExecStart=/opt/allowlistapp/.venv/bin/allowlistapp --host 127.0.0.1 --port 8080 --instance-path /opt/allowlistapp/instance
 Restart=always
 
 [Install]

@@ -5,10 +5,10 @@
   become: true
   roles:
     # Preflight
-    - meta_pre_flight_checks
-    - maintenance_gather_facts_pve
-    - create_proxmox_ct
-    - create_opnsense_entries
+    # - meta_pre_flight_checks
+    # - maintenance_gather_facts_pve
+    # - create_proxmox_ct
+    # - create_opnsense_entries
     - maintenance_gather_facts
 
     # Onboard Server

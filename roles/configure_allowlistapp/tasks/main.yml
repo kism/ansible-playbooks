@@ -38,14 +38,30 @@
     group: nginx
     mode: u=rwX,g=rwX,o=
 
-- name: Run poetry
+- name: Run uv sync
   become: true
   become_user: nginx
   ansible.builtin.command:
-    cmd: /usr/local/bin/uv sync
+    cmd: /usr/local/bin/uv sync --frozen
     chdir: /opt/allowlistapp
+  environment: # App needs python 3.14, keep the uv-downloaded interpreter in /opt rather than nginx's home
+    UV_PYTHON_INSTALL_DIR: /opt/allowlistapp/.python
   notify: Restart allowlistapp
   changed_when: true # Safe assumption, no way to know
+
+# v0.3 (FastAPI) reads config.json, convert the v0.2 config.toml once. Skipped on fresh installs, the app writes defaults.
+- name: Migrate allowlistapp config.toml to config.json
+  become: true
+  become_user: nginx
+  ansible.builtin.command:
+    argv:
+      - /opt/allowlistapp/.venv/bin/python
+      - scripts/migrate_config.py
+      - /opt/allowlistapp/instance/config.toml
+    chdir: /opt/allowlistapp
+    creates: /opt/allowlistapp/instance/config.json
+    removes: /opt/allowlistapp/instance/config.toml
+  notify: Restart allowlistapp
 
 - name: Fix selinux for allowlistapp
   ansible.builtin.command: restorecon -Rv /opt/allowlistapp

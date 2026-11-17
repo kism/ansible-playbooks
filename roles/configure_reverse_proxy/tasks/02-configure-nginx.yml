@@ -61,3 +61,15 @@
     recurse: true
     mode: "u=rwX,g=rwX,o=rX"
   changed_when: false # Sigh
+
+- name: Ensure /opt/scripts exists, meta_onboard is usually skipped on rproxy
+  ansible.builtin.file:
+    path: /opt/scripts
+    state: directory
+    mode: "0775"
+
+- name: Copy nginx exposure report script
+  ansible.builtin.copy:
+    src: files/nginx_exposure.py
+    dest: /opt/scripts/nginx_exposure.py
+    mode: "0755"
