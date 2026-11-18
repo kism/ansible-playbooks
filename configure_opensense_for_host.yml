@@ -3,7 +3,7 @@
 - name: Setup opnsense config for host
   hosts: all
   serial: 5 # Right now bitwarden secrets manager gets overloaded otherwise
-  gather_facts: false
+  gather_facts: true
   become: true
   roles:
     - create_opnsense_entries

@@ -4,9 +4,10 @@
   delegate_to: localhost
   become: false
   vars:
-    create_opnsense_entries_alias_name: "host_{{ inventory_hostname | lower | replace('-', '_') }}_v4"
+    create_opnsense_entries_alias_base: "host_{{ inventory_hostname | lower | replace('-', '_') }}"
+    create_opnsense_entries_alias_name: "{{ create_opnsense_entries_alias_base }}_v4"
   block:
-    # Matched by name, the IPv6 equivalents are host_<name>_v6 (dynipv6host, managed by hand)
+    # Matched by name
     - name: Ensure that there is a firewall alias for the host
       oxlorg.opnsense.alias:
         firewall: "{{ opnsense_firewall }}"
@@ -15,6 +16,29 @@
         name: "{{ create_opnsense_entries_alias_name }}"
         type: "host"
         content: "{{ target_host_ip_address }}"
+        description: "{{ ansible_host_description }}"
+      notify: Reload alias config
+
+    # Only the VMs are predictable, configure_misc sets them to EUI-64 SLAAC, so the interface id comes from the MAC.
+    # OPNsense prepends the current LAN prefix to the dynipv6host interface id.
+    - name: Ensure that there is a firewall alias for the host IPv6
+      when: "'proxmoxvms' in group_names"
+      vars:
+        create_opnsense_entries_mac: "{{ target_host_mac_address | lower | split(':') | map('int', base=16) | list }}"
+        # EUI-64: flip the universal/local bit of the first octet, insert ff:fe in the middle
+        create_opnsense_entries_eui64: >- # noqa: jinja[invalid] lint renders the MAC octets as strings, real run gives ints
+          ::{{ '%x' % ((create_opnsense_entries_mac[0] + 2 - 4 * ((create_opnsense_entries_mac[0] // 2) % 2)) * 256 + create_opnsense_entries_mac[1]) }}:{{
+          '%x' % (create_opnsense_entries_mac[2] * 256 + 255) }}:{{
+          '%x' % (254 * 256 + create_opnsense_entries_mac[3]) }}:{{
+          '%x' % (create_opnsense_entries_mac[4] * 256 + create_opnsense_entries_mac[5]) }}
+      oxlorg.opnsense.alias:
+        firewall: "{{ opnsense_firewall }}"
+        api_key: "{{ secret_opnsense_api_key }}"
+        api_secret: "{{ secret_opnsense_api_secret }}"
+        name: "{{ create_opnsense_entries_alias_base }}_v6"
+        type: "dynipv6host"
+        interface: "lan"
+        content: "{{ create_opnsense_entries_eui64 }}"
         description: "{{ ansible_host_description }}"
       notify: Reload alias config
 

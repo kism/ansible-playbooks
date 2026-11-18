@@ -90,3 +90,19 @@
       * hard core 0
       * soft core 0
     mode: "0644"
+
+# Predictable IPv6, the address is derived from the MAC so create_opnsense_entries can make a v6 alias
+- name: Check if NetworkManager conf.d exists
+  ansible.builtin.stat:
+    path: /etc/NetworkManager/conf.d
+  register: configure_misc_nm_conf_d_stat
+
+# ponytail: no handler, applies on next connection activation (reboot), add an nmcli reapply if that bites
+- name: Default IPv6 SLAAC addresses to EUI-64 instead of stable-privacy
+  ansible.builtin.copy:
+    dest: /etc/NetworkManager/conf.d/99-ipv6-eui64.conf
+    content: |
+      [connection]
+      ipv6.addr-gen-mode=eui64
+    mode: "0644"
+  when: configure_misc_nm_conf_d_stat.stat.exists
