@@ -12,14 +12,13 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
-      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY={{ secret_proton_wireguard_private_key }}
       - WIREGUARD_ADDRESSES={{ secret_proton_wireguard_address }}
       - SERVER_CITIES=Singapore
       - FIREWALL_VPN_INPUT_PORTS=6881
       - DOT=on
-      - DNS_ADDRESS=194.242.2.2
       - PUID=1086
       - PGID=1086
       - TZ=Australia/Perth
