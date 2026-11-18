@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Show how each nginx location is exposed: open to the internet, allowlistapp only, geofenced, or both.
 
-Usage: sudo nginx_exposure.py            # parse the live config via `nginx -T`
-       nginx_exposure.py site.conf ...   # parse files instead (e.g. the repo copies)
+Usage: sudo nginx_exposure            # parse the live config via `nginx -T`
+       nginx_exposure site.conf ...      # parse files instead (e.g. the repo copies)
 
 allowlist = `include /etc/nginx/ipallowlist.conf` (written by allowlistapp)
 geofence  = `auth_request /_geoip` ($geoip_allowed, from maxmind_geoip_nginx)
