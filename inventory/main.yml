@@ -87,7 +87,7 @@ nonansible:
     opnsense:
       ansible_host: opnsense.kg.lan
       ansible_host_description: OPNsense Router
-      target_host_ip_address: 10.42.0.1
+      target_host_ip_address: "{{ homelab_router_ip }}"
       target_host_mac_address: 58:9C:FC:10:FF:D0
     hass:
       ansible_host: hass.kg.lan
@@ -156,11 +156,6 @@ nonansible:
       ansible_host_description: PlayStation 2
       target_host_ip_address: 10.42.0.86
       target_host_mac_address: 00:15:c1:6e:8e:44
-    chromecast-wifi:
-      ansible_host: chromecast-wifi.kg.lan
-      ansible_host_description: Chromecast WiFi
-      target_host_ip_address: 10.42.0.87
-      target_host_mac_address: dc:e5:5b:86:e8:b2
 
     # Device Ethernet
     kmbp:
