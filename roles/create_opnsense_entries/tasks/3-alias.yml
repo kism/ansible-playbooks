@@ -42,47 +42,21 @@
         description: "{{ ansible_host_description }}"
       notify: Reload alias config
 
-    # The alias module can't set categories, so the rest goes through the API directly
-    - name: Tag private addresses with the Internal category
-      # RFC1918
-      when: target_host_ip_address is match('^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)')
-      block:
-        - name: Get the firewall categories
-          run_once: true
-          oxlorg.opnsense.raw:
-            firewall: "{{ opnsense_firewall }}"
-            api_key: "{{ secret_opnsense_api_key }}"
-            api_secret: "{{ secret_opnsense_api_secret }}"
-            url: "firewall/category/searchItem"
-          register: create_opnsense_entries_categories
+    # The alias module can't set categories, so tagging goes through the API directly
+    - name: Get the firewall categories
+      run_once: true
+      oxlorg.opnsense.raw:
+        firewall: "{{ opnsense_firewall }}"
+        api_key: "{{ secret_opnsense_api_key }}"
+        api_secret: "{{ secret_opnsense_api_secret }}"
+        url: "firewall/category/searchItem"
+      register: create_opnsense_entries_categories
 
-        - name: Get the alias uuid
-          oxlorg.opnsense.raw:
-            firewall: "{{ opnsense_firewall }}"
-            api_key: "{{ secret_opnsense_api_key }}"
-            api_secret: "{{ secret_opnsense_api_secret }}"
-            url: "firewall/alias/getAliasUUID/{{ create_opnsense_entries_alias_name }}"
-          register: create_opnsense_entries_alias_uuid
-
-        - name: Get the alias
-          oxlorg.opnsense.raw:
-            firewall: "{{ opnsense_firewall }}"
-            api_key: "{{ secret_opnsense_api_key }}"
-            api_secret: "{{ secret_opnsense_api_secret }}"
-            url: "firewall/alias/getItem/{{ create_opnsense_entries_alias_uuid.response.uuid }}"
-          register: create_opnsense_entries_alias
-
-        - name: Add the Internal category to the alias, keeping any existing categories
-          vars:
-            create_opnsense_entries_internal_uuid: "{{ (create_opnsense_entries_categories.response.rows | selectattr('name', '==', 'Internal') | first).uuid }}"
-            create_opnsense_entries_alias_categories: "{{ create_opnsense_entries_alias.response.alias.categories | dict2items | selectattr('value.selected', 'in', [1, '1']) | map(attribute='key') | list }}"
-          when: create_opnsense_entries_internal_uuid not in create_opnsense_entries_alias_categories
-          oxlorg.opnsense.raw:
-            firewall: "{{ opnsense_firewall }}"
-            api_key: "{{ secret_opnsense_api_key }}"
-            api_secret: "{{ secret_opnsense_api_secret }}"
-            url: "firewall/alias/setItem/{{ create_opnsense_entries_alias_uuid.response.uuid }}"
-            action: post
-            data:
-              alias:
-                categories: "{{ create_opnsense_entries_alias_categories | union([create_opnsense_entries_internal_uuid]) | join(',') }}"
+    # v4 when it's RFC1918, v6 always since the dynipv6host aliases are on the lan interface
+    - name: Tag aliases with the Internal category
+      ansible.builtin.include_tasks: 3-alias-tag.yml
+      loop: >-
+        {{ ([create_opnsense_entries_alias_name] if target_host_ip_address is match('^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)') else [])
+           + ([create_opnsense_entries_alias_base ~ '_v6'] if 'proxmoxvms' in group_names else []) }}
+      loop_control:
+        loop_var: create_opnsense_entries_tag_alias

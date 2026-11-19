@@ -8,14 +8,14 @@ resolution-markers = [
 
 [[package]]
 name = "ansible"
-version = "14.6.0"
+version = "15.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ansible-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/86/91/8d1eee9e7c065a60119845c2919d6762dd5b734d784ac8be1180fa5c506a/ansible-14.6.0.tar.gz", hash = "sha256:47cd013f4b6462f15b65485d09b713ae64697036733078f0623f636a94f5df45", size = 53253957, upload-time = "2026-11-04T20:12:16.828Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/72/77/28dd806b927720bed87c6e61ec0d6b87a6cf72a2e203d6b44985de367ef1/ansible-15.0.0.tar.gz", hash = "sha256:28718fc080a750eb4fabaa87e837ce8fbf692f8ce7e929f93f8d29dfc8530c43", size = 51847942, upload-time = "2026-11-17T17:42:09.05Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/c0/75a74f279e36569fc11626c3b7a5628dfc249c7115dc85f5c950882f46a2/ansible-14.6.0-py3-none-any.whl", hash = "sha256:a9d06a68d73a06eb4651ac7ea0c3b0ad18ddffbdb4feb745855dea70e8891e75", size = 53238676, upload-time = "2026-11-04T20:12:10.583Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/91/6480bccd0fa2c9f59adfd0f6aec75604d999dc781ac32d5343215f139293/ansible-15.0.0-py3-none-any.whl", hash = "sha256:c15fa794d926523f0794625ccc4021fe5d799eed1fd60be110e20922fc9086e1", size = 51902233, upload-time = "2026-11-17T17:42:04.303Z" },
 ]
 
 [[package]]
@@ -36,7 +36,7 @@ wheels = [
 
 [[package]]
 name = "ansible-core"
-version = "2.21.6"
+version = "2.22.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
@@ -45,9 +45,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "resolvelib" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ed/9f/c3f578633cd374db6ed981f8abc401885819e94e3d6a8548a1bd0095c575/ansible_core-2.21.6.tar.gz", hash = "sha256:3fa05b4b1af69f2fa19b49dde8edd5a23e693c2c1c3bda2d85fce73bd6cfc36d", size = 3399162, upload-time = "2026-11-02T17:33:27.104Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9d/9c/320090b2f1542122259cd759d5148678fd98945913837ee05718920f73ea/ansible_core-2.22.0.tar.gz", hash = "sha256:bf50b4a0cfa985e30585c7ba301897ea7050d224ca49d2816cab10e33a160e1c", size = 3476434, upload-time = "2026-11-02T17:35:11.837Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/20/5a/9e6cc7686b40bec066211200b6c393a7a333dfcfa91aa67a07c031df87c8/ansible_core-2.21.6-py3-none-any.whl", hash = "sha256:c1fc3cbe821176ba4227b1cae8c748e1d28d42dde605e807d23c58f71b6d1a74", size = 2457874, upload-time = "2026-11-02T17:33:24.88Z" },
+    { url = "https://files.pythonhosted.org/packages/87/98/3dc2d37181dc6a4b39d7badffaa0ef6e95be638d618372a11c316a2f8983/ansible_core-2.22.0-py3-none-any.whl", hash = "sha256:8285d4cc81c3e3eb2d954e75531724fe0ae154d228475638123451f034a74657", size = 2488530, upload-time = "2026-11-02T17:35:09.491Z" },
 ]
 
 [[package]]
@@ -181,11 +181,11 @@ wheels = [
 
 [[package]]
 name = "bracex"
-version = "3.2.2"
+version = "3.2.3"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/2d/1f/b7ce2efe406b87bb3693d587b91bcd8fa9030888870ceff29e4a0d233cb2/bracex-3.2.2.tar.gz", hash = "sha256:d18976160b3ba01a57d5c53a5c8c3aa2506efa9e0a3a62467251f82b8f563fde", size = 34980, upload-time = "2026-11-07T21:28:25.433Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/42/39/9ae971118d77b86cc3f03ab5a467ddb58de352d8ef29830c81531d22010c/bracex-3.2.3.tar.gz", hash = "sha256:8fbf92b4db3c31de999145e22a47d4ffdbefb983a98583c3272bd7d570f9a343", size = 35266, upload-time = "2026-11-14T17:11:16.858Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/21/b5/52a750a062db07ba056cde1c52c802b898a96b70953389a0b2247e18f210/bracex-3.2.2-py3-none-any.whl", hash = "sha256:284d59c4656e5a0421ff691402074bd5847049d50410535764a2c522a47095bc", size = 14151, upload-time = "2026-11-07T21:28:24.028Z" },
+    { url = "https://files.pythonhosted.org/packages/c8/42/f5d49972873bd3fff36e736ad1fcb36f9fdadb1ad577dfcfa17777dc84f0/bracex-3.2.3-py3-none-any.whl", hash = "sha256:8d6d677856121820d67b9009e76a5740fb02ab6dcd2d9815a83724d1888c305d", size = 14182, upload-time = "2026-11-14T17:11:15.595Z" },
 ]
 
 [[package]]
@@ -412,11 +412,11 @@ wheels = [
 
 [[package]]
 name = "filelock"
-version = "4.2.10"
+version = "4.2.12"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a1/cf/05bcdacabdc0aec7dc8e19d76281bd82325df62dae3b6430e9ba57397689/filelock-4.2.10.tar.gz", hash = "sha256:fcc3c0cb8bfe7f4b3bb0e231c04b15dbad068cb3c2515f343d8fde4dce93bd5d", size = 670595, upload-time = "2026-11-09T18:58:00.54Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/aa/8ccff8da9a27e089727fcffd3c5b61708383217e47eb1e1b8af37b1dd166/filelock-4.2.12.tar.gz", hash = "sha256:7e7da24d3ac39268b0f156e56870001de44886318f092f9d851e692f7114d6dd", size = 680837, upload-time = "2026-11-18T01:20:03.951Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ef/90/5d0096a325aa0f83ba7a3968bfb485b67e32c947bdf9cd0fcb4b485be718/filelock-4.2.10-py3-none-any.whl", hash = "sha256:9479aaeb4db20b5a53e3da28493edd24720b66b8a0b84030aa56ccdf243d6857", size = 218040, upload-time = "2026-11-09T18:57:59.088Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/c9/eb6b6528c7edb958d4c24ac47a8b94113d9de36e4cfc6eecd599b1a4f349/filelock-4.2.12-py3-none-any.whl", hash = "sha256:21decfec02f116ed4c954433cdb31f28c3b346b784543177b6d7059da2702ee9", size = 222442, upload-time = "2026-11-18T01:20:02.439Z" },
 ]
 
 [[package]]
@@ -617,11 +617,11 @@ wheels = [
 
 [[package]]
 name = "platformdirs"
-version = "4.14.5"
+version = "4.14.7"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d7/9a/8475be631fb33ca1466915e70fd594c42a4e84b512db650eaa14f90fe75d/platformdirs-4.14.5.tar.gz", hash = "sha256:32e9921db7385aa8169bee4fe9501923e5715ba9fb7ea3b9c69b0d8e0639f7a1", size = 71464, upload-time = "2026-11-04T16:54:50.358Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/2c/ec57eede0db493e61443c76ac7b4d24e94a24050afb3d598bf3678487f75/platformdirs-4.14.7.tar.gz", hash = "sha256:5472257c1cf97a14658af52997011c7e59e4aebf3a24950b973c11b579e1b074", size = 75132, upload-time = "2026-11-17T20:03:32.656Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7c/ae/ecbbbfd0e4343a6a521d49b3c8656fb4643dee2a4f6eaf941cf3280391a8/platformdirs-4.14.5-py3-none-any.whl", hash = "sha256:8e778c6fa421516f4d3369449f8df3b0e1b72c0e0005fe88e3ec772d0a14e750", size = 35402, upload-time = "2026-11-04T16:54:48.875Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/46/3737af9f971f3934794103256d7f1ed6200a62be0c7b7ff09ac4cf6b3422/platformdirs-4.14.7-py3-none-any.whl", hash = "sha256:391513b74707c42335fff3ea17eaac657a7ee9ffcadd809634d34ea594d0122c", size = 89658, upload-time = "2026-11-17T20:03:31.16Z" },
 ]
 
 [[package]]
@@ -872,14 +872,14 @@ wheels = [
 
 [[package]]
 name = "wcmatch"
-version = "12.0.1"
+version = "12.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bracex" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/17/bf44790f97414e37885830139933b4e96faac71560768ae9f9e458dbd936/wcmatch-12.0.1.tar.gz", hash = "sha256:4ea6acef75b657bf71ac8fa9520165bf5ae55120c4e655895a5b7d4c69896c5e", size = 163680, upload-time = "2026-11-07T21:45:37.072Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/db/c5/fb0e01e995d104af32ce83a4ada70476d647c116dc8897887949c9886204/wcmatch-12.0.3.tar.gz", hash = "sha256:ccf83affafadc4286ffb335bc827ca2bffb0547fa5d5587600b585151bce4359", size = 167761, upload-time = "2026-11-14T21:47:55.702Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8a/24/8a5bbb3e73962b5bc901966f926b4fe25cbc9d1170ad9b4d9938441dbdc3/wcmatch-12.0.1-py3-none-any.whl", hash = "sha256:0e11b0bf1700bc8222ad5e7dc79fb326d9e0304458c7e2c25419ab6d26d07d8e", size = 51084, upload-time = "2026-11-07T21:45:35.661Z" },
+    { url = "https://files.pythonhosted.org/packages/82/e1/1be8aa2cc624821fc17c195da4a467fc5dfa5073345b08c784dd76977ebc/wcmatch-12.0.3-py3-none-any.whl", hash = "sha256:7255aeae27423a2dfe5bbce9bab7e97369ecad16f0d0a5244f85239123daeaa5", size = 52483, upload-time = "2026-11-14T21:47:54.32Z" },
 ]
 
 [[package]]

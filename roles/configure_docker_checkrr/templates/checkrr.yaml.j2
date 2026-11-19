@@ -5,6 +5,9 @@ checkrr:
 {% for path in configure_docker_checkrr_checkpaths %}
     - "{{ path }}"
 {% endfor %}
+  ignorepaths:
+    - 'media/ignored'
+    - 'Internet Related'
   database: /checkrr.db
   debug: false
   cron: "@weekly"
@@ -37,6 +40,19 @@ checkrr:
     - .rar
     - .sfv
     - .sup
+    - .ac3
+    - .xml
+    - .dtshd
+    - .sqlite
+    - .exe
+    - .msi
+    - .sh
+    - .zip
+    - .m2ts
+    - .crt
+    - .clb
+    - .mxp
+
 
 logs:
   stdout:
