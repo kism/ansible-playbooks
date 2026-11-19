@@ -1,4 +1,11 @@
 ---
+# Hostname feeds the DNS override and DHCP reservation, underscores are invalid there
+- name: Ensure inventory hostname is a valid DNS label
+  ansible.builtin.assert:
+    that: "'_' not in inventory_hostname"
+    fail_msg: "{{ inventory_hostname }} contains an underscore, rename it in the inventory (use hyphens)"
+    quiet: true
+
 - name: Include tasks for dhcp
   ansible.builtin.include_tasks: 1-dhcp.yml
 

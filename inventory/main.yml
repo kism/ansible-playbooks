@@ -101,14 +101,14 @@ nonansible:
       ansible_host_description: Sally's MacBook Air
       target_host_ip_address: 10.42.0.45
       target_host_mac_address: C4:B3:01:AD:99:FC
-    x230t_wifi:
-      ansible_host: x230t_wifi.kg.lan
+    x230t-wifi:
+      ansible_host: x230t-wifi.kg.lan
       ansible_host_description: Lenovo x230t Tablet WiFi
       target_host_ip_address: 10.42.0.44
       target_host_mac_address: 8c:70:5a:f2:a1:a4
 
-    kmbp_wifi:
-      ansible_host: kmbp_wifi.kg.lan
+    kmbp-wifi:
+      ansible_host: kmbp-wifi.kg.lan
       ansible_host_description: Kieran's MacBook Pro M4 WiFi
       target_host_ip_address: 10.42.0.46
       target_host_mac_address: 4a:41:fd:34:b1:45
