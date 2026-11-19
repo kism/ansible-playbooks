@@ -4,7 +4,7 @@
     firewall: "{{ opnsense_firewall }}"
     api_key: "{{ secret_opnsense_api_key }}"
     api_secret: "{{ secret_opnsense_api_secret }}"
-    url: "firewall/alias/getAliasUUID/{{ create_opnsense_entries_tag_alias }}"
+    url: "firewall/alias/getAliasUUID/{{ create_opnsense_entries_tag.alias }}"
   register: create_opnsense_entries_alias_uuid
 
 - name: Get the alias
@@ -15,11 +15,11 @@
     url: "firewall/alias/getItem/{{ create_opnsense_entries_alias_uuid.response.uuid }}"
   register: create_opnsense_entries_alias
 
-- name: Add the Internal category to the alias, keeping any existing categories
+- name: Add the categories to the alias, keeping any existing ones
   vars:
-    create_opnsense_entries_internal_uuid: "{{ (create_opnsense_entries_categories.response.rows | selectattr('name', '==', 'Internal') | first).uuid }}"
+    create_opnsense_entries_wanted_categories: "{{ create_opnsense_entries_tag.categories | map('extract', create_opnsense_entries_category_uuids) | list }}"
     create_opnsense_entries_alias_categories: "{{ create_opnsense_entries_alias.response.alias.categories | dict2items | selectattr('value.selected', 'in', [1, '1']) | map(attribute='key') | list }}"
-  when: create_opnsense_entries_internal_uuid not in create_opnsense_entries_alias_categories
+  when: create_opnsense_entries_wanted_categories | difference(create_opnsense_entries_alias_categories) | length > 0
   oxlorg.opnsense.raw:
     firewall: "{{ opnsense_firewall }}"
     api_key: "{{ secret_opnsense_api_key }}"
@@ -28,4 +28,4 @@
     action: post
     data:
       alias:
-        categories: "{{ create_opnsense_entries_alias_categories | union([create_opnsense_entries_internal_uuid]) | join(',') }}"
+        categories: "{{ create_opnsense_entries_alias_categories | union(create_opnsense_entries_wanted_categories) | join(',') }}"

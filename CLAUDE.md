@@ -52,3 +52,8 @@ Prefix registered vars with the role name (e.g. `configure_firewall_pve_status`)
   - Put the XML in the role's `files/firewalld/<name>.xml`, copy the `firewalld/` dir to `/etc/firewalld/services/`, notify `Reload firewalld`, flush handlers, then enable it with `ansible.posix.firewalld: service: <name>`.
   - Example: `roles/configure_headscale`.
 - `configure_firewall` skips Proxmox hosts (no firewalld on PVE).
+
+## OPNsense
+
+- Tag everything created through the OPNsense API (aliases, firewall rules, etc.) with the `Ansible` category, so it's obvious in the UI what's managed. Example: `roles/create_opnsense_entries/tasks/3-alias.yml` (creates the category if missing, tags via `3-alias-tag.yml`).
+- The oxlorg modules can't set categories on aliases, so set them through `oxlorg.opnsense.raw`. DHCP reservations and unbound overrides have no categories; they get a date-prefixed description instead.

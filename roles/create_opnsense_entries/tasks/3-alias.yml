@@ -52,11 +52,34 @@
         url: "firewall/category/searchItem"
       register: create_opnsense_entries_categories
 
-    # v4 when it's RFC1918, v6 always since the dynipv6host aliases are on the lan interface
-    - name: Tag aliases with the Internal category
+    - name: Create the Ansible category if needed
+      run_once: true
+      when: "'Ansible' not in create_opnsense_entries_categories.response.rows | map(attribute='name')"
+      oxlorg.opnsense.raw:
+        firewall: "{{ opnsense_firewall }}"
+        api_key: "{{ secret_opnsense_api_key }}"
+        api_secret: "{{ secret_opnsense_api_secret }}"
+        url: "firewall/category/addItem"
+        action: post
+        data:
+          category:
+            name: "Ansible"
+      register: create_opnsense_entries_ansible_category
+
+    - name: Map category names to uuids
+      run_once: true
+      ansible.builtin.set_fact:
+        create_opnsense_entries_category_uuids: >-
+          {{ create_opnsense_entries_categories.response.rows | items2dict(key_name='name', value_name='uuid')
+             | combine({'Ansible': create_opnsense_entries_ansible_category.response.uuid} if create_opnsense_entries_ansible_category is not skipped else {}) }}
+
+    # Everything gets Ansible. Internal for v4 when it's RFC1918, v6 always since the dynipv6host aliases are on the lan interface
+    - name: Tag aliases with categories
       ansible.builtin.include_tasks: 3-alias-tag.yml
       loop: >-
-        {{ ([create_opnsense_entries_alias_name] if target_host_ip_address is match('^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)') else [])
-           + ([create_opnsense_entries_alias_base ~ '_v6'] if 'proxmoxvms' in group_names else []) }}
+        {{ [{'alias': create_opnsense_entries_alias_name,
+             'categories': ['Ansible'] + (['Internal'] if target_host_ip_address is match('^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.)') else [])}]
+           + ([{'alias': create_opnsense_entries_alias_base ~ '_v6', 'categories': ['Ansible', 'Internal']}] if 'proxmoxvms' in group_names else []) }}
       loop_control:
-        loop_var: create_opnsense_entries_tag_alias
+        loop_var: create_opnsense_entries_tag
+        label: "{{ create_opnsense_entries_tag.alias }}"
