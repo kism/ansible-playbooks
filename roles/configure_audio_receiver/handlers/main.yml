@@ -1,4 +1,13 @@
 ---
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Restart nqptp
+  ansible.builtin.systemd_service:
+    name: nqptp
+    state: restarted
+
 - name: Restart shairport-sync
   ansible.builtin.systemd_service:
     name: shairport-sync

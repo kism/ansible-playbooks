@@ -15,10 +15,80 @@
     - /var/lib/raspotify
     - /var/cache/raspotify
 
-- name: Install shairport-sync
+# Cross-compiles for armhf on the amd64 workstation, see files/Dockerfile
+- name: Build shairport-sync and nqptp via docker on localhost
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansible.builtin.command:
+    argv:
+      - docker
+      - buildx
+      - build
+      - --build-arg
+      - SHAIRPORT_VERSION={{ configure_audio_receiver_shairport_version }}
+      - --build-arg
+      - NQPTP_VERSION={{ configure_audio_receiver_nqptp_version }}
+      - --file
+      - "{{ role_path }}/files/Dockerfile"
+      - --output
+      - type=local,dest={{ configure_audio_receiver_build_cache_dir }}
+      - "{{ role_path }}/files"
+    creates: "{{ configure_audio_receiver_build_cache_dir }}/shairport-sync"
+
+- name: Uninstall repo shairport-sync, it has no AirPlay 2 support
   ansible.builtin.apt:
     pkg: shairport-sync
+    state: absent
+    purge: true
+
+- name: Create shairport-sync group
+  ansible.builtin.group:
+    name: shairport-sync
+    system: true
+
+- name: Create shairport-sync user
+  ansible.builtin.user:
+    name: shairport-sync
+    group: shairport-sync
+    groups: audio
+    system: true
+    create_home: false
+    shell: /usr/sbin/nologin
+
+- name: Install shairport-sync runtime packages
+  ansible.builtin.apt:
+    pkg: "{{ ['avahi-daemon'] + lookup('ansible.builtin.file', configure_audio_receiver_build_cache_dir ~ '/runtime-packages.txt').splitlines() }}"
     state: present
+
+- name: Copy shairport-sync and nqptp binaries
+  ansible.builtin.copy:
+    src: "{{ configure_audio_receiver_build_cache_dir }}/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - nqptp
+    - shairport-sync
+  notify:
+    - Restart nqptp
+    - Restart shairport-sync
+
+- name: Copy shairport-sync and nqptp systemd units
+  ansible.builtin.copy:
+    src: "{{ configure_audio_receiver_build_cache_dir }}/{{ item }}.service"
+    dest: "/etc/systemd/system/{{ item }}.service"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - nqptp
+    - shairport-sync
+  notify:
+    - Reload systemd
+    - Restart nqptp
+    - Restart shairport-sync
 
 - name: Template shairport-sync config
   ansible.builtin.template:
@@ -29,11 +99,17 @@
     mode: "0644"
   notify: Restart shairport-sync
 
-- name: Enable and start shairport-sync
+- name: Flush handlers so systemd sees the units
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start nqptp and shairport-sync
   ansible.builtin.systemd_service:
-    name: shairport-sync
+    name: "{{ item }}"
     enabled: true
     state: started
+  loop:
+    - nqptp
+    - shairport-sync
 
 - name: Copy firewalld service files for audio receiver
   ansible.builtin.copy:

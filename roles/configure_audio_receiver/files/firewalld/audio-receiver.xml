@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <service>
   <short>Audio Receiver</short>
-  <description>AirPlay (shairport-sync) receiver, plus mDNS discovery.</description>
+  <description>AirPlay 2 (shairport-sync + nqptp) receiver, ports from upstream TROUBLESHOOTING.md.</description>
   <port protocol="udp" port="5353"/>
+  <port protocol="udp" port="319-320"/>
+  <port protocol="tcp" port="3689"/>
   <port protocol="tcp" port="5000"/>
-  <port protocol="udp" port="6001-6011"/>
+  <port protocol="tcp" port="7000"/>
+  <port protocol="udp" port="6000-6009"/>
+  <port protocol="tcp" port="32768-60999"/>
+  <port protocol="udp" port="32768-60999"/>
 </service>
