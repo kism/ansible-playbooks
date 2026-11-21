@@ -1,6 +1,8 @@
 // {{ ansible_managed }}
 general = {
   name = "{{ configure_audio_receiver_name }}";
+  // Always play at full volume, the amp/speakers handle volume
+  ignore_volume_control = "yes";
 };
 
 alsa = {
