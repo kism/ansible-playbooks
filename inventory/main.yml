@@ -55,6 +55,9 @@ ansible_main:
     pvpn:
       ansible_host: pvpn.kg.lan
       ansible_host_description: ProtonVPN NL tailscale exit node
+    musicass:
+      ansible_host: musicass.kg.lan
+      ansible_host_description: Spotify and AirPlay Raspberry Pi 2 B
 
 # Server Type
 proxmoxvms:
@@ -81,6 +84,7 @@ baremetal:
     pvewill:
     pvematt:
     bigbilly:
+    musicass:
 nonansible:
   hosts:
     # Servers

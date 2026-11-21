@@ -33,6 +33,7 @@
         - 50-sysinfo
 
     - name: Disable motd-news
+      when: ansible_facts['distribution'] == "Ubuntu"  # motd-news only ships on Ubuntu
       ansible.builtin.copy:
         dest: /etc/default/motd-news
         content: |-
@@ -44,6 +45,7 @@
         group: root
 
     - name: Disable motd-news service
+      when: ansible_facts['distribution'] == "Ubuntu"  # motd-news only ships on Ubuntu
       ansible.builtin.systemd:
         name: motd-news
         enabled: false

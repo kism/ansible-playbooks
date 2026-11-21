@@ -1,0 +1,4 @@
+---
+configure_audio_receiver_name: "{{ inventory_hostname }}"
+# Pi onboard 3.5mm jack, change to hw:vc4hdmi for HDMI or a USB DAC's card name
+configure_audio_receiver_alsa_device: hw:Headphones

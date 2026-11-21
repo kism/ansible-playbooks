@@ -1,0 +1,17 @@
+---
+- name: Setup musicass spotify and airplay receiver
+  hosts: musicass
+  gather_facts: false
+  become: true
+  roles:
+    # Preflight
+    # - create_opnsense_entries
+    - maintenance_gather_facts
+
+    # Onboard Server
+    - meta_onboard
+
+    # Purpose specific
+    - configure_audio_receiver
+
+    # No telegraf, this thing will be struggling

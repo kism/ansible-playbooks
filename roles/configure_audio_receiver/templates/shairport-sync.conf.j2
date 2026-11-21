@@ -1,0 +1,8 @@
+// {{ ansible_managed }}
+general = {
+  name = "{{ configure_audio_receiver_name }}";
+};
+
+alsa = {
+  output_device = "{{ configure_audio_receiver_alsa_device }}";
+};

@@ -1,0 +1,65 @@
+---
+- name: Add raspotify repository
+  ansible.builtin.deb822_repository:
+    name: raspotify
+    types: deb
+    uris: https://dtcooper.github.io/raspotify
+    suites: raspotify
+    components: main
+    signed_by: https://dtcooper.github.io/raspotify/key.asc
+    state: present
+
+- name: Install audio receiver packages
+  ansible.builtin.apt:
+    pkg:
+      - shairport-sync
+      - raspotify
+    state: present
+    update_cache: true
+
+- name: Template shairport-sync config
+  ansible.builtin.template:
+    src: shairport-sync.conf.j2
+    dest: /etc/shairport-sync.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart shairport-sync
+
+- name: Template raspotify config
+  ansible.builtin.template:
+    src: raspotify.conf.j2
+    dest: /etc/raspotify/conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart raspotify
+
+- name: Enable and start audio receiver services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - shairport-sync
+    - raspotify
+
+- name: Copy firewalld service files for audio receiver
+  ansible.builtin.copy:
+    src: firewalld/
+    dest: /etc/firewalld/services/
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload firewalld
+
+- name: Flush handlers so firewalld knows the audio receiver service
+  ansible.builtin.meta: flush_handlers
+
+- name: Allow audio receiver through firewall
+  ansible.posix.firewalld:
+    service: audio-receiver
+    zone: public
+    permanent: true
+    immediate: true
+    state: enabled
