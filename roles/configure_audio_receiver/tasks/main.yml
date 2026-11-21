@@ -1,21 +1,24 @@
 ---
-- name: Add raspotify repository
-  ansible.builtin.deb822_repository:
-    name: raspotify
-    types: deb
-    uris: https://dtcooper.github.io/raspotify
-    suites: raspotify
-    components: main
-    signed_by: https://dtcooper.github.io/raspotify/key.asc
-    state: present
-
-- name: Install audio receiver packages
+# ponytail: raspotify cleanup, librespot can't get audio keys (librespot-org/librespot#1649), delete these tasks once all hosts are clean
+- name: Uninstall raspotify
   ansible.builtin.apt:
-    pkg:
-      - shairport-sync
-      - raspotify
+    pkg: raspotify
+    state: absent
+    purge: true
+
+- name: Remove raspotify repository and leftover credentials
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/raspotify.sources
+    - /var/lib/raspotify
+    - /var/cache/raspotify
+
+- name: Install shairport-sync
+  ansible.builtin.apt:
+    pkg: shairport-sync
     state: present
-    update_cache: true
 
 - name: Template shairport-sync config
   ansible.builtin.template:
@@ -26,23 +29,11 @@
     mode: "0644"
   notify: Restart shairport-sync
 
-- name: Template raspotify config
-  ansible.builtin.template:
-    src: raspotify.conf.j2
-    dest: /etc/raspotify/conf
-    owner: root
-    group: root
-    mode: "0644"
-  notify: Restart raspotify
-
-- name: Enable and start audio receiver services
+- name: Enable and start shairport-sync
   ansible.builtin.systemd_service:
-    name: "{{ item }}"
+    name: shairport-sync
     enabled: true
     state: started
-  loop:
-    - shairport-sync
-    - raspotify
 
 - name: Copy firewalld service files for audio receiver
   ansible.builtin.copy:

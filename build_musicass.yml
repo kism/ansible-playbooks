@@ -1,5 +1,5 @@
 ---
-- name: Setup musicass spotify and airplay receiver
+- name: Setup musicass airplay receiver
   hosts: musicass
   gather_facts: false
   become: true
