@@ -1,20 +1,4 @@
 ---
-# ponytail: raspotify cleanup, librespot can't get audio keys (librespot-org/librespot#1649), delete these tasks once all hosts are clean
-- name: Uninstall raspotify
-  ansible.builtin.apt:
-    pkg: raspotify
-    state: absent
-    purge: true
-
-- name: Remove raspotify repository and leftover credentials
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/apt/sources.list.d/raspotify.sources
-    - /var/lib/raspotify
-    - /var/cache/raspotify
-
 # Cross-compiles for armhf on the amd64 workstation, see files/Dockerfile
 - name: Build shairport-sync and nqptp via docker on localhost
   delegate_to: localhost
