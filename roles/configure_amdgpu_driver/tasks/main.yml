@@ -1,3 +1,0 @@
----
-- name: Include tasks for distribution
-  ansible.builtin.include_tasks: "01-{{ ansible_facts['distribution'] | lower }}.yml"

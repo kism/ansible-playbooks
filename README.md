@@ -28,6 +28,7 @@ Run without server onboarding block
 | `scripts/loadcreds`    | Prompt for and export `BWS_ACCESS_TOKEN`, use with `$(./scripts/loadcreds)`                        |
 | `scripts/bws_audit.py` | List Bitwarden secrets not used in this repo, or whose name doesn't match the var that looks it up |
 | `scripts/compose_audit.py` | List docker compose stacks that `maintenance_update.yml` won't pull or restart |
+| `scripts/unused_roles_audit.py` | List roles no playbook uses, and roles only used in commented out lines |
 
 ## Good style things to do
 
