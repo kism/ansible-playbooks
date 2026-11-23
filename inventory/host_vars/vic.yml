@@ -10,3 +10,28 @@ proxmox_ct_features:
   - nesting=1
   - fuse=1
   - keyctl=1
+
+# Bitwarden secrets
+secret_victoriametrics_telegraf_home_kingking9: "{{ lookup('bitwarden.secrets.lookup', '01748172-5e0f-4fb3-8952-b448002e015a') }}"
+secret_victoriametrics_kism_password: "{{ lookup('bitwarden.secrets.lookup', '89164830-8d15-4c05-a830-b44800458e4b') }}"
+secret_victoriametrics_grafana_password: "{{ lookup('bitwarden.secrets.lookup', 'fa8193b3-973e-4c58-9c69-b448004abbd8') }}"
+secret_victoriametrics_opnsense_password: "{{ lookup('bitwarden.secrets.lookup', 'dcd71327-2325-47d6-9f0a-b448004b5480') }}"
+secret_victoriametrics_homeassistant: "{{ lookup('bitwarden.secrets.lookup', 'ac55e399-e5b7-4e1a-a840-b44900d0796a') }}"
+
+# vmauth bearer tokens, name is just a comment in auth.yml
+victoriametrics_bearer_tokens:
+  - name: kg-lan-telegraf-rw
+    token: "{{ secret_telegraf_victoriametrics_rw_token }}"
+  - name: home-kingking9-telegraf-rw
+    token: "{{ secret_victoriametrics_telegraf_home_kingking9 }}"
+
+# vmauth basic auth users, name is the username clients log in with
+victoriametrics_users:
+  - name: admin
+    password: "{{ secret_victoriametrics_kism_password }}"
+  - name: grafana
+    password: "{{ secret_victoriametrics_grafana_password }}"
+  - name: opnsense
+    password: "{{ secret_victoriametrics_opnsense_password }}"
+  - name: homeassistant
+    password: "{{ secret_victoriametrics_homeassistant }}"

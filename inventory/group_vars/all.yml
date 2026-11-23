@@ -10,58 +10,18 @@ victoriametrics_url: http://vic.{{ homelab_domain_internal }}:8427
 # Bitwarden secrets
 secret_email: "{{ lookup('bitwarden.secrets.lookup', '265a4fee-d565-4bee-aad8-b222006d3a0e') }}"
 secret_root_password_hash: "{{ lookup('bitwarden.secrets.lookup', 'c53d8631-abbe-4ef9-a30c-b222006d7448') }}"
-secret_myuser: "kism"
 secret_myuser_password_hash: "{{ lookup('bitwarden.secrets.lookup', '3ab33d3c-2302-40c5-b682-b222006e7ab5') }}"
-
-secret_duckdns: "{{ lookup('bitwarden.secrets.lookup', 'b7d9f383-d025-4c26-93ca-b222006eb3f2') }}"
 
 secret_notification_email: "{{ lookup('bitwarden.secrets.lookup', '349598d5-69dc-44c6-9558-b22200701c06') }}"
 secret_notification_email_password: "{{ lookup('bitwarden.secrets.lookup', '9bba64c2-4a77-4bcf-8262-b222007038a8') }}"
-
-secret_filebeats_service_user: svc_filebeats
-secret_filebeats_service_password: "{{ lookup('bitwarden.secrets.lookup', 'b65ffe2a-8cc8-4dc5-9d0a-b2220070e592') }}"
-secret_elastalert_api_key: "{{ lookup('bitwarden.secrets.lookup', '798505a3-83c3-4b15-8c58-b2220070ffd7') }}"
-
-secret_elastic_agent_linux_enrolement: "{{ lookup('bitwarden.secrets.lookup', 'c1e90fad-d9fb-4f70-a2a9-b22200714ba2') }}"
-secret_discord_webhook_url: "{{ lookup('bitwarden.secrets.lookup', '9e8ffdfc-98d6-4c5f-b671-b2220071650b') }}"
 
 secret_proxmox_password: "{{ lookup('bitwarden.secrets.lookup', '5a4138a6-ff68-4ef8-9a90-b2220071812e') }}"
 
 secret_opnsense_api_key: "{{ lookup('bitwarden.secrets.lookup', 'd81879b8-9cda-4b2a-8fa9-b2220071aa24') }}"
 secret_opnsense_api_secret: "{{ lookup('bitwarden.secrets.lookup', 'ef7aac02-4e5d-48b1-877a-b2220071c304') }}"
 
-secret_hetzner_cloud_token_test: "{{ lookup('bitwarden.secrets.lookup', 'e3664c58-5e80-44f4-9427-b222007f6213') }}"
-secret_hetzner_cloud_token_prod: "{{ lookup('bitwarden.secrets.lookup', 'c59c0264-e837-4a52-b405-b222005546da') }}"
-
 secret_ip_addresses: "{{ lookup('bitwarden.secrets.lookup', 'f20ca68b-1907-4d74-823d-b2250052b1ff') | split(',') }}"
-
-secret_maxmind_id: "{{ lookup('bitwarden.secrets.lookup', '4e1a7c83-0626-47c9-8928-b3e60009ccff') }}"
-secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-929b-b3e60009e73f') }}"
 
 secret_wazuh_agent_password: "{{ lookup('bitwarden.secrets.lookup', 'baa1216d-fd91-4b24-b2fd-b434005de235') }}"
 
-secret_cloudflare_account_id: "{{ lookup('bitwarden.secrets.lookup', 'b75c1d08-0e86-409d-9e5b-b43400aae766') }}"
-
 secret_telegraf_victoriametrics_rw_token: "{{ lookup('bitwarden.secrets.lookup', '81aa257d-0bfe-47b2-8cd7-b448002df31a') }}"
-
-secret_victoriametrics_tokens:
-  - name: "kg-lan-telegraf-rw"
-    token: "{{ lookup('bitwarden.secrets.lookup', '81aa257d-0bfe-47b2-8cd7-b448002df31a') }}"
-    url_prefix: "http://victoriametrics:8428"
-  - name: "home-kingking9-telegraf-rw"
-    token: "{{ lookup('bitwarden.secrets.lookup', '01748172-5e0f-4fb3-8952-b448002e015a') }}"
-    url_prefix: "http://victoriametrics:8428"
-
-secret_victoriametrics_users:
-  - name: "admin"
-    token: "{{ lookup('bitwarden.secrets.lookup', '89164830-8d15-4c05-a830-b44800458e4b') }}"
-    url_prefix: "http://victoriametrics:8428"
-  - name: "grafana"
-    token: "{{ lookup('bitwarden.secrets.lookup', 'fa8193b3-973e-4c58-9c69-b448004abbd8') }}"
-    url_prefix: "http://victoriametrics:8428"
-  - name: "opnsense"
-    token: "{{ lookup('bitwarden.secrets.lookup', 'dcd71327-2325-47d6-9f0a-b448004b5480') }}"
-    url_prefix: "http://victoriametrics:8428"
-  - name: "homeassistant"
-    token: "{{ lookup('bitwarden.secrets.lookup', 'ac55e399-e5b7-4e1a-a840-b44900d0796a') }}"
-    url_prefix: "http://victoriametrics:8428"

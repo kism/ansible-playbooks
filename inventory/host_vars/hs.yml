@@ -9,4 +9,9 @@ proxmox_ct_features:
   - nesting=true
 proxmox_ct_unprivileged: true
 docker_compose_paths:
-  - /opt/headplane
+  - /opt/headscale
+
+secret_headplane_headscale_api_key: "{{ lookup('bitwarden.secrets.lookup', '1a830c56-eb6f-4143-806a-b50b0032fa3c') }}"
+secret_headplane_oidc_issuer: "{{ lookup('bitwarden.secrets.lookup', 'baa27ba5-87e8-4968-a9cb-b50b0032da49') }}"
+secret_headplane_oidc_client_id: "{{ lookup('bitwarden.secrets.lookup', 'f639ce7b-3bfe-4eb4-a128-b50b0033259e') }}"
+secret_headplane_oidc_client_secret: "{{ lookup('bitwarden.secrets.lookup', '76b2dcd0-7d14-42ae-a21b-b50b003339d4') }}"

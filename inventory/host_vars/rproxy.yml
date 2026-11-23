@@ -8,3 +8,7 @@ proxmox_ct_memory: 1024
 proxmox_ct_cores: 1
 secret_cloudflare_api_dns: "{{ lookup('bitwarden.secrets.lookup', '403c608c-85a3-487f-92ec-b22200708cd5') }}"
 secret_cloudflare_api_dns_zone: "{{ lookup('bitwarden.secrets.lookup', 'ffba4513-7464-4a57-9961-b3ec0044a7e5') }}"
+
+# Bitwarden secrets
+secret_maxmind_id: "{{ lookup('bitwarden.secrets.lookup', '4e1a7c83-0626-47c9-8928-b3e60009ccff') }}"
+secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-929b-b3e60009e73f') }}"

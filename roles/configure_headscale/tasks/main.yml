@@ -31,16 +31,22 @@
     mode: "0600"
   notify: Restart headscale
 
-- name: Copy headplane config and docker compose file
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/opt/headscale/{{ item }}"
+- name: Template headplane config
+  ansible.builtin.template:
+    src: headplane.yaml.j2
+    dest: /opt/headscale/headplane.yaml
     owner: root
     group: root
     mode: "0600"
-  loop:
-    - headplane.yaml
-    - docker-compose.yml
+  notify: Restart headscale
+
+- name: Copy headscale docker compose file
+  ansible.builtin.copy:
+    src: docker-compose.yml
+    dest: /opt/headscale/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0600"
   notify: Restart headscale
 
 - name: Pull images for docker-compose headscale

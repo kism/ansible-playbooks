@@ -3,7 +3,7 @@
 server:
   host: "0.0.0.0"
   port: 3000
-  base_url: "https://hp.kierangee.au"
+  base_url: "https://hs.{{ homelab_domain_external }}"
   cookie_secret_path: "/etc/headplane/cookie_secret"
   cookie_secure: true
   data_path: "/var/lib/headplane"
@@ -12,6 +12,7 @@ headscale:
   url: "http://headscale:8080"
   config_strict: true
   config_path: "/etc/headscale/config.yaml"
+  api_key: "{{ secret_headplane_headscale_api_key }}"
 
 # Lets headplane find and restart the headscale container after config changes
 integration:
@@ -19,3 +20,8 @@ integration:
     enabled: true
     container_label: "me.tale.headplane.target=headscale"
     socket_path: "unix:///var/run/docker.sock"
+
+oidc:
+  issuer: "{{ secret_headplane_oidc_issuer }}"
+  client_id: "{{ secret_headplane_oidc_client_id }}"
+  client_secret: "{{ secret_headplane_oidc_client_secret }}"
