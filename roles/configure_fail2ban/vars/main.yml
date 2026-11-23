@@ -1,4 +1,0 @@
----
-configure_fail2ban_nginx_jails:
-  - nginx-kism-scan
-  - nginx-kism-404

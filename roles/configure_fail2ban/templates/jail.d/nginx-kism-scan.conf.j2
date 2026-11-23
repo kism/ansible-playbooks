@@ -2,13 +2,12 @@
 enabled = true
 port = http,https
 filter = nginx-kism-scan
-action = iptables-multiport[name=nginx-kism-scan, port="http,https", protocol=tcp]
 # Most sites log to their own file in vhosts/
 logpath = /var/log/nginx/*.log
           /var/log/nginx/vhosts/*.access
 maxretry = 1
 bantime = 86400
-ignoreip = {% for entry in secret_ip_addresses %}{{ entry }} {% endfor %}
+{% include 'ignoreip.j2' %}
 
 {% if configure_fail2ban_allowlistapp %}
 ignorecommand = /opt/allowlistapp/.venv/bin/allowlistapp-check --db /opt/allowlistapp/instance/database.csv <ip>
