@@ -12,7 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v7
+      - uses: astral-sh/setup-uv@v10
+
+      - name: Install python dependencies
+        run: uv sync --locked
 
       - name: Run ansible-taste
-        run: pipx run git+https://github.com/kism/ansible-taste
+        run: uv run ansible-taste

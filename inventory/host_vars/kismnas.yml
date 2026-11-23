@@ -17,3 +17,5 @@ configure_docker_checkrr_checkpaths:
   - /srv/Amarant/Video
   - /srv/Garnet/Video
   - /srv/Vivi/Video
+docker_compose_paths:
+  - /opt/checkrr

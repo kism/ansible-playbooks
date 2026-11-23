@@ -1,0 +1,30 @@
+---
+- name: Find uv binary
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - /usr/local/bin/uv # configure_uv symlink
+    - /usr/bin/uv # package manager install
+  register: maintenance_update_packages_uv_stat
+
+- name: Run uv update routine if needed
+  when: maintenance_update_packages_uv_bin != ""
+  vars:
+    maintenance_update_packages_uv_bin: "{{ maintenance_update_packages_uv_stat.results | selectattr('stat.exists') | map(attribute='item') | first | default('') }}"
+  block:
+    # Package manager installs are updated by the package manager, only self update the configure_uv install
+    - name: Self update uv
+      when: maintenance_update_packages_uv_bin == "/usr/local/bin/uv"
+      ansible.builtin.command:
+        argv: ["{{ maintenance_update_packages_uv_bin }}", "self", "update"]
+      register: maintenance_update_packages_uv_self_update
+      changed_when: "'Upgraded uv' in maintenance_update_packages_uv_self_update.stdout + maintenance_update_packages_uv_self_update.stderr" # Only when a new version was installed
+
+    - name: Upgrade uv tools
+      become: true # ansible-lint partial-become, needs become next to become_user
+      become_user: "{{ homelab_my_username }}"
+      ansible.builtin.command:
+        argv: ["{{ maintenance_update_packages_uv_bin }}", "tool", "upgrade", "--all"]
+      register: maintenance_update_packages_uv_tools
+      changed_when: "'Updated ' in maintenance_update_packages_uv_tools.stderr or 'Modified ' in maintenance_update_packages_uv_tools.stderr" # uv reports upgrades on stderr
+      ignore_errors: true # One broken tool (e.g. a local source path that's gone) fails the command, but the rest still upgrade, don't stop patching

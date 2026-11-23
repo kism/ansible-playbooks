@@ -12,19 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v7
+      - uses: astral-sh/setup-uv@v10
 
-      - name: Install ansible
-        run: pipx install ansible-base
-
-      - name: Install ansible
-        run: pipx install ansible-lint
-
-      - name: Add ~/.local/.bin to path for pipx packages
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Install python dependencies
+        run: uv sync --locked
 
       - name: Install Ansible-Galaxy Requirements
-        run: ansible-galaxy collection install --requirements-file collections/requirements.yml
+        run: uv run ansible-galaxy collection install --requirements-file collections/requirements.yml
 
       - name: Run ansible-lint
-        run: ansible-lint
+        run: uv run ansible-lint
