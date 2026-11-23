@@ -4,7 +4,15 @@
     name: firewalld
     state: reloaded
 
-- name: Restart nginx
+# Validate first so a bad config fails the play and leaves the running nginx alone, then reload instead of restart
+- name: Validate reverse proxy nginx config
+  ansible.builtin.command:
+    argv: [nginx, -t]
+  changed_when: false # Read only check
+  listen: Reload reverse proxy nginx
+
+- name: Reload reverse proxy nginx service
   ansible.builtin.systemd_service:
     name: nginx
-    state: restarted
+    state: reloaded
+  listen: Reload reverse proxy nginx

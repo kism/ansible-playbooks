@@ -17,12 +17,9 @@
     mode: "0664"
   notify: Restart allowlistapp
 
-- name: Git config allowlistapp
-  community.general.git_config:
-    name: safe.directory
-    value: /opt/allowlistapp
-
 - name: Clone allowlistapp
+  become: true
+  become_user: nginx # Root's umask is 0077, a root clone leaves files nginx can't read
   ansible.builtin.git:
     repo: https://github.com/kism/allowlistapp
     dest: /opt/allowlistapp

@@ -13,7 +13,7 @@
     dest: /etc/nginx/nginx.conf
     mode: "0660"
   notify:
-    - Restart nginx
+    - Reload reverse proxy nginx
 
 - name: Include tasks for sites-enabled
   ansible.builtin.include_tasks: 02a-configure-nginx-sites.yml
@@ -37,7 +37,7 @@
     mode: "0664"
   with_fileglob: "files/hosts/{{ ansible_facts['hostname'] }}/public/*"
   notify:
-    - Restart nginx
+    - Reload reverse proxy nginx
 
 - name: Copy private index.html
   ansible.builtin.copy:
@@ -45,7 +45,7 @@
     dest: /usr/share/nginx/html/site/private/index.html
     mode: "0664"
   notify:
-    - Restart nginx
+    - Reload reverse proxy nginx
 
 - name: Download css
   ansible.builtin.shell:

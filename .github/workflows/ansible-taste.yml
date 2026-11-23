@@ -23,3 +23,7 @@ jobs:
       - name: Check docker compose stacks get updated
         if: ${{ !cancelled() }} # Run even if ansible-taste failed, they're independent checks
         run: uv run scripts/compose_audit.py
+
+      - name: Check every nginx vhost logs to its own files
+        if: ${{ !cancelled() }} # Run even if an earlier check failed, they're independent checks
+        run: uv run scripts/nginx_logging_audit.py

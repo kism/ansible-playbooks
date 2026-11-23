@@ -4,19 +4,30 @@
     name: nginx.service
   register: configure_fail2ban_nginx_status
 
-- name: Copy filters
+- name: Remove old single nginx-kism jail, replaced by nginx-kism-scan and nginx-kism-404
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/fail2ban/filter.d/nginx-kism.conf
+    - /etc/fail2ban/jail.d/nginx-kism.conf
+  notify: Restart fail2ban
+
+- name: Copy nginx filters
   ansible.builtin.copy:
-    src: files/filter.d/nginx-kism.conf
-    dest: /etc/fail2ban/filter.d/nginx-kism.conf
+    src: "files/filter.d/{{ item }}.conf"
+    dest: "/etc/fail2ban/filter.d/{{ item }}.conf"
     mode: "0640"
+  loop: "{{ configure_fail2ban_nginx_jails }}"
   notify: Restart fail2ban
   when: configure_fail2ban_nginx_status["status"]["LoadState"] != "not-found"
 
-- name: Copy jail, nginx-kism
+- name: Copy nginx jails
   ansible.builtin.template:
-    src: templates/jail.d/nginx-kism.conf.j2
-    dest: /etc/fail2ban/jail.d/nginx-kism.conf
+    src: "templates/jail.d/{{ item }}.conf.j2"
+    dest: "/etc/fail2ban/jail.d/{{ item }}.conf"
     mode: "0644"
+  loop: "{{ configure_fail2ban_nginx_jails }}"
   notify: Restart fail2ban
   when: configure_fail2ban_nginx_status["status"]["LoadState"] != "not-found"
 

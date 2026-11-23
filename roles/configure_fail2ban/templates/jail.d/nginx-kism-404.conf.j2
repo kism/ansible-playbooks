@@ -1,0 +1,18 @@
+[nginx-kism-404]
+enabled = true
+port = http,https
+filter = nginx-kism-404
+action = iptables-multiport[name=nginx-kism-404, port="http,https", protocol=tcp]
+# Most sites log to their own file in vhosts/
+logpath = /var/log/nginx/*.log
+          /var/log/nginx/vhosts/*.access
+maxretry = 10
+findtime = 600
+bantime = 86400
+ignoreip = {% for entry in secret_ip_addresses %}{{ entry }} {% endfor %}
+
+{% if configure_fail2ban_allowlistapp %}
+ignorecommand = /opt/allowlistapp/.venv/bin/allowlistapp-check --db /opt/allowlistapp/instance/database.csv <ip>
+# Each check starts python, cache the answer per IP so a scan burst doesn't start hundreds
+ignorecache = key="<ip>", max-count=1000, max-time=5m
+{% endif %}

@@ -39,7 +39,7 @@
   loop: "{{ configure_reverse_proxy_existing_file_names }}"
   when: item not in configure_reverse_proxy_expected_files
   notify:
-    - Restart nginx
+    - Reload reverse proxy nginx
 
 - name: Find existing symlinks in sites-enabled
   ansible.builtin.find:
@@ -58,7 +58,7 @@
   loop: "{{ configure_reverse_proxy_existing_symlink_names }}"
   when: item not in configure_reverse_proxy_expected_files
   notify:
-    - Restart nginx
+    - Reload reverse proxy nginx
 
 # Suffix any files you don't want at the minute with .bak
 - name: Copy nginx site confs
@@ -69,7 +69,7 @@
   with_fileglob:
     - "files/hosts/{{ ansible_facts['hostname'] }}/sites-available/*.conf"
   notify:
-    - Restart nginx
+    - Reload reverse proxy nginx
 
 - name: Build list of nginx configs
   ansible.builtin.find:
@@ -87,5 +87,5 @@
     dest: /etc/nginx/sites-enabled/{{ item | basename }}
     state: link
   notify:
-    - Restart nginx
+    - Reload reverse proxy nginx
   loop: "{{ configure_reverse_proxy_config_paths }}"

@@ -29,7 +29,7 @@
   register: configure_reverse_proxy_certbot_output
   changed_when: false or "Certificate not yet due for renewal" not in configure_reverse_proxy_certbot_output.stdout
   failed_when: configure_reverse_proxy_certbot_output.rc != 0 and not "too many certificates" in configure_reverse_proxy_certbot_output.stderr
-  notify: Restart nginx
+  notify: Reload reverse proxy nginx
 
 - name: Debug the command output
   ansible.builtin.debug:

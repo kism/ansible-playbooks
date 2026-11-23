@@ -1,0 +1,3 @@
+---
+# Hosts running allowlistapp: don't ban IPs that are logged in to it
+configure_fail2ban_allowlistapp: false

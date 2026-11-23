@@ -1,9 +1,0 @@
-[nginx-kism]
-enabled = true
-port = http,https
-filter = nginx-kism
-action = iptables-multiport[name=nginx-kism, port="http,https", protocol=tcp]
-logpath = /var/log/nginx/*.log
-maxretry = 1
-bantime = 86400
-ignoreip = {% for entry in secret_ip_addresses %}{{ entry }} {% endfor %}
