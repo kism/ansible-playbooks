@@ -4,7 +4,7 @@ function echo_stderr() { # This is to avoid the output being captured by eval
     echo "$@" 1>&2
 }
 
-echo_stderr "Use this with: \$(./zz_loadcreds.sh)"
+echo_stderr "Use this with: \$(./scripts/loadcreds)"
 if [ -z "$BWS_ACCESS_TOKEN" ]; then
     echo_stderr -n "BWS_ACCESS_TOKEN: "
     read -r BWS_ACCESS_TOKEN

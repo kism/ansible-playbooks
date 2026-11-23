@@ -4,7 +4,7 @@
 UNUSED    secret id not referenced anywhere in the repo
 MISMATCH  secret name doesn't match the var that looks it up
 
-Usage: $(./zz_loadcreds) && ./zz_bws_audit.py [project_id]
+Usage: $(./scripts/loadcreds) && ./scripts/bws_audit.py [project_id]
 """
 
 import json
@@ -14,7 +14,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent
+REPO = Path(__file__).resolve().parent.parent
 SKIP_DIRS = {".venv", ".git", "collections"}
 VAR_RE = re.compile(r"^\s*-?\s*([A-Za-z0-9_]+):")
 
@@ -55,7 +55,7 @@ def var_name(lines: list[str], i: int) -> str:
 
 def main() -> int:
     if not os.environ.get("BWS_ACCESS_TOKEN"):
-        print("BWS_ACCESS_TOKEN not set, run: $(./zz_loadcreds)", file=sys.stderr)
+        print("BWS_ACCESS_TOKEN not set, run: $(./scripts/loadcreds)", file=sys.stderr)
         return 1
 
     # bws CLI over bitwarden_sdk: the sdk's list() needs an organisation id, bws doesn't

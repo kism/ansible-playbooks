@@ -12,11 +12,21 @@ ansible-galaxy collection install --requirements-file collections/requirements.y
 Running on macos
 `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
 
+Load Bitwarden Secrets Manager credentials (needed for the `secret_*` lookups)
+`$(./scripts/loadcreds)`
+
 Run
-`ansible-playbook build_ent.yml -i inventory.yml`
+`ansible-playbook build_ent.yml -i inventory/main.yml`
 
 Run without server onboarding block
-`ansible-playbook build_ent.yml -i inventory.yml --extra-vars "skip_onboard=true"`
+`ansible-playbook build_ent.yml -i inventory/main.yml --extra-vars "skip_onboard=true"`
+
+## Scripts
+
+| Script                 | What it do                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------------- |
+| `scripts/loadcreds`    | Prompt for and export `BWS_ACCESS_TOKEN`, use with `$(./scripts/loadcreds)`                        |
+| `scripts/bws_audit.py` | List Bitwarden secrets not used in this repo, or whose name doesn't match the var that looks it up |
 
 ## Code Quality
 
@@ -81,5 +91,4 @@ skip_ansible_lint
 
 ## Todo
 
-- UV Tool update
 - Separate role for certbot setup

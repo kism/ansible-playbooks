@@ -11,7 +11,7 @@ Tooling lives in the uv venv (`.venv/`); `ansible-lint` is not on the system PAT
 ```bash
 uv sync                                    # install python deps (ansible, ansible-lint, ansible-taste, bitwarden-sdk)
 ansible-galaxy collection install --requirements-file collections/requirements.yml --upgrade
-$(./zz_loadcreds)                          # export BWS_ACCESS_TOKEN for bitwarden secret lookups
+$(./scripts/loadcreds)                     # export BWS_ACCESS_TOKEN for bitwarden secret lookups
 
 .venv/bin/ansible-lint roles/<role_name> build_<host>.yml   # lint only the roles/playbooks you touched
 .venv/bin/ansible-taste                    # style checker, run on the whole repo, also run in CI
