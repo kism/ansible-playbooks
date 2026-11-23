@@ -30,6 +30,9 @@ There are no tests; ansible-lint (`strict: true`, see `.ansible-lint`) and ansib
 - **Multi-distro**: hosts are a mix of dnf, apt and pacman. Roles branch on package manager / virtualization role, e.g. `configure_packages/vars/{all,baremetal}-{apt,dnf,pacman,common}.yml`.
 - **Secrets**: all secrets are `secret_*` vars in `inventory/group_vars/all.yml`, resolved via `bitwarden.secrets.lookup` (needs `BWS_ACCESS_TOKEN`). Never hardcode secrets or domain names; use `homelab_domain_internal` / `homelab_domain_external`.
 - **Containers**: dockerised services (e.g. headscale) drop a `docker-compose.yml` into `/opt/<name>` and run it via a custom systemd unit in the role's `files/`.
+  - The unit runs `docker compose up -d` on start, so a reboot picks up new images. Never rely on `restart: always` alone, containers would stay on their old image forever.
+  - Add a `Restart <name>` handler and notify it from the compose file and any config file tasks.
+  - Add the `/opt/<name>` path to `docker_compose_paths` in the host's `host_vars`, otherwise `maintenance_update_packages` never pulls its images.
 - Remote user is `ansible_svc`; `become: true` is set at play level.
 
 ## Naming

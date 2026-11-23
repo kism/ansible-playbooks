@@ -39,6 +39,7 @@
     src: docker-compose.yml
     dest: /opt/victoriametrics/docker-compose.yml
     mode: "0644"
+  notify: Restart victoriametrics
 
 - name: Copy auth.yml file
   ansible.builtin.template:
@@ -47,3 +48,22 @@
     mode: "0640"
     owner: 1000
     group: 1000
+  notify: Restart victoriametrics
+
+- name: Copy systemd service file for victoriametrics
+  ansible.builtin.copy:
+    src: victoriametrics.service
+    dest: /etc/systemd/system/victoriametrics.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Flush handlers so systemd sees victoriametrics
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start victoriametrics service
+  ansible.builtin.systemd_service:
+    name: victoriametrics
+    enabled: true
+    state: started

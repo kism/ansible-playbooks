@@ -10,6 +10,8 @@ proxmox_ct_features:
   - nesting=1
   - fuse=1
   - keyctl=1
+docker_compose_paths:
+  - /opt/victoriametrics
 
 # Bitwarden secrets
 secret_victoriametrics_telegraf_home_kingking9: "{{ lookup('bitwarden.secrets.lookup', '01748172-5e0f-4fb3-8952-b448002e015a') }}"
