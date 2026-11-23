@@ -27,3 +27,4 @@ disks_btrfs:
   Blank: fb4b6799-3fad-4741-b1ed-ddc5525ba83d
   Beatrix: 95142536-1bb9-4140-bff2-d166e143f8d2
   Steiner: dd6f6124-8bc3-4aac-9730-4baa9f5e7bcc
+configure_disks_duperemove: true

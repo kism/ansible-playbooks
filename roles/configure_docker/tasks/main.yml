@@ -8,3 +8,6 @@
     enabled: true
     state: started
     daemon_reload: true
+
+- name: Include tasks, lazydocker
+  ansible.builtin.include_tasks: 02-lazydocker.yml

@@ -52,6 +52,10 @@
   ansible.builtin.include_tasks: 01-btrfs-maintance.yml
   when: disks_btrfs is defined or configure_disks_btrfs_exist | length > 0
 
+- name: Include tasks for duperemove
+  ansible.builtin.include_tasks: 02-duperemove.yml
+  when: configure_disks_duperemove
+
 - name: Copy perms script
   ansible.builtin.copy:
     src: files/hosts/{{ inventory_hostname }}/perms.sh

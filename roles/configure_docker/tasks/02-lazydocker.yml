@@ -1,0 +1,36 @@
+---
+- name: Get github api response for lazydocker
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/jesseduffield/lazydocker/releases/latest
+  register: configure_docker_lazydocker_github
+
+- name: Create lazydocker directory
+  ansible.builtin.file:
+    path: /opt/lazydocker
+    state: directory
+    mode: "0755"
+
+- name: Install lazydocker
+  ansible.builtin.unarchive:
+    src: >-
+      {{ configure_docker_lazydocker_github.json.assets |
+         selectattr('name', 'search', '_Linux_' ~ ('arm64' if ansible_facts['architecture'] == 'aarch64' else ansible_facts['architecture']) ~ '\.tar\.gz$') |
+         map(attribute='browser_download_url') |
+         first }}
+    dest: /opt/lazydocker
+    include:
+      - lazydocker
+    remote_src: true
+    mode: "0755"
+
+# OL sudo secure_path and root's login PATH skip /usr/local/bin, /usr/bin is in every PATH
+- name: Symlink lazydocker into PATH
+  ansible.builtin.file:
+    src: /opt/lazydocker/lazydocker
+    dest: /usr/bin/lazydocker
+    state: link
+
+- name: Remove old lazydocker from /usr/local/bin
+  ansible.builtin.file:
+    path: /usr/local/bin/lazydocker
+    state: absent

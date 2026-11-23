@@ -1,0 +1,5 @@
+---
+# Build duperemove from source, only hosts that dedupe need it
+configure_disks_duperemove: false
+configure_disks_duperemove_version: "0.15.2"
+configure_disks_duperemove_build_cache_dir: "/tmp/duperemove/{{ configure_disks_duperemove_version }}"

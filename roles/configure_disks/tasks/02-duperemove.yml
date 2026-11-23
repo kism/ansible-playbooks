@@ -1,0 +1,54 @@
+---
+# Builds on the workstation, see files/duperemove/Dockerfile
+- name: Build duperemove via docker on localhost
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansible.builtin.command:
+    argv:
+      - docker
+      - buildx
+      - build
+      - --build-arg
+      - DUPEREMOVE_VERSION={{ configure_disks_duperemove_version }}
+      - --file
+      - "{{ role_path }}/files/duperemove/Dockerfile"
+      - --output
+      - type=local,dest={{ configure_disks_duperemove_build_cache_dir }}
+      - "{{ role_path }}/files/duperemove"
+    creates: "{{ configure_disks_duperemove_build_cache_dir }}/duperemove"
+
+- name: Install duperemove runtime packages
+  ansible.builtin.apt:
+    pkg: "{{ lookup('ansible.builtin.file', configure_disks_duperemove_build_cache_dir ~ '/runtime-packages.txt').splitlines() }}"
+    state: present
+
+- name: Create duperemove directory
+  ansible.builtin.file:
+    path: /opt/duperemove
+    state: directory
+    mode: "0755"
+
+- name: Copy duperemove binary
+  ansible.builtin.copy:
+    src: "{{ configure_disks_duperemove_build_cache_dir }}/duperemove"
+    dest: /opt/duperemove/duperemove
+    mode: "0755"
+
+- name: Copy duperemove man page
+  ansible.builtin.copy:
+    src: "{{ configure_disks_duperemove_build_cache_dir }}/duperemove.8"
+    dest: /usr/share/man/man8/duperemove.8
+    mode: "0644"
+
+# sudo secure_path and root's login PATH skip /usr/local/bin on OL, /usr/bin is in every PATH
+- name: Symlink duperemove into PATH
+  ansible.builtin.file:
+    src: /opt/duperemove/duperemove
+    dest: /usr/bin/duperemove
+    state: link
+
+- name: Remove old duperemove from /usr/local/bin, it would shadow /usr/bin
+  ansible.builtin.file:
+    path: /usr/local/bin/duperemove
+    state: absent

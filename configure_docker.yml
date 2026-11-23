@@ -1,0 +1,7 @@
+---
+- name: Configure baremetal real quick
+  hosts: code,yoho,myr,stream,kismnas,headscale,vic,yoho,hs
+  become: true
+  gather_facts: true
+  roles:
+    - configure_docker

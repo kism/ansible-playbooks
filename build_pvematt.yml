@@ -11,13 +11,13 @@
 
     # Purpose specific
     - configure_pve
-    # - configure_concept_baremetal
-    # - configure_postfix_gmail
-    # - configure_disks
-    # - configure_snapraid
-    # - configure_nfs_server
-    # - configure_nfs_client
+    - configure_concept_baremetal
+    - configure_postfix_gmail
+    - configure_disks
+    - configure_snapraid
+    - configure_nfs_server
+    - configure_nfs_client
 
     # End
-    # - configure_telegraf
+    - configure_telegraf
     # - configure_wazuh_agent
