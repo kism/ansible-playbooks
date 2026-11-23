@@ -18,4 +18,4 @@
 
     # End
     - configure_telegraf
-    - configure_wazuh_agent
+    - configure_journal_upload

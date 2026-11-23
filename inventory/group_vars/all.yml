@@ -4,7 +4,6 @@ homelab_domain_external: kierangee.au
 homelab_domain_internal: kg.lan
 target_host_subnet: 10.42.0.0/24
 homelab_router_ip: 10.42.0.1
-wazuh_manager: wazuh.{{ homelab_domain_internal }}
 victoriametrics_url: http://vic.{{ homelab_domain_internal }}:8427
 
 # Bitwarden secrets
@@ -20,6 +19,5 @@ secret_proxmox_password: "{{ lookup('bitwarden.secrets.lookup', '5a4138a6-ff68-4
 secret_opnsense_api_key: "{{ lookup('bitwarden.secrets.lookup', 'd81879b8-9cda-4b2a-8fa9-b2220071aa24') }}"
 secret_opnsense_api_secret: "{{ lookup('bitwarden.secrets.lookup', 'ef7aac02-4e5d-48b1-877a-b2220071c304') }}"
 
-secret_wazuh_agent_password: "{{ lookup('bitwarden.secrets.lookup', 'baa1216d-fd91-4b24-b2fd-b434005de235') }}"
-
+secret_victorialogs_journal_password: "{{ lookup('bitwarden.secrets.lookup', 'ee4d941b-9c15-46ce-acea-b50b0079d1b6') }}"
 secret_telegraf_victoriametrics_rw_token: "{{ lookup('bitwarden.secrets.lookup', '81aa257d-0bfe-47b2-8cd7-b448002df31a') }}"

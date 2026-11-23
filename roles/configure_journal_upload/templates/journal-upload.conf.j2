@@ -1,0 +1,2 @@
+[Upload]
+URL={{ victoriametrics_url | regex_replace('://', '://journal:' ~ (secret_victorialogs_journal_password | urlencode) ~ '@') }}/insert/journald

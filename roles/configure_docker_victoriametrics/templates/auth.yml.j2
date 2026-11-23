@@ -1,11 +1,24 @@
+{% macro url_map() %}
+  url_map:
+    - src_paths: ["/insert/.*", "/select/.*"]
+      url_prefix: "http://victorialogs:9428"
+    - src_paths: ["/.*"]
+      url_prefix: "http://victoriametrics:8428"
+{% endmacro %}
 users:
+# systemd-journal-upload on every host, can only push logs
+- username: "journal"
+  password: "{{ secret_victorialogs_journal_password }}"
+  url_map:
+    - src_paths: ["/insert/journald/.*"]
+      url_prefix: "http://victorialogs:9428"
 {% for token in victoriametrics_bearer_tokens %}
 # {{ token.name }}
 - bearer_token: "{{ token.token }}"
-  url_prefix: "http://victoriametrics:8428"
+{{ url_map() }}
 {% endfor %}
 {% for user in victoriametrics_users %}
 - username: "{{ user.name }}"
   password: "{{ user.password }}"
-  url_prefix: "http://victoriametrics:8428"
+{{ url_map() }}
 {% endfor %}

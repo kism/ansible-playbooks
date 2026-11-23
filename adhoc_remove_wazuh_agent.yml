@@ -1,0 +1,7 @@
+---
+- name: Remove wazuh agent from all hosts
+  hosts: ansible_main
+  gather_facts: true
+  become: true
+  roles:
+    - remove_wazuh_agent

@@ -31,9 +31,6 @@ ansible_main:
     yoho:
       ansible_host: yoho.kg.lan
       ansible_host_description: No one knows
-    wazuh:
-      ansible_host: wazuh.kg.lan
-      ansible_host_description: Wazuh SIEM
     x230t:
       ansible_host: x230t.kg.lan
       ansible_host_description: Lenovo x230t Tablet
@@ -70,7 +67,6 @@ proxmoxvms:
     yoho:
     jf:
     stream:
-    wazuh:
     vic:
     myr:
     hs:

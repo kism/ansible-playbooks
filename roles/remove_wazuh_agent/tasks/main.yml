@@ -1,0 +1,16 @@
+---
+- name: Remove Wazuh agent
+  ansible.builtin.package:
+    name: wazuh-agent
+    state: absent
+
+- name: Remove Wazuh rpm key
+  ansible.builtin.rpm_key:
+    key: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+    state: absent
+  when: ansible_facts['pkg_mgr'] == 'dnf'
+
+- name: Remove Wazuh agent leftovers
+  ansible.builtin.file:
+    path: /var/ossec
+    state: absent

@@ -25,7 +25,7 @@ There are no tests; ansible-lint (`strict: true`, see `.ansible-lint`) and ansib
 ## Architecture
 
 - **Playbooks are thin**: top-level `build_<host>.yml` targets one inventory host and just lists roles. All logic is in `roles/`. Commented-out roles in a build playbook are intentional toggles (e.g. `create_proxmox_ct`, `create_opnsense_entries` only needed on first build).
-- **Typical build order**: `maintenance_gather_facts` → `meta_onboard` (package manager, packages, users, misc, sshd, locale, firewall, motd) → purpose-specific `configure_*` roles → optionally `configure_telegraf` / `configure_wazuh_agent`.
+- **Typical build order**: `maintenance_gather_facts` → `meta_onboard` (package manager, packages, users, misc, sshd, locale, firewall, motd) → purpose-specific `configure_*` roles → optionally `configure_telegraf`.
 - **Facts are not gathered by default** (`gather_facts = False` in `ansible.cfg`); roles that need facts rely on `maintenance_gather_facts` running first.
 - **Multi-distro**: hosts are a mix of dnf, apt and pacman. Roles branch on package manager / virtualization role, e.g. `configure_packages/vars/{all,baremetal}-{apt,dnf,pacman,common}.yml`.
 - **Secrets**: all secrets are `secret_*` vars in `inventory/group_vars/all.yml`, resolved via `bitwarden.secrets.lookup` (needs `BWS_ACCESS_TOKEN`). Never hardcode secrets or domain names; use `homelab_domain_internal` / `homelab_domain_external`.

@@ -2,6 +2,20 @@
 - name: Configure Docker repo APT
   ansible.builtin.include_tasks: '01-{{ ansible_facts["pkg_mgr"] }}.yml'
 
+- name: Read existing docker daemon.json
+  ansible.builtin.slurp:
+    src: /etc/docker/daemon.json
+  register: configure_docker_daemon_json
+  failed_when: false # missing file is fine, it gets created below
+
+# Merge rather than overwrite, nvidia-ctk writes its runtime into this file
+- name: Set docker log driver to journald
+  ansible.builtin.copy:
+    content: "{{ configure_docker_daemon_json.content | default('e30=') | b64decode | from_json | combine({'log-driver': 'journald'}) | to_nice_json(indent=4) }}\n"
+    dest: /etc/docker/daemon.json
+    mode: "0644"
+  notify: Restart docker service
+
 - name: Start docker service
   ansible.builtin.systemd_service:
     service: docker

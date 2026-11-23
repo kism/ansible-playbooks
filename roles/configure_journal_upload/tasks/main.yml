@@ -1,0 +1,27 @@
+---
+- name: Install systemd-journal-remote
+  ansible.builtin.package:
+    name: systemd-journal-remote
+    state: present
+  when: ansible_facts['pkg_mgr'] != 'pacman' # arch ships journal-upload in the systemd package
+
+# Debian enables the receiver on install, we only want the uploader
+- name: Disable systemd-journal-remote receiver
+  ansible.builtin.systemd_service:
+    name: systemd-journal-remote.socket
+    enabled: false
+    state: stopped
+
+- name: Configure systemd-journal-upload
+  ansible.builtin.template:
+    src: journal-upload.conf.j2
+    dest: /etc/systemd/journal-upload.conf
+    group: systemd-journal # unit runs as a DynamicUser with this supplementary group
+    mode: "0640"
+  notify: Restart systemd-journal-upload
+
+- name: Enable and start systemd-journal-upload
+  ansible.builtin.systemd_service:
+    name: systemd-journal-upload
+    enabled: true
+    state: started
