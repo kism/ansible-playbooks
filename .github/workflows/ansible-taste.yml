@@ -19,3 +19,7 @@ jobs:
 
       - name: Run ansible-taste
         run: uv run ansible-taste
+
+      - name: Check docker compose stacks get updated
+        if: ${{ !cancelled() }} # Run even if ansible-taste failed, they're independent checks
+        run: uv run scripts/compose_audit.py

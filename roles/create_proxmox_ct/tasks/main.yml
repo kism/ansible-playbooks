@@ -40,7 +40,6 @@
     - name: Set config entries for host if defined
       delegate_to: "{{ proxmox_target_node }}"
       become: true
-      become_user: root
       ansible.builtin.lineinfile:
         path: "/etc/pve/lxc/{{ maintenance_gather_facts_pve_guest.vmid }}.conf"
         line: "{{ item }}"
@@ -73,7 +72,6 @@
     - name: Copy init script to proxmox host
       delegate_to: "{{ proxmox_target_node }}"
       become: true
-      become_user: root
       ansible.builtin.get_url:
         url: "{{ user_data_url }}"
         dest: "/tmp/{{ inventory_hostname }}_init_linux.sh"
@@ -82,7 +80,6 @@
     - name: Copy the init script to container
       delegate_to: "{{ proxmox_target_node }}"
       become: true
-      become_user: root
       ansible.builtin.command:
         cmd: "pct push {{ maintenance_gather_facts_pve_guest.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh /tmp/{{ inventory_hostname }}_init_linux.sh -perms
           700"
@@ -91,7 +88,6 @@
     - name: Run the init script
       delegate_to: "{{ proxmox_target_node }}"
       become: true
-      become_user: root
       ansible.builtin.command:
         cmd: "pct exec {{ maintenance_gather_facts_pve_guest.vmid }} /tmp/{{ inventory_hostname }}_init_linux.sh"
       changed_when: true # Safe assumption
