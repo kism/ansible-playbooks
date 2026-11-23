@@ -5,21 +5,21 @@
   become: true
   roles:
     # Preflight
-    # - meta_pre_flight_checks
-    # - maintenance_gather_facts_pve
-    # - create_proxmox_ct
-    # - create_opnsense_entries
+    - meta_pre_flight_checks
+    - maintenance_gather_facts_pve
+    - create_proxmox_ct
+    - create_opnsense_entries
     - maintenance_gather_facts
 
     # Onboard Server
-    # - meta_onboard
+    - meta_onboard
 
     # Purpose specific
-    # - configure_nginx
-    # - configure_fail2ban
-    # - configure_reverse_proxy
-    # - configure_cf_dyndns
-    # - configure_nginx_maxmind_allowlist
+    - configure_nginx
+    - configure_fail2ban
+    - configure_reverse_proxy
+    - configure_cf_dyndns
+    - configure_nginx_maxmind_allowlist
     - configure_allowlistapp
 
     # End
