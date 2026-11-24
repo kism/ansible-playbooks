@@ -1,17 +1,6 @@
 ---
 - name: Block with fun rescue
   block:
-    # ponytail: a standalone copy of influx's expired subkey 7df8b07e clashes with the current 9fc2f927 bundle (which contains it),
-    # so rpm warns "Could not load key gpg-pubkey-9fc2f927". Keep 9fc2f927 (signs telegraf), drop the dupe. Delete once all hosts are clean
-    - name: Remove stale influxdb subkey
-      ansible.builtin.command:
-        argv: [rpm, --erase, --allmatches, gpg-pubkey-7df8b07e]
-      register: maintenance_update_packages_influx_key
-      changed_when: maintenance_update_packages_influx_key.rc == 0 # rc 0 means the key was present and removed
-      failed_when: # Already-absent key is fine
-        - maintenance_update_packages_influx_key.rc != 0
-        - "'is not installed' not in maintenance_update_packages_influx_key.stderr"
-
     - name: Update DNF Cache, list updates
       ansible.builtin.dnf:
         update_cache: true

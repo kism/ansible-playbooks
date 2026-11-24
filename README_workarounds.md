@@ -29,7 +29,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: `apt-cache policy duperemove`. At 0.15 or later, drop the build.
 - **duperemove and lazydocker symlinked into `/usr/bin`** (`roles/configure_disks/tasks/02-duperemove.yml:44`, `roles/configure_docker/tasks/02-lazydocker.yml:26`)
   - Why: on Oracle Linux, sudo's `secure_path` and root's login PATH skip `/usr/local/bin`.
-  - Check: `sudo grep secure_path /etc/sudoers` and `sudo -i sh -c 'echo $PATH'` on an OL host.
+  - Check: `sudo grep secure_path /etc/sudoers` and `sudo -i sh -c 'echo $PATH'` on an OL host. Last checked 2026-11-24: still `/sbin:/bin:/usr/sbin:/usr/bin` on every OL host, and root's login PATH lacks `/usr/local/bin` on most.
 - **`python3-packaging` installed on OL10** (`roles/configure_docker/tasks/01-dnf.yml:29`)
   - Why: `ansible.builtin.pip` needs it, and the OL10 rootfs doesn't ship it.
   - Check: `rpm -q python3-packaging` on a fresh OL10 container.
@@ -65,7 +65,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: bump it, then `docker exec vector vector test /etc/vector/vector.yaml`.
 - **`_MACHINE_ID` left out of the journald stream fields** (`roles/configure_docker_victoriametrics/files/docker-compose.yml:24`)
   - Why: Proxmox doesn't regenerate `/etc/machine-id` when a container is cloned, so cloned CTs share it.
-  - Check: compare `cat /etc/machine-id` across the LXC hosts. If every value is unique, the field could go back in.
+  - Check: compare `cat /etc/machine-id` across the LXC hosts. If every value is unique, the field could go back in. Last checked 2026-11-24: all 15 reachable hosts unique, but the next clone would reintroduce a dupe, so it stays out.
 
 ## configure_headscale
 
@@ -176,7 +176,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **iotop → iotop-c migration** (`roles/configure_packages/tasks/01-all.yml:5`, marked TEMP)
   - Why: iotop-c only provides `iotop`, so the old package conflicts.
-  - Check: `rpm -q iotop` / `dpkg -l iotop` on every host. Once none have it, delete the tasks.
+  - Check: `rpm -q iotop` / `dpkg -l iotop` on every host. Once none have it, delete the tasks. Last checked 2026-11-24: gone from all 15 reachable hosts. x230t (Manjaro), musicass (Raspbian) and bigbilly (Debian) were unreachable and could still have it.
 - **neofetch fallback for fastfetch** (`roles/configure_packages/tasks/04-fastfetch.yml:2`)
   - Why (inferred): fastfetch isn't packaged on older distros.
   - Check: `dnf info fastfetch` / `apt-cache policy fastfetch` on each host.
@@ -239,7 +239,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: `grep -i "too many" /var/log/letsencrypt/letsencrypt.log*`.
 - **Empty `options-ssl-nginx.conf` if the download fails** (`roles/configure_reverse_proxy/tasks/03-configure-certbot.yml:56`)
   - Why (inferred): the distro certbot here has no nginx plugin, so the file isn't shipped and is pulled from certbot's GitHub `main`. **An empty file silently drops the TLS protocol and cipher settings from every vhost.**
-  - Check: `wc -c /etc/letsencrypt/options-ssl-nginx.conf` on rproxy, and whether the GitHub path still resolves.
+  - Check: `wc -c /etc/letsencrypt/options-ssl-nginx.conf` on rproxy, and whether the GitHub path still resolves. Last checked 2026-11-24: 775 bytes, fine.
 - **`proxy_set_header Host $host:443` for stream** (`roles/configure_reverse_proxy/files/hosts/rproxy/sites-available/stream.conf:10`)
   - Why (inferred): the upstream builds absolute URLs from the Host header and gets the port wrong without it.
   - Check: switch to `Host $host` and look at the URLs in `player_api.php` and m3u responses.
@@ -309,9 +309,6 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 ## maintenance_update_packages
 
-- **InfluxData's old gpg-pubkey erased** (`roles/maintenance_update_packages/tasks/01-dnf.yml:4`)
-  - Why: a separate copy of the expired 7df8b07e subkey clashes with the current bundle ("Could not load key").
-  - Check: `rpm -q gpg-pubkey-7df8b07e` on every dnf host. Once none have it, delete the task.
 - **dnf clean-and-retry rescue** (`roles/maintenance_update_packages/tasks/01-dnf.yml:31`)
   - Why (inferred): corrupt or stale repo metadata.
   - Check: run logs for the rescue ever firing.
