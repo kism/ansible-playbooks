@@ -1,2 +1,3 @@
 {# ponytail: v6 /64 comes from facts at deploy time, the ISP prefix is dynamic so rerun the role if it changes. fail2ban masks the host bits #}
-ignoreip = {{ target_host_subnet }}{% if ansible_default_ipv6.address is defined %} {{ ansible_default_ipv6.address }}/{{ ansible_default_ipv6.prefix }}{% endif %}
+{% set v6 = ansible_facts['default_ipv6'] | default({}) %}
+ignoreip = {{ target_host_subnet }}{% if v6.address is defined %} {{ v6.address }}/{{ v6.prefix }}{% endif %}
