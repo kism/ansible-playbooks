@@ -60,10 +60,6 @@
     removes: /opt/allowlistapp/instance/config.toml
   notify: Restart allowlistapp
 
-- name: Fix selinux for allowlistapp
-  ansible.builtin.command: restorecon -Rv /opt/allowlistapp
-  changed_when: true # This command only matters if another task has changed files
-
 - name: Copy systemd service allowlistapp
   ansible.builtin.copy:
     src: files/allowlistapp.service

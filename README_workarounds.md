@@ -107,10 +107,10 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **NetworkManager IPv6 warnings silenced** (`roles/configure_misc/tasks/main.yml:114`, `/etc/NetworkManager/conf.d/99-quiet-ip6.conf`, added 2026-11-24)
   - Why: libndp sends router solicitations with `sa_family=AF_UNSPEC`, and the PVE 7.0 kernel rejects that. NM logs `failure sending router solicitation: Address family not supported by protocol (97)` about every minute. Harmless, because RAs still arrive unsolicited.
-  - Check: on one host, `nmcli general logging domains DEFAULT` then `journalctl -u NetworkManager -f | grep solicit` for a few minutes. Quiet = fixed, delete the task and the file.
+  - Check: on one host, `nmcli general logging domains DEFAULT` then `journalctl -u NetworkManager -f | grep solicit` for a few minutes. Quiet = fixed, delete the task and the file. Last checked 2026-11-24 on vic: 2 errors in 3 minutes, still needed.
 - **`sys-kernel-config.mount` and `sys-kernel-debug.mount` masked in LXC** (`roles/configure_misc/tasks/main.yml:33`)
   - Why: unprivileged containers can't mount configfs or debugfs, so the units fail.
-  - Check: in one container, unmask them and `systemctl start sys-kernel-debug.mount`, then `systemctl --failed`.
+  - Check: in one container, unmask them and `systemctl start sys-kernel-debug.mount`, then `systemctl --failed`. Last checked 2026-11-24 on code (OL, PVE 9): both still fail.
 - **`follow: true` on `/etc/vconsole.conf`** (`roles/configure_misc/tasks/main.yml:40`)
   - Why: Debian symlinks it to `/etc/default/keyboard`, which may not exist.
   - Check: `readlink -f /etc/vconsole.conf` on Debian 13.
@@ -222,15 +222,9 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 ## configure_qbt_shaper
 
-- **`HOME` and `UV_PYTHON_INSTALL_DIR` under `/opt`** (`roles/configure_qbt_shaper/tasks/main.yml:48`)
+- **`HOME` and `UV_PYTHON_INSTALL_DIR` under `/opt`** (`roles/configure_qbt_shaper/tasks/main.yml:40`)
   - Why: uv symlinks the venv to an interpreter in `$HOME`, which the hardened unit (`ProtectHome`) can't see.
   - Check: uv managed-python location options in newer releases.
-- **`restorecon` every run** (`roles/configure_qbt_shaper/tasks/main.yml:53`)
-  - Why (inferred): files written by git or uv get the wrong SELinux labels.
-  - Check: `restorecon -Rnv /opt/qbt-shaper` after a run. Empty output means it isn't needed.
-- **git `safe.directory`** (`roles/configure_qbt_shaper/tasks/main.yml:30`)
-  - Why (inferred): git's dubious-ownership check (CVE-2022-24765). The clone runs as the owning user, so it may be unneeded.
-  - Check: remove it and `sudo -u qbt-shaper git -C /opt/qbt-shaper status`.
 
 ## configure_reverse_proxy
 
@@ -260,7 +254,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **sshd restarted, not reloaded** (`roles/configure_sshd/handlers/main.yml:2`)
   - Why: on Debian 13 a SIGHUP'd sshd can't rebind while `ssh.socket` holds the port.
-  - Check: `systemctl is-enabled ssh.socket` on Debian 13 hosts.
+  - Check: `systemctl is-enabled ssh.socket` on Debian 13 hosts. Last checked 2026-11-24: disabled on pvematt and pvewill. bigbilly (Debian) and musicass (Raspbian) were unreachable, and those are the hosts the restart is for.
 - **RedHat's `01-permitrootlogin.conf` deleted** (`roles/configure_sshd/tasks/01-nonpve.yml:27`)
   - Why (inferred): the EL/OL installer drops in `PermitRootLogin yes`, and sshd takes the first value it reads, so `01-` beats our `90-`.
   - Check: `ls /etc/ssh/sshd_config.d/; sshd -T | grep permitrootlogin` on a fresh OL image.

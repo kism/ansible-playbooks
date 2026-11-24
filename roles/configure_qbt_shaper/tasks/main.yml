@@ -25,12 +25,6 @@
   become: true
   become_user: qbt-shaper
   block:
-    - name: Git config qbt-shaper
-      community.general.git_config:
-        name: safe.directory
-        scope: global
-        value: /opt/qbt-shaper
-
     - name: Clone qbt-shaper
       ansible.builtin.git:
         repo: https://github.com/kism/qbt-shaper
@@ -48,10 +42,6 @@
         UV_PYTHON_INSTALL_DIR: /opt/qbt-shaper/.python
       notify: Restart qbt-shaper
       changed_when: true # Safe assumption, no way to know
-
-- name: Fix selinux for qbt-shaper
-  ansible.builtin.command: restorecon -Rv /opt/qbt-shaper
-  changed_when: true # This command only matters if another task has changed files
 
 - name: Copy systemd service qbt-shaper
   ansible.builtin.copy:
