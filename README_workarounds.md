@@ -4,12 +4,6 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 "(inferred)" means no comment in the code states the reason; it was worked out from what the code does. Line numbers are as of 2026-11-24.
 
-## configure_cifs_server
-
-- **`wsdd2` instead of `wsdd` on Debian 13** (`roles/configure_cifs_server/tasks/01-samba-debian-13.yml:8`)
-  - Why (inferred): trixie packages `wsdd2`. The firewalld service is still called `wsdd`, which works only because the role ships its own `files/firewalld/wsdd.xml`.
-  - Check: `apt-cache policy wsdd` on a Debian 13 host.
-
 ## configure_concept_sd_rootfs
 
 - **journald `SystemMaxUse=5M`** (`roles/configure_concept_sd_rootfs/tasks/main.yml:5`)
@@ -33,12 +27,9 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 ## configure_docker_qbittorrent
 
-- **firewalld changes restart docker** (`roles/configure_docker_qbittorrent/tasks/main.yml:55`)
-  - Why (inferred): a firewalld reload wipes Docker's iptables/nft rules, and Docker has to re-add them.
-  - Check: reload firewalld, then `nft list ruleset | grep -i docker` and test the container ports.
 - **`Restart=on-failure` on a oneshot compose unit** (`roles/configure_docker_qbittorrent/templates/docker-qbittorrent.service.j2:14`)
   - Why (inferred): at boot `compose up` can fail while gluetun isn't healthy yet (`depends_on: condition: service_healthy`), so the unit retries.
-  - Check: `journalctl -u docker-qbittorrent -b` for failed first attempts.
+  - Check: `journalctl -u docker-qbittorrent -b` for failed first attempts. Last checked 2026-11-24: still needed. On yoho (2026-11-18) gluetun stayed unhealthy past the old 3 tries in about 90s and the unit was left `failed`, so it now retries every 60s with no start limit.
 
 ## configure_docker_victoriametrics
 
@@ -53,7 +44,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: set it to `enabled: true` and look for healthcheck errors in `docker logs vector`. Last checked 2026-11-24 (vector 0.62, victoria-logs latest): still `Healthcheck failed ... 400 Bad Request`, data flows regardless.
 - **Vector image pinned** (`roles/configure_docker_victoriametrics/files/docker-compose.yml:42`)
   - Why: VRL can break across releases. This is a precaution, not a known bad version.
-  - Check: bump it, then `docker exec vector vector test /etc/vector/vector.yaml`.
+  - Check: bump it, then `docker exec vector vector test /etc/vector/vector.yaml`. Last checked 2026-11-24: the pin (0.62.0) is the latest release.
 - **`_MACHINE_ID` left out of the journald stream fields** (`roles/configure_docker_victoriametrics/files/docker-compose.yml:24`)
   - Why: Proxmox doesn't regenerate `/etc/machine-id` when a container is cloned, so cloned CTs share it.
   - Check: compare `cat /etc/machine-id` across the LXC hosts. If every value is unique, the field could go back in. Last checked 2026-11-24: all 15 reachable hosts unique, but the next clone would reintroduce a dupe, so it stays out.
@@ -71,7 +62,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **curl User-Agent in the motd script** (`roles/configure_jumpbox/files/motd.py:12`)
   - Why: Cloudflare bot protection blocks Python-urllib's default User-Agent.
-  - Check: run the same request without the header. A 403 or error 1010 means it's still needed.
+  - Check: run the same request without the header. A 403 or error 1010 means it's still needed. Last checked 2026-11-24: Python's default UA still gets 403 `error code: 1010`. It's your own zone, so a Cloudflare WAF skip rule for that API path would also fix it.
 
 ## configure_locale
 
@@ -83,16 +74,16 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **Toshy installer fed `y` on stdin** (`roles/configure_manjaro_laptop/tasks/02-toshy.yml:36`)
   - Why: `setup_toshy.py` asks about the KWin switcher interactively.
-  - Check: `./setup_toshy.py install --help` at the pinned ref, for a flag that answers it.
+  - Check: `./setup_toshy.py install --help` at the pinned ref, for a flag that answers it. Last checked 2026-11-24 (pinned v26.08.0 and `main`): `check_kde_app_switcher()` still calls `input()` with no flag. It's skipped once `~/.local/share/kwin/scripts/applicationswitcher` exists.
 - **KDE wallpaper set through a D-Bus JS snippet** (`roles/configure_manjaro_laptop/tasks/04-kde-wallpaper.yml:25`)
   - Why: the colour wallpaper plugin has no CLI equivalent of `plasma-apply-wallpaperimage`.
-  - Check: Plasma release notes, or `plasma-apply-wallpaperimage --help`.
+  - Check: Plasma release notes, or `plasma-apply-wallpaperimage --help`. Last checked 2026-11-24 (plasma-workspace `master`): its only option is `-f/--fill-mode` and it takes an image, so there's still no CLI for the colour plugin.
 
 ## configure_mergerfs
 
 - **`KillMode=none` plus a pre-start umount** (`roles/configure_mergerfs/templates/mergerfs.service.j2:7`)
   - Why (inferred): a crashed FUSE process leaves a dead mount ("Transport endpoint is not connected"). `KillMode=none` is from mergerfs's example unit; systemd has deprecated it and warns.
-  - Check: `journalctl -u mergerfs | grep -i KillMode`, and mergerfs's current example unit.
+  - Check: `journalctl -u mergerfs | grep -i KillMode`, and mergerfs's current example unit. Last checked 2026-11-24: upstream's quickstart unit (`mkdocs/docs/quickstart.md`) still uses `KillMode=none`, the same as ours apart from the pre-start umount. bigbilly was unreachable, so the journal wasn't checked.
 
 ## configure_misc
 
@@ -108,39 +99,30 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 ## configure_motd
 
-- **Read-only placeholder update-motd scripts, re-applied by a dpkg hook** (`roles/configure_motd/tasks/01a-apt-post-hook.yml:16`)
-  - Why: package upgrades (e.g. `update-notifier-common`) recreate Ubuntu's stock motd scripts. The hook is `DPkg::Post-Invoke`, although the comment says Post-Invoke-Success.
-  - Check: remove the hook, `apt install --reinstall update-notifier-common`, and see if the files come back. `dpkg-divert` might be a cleaner fix.
 - **sed strips the ESM adverts** (`roles/configure_motd/files/update-motd/50-sysinfo:29`)
   - Why (inferred): Ubuntu Pro adverts appear in `/var/lib/update-notifier/updates-available`.
-  - Check: `cat` that file on a current Ubuntu host.
-
-## configure_nfs_client
-
-- **`backups` exempt from the mountpoint check** (`roles/configure_nfs_client/tasks/02-create-dirs.yml:46`)
-  - Why ("lol proxmox", inferred): Proxmox writes into the `backups` storage path even when the NFS share isn't mounted.
-  - Check: `pvesm config <storage>` for `is_mountpoint 1`, which makes Proxmox refuse to write to an unmounted path.
+  - Check: `cat` that file on a current Ubuntu host. No host runs Ubuntu as of 2026-11-24, so this code never runs; `$stamp` only exists on Ubuntu.
 
 ## configure_nginx
 
 - **Distro nginx packages removed on EL** (`roles/configure_nginx/tasks/01-redhat.yml:44`, "bit of a hack")
-  - Why (inferred): AppStream's split nginx packages (`nginx-core`, `nginx-filesystem`, modules) conflict with nginx.org's single package.
-  - Check: `rpm -qa 'nginx*' --qf '%{NAME} %{RELEASE}\n' | grep -v ngx` on EL hosts.
+  - Why: AppStream's split nginx packages (`nginx-core`, modules) conflict with nginx.org's single package.
+  - Check: `rpm -qa 'nginx*' --qf '%{NAME} %{RELEASE}\n' | grep -v ngx` on EL hosts. Last checked 2026-11-24 (oraclelinux:9 container): still needed. nginx.org's package has no `Obsoletes`, and installing it over AppStream nginx fails on `nginx-core` file conflicts (`/etc/logrotate.d/nginx`, `/etc/nginx/mime.types`). rproxy has no distro nginx left, only `nginx-filesystem`, which doesn't conflict.
 - **`module_hotfixes: true` on the nginx.org repo** (`roles/configure_nginx/tasks/01-redhat.yml:28`)
   - Why (inferred, nginx.org's documented advice): stops dnf modularity hiding nginx.org packages behind the AppStream module. EL10 dropped modularity.
-  - Check: `dnf module list nginx`. If OL9 is gone, this can go.
+  - Check: `dnf module list nginx`. If OL9 is gone, this can go. Last checked 2026-11-24: rproxy (the only nginx host) is OL 9.9, and AppStream still has nginx module streams 1.22/1.24/1.26. Still needed until rproxy moves to OL10.
 
 ## configure_nvidia_driver
 
 - **udev rule creates `/dev/nvidia*` at boot** (`roles/configure_nvidia_driver/files/70-nvidia.rules`)
   - Why (inferred): the `.run` installer doesn't create the device nodes on a headless host, and LXC GPU passthrough needs them to exist with open permissions.
   - Check: boot without the rule, then `ls -l /dev/nvidia*`.
-- **`--allow-installation-with-running-driver`** (`roles/configure_nvidia_driver/tasks/main.yml:77`)
+- **`--allow-installation-with-running-driver`** (`roles/configure_nvidia_driver/tasks/main.yml:79`)
   - Why (inferred): the installer refuses while the module is loaded or used by LXC guests.
   - Check: run the installer without it on a host where the driver is loaded.
-- **nvidia-persistenced installed from the driver's samples** (`roles/configure_nvidia_driver/tasks/main.yml:101`)
+- **nvidia-persistenced installed from the driver's samples** (`roles/configure_nvidia_driver/tasks/main.yml:103`)
   - Why (inferred): the `.run` installer doesn't install a systemd unit for it.
-  - Check: `systemctl cat nvidia-persistenced` straight after a fresh install.
+  - Check: `systemctl cat nvidia-persistenced` straight after a fresh install. Last checked 2026-11-24: the unit was `failed` on pvematt since the 2026-11-08 boot, but only because no nvidia module existed for that kernel. The role passed `--dkms` without installing `dkms`, so the build only covered the running kernel. Fixed by installing `dkms` and `proxmox-default-headers`.
 
 ## configure_opnsense_syslog
 
@@ -153,9 +135,9 @@ Things that work around someone else's bug or limitation. Check each one now and
 - **archlinux-keyring rescue** (`roles/configure_package_manager/tasks/01-archlinux-26.yml:11`)
   - Why (inferred): signature or keyring failures on Arch installs that haven't been updated in a while; the rescue re-inits and refreshes the keyring, then retries.
   - Check: whether the rescue ever fires (`-v` output).
-- **makepkg `OPTIONS` rewritten with `!debug`** (`roles/configure_package_manager/tasks/01-archlinux-26.yml:27`)
-  - Why (inferred): pacman 6.1+ enables `debug` and builds `-debug` packages. Rewriting the whole line also drops new upstream options; a `/etc/makepkg.conf.d/` drop-in would be cleaner.
-  - Check: `diff /etc/makepkg.conf /etc/makepkg.conf.pacnew`.
+- **makepkg `!debug` drop-in** (`roles/configure_package_manager/tasks/01-archlinux-26.yml:28`)
+  - Why: pacman 6.1+ ships `OPTIONS=(... debug ...)` and builds `-debug` packages for every AUR build. Since 2026-11-24 this is `/etc/makepkg.conf.d/no-debug.conf` with `OPTIONS+=(!debug)`, where it used to rewrite the whole vendor line. makepkg's `in_opt_array` takes the last match.
+  - Check: `grep ^OPTIONS /etc/makepkg.conf` on a fresh Arch. Last checked 2026-11-24 (pacman 7.1): stock still has `debug`.
 - **ol10_appstream added on OL10** (`roles/configure_package_manager/tasks/01-oraclelinux-10.yml:16`)
   - Why: the minimal OL10 LXC image only ships baseos.
   - Check: `ls /etc/yum.repos.d/` on a fresh OL10 LXC template. Last checked 2026-11-24 (linuxcontainers build 20261112): still only `base.repo` and `base_latest.repo`, both baseos.
@@ -173,7 +155,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **Distro `main.cf` keys commented out** (`roles/configure_postfix_gmail/tasks/main.yml:48`)
   - Why (inferred): stops duplicate keys conflicting with the blockinfile. `postconf -e` would be cleaner.
-  - Check: `postconf -n` and `postfix check` warnings.
+  - Check: `postconf -n` and `postfix check` warnings. Last checked 2026-11-24 (Postfix 3.10, pvematt/pvewill): no duplicate keys. The only warning was the deprecated `smtp_use_tls`, which was redundant with `smtp_tls_security_level = encrypt` and is now dropped from the block.
 - **Empty `smtp_sasl_security_options`** (`roles/configure_postfix_gmail/tasks/main.yml:64`)
   - Why (inferred, from the gist it's based on): turns off `noplaintext,noanonymous` so Gmail's PLAIN login works. It also allows anonymous mechanisms.
   - Check: set it to `noanonymous` and send a test mail.
@@ -182,46 +164,34 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **pve-nag-buster** (`roles/configure_pve/tasks/01-repos.yml:10`)
   - Why: removes Proxmox's subscription nag and switches repos. Could break silently on a new PVE major, e.g. if repos move to deb822 `.sources`.
-  - Check: is upstream still maintained, and does the nag come back after `apt install --reinstall proxmox-widget-toolkit`?
+  - Check: is upstream still maintained, and does the nag come back after `apt install --reinstall proxmox-widget-toolkit`? Last checked 2026-11-24 (PVE 9.2, widget-toolkit 5.2.13): still works. The dpkg hook re-patched `proxmoxlib.js` on 2026-11-18 after the toolkit update (the check now reads `res.false`), and the repos are `pve-no-subscription` with no enterprise `.sources`. Upstream's last commit was 2021-05, so it works because Proxmox hasn't changed that line, not because it's maintained.
 
 ## configure_pvpn
 
 - **Fake `appversion` fetched from GitHub** (`roles/configure_pvpn/files/pvpn-select/pvpn_select.py:22`)
   - Why: Proton rejects old app versions. If GitHub is unreachable or the file format changes, the script crashes at import.
-  - Check: run it with a fixed old version string.
+  - Check: run it with a fixed old version string. Last checked 2026-11-24: `versions.yml` on `stable` still starts with `version: 6.1.2` (2026-11-06), parses to `linux-vpn-cli@6.1.2+x86_64`. The old-version test wasn't run, since it needs a real Proton login.
 - **proton-core installed from git** (`roles/configure_pvpn/files/pvpn-select/pyproject.toml:5`)
   - Why: the PyPI `proton-core` is a 0.0.1 placeholder.
   - Check: `pip index versions proton-core`. Last checked 2026-11-24: still only 0.0.1 with no files, and v0.7.4 is still the newest upstream tag.
 - **tailscaled on port 41642** (`roles/configure_pvpn/tasks/main.yml:53`)
   - Why: OPNsense's own Tailscale uses 41641 on the same public IPv4.
-  - Check: only needed while OPNsense runs Tailscale.
-- **`gnupg2` installed** (`roles/configure_pvpn/tasks/main.yml:86`)
-  - Why: proton-core shells out to gpg to verify the SRP modulus, an undeclared dependency.
-  - Check: proton-core's dependencies.
+  - Check: only needed while OPNsense runs Tailscale. Last checked 2026-11-24: `kg-opnsense` (FreeBSD) is still on the tailnet and offers an exit node, and pvpn's tailscaled is on 41642.
 - **`ip rule del … || true` before adding** (`roles/configure_pvpn/templates/wg0.conf.j2:13`)
   - Why: wg-quick runs hooks with `set -e`, and `ip rule` has no idempotent replace.
-  - Check: iproute2 gaining `ip rule replace`.
-
-## configure_qbt_shaper
-
-- **`HOME` and `UV_PYTHON_INSTALL_DIR` under `/opt`** (`roles/configure_qbt_shaper/tasks/main.yml:40`)
-  - Why: uv symlinks the venv to an interpreter in `$HOME`, which the hardened unit (`ProtectHome`) can't see.
-  - Check: uv managed-python location options in newer releases.
+  - Check: iproute2 gaining `ip rule replace`. Last checked 2026-11-24: still only `add | del` in iproute2 6.17 (pvpn) and 7.3 (Debian sid).
 
 ## configure_reverse_proxy
 
 - **certbot rate-limit errors ignored** (`roles/configure_reverse_proxy/tasks/03-configure-certbot.yml:31`)
   - Why (inferred): Let's Encrypt's "too many certificates" rate limit otherwise fails the run. It also hides that the cert wasn't renewed.
-  - Check: `grep -i "too many" /var/log/letsencrypt/letsencrypt.log*`.
+  - Check: `grep -i "too many" /var/log/letsencrypt/letsencrypt.log*`. Last checked 2026-11-24: no hits in 67 logs, and the cert is valid until 2027-02-18 (`certbot_renew.timer` renews it). The Ansible run only issues a cert when `/etc/letsencrypt` is fresh, i.e. on a rebuild, which is when the 5-per-week duplicate limit hits, so it's worth keeping for rebuild loops.
 - **Empty `options-ssl-nginx.conf` if the download fails** (`roles/configure_reverse_proxy/tasks/03-configure-certbot.yml:56`)
   - Why (inferred): the distro certbot here has no nginx plugin, so the file isn't shipped and is pulled from certbot's GitHub `main`. **An empty file silently drops the TLS protocol and cipher settings from every vhost.**
   - Check: `wc -c /etc/letsencrypt/options-ssl-nginx.conf` on rproxy, and whether the GitHub path still resolves. Last checked 2026-11-24: 775 bytes, fine.
 - **`proxy_set_header Host $host:443` for stream** (`roles/configure_reverse_proxy/files/hosts/rproxy/sites-available/stream.conf:10`)
   - Why (inferred): the upstream builds absolute URLs from the Host header and gets the port wrong without it.
   - Check: switch to `Host $host` and look at the URLs in `player_api.php` and m3u responses.
-- **Fixed upstream Host header for qBittorrent** (`roles/configure_reverse_proxy/files/hosts/rproxy/sites-available/qbt.conf:9`, same in `myr.conf`)
-  - Why (inferred): qBittorrent's Host-header validation rejects the public hostname.
-  - Check: qBittorrent WebUI → server domains / Host header validation.
 
 ## configure_snapraid
 
@@ -236,28 +206,28 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: `systemctl is-enabled ssh.socket` on Debian 13 hosts. Last checked 2026-11-24: disabled on pvematt and pvewill. bigbilly (Debian) and musicass (Raspbian) were unreachable, and those are the hosts the restart is for.
 - **RedHat's `01-permitrootlogin.conf` deleted** (`roles/configure_sshd/tasks/01-nonpve.yml:27`)
   - Why (inferred): the EL/OL installer drops in `PermitRootLogin yes`, and sshd takes the first value it reads, so `01-` beats our `90-`.
-  - Check: `ls /etc/ssh/sshd_config.d/; sshd -T | grep permitrootlogin` on a fresh OL image.
+  - Check: `ls /etc/ssh/sshd_config.d/; sshd -T | grep permitrootlogin` on a fresh OL image. Last checked 2026-11-24: not in the oraclelinux:9/10 images or the OL10 LXC rootfs. It's written by the Anaconda installer's "allow root SSH login" option, so it only matters for ISO installs like gsb (KVM). Keep it while any host is installed from an ISO.
 
 ## configure_telegraf
 
 - **telegraf from the AUR on Arch** (`roles/configure_telegraf/tasks/01-pacman.yml:5`)
   - Why: it isn't in the official repos, and yay refuses to run as root.
-  - Check: `pacman -Si telegraf`.
+  - Check: `pacman -Si telegraf`. Last checked 2026-11-24: not in the official repos.
 - **`skip_processors_after_aggregators = true`** (`roles/configure_telegraf/templates/telegraf.d/05-agent-common.conf:8`)
   - Why: silences the warning about the default changing in v1.41. There are no aggregators, so the value doesn't matter.
-  - Check: once on v1.41+, delete the line and `journalctl -u telegraf | grep skip_processors` should be empty.
+  - Check: once on v1.41+, delete the line and `journalctl -u telegraf | grep skip_processors` should be empty. Last checked 2026-11-24: latest release is v1.40.4, hosts on 1.40.3/1.40.4.
 - **`startup_error_behavior = "retry"` on the docker input** (`roles/configure_telegraf/templates/telegraf.d/20-docker.conf:6`)
   - Why: by default one input failing to start (docker down) kills the whole agent.
-  - Check: telegraf changing that default.
+  - Check: telegraf changing that default. Last checked 2026-11-24 (v1.40.4 `models/running_input.go`): empty still falls through to `"error"`.
 
 ## create_opnsense_entries
 
 - **`noqa: jinja[invalid]` on the MAC alias** (`roles/create_opnsense_entries/tasks/3-alias.yml:29`)
   - Why: ansible-lint renders the MAC octets as strings, while a real run gives ints.
-  - Check: delete the noqa and run ansible-lint on a newer release.
+  - Check: delete the noqa and run ansible-lint on a newer release. Last checked 2026-11-24 (ansible-lint 26.11.0, ansible-core 2.22.0): still `can only concatenate str (not "int") to str`.
 - **`oxlorg.opnsense.raw` for alias categories** (`roles/create_opnsense_entries/tasks/3-alias.yml:48`, `tasks/3-alias-tag.yml`)
   - Why: the alias module can't set categories.
-  - Check: `ansible-doc oxlorg.opnsense.alias | grep -i categor` after a collection upgrade.
+  - Check: `ansible-doc oxlorg.opnsense.alias | grep -i categor` after a collection upgrade. Last checked 2026-11-24 (26.1.11, latest on Galaxy): only `webproxy_remote_acl` mentions categories, the alias module has no support.
 - **`selected` compared as int or string** (`roles/create_opnsense_entries/tasks/3-alias-tag.yml:21`)
   - Why (inferred): the OPNsense API returns it as either, inconsistently.
   - Check: `getItem` output types with `-vvv`.
@@ -266,7 +236,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **`lineinfile` into `/etc/pve/lxc/<id>.conf`** (`roles/create_proxmox_ct/tasks/main.yml:43`)
   - Why (inferred): the PVE API, and so `community.proxmox`, won't set raw `lxc.*` keys.
-  - Check: whether everything in `proxmox_ct_conf_extra` is settable through module params.
+  - Check: whether everything in `proxmox_ct_conf_extra` is settable through module params. Last checked 2026-11-24 (PVE 9.2, community.proxmox 2.1.0): all of it now is. The `mpN` bind mounts (yoho, kismnas) map to `mount_volumes`. The `lxc.cgroup2.devices.allow` + `lxc.mount.entry` pairs for `/dev/net/tun` and `/dev/nvidia*` (pvpn, yoho, stream, jf) map to `mount_devices` (`devN: /dev/...`), which also stops hardcoding nvidia-uvm's dynamic major (511). Not switched yet, it needs a test CT create.
 
 ## maintenance_gather_facts_pve / maintenance_shutdown_pve_guests
 
@@ -274,20 +244,11 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Why (inferred): the PVE API or root@pam login is occasionally flaky.
   - Check: run logs for "FAILED - RETRYING: … Get Proxmox Guests".
 
-## maintenance_shutdown
-
-- **Fixed `pause: minutes: 1` after shutdown** (`roles/maintenance_shutdown/tasks/main.yml:6`)
-  - Why (inferred): `community.general.shutdown` returns immediately, so the pause covers the race before the next play.
-  - Check: replace it with `wait_for` on port 22, `state: stopped`, delegated to localhost.
-
 ## maintenance_update_packages
 
-- **dnf clean-and-retry rescue** (`roles/maintenance_update_packages/tasks/01-dnf.yml:31`)
+- **dnf clean-and-retry rescue** (`roles/maintenance_update_packages/tasks/01-dnf.yml:20`)
   - Why (inferred): corrupt or stale repo metadata.
   - Check: run logs for the rescue ever firing.
-- **`uv tool upgrade --all` with `ignore_errors`** (`roles/maintenance_update_packages/tasks/02-uv.yml:30`)
-  - Why: one broken tool makes the whole upgrade fail.
-  - Check: uv release notes for per-tool error handling.
 
 ## Top-level
 

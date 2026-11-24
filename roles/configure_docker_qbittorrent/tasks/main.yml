@@ -50,9 +50,7 @@
     zone: public
     permanent: true
     state: enabled
-  notify:
-    - Reload firewalld
-    - Restart docker
+  notify: Reload firewalld
 
 - name: Copy systemd service qbt
   ansible.builtin.template:

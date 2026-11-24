@@ -37,8 +37,7 @@
       ansible.builtin.command:
         cmd: /usr/local/bin/uv sync --frozen
         chdir: /opt/qbt-shaper
-      environment: # Keep the interpreter and cache in /opt/qbt-shaper, the only path the hardened unit can see
-        HOME: /opt/qbt-shaper
+      environment: # The venv links to this interpreter, keep it in /opt/qbt-shaper since the hardened unit has ProtectHome
         UV_PYTHON_INSTALL_DIR: /opt/qbt-shaper/.python
       notify: Restart qbt-shaper
       changed_when: true # Safe assumption, no way to know

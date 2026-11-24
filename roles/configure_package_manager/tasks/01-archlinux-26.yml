@@ -24,12 +24,12 @@
         name: archlinux-keyring
         state: latest
 
+# Drop-in appends !debug, makepkg takes the last match so it beats the stock "debug" without rewriting the vendor OPTIONS line
 - name: Prevent makepkg from creating debug packages
-  ansible.builtin.lineinfile:
-    path: /etc/makepkg.conf
-    regexp: "^OPTIONS=.*"
-    line: "OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug lto)"
-    state: present
+  ansible.builtin.copy:
+    content: "OPTIONS+=(!debug)\n"
+    dest: /etc/makepkg.conf.d/no-debug.conf
+    mode: "0644"
 
 - name: Block to install yay if it doesn't exist
   block:

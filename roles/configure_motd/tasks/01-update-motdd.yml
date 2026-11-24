@@ -19,9 +19,15 @@
         mode: "0444"
       loop: "{{ configure_motd_apt_unwanted_files }}"
 
-    - name: Set up apt post-invoke hook to reapply motd cleanup
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/01a-apt-post-hook.yml"
-      when: ansible_facts['pkg_mgr'] == "apt"
+    # ponytail: one-off cleanup of the old dpkg re-apply hook, dpkg keeps edited conffiles on upgrade/reinstall
+    # (tested 2026-11-24, ubuntu 24.04) so it isn't needed. Delete once bigbilly and musicass have run it
+    - name: Remove old apt post-invoke motd hook
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/apt.conf.d/99-kglan-motd-cleanup
+        - /usr/local/sbin/kglan-motd-cleanup.sh
 
     - name: Copy motd update files
       ansible.builtin.copy:

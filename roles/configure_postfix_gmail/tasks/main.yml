@@ -52,13 +52,20 @@
     line: "# smtp_tls_security_level ="
   notify: Restart postfix
 
+# Debian ships 2, 3.6 is the newest Postfix 3.10 supports and only switches TLS fingerprints to sha256 (none used here)
+- name: Set Postfix compatibility level
+  ansible.builtin.lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: "^compatibility_level\\s*="
+    line: "compatibility_level = 3.6"
+  notify: Restart postfix
+
 - name: Insert Postfix Config
   ansible.builtin.blockinfile:
     path: /etc/postfix/main.cf
     block: |
       # KiSM's Config
       relayhost = smtp.gmail.com:587
-      smtp_use_tls = yes
       smtp_sasl_auth_enable = yes
       smtp_tls_security_level = encrypt
       smtp_sasl_security_options =

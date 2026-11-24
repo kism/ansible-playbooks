@@ -70,6 +70,8 @@
         - build-essential
         - pkg-config
         - libglvnd-dev
+        - dkms # Without it the installer's --dkms silently builds for the running kernel only, the next kernel boots with no driver
+        - proxmox-default-headers # Pulls headers for each new kernel so dkms can rebuild on kernel upgrades
         - proxmox-headers-{{ ansible_facts['kernel'] }}
 
     - name: Run the installer silently for host
