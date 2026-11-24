@@ -104,7 +104,7 @@ done
 echo -- Fun file exceptions
 
 chown root:root /srv/*/snapraid*
-chown 0600 /srv/*/snapraid*
+chmod 0600 /srv/*/snapraid*
 
 set +e
 chown root:root /srv/*/lost+found

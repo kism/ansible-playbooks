@@ -7,6 +7,7 @@
   block:
     - name: Gather facts
       ansible.builtin.setup:
+        gather_timeout: 30 # was a [defaults] option in ansible.cfg, ansible-core 2.22 only takes it here
 
     - name: Populate service facts
       ansible.builtin.service_facts:

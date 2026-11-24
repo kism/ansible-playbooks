@@ -43,11 +43,17 @@
     cmd: swapon /swapfile
   register: configure_swap_file_swapon_output
   changed_when: configure_swap_file_swap_status.rc != 0
-  failed_when: configure_swap_file_fallocate_output.rc != 0 and "Device or resource busy" not in configure_swap_file_swapon_output.stderr
+  failed_when: configure_swap_file_swapon_output.rc != 0 and "Device or resource busy" not in configure_swap_file_swapon_output.stderr
+
+# ponytail: one-off cleanup of the fstab line the old `path: stap` typo wrote, delete once every host has run it (2026-11-24)
+- name: Remove fstab entry with the old stap typo
+  ansible.posix.mount:
+    path: stap
+    state: absent_from_fstab
 
 - name: Mount swap proper
   ansible.posix.mount:
-    path: stap
+    path: none
     src: /swapfile
     fstype: swap
     opts: sw

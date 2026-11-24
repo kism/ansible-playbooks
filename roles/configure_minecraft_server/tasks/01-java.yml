@@ -1,7 +1,7 @@
 ---
 - name: Copy file with owner and permission, using symbolic representation
   ansible.builtin.copy:
-    src: repos_dnf/adoptium.repo
+    src: adoptium.repo
     dest: /etc/yum.repos.d/adoptium.repo
     mode: "0664"
 
@@ -12,5 +12,5 @@
 
 - name: Install Adoptium
   ansible.builtin.dnf:
-    name: temurin-19-jdk
+    name: temurin-21-jdk # 19 is EOL, current Minecraft needs 21
     state: present

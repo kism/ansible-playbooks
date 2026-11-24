@@ -13,13 +13,15 @@ Restart = on-failure
 TimeoutSec = 15
 SuccessExitStatus=0 143
 
+# Hardening below is upstream's optional set (jellyfin-packaging debian/conf/jellyfin.service.conf), uncommented.
 NoNewPrivileges=true
 SystemCallArchitectures=native
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
 RestrictNamespaces=false
 RestrictRealtime=true
 RestrictSUIDSGID=true
-#ProtectClock=true #blocks video hardware acceleration
+# No ProtectClock: it implies DeviceAllow=char-rtc r, which turns on a device allow-list and blocks /dev/dri (hardware transcoding).
+# SystemCallFilter=~@clock below already stops clock changes.
 ProtectControlGroups=false
 ProtectHostname=true
 ProtectKernelLogs=false

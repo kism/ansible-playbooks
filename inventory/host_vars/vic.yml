@@ -25,6 +25,7 @@ victoriametrics_bearer_tokens:
     token: "{{ secret_telegraf_victoriametrics_rw_token }}"
   - name: home-kingking9-telegraf-rw
     token: "{{ secret_victoriametrics_telegraf_home_kingking9 }}"
+    legacy_paths: true # ponytail: bigbilly's telegraf still posts to the root path, drop once it has re-run configure_telegraf
 
 # vmauth basic auth users, name is the username clients log in with
 victoriametrics_users:

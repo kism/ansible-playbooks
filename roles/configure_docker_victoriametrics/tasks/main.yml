@@ -70,13 +70,15 @@
     group: 1000
   notify: Restart victoriametrics
 
-- name: Copy systemd service file for victoriametrics
+- name: Copy systemd units for victoriametrics and the vector geoip reload
   ansible.builtin.copy:
-    src: victoriametrics.service
-    dest: /etc/systemd/system/victoriametrics.service
-    owner: root
-    group: root
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ item }}
     mode: "0644"
+  loop:
+    - victoriametrics.service
+    - vector-geoip-reload.service
+    - vector-geoip-reload.timer
   notify: Reload systemd
 
 - name: Flush handlers so systemd sees victoriametrics
@@ -85,5 +87,12 @@
 - name: Enable and start victoriametrics service
   ansible.builtin.systemd_service:
     name: victoriametrics
+    enabled: true
+    state: started
+
+# Vector only reads the mmdb at startup or on SIGHUP (tested 2026-11-24, swapping the file alone does nothing)
+- name: Enable vector geoip reload timer
+  ansible.builtin.systemd_service:
+    name: vector-geoip-reload.timer
     enabled: true
     state: started

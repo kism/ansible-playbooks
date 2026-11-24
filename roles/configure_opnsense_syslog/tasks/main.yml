@@ -1,9 +1,7 @@
 ---
-# Points OPNsense remote logging at VictoriaLogs on this host
-# Firewall logs (filterlog, local0) go to their own instance on 5514 for a separate retention, see docker-compose.yml.
-# OPNsense filters destinations by inclusion only, so keeping filterlog out of the main instance takes two destinations:
-# every facility but local0, plus the programs we do want from local0 (verified on the box 2026-11-24, kea-dhcp4 is the only one)
-- name: Forward OPNsense syslog to victorialogs # noqa: args[module] lint can't resolve the looped facility list against the choices
+# All OPNsense syslog goes to vector on this host, which splits firewall logs (filterlog) from the rest,
+# see roles/configure_docker_victoriametrics/files/vector.yaml
+- name: Forward OPNsense syslog to vector
   delegate_to: localhost
   become: false
   run_once: true
@@ -12,23 +10,27 @@
     api_key: "{{ secret_opnsense_api_key }}"
     api_secret: "{{ secret_opnsense_api_secret }}"
     target: "{{ inventory_hostname }}.{{ homelab_domain_internal }}"
-    port: "{{ item.port | default(514) }}"
+    port: 5514
     transport: tcp4
     rfc5424: true # 3164 has no timezone or year
-    facility: "{{ item.facility | default([]) }}"
-    program: "{{ item.program | default([]) }}"
-    description: "{{ item.description }}"
+    description: "Ansible: victorialogs"
     match_fields: [description]
     reload: true # defaults to false, without it the destination is saved but syslog-ng never sees it
+
+# ponytail: one-off cleanup of the old per-facility split, delete this task once it has run (2026-11-24)
+- name: Remove old OPNsense syslog destinations
+  delegate_to: localhost
+  become: false
+  run_once: true
+  oxlorg.opnsense.syslog:
+    firewall: "{{ opnsense_firewall }}"
+    api_key: "{{ secret_opnsense_api_key }}"
+    api_secret: "{{ secret_opnsense_api_secret }}"
+    target: "{{ inventory_hostname }}.{{ homelab_domain_internal }}"
+    description: "{{ item }}"
+    match_fields: [description]
+    state: absent
+    reload: true
   loop:
-    # ponytail: a new program on local0 is silently dropped, re-run the facility check from 2026-11-24 after OPNsense major upgrades
-    - description: "Ansible: victorialogs"
-      facility: [kern, user, mail, daemon, auth, syslog, lpr, news, uucp, cron, authpriv, ftp, ntp, security, console,
-                 local1, local2, local3, local4, local5, local6, local7]
-    - description: "Ansible: victorialogs local0"
-      program: [kea-dhcp4]
-    - description: "Ansible: victorialogs firewall"
-      program: [filterlog]
-      port: 5514
-  loop_control:
-    label: "{{ item.description }}"
+    - "Ansible: victorialogs local0"
+    - "Ansible: victorialogs firewall"

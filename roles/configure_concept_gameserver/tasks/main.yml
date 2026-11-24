@@ -20,7 +20,7 @@
     user: "{{ item }}"
     state: present
     exclusive: true
-    key: "{{ lookup('url', 'https://github.com/' + '{{ item }}' + '.keys', split_lines=False) }}"
+    key: "{{ lookup('url', 'https://github.com/' ~ item ~ '.keys', split_lines=False) }}"
   loop: "{{ configure_concept_gameserver_users }}"
 
 - name: Add users to factorio group
@@ -34,6 +34,7 @@
 
 - name: Copy the factorio sudoers rule
   ansible.builtin.copy:
-    src: configs/sudoers/factorio
+    src: sudoers_factorio
     dest: /etc/sudoers.d/factorio
-    mode: "0640"
+    mode: "0440"
+    validate: visudo -cf %s

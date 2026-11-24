@@ -33,6 +33,7 @@
     - name: Fail if vm not in the gathered proxmox_guests
       ansible.builtin.fail:
         msg: "CT didn't create successfully?"
+      when: maintenance_gather_facts_pve_guest is not defined # maintenance_gather_facts_pve only sets it when the guest exists
 
 - name: Block for initialising the CT
   when: maintenance_gather_facts_pve_guest.status != 'running'

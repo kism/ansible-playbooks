@@ -16,7 +16,7 @@
 - name: Configure locale to en_AU.UTF-8 and language to en_AU.UTF-8
   ansible.builtin.copy:
     content: LANG=en_AU.UTF-8
-    dest: /etc/locale.conf
+    dest: "{{ '/etc/default/locale' if ansible_facts['pkg_mgr'] == 'apt' else '/etc/locale.conf' }}" # Debian/Ubuntu don't read locale.conf
     mode: "0644"
 
 - name: Set timezone to Perth

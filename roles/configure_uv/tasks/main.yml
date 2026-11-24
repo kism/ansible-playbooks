@@ -50,7 +50,8 @@
   ansible.builtin.copy:
     dest: /etc/profile.d/usr-local-bin.sh
     content: >
-      if [ -d /usr/local/bin ] && [[ ":$PATH:" != *":/usr/local/bin:"* ]]; then
-          export PATH="/usr/local/bin:$PATH"
-      fi
+      case ":$PATH:" in
+          *:/usr/local/bin:*) ;;
+          *) [ -d /usr/local/bin ] && export PATH="/usr/local/bin:$PATH" ;;
+      esac
     mode: "0755"

@@ -1,5 +1,5 @@
 {# Paths: <vmauth>/metrics -> victoriametrics, /logs -> victorialogs (journald + OPNsense syslog), /firewall -> firewall logs #}
-{% macro url_map() %}
+{% macro url_map(legacy_paths=false) %}
   url_map:
     - src_paths: ["/metrics/.*"]
       url_prefix: "http://victoriametrics:8428"
@@ -10,11 +10,13 @@
     - src_paths: ["/firewall/.*"]
       url_prefix: "http://victorialogs-firewall:9428"
       drop_src_path_prefix_parts: 1
-    # ponytail: legacy unprefixed paths, remove once OPNsense and Home Assistant point at /metrics
+{% if legacy_paths %}
+    # Legacy unprefixed paths, only for clients that haven't re-run since the /metrics /logs split
     - src_paths: ["/insert/.*", "/select/.*"]
       url_prefix: "http://victorialogs:9428"
     - src_paths: ["/.*"]
       url_prefix: "http://victoriametrics:8428"
+{% endif %}
 {% endmacro %}
 users:
 # systemd-journal-upload on every host, can only push logs
@@ -24,13 +26,13 @@ users:
     - src_paths: ["/logs/insert/journald/.*"]
       url_prefix: "http://victorialogs:9428"
       drop_src_path_prefix_parts: 1
-    # ponytail: legacy, remove once every host has re-run configure_journal_upload (bigbilly is often offline)
+    # ponytail: legacy, only bigbilly still uses it (unreachable 2026-11-24), remove once it has re-run configure_journal_upload
     - src_paths: ["/insert/journald/.*"]
       url_prefix: "http://victorialogs:9428"
 {% for token in victoriametrics_bearer_tokens %}
 # {{ token.name }}
 - bearer_token: "{{ token.token }}"
-{{ url_map() }}
+{{ url_map(token.legacy_paths | default(false)) }}
 {% endfor %}
 {% for user in victoriametrics_users %}
 - username: "{{ user.name }}"

@@ -5,7 +5,7 @@
     state: present
   when: ansible_facts['pkg_mgr'] != 'pacman' # arch ships journal-upload in the systemd package
 
-# Debian enables the receiver on install, we only want the uploader
+# Only the uploader is wanted, make sure the receiver is off however the package ships it
 - name: Disable systemd-journal-remote receiver
   ansible.builtin.systemd_service:
     name: systemd-journal-remote.socket

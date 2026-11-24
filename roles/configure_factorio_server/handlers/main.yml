@@ -6,4 +6,4 @@
 
 - name: Print factorio reminder
   ansible.builtin.debug:
-    msg: "{{ 'Copy a save and a config to: ' ~ install_factorio_server_save ~ ' and ' ~ install_factorio_server_settings  }}"
+    msg: "{{ 'Copy a save and a config to: ' ~ configure_factorio_server_save ~ ' and ' ~ configure_factorio_server_settings  }}"

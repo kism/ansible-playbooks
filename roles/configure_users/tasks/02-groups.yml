@@ -18,4 +18,5 @@
   ansible.builtin.copy:
     src: files/sudoers_kgadmins
     dest: /etc/sudoers.d/kgadmins
-    mode: "0640"
+    mode: "0440"
+    validate: visudo -cf %s # a broken sudoers file locks out sudo, and ansible with it

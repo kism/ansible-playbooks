@@ -9,9 +9,10 @@
 
 - name: Add Docker Repo
   ansible.builtin.get_url:
-    url: https://download.docker.com/linux/centos/docker-ce.repo
+    url: https://download.docker.com/linux/oracle/docker-ce.repo # Docker's own OL repo, same packages and gpg key as the centos one we used before
     dest: /etc/yum.repos.d/docker-ce.repo
     mode: "0644"
+    force: true # existing hosts still have the centos repo file, get_url never replaces an existing file without this
 
 - name: Update DNF Cache
   ansible.builtin.dnf:

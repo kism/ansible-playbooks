@@ -1,7 +1,7 @@
 ---
-- name: Copy Factorio service
-  ansible.builtin.copy:
-    src: systemd/system/factorio.service
+- name: Template Factorio service
+  ansible.builtin.template:
+    src: factorio.service
     dest: /etc/systemd/system/factorio.service
     mode: "0644"
 
@@ -45,7 +45,7 @@
 
 - name: Download and unarchive factorio headless
   ansible.builtin.unarchive:
-    src: https://www.factorio.com/get-download/{{ install_factorio_server_version }}/headless/linux64
+    src: https://www.factorio.com/get-download/{{ configure_factorio_server_version }}/headless/linux64
     dest: /opt/
     remote_src: true
   notify: Print factorio reminder

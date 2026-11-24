@@ -1,0 +1,8 @@
+[Unit]
+Description=SIGHUP vector so it re-reads the GeoLite2 database geoipupdate downloaded
+After=victoriametrics.service
+Requisite=victoriametrics.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker kill --signal=HUP vector

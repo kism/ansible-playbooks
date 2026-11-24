@@ -15,15 +15,13 @@ services:
   victorialogs:
     image: victoriametrics/victoria-logs:latest
     container_name: victorialogs
-    ports:
-      - 514:514/tcp # Syslog from OPNsense, no auth on syslog so anything on the LAN can push here
+    # No ports, journald comes in through vmauth /logs, OPNsense syslog through vector
     command:
       - -storageDataPath=/victoria-logs-data
       - -retentionPeriod=10y # ponytail: effectively no time limit, the disk cap below decides what's kept
       - -retention.maxDiskSpaceUsageBytes=10GiB
       - -inmemoryDataFlushInterval=60s # default 5s, each small flush costs ext4 journal + thin-LV metadata writes (~4.5x on vic). Crash loses up to 60s
       - -journald.streamFields=_HOSTNAME,_SYSTEMD_UNIT,CONTAINER_NAME # one stream per unit/container, _MACHINE_ID dropped since cloned CTs can share it
-      - -syslog.listenAddr.tcp=:514
     volumes:
       - /var/lib/victorialogs:/victoria-logs-data
     restart: always
@@ -43,7 +41,7 @@ services:
   vector:
     image: timberio/vector:0.62.0-alpine # pinned, vector.yaml's VRL can break across releases, bump deliberately and run its tests
     container_name: vector
-    # Parses OPNsense filterlog CSV + GeoIP on the source address, see vector.yaml
+    # All OPNsense syslog: filterlog parsed + GeoIP -> victorialogs-firewall, the rest -> victorialogs, see vector.yaml
     ports:
       - 5514:5514/tcp # Syslog from OPNsense, no auth on syslog so anything on the LAN can push here
     volumes:

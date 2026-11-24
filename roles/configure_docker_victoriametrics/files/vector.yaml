@@ -1,4 +1,6 @@
-# OPNsense filterlog (syslog TCP 5514) -> parse CSV + GeoIP on the source address -> victorialogs-firewall
+# All OPNsense syslog (TCP 5514, one destination) -> vector
+#   filterlog       -> parse CSV + GeoIP on the source address -> victorialogs-firewall
+#   everything else -> victorialogs (general)
 # Test with: docker exec vector vector test /etc/vector/vector.yaml
 # filterlog CSV layout (0-based):
 #   common: 0 rule, 1 subrule, 2 anchor, 3 rid (label hash), 4 interface, 5 reason, 6 action, 7 dir, 8 ipver
@@ -8,7 +10,7 @@
 enrichment_tables:
   geoip:
     type: geoip
-    # ponytail: loaded once at startup, geoipupdate refreshes the file every 72h but vector only sees it after a restart
+    # Read at startup and on SIGHUP only, vector-geoip-reload.timer sends a daily SIGHUP to pick up geoipupdate's downloads
     path: /geoip/GeoLite2-City.mmdb
 
 sources:
@@ -18,41 +20,64 @@ sources:
     address: 0.0.0.0:5514
 
 transforms:
-  filterlog_parse:
+  # Same fields victorialogs' own syslog listener produced, so queries from before vector keep working
+  normalize:
     type: remap
     inputs: [opnsense]
     source: |
-      # Same field names victorialogs' own syslog listener used, the dashboards rely on app_name/hostname
       .app_name = del(.appname)
       .proc_id = del(.procid)
+      .msg_id = del(.msgid) || "-"
+      .format = "rfc5424"
       del(.host)
       del(.source_ip)
       del(.source_type)
-      if .app_name == "filterlog" {
-        f = split(string!(.message), ",")
-        .rule = f[0]
-        .rid = f[3]
-        .iface = f[4]
-        .reason = f[5]
-        .action = f[6]
-        .dir = f[7]
-        .ipver = f[8]
-        if .ipver == "4" {
-          .proto = f[16]
-          .src_ip = f[18]
-          .dst_ip = f[19]
-          if includes(["tcp", "udp"], .proto) {
-            .src_port = f[20]
-            .dst_port = f[21]
-          }
-        } else if .ipver == "6" {
-          .proto = f[12]
-          .src_ip = f[15]
-          .dst_ip = f[16]
-          if includes(["tcp", "udp"], .proto) {
-            .src_port = f[17]
-            .dst_port = f[18]
-          }
+      del(.version)
+      # vector gives keywords (cron, info), victorialogs stored the numbers plus facility_keyword/level
+      if is_string(.facility) && is_string(.severity) {
+        .facility_keyword = .facility
+        .level = .severity
+        .facility = to_syslog_facility_code(.facility_keyword) ?? null
+        .severity = to_syslog_severity(.level) ?? null
+        if is_integer(.facility) && is_integer(.severity) {
+          .priority = int!(.facility) * 8 + int!(.severity)
+        }
+      }
+
+  split:
+    type: route
+    inputs: [normalize]
+    route:
+      firewall: .app_name == "filterlog"
+    # everything else comes out of split._unmatched
+
+  filterlog_parse:
+    type: remap
+    inputs: [split.firewall]
+    source: |
+      f = split(string!(.message), ",")
+      .rule = f[0]
+      .rid = f[3]
+      .iface = f[4]
+      .reason = f[5]
+      .action = f[6]
+      .dir = f[7]
+      .ipver = f[8]
+      if .ipver == "4" {
+        .proto = f[16]
+        .src_ip = f[18]
+        .dst_ip = f[19]
+        if includes(["tcp", "udp"], .proto) {
+          .src_port = f[20]
+          .dst_port = f[21]
+        }
+      } else if .ipver == "6" {
+        .proto = f[12]
+        .src_ip = f[15]
+        .dst_ip = f[16]
+        if includes(["tcp", "udp"], .proto) {
+          .src_port = f[17]
+          .dst_port = f[18]
         }
       }
 
@@ -85,13 +110,55 @@ sinks:
       _time_field: timestamp
       _stream_fields: hostname,app_name # never src_ip or other high cardinality fields
 
+  victorialogs_general:
+    type: elasticsearch
+    inputs: [split._unmatched]
+    endpoints: ["http://victorialogs:9428/insert/elasticsearch/"]
+    mode: bulk
+    api_version: v8
+    healthcheck:
+      enabled: false
+    query:
+      _msg_field: message
+      _time_field: timestamp
+      _stream_fields: hostname,app_name,proc_id # victorialogs' syslog listener default
+
 tests:
+  - name: general line keeps the old victorialogs syslog fields
+    inputs:
+      - insert_at: normalize
+        type: log
+        log_fields:
+          appname: /usr/sbin/cron
+          procid: 58508
+          facility: cron
+          severity: info
+          hostname: opnsense.kg.lan
+          message: "(root) CMD (/usr/local/sbin/ping_hosts.sh)"
+    outputs:
+      - extract_from: split._unmatched
+        conditions:
+          - type: vrl
+            source: |
+              assert_eq!(.app_name, "/usr/sbin/cron")
+              assert_eq!(.facility, 9)
+              assert_eq!(.facility_keyword, "cron")
+              assert_eq!(.severity, 6)
+              assert_eq!(.level, "info")
+              assert_eq!(.priority, 78)
+              assert_eq!(.msg_id, "-")
+              assert_eq!(.format, "rfc5424")
+              assert!(!exists(.appname))
+    no_outputs_from: [filterlog_parse]
+
   - name: filterlog ipv4 udp
     inputs:
-      - insert_at: filterlog_parse
+      - insert_at: normalize
         type: log
         log_fields:
           appname: filterlog
+          facility: local0
+          severity: info
           message: "16,,,02f4bab031b57d1e30553ce08e0ec131,pppoe0,match,block,in,4,0x0,,37,12612,0,none,17,udp,48,179.167.48.189,121.200.36.37,53853,6881,28"
     outputs:
       - extract_from: filterlog_parse
@@ -99,6 +166,8 @@ tests:
           - type: vrl
             source: |
               assert_eq!(.app_name, "filterlog")
+              assert_eq!(.facility, 16)
+              assert_eq!(.facility_keyword, "local0")
               assert_eq!(.rule, "16")
               assert_eq!(.rid, "02f4bab031b57d1e30553ce08e0ec131")
               assert_eq!(.iface, "pppoe0")
@@ -110,10 +179,11 @@ tests:
               assert_eq!(.dst_ip, "121.200.36.37")
               assert_eq!(.src_port, "53853")
               assert_eq!(.dst_port, "6881")
+    no_outputs_from: [split._unmatched]
 
   - name: filterlog ipv4 udp second sample
     inputs:
-      - insert_at: filterlog_parse
+      - insert_at: normalize
         type: log
         log_fields:
           appname: filterlog
@@ -129,7 +199,7 @@ tests:
 
   - name: filterlog ipv6 tcp
     inputs:
-      - insert_at: filterlog_parse
+      - insert_at: normalize
         type: log
         log_fields:
           appname: filterlog
@@ -149,7 +219,7 @@ tests:
 
   - name: filterlog ipv4 icmp has no ports
     inputs:
-      - insert_at: filterlog_parse
+      - insert_at: normalize
         type: log
         log_fields:
           appname: filterlog
