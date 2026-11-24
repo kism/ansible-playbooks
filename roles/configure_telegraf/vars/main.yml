@@ -1,20 +1,29 @@
 ---
+# Every file in /etc/telegraf/telegraf.d that isn't true here (or the influxdb output) gets deleted
+configure_telegraf_configs:
+  05-agent-common.conf: true
+  15-telegraf-common.conf: true
+  20-systemd-services.conf: true
+  20-disks.conf: "{{ ansible_facts['virtualization_role'] == 'host' }}"
+  20-proxmox.conf: "{{ configure_telegraf_pve_status.stat.exists and 'proxmoxhosts' in group_names }}" # make double sure
+  20-docker.conf: "{{ 'docker.service' in configure_telegraf_existing_services }}"
+  20-nvidia.conf: "{{ 'nvidia-persistenced.service' in configure_telegraf_existing_services }}"
+  20-amdgpu.conf: "{{ configure_telegraf_rocm_smi_installed.rc == 0 }}"
+configure_telegraf_wanted_configs: "{{ configure_telegraf_configs | dict2items | selectattr('value') | map(attribute='key') }}"
+
+# Exact unit names, intersected with what's on the host so no globs (pve-container@* lives in 20-proxmox.conf)
 configure_telegraf_service_allowlist:
-  - archivepodcast.service
-  - fail2ban.service
-  - grafana-server.service
-  - smb.service
-  - smbd.service
-  - step-ca.service
+  # System
   - sshd.service
   - firewalld.service
-  - nginx.service
+  - fail2ban.service
   - docker.service
-  - allowlistapp.service
-  - ollama.service
-  - jellyfin.service
-  - lxcfs.service
+  - systemd-journal-upload.service
   - nfs-kernel-server.service
+  - smb.service
+  - smbd.service
+  # Proxmox
+  - lxcfs.service
   - lxc-monitord.service
   - pve-lxc-syscalld.service
   - pve-cluster.service
@@ -22,9 +31,24 @@ configure_telegraf_service_allowlist:
   - pvedaemon.service
   - pveproxy.service
   - pvescheduler.service
-  - pve-cluster.service
-  - pve-container*
+  # Apps
+  - allowlistapp.service
+  - archivepodcast.service
+  - grafana-server.service
+  - jellyfin.service
+  - nginx.service
+  - ollama.service
+  - step-ca.service
   - tabby.service
-  - kibana.service
-  - logstash.service
-  - elasticsearch.service
+  - factorio.service
+  - mergerfs.service
+  - navidrome.service
+  - qbt-shaper.service
+  # Compose wrapper units
+  - victoriametrics.service
+  - headscale.service
+  - dispatcharr.service
+  - docker-arr.service
+  - docker-checkrr.service
+  - docker-qbittorrent.service
+  - docker-sabnzbd.service

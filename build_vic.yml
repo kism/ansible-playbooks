@@ -16,6 +16,7 @@
     # # Purpose specific
     - configure_docker
     - configure_docker_victoriametrics
+    - configure_opnsense_syslog
 
     # # End
     - configure_telegraf

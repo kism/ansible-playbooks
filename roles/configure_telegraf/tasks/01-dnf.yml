@@ -1,0 +1,6 @@
+---
+- name: Add influxdata dnf repository
+  ansible.builtin.copy:
+    src: influxdata.repo
+    dest: /etc/yum.repos.d/influxdata.repo
+    mode: "0644"

@@ -1,5 +1,5 @@
 ---
 configure_packages_to_install:
-  - lm-sensors
+  - lm_sensors
 
 configure_packages_to_remove: []

@@ -1,19 +1,103 @@
 ---
-- name: Include tasks for {{ ansible_facts['distribution'] | lower + "-" + ansible_facts['distribution_major_version'] }}
-  ansible.builtin.include_tasks: "01-{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+- name: Include repo tasks for {{ ansible_facts['pkg_mgr'] }}
+  ansible.builtin.include_tasks: "01-{{ ansible_facts['pkg_mgr'] }}.yml"
 
 - name: Install telegraf
   ansible.builtin.package:
     name: telegraf
     state: present
-  when: ansible_facts['distribution'] != "Archlinux"
+  when: ansible_facts['pkg_mgr'] != 'pacman' # installed from the AUR in 01-pacman.yml
 
-- name: Include tasks, telegraf configs
-  ansible.builtin.include_tasks: "{{ config_playbook }}"
-  with_fileglob:
-    - "tasks/telegraf_config/*"
-  loop_control:
-    loop_var: config_playbook
+# Detection, feeds configure_telegraf_configs in vars/main.yml
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Get services that are not not found, init list
+  ansible.builtin.set_fact:
+    configure_telegraf_existing_services: []
+
+- name: Get services that are not not found, populate (Do not edit, transform is difficult)
+  ansible.builtin.set_fact:
+    configure_telegraf_existing_services: "{{ configure_telegraf_existing_services + [item.key] }}"
+  when: item.value.status is defined and item.value.status != "not-found" # service_facts keeps not-found units after uninstall
+  with_dict: "{{ ansible_facts.services }}"
+
+- name: Get list of services we want to monitor, that are on the host
+  ansible.builtin.set_fact:
+    # Sort means that it won't trigger a change unless needed, as facts don't end up in order
+    configure_telegraf_common_services: "{{ configure_telegraf_service_allowlist | intersect(configure_telegraf_existing_services) | sort }}"
+
+- name: Check if rocm-smi is installed
+  ansible.builtin.command:
+    argv: [sh, -c, "command -v rocm-smi"] # which isn't on minimal EL installs
+  register: configure_telegraf_rocm_smi_installed
+  failed_when: false # Just checking
+  changed_when: false # Just checking
+  check_mode: false # read-only, needs to run in --check or .rc is undefined
+
+- name: Check if /etc/pve exists
+  ansible.builtin.stat:
+    path: /etc/pve
+  register: configure_telegraf_pve_status
+
+# Permissions the inputs need
+- name: Add telegraf user to docker group
+  ansible.builtin.user:
+    name: telegraf
+    groups: docker
+    append: true
+  when: configure_telegraf_configs['20-docker.conf']
+  notify: Restart telegraf
+
+- name: Copy the telegraf sudoers rule for smartctl, nvme and lvm
+  ansible.builtin.copy:
+    src: sudoers_telegraf_disk
+    dest: /etc/sudoers.d/telegraf_disk
+    mode: "0440"
+    validate: visudo -cf %s
+  when: configure_telegraf_configs['20-disks.conf'] or configure_telegraf_configs['20-proxmox.conf']
+
+# Configs
+- name: Empty out the default config file
+  ansible.builtin.copy:
+    content: ""
+    dest: /etc/telegraf/telegraf.conf
+    mode: "0644"
+    group: telegraf
+  notify: Restart telegraf
+
+- name: "Template telegraf config: output, influxdb"
+  ansible.builtin.template:
+    src: telegraf.d/10-influxdb-output.conf
+    dest: /etc/telegraf/telegraf.d/10-influxdb-output.conf
+    group: telegraf
+    mode: "0640"
+  diff: false # contains the victoriametrics bearer token
+  notify: Restart telegraf
+
+- name: Template telegraf configs
+  ansible.builtin.template:
+    src: telegraf.d/{{ item }}
+    dest: /etc/telegraf/telegraf.d/{{ item }}
+    group: telegraf
+    mode: "0644"
+  loop: "{{ configure_telegraf_wanted_configs }}"
+  notify: Restart telegraf
+
+- name: Find telegraf configs
+  ansible.builtin.find:
+    paths: /etc/telegraf/telegraf.d
+    hidden: true
+  register: configure_telegraf_found_configs
+
+- name: Remove telegraf configs this host shouldn't have
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ configure_telegraf_found_configs.files | map(attribute='path') | map('basename')
+            | difference(configure_telegraf_wanted_configs + ['10-influxdb-output.conf'])
+            | map('regex_replace', '^', '/etc/telegraf/telegraf.d/') }}"
+  notify: Restart telegraf
 
 - name: Enable telegraf service
   ansible.builtin.service:
