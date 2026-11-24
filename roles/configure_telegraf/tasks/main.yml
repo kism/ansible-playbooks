@@ -88,6 +88,7 @@
   ansible.builtin.find:
     paths: /etc/telegraf/telegraf.d
     hidden: true
+    excludes: local-* # hand-written host configs that don't belong in a public repo, never touched
   register: configure_telegraf_found_configs
 
 - name: Remove telegraf configs this host shouldn't have

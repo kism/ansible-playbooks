@@ -1,5 +1,5 @@
 ---
-# Every file in /etc/telegraf/telegraf.d that isn't true here (or the influxdb output) gets deleted
+# Every file in /etc/telegraf/telegraf.d that isn't true here (or the influxdb output) gets deleted, except local-*.conf
 configure_telegraf_configs:
   05-agent-common.conf: true
   15-telegraf-common.conf: true
