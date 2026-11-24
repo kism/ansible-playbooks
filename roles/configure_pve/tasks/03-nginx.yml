@@ -34,18 +34,6 @@
     mode: "0644"
   notify: Reload nginx
 
-- name: Script to copy cert file
-  ansible.builtin.copy:
-    src: files/fetch_pvessl_cert.sh
-    dest: /opt/scripts/fetch_pvessl_cert.sh
-    mode: "0744"
-
-- name: Run the script now
-  ansible.builtin.command:
-    cmd: bash /opt/scripts/fetch_pvessl_cert.sh
-    creates: /etc/ssl/certs/pveproxy-fetched.cer
-  notify: Reload nginx
-
 - name: Symlink nginx configuration
   ansible.builtin.file:
     src: /etc/nginx/sites-available/pve.conf
@@ -53,21 +41,36 @@
     state: link
   notify: Reload nginx
 
-- name: Systemd service to fetch cert
-  ansible.builtin.copy:
-    src: files/fetch_pvessl_cert.service
-    dest: /etc/systemd/system/fetch_pvessl_cert.service
-    mode: "0644"
-
-- name: Systemd timer to fetch cert
-  ansible.builtin.copy:
-    src: files/fetch_pvessl_cert.timer
-    dest: /etc/systemd/system/fetch_pvessl_cert.timer
-    mode: "0644"
-
-- name: Enable and start fetch cert timer
-  ansible.builtin.systemd:
+# ponytail: one-off cleanup of the old cert fetch timer, delete this task once it has run on both PVE hosts (2026-11-24)
+- name: Remove old cert fetch timer
+  ansible.builtin.systemd_service:
     name: fetch_pvessl_cert.timer
+    enabled: false
+    state: stopped
+  failed_when: false # Already gone on a second run
+
+- name: Remove old cert fetch files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/systemd/system/fetch_pvessl_cert.timer
+    - /etc/systemd/system/fetch_pvessl_cert.service
+    - /opt/scripts/fetch_pvessl_cert.sh
+    - /etc/ssl/certs/pveproxy-fetched.cer
+
+- name: Systemd units to reload nginx for cert renewals
+  ansible.builtin.copy:
+    src: "files/{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: "0644"
+  loop:
+    - pve_nginx_reload.service
+    - pve_nginx_reload.timer
+
+- name: Enable and start nginx reload timer
+  ansible.builtin.systemd_service:
+    name: pve_nginx_reload.timer
     enabled: true
     state: started
     daemon_reload: true

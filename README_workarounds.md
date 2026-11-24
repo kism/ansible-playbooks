@@ -30,9 +30,6 @@ Things that work around someone else's bug or limitation. Check each one now and
 - **duperemove and lazydocker symlinked into `/usr/bin`** (`roles/configure_disks/tasks/02-duperemove.yml:44`, `roles/configure_docker/tasks/02-lazydocker.yml:26`)
   - Why: on Oracle Linux, sudo's `secure_path` and root's login PATH skip `/usr/local/bin`.
   - Check: `sudo grep secure_path /etc/sudoers` and `sudo -i sh -c 'echo $PATH'` on an OL host. Last checked 2026-11-24: still `/sbin:/bin:/usr/sbin:/usr/bin` on every OL host, and root's login PATH lacks `/usr/local/bin` on most.
-- **`python3-packaging` installed on OL10** (`roles/configure_docker/tasks/01-dnf.yml:29`)
-  - Why: `ansible.builtin.pip` needs it, and the OL10 rootfs doesn't ship it.
-  - Check: `rpm -q python3-packaging` on a fresh OL10 container.
 
 ## configure_docker_arr
 
@@ -195,9 +192,6 @@ Things that work around someone else's bug or limitation. Check each one now and
 - **`lineinfile` into the vendor `nginx.service`** (`roles/configure_pve/tasks/03-nginx.yml:8`)
   - Why (inferred): nginx needs `pveproxy.service` up first, because its TLS key lives in `/etc/pve` (pmxcfs). An nginx package upgrade undoes the edit; a drop-in in `/etc/systemd/system/nginx.service.d/` would survive.
   - Check: `systemctl cat nginx | grep After=` after an nginx upgrade.
-- **Cert fetched from :8006 with `openssl s_client`** (`roles/configure_pve/templates/nginx_pve.conf.j2:11`)
-  - Why: "not being able to find the public key". An hourly timer pulls the leaf cert, so the chain is dropped.
-  - Check: `ls -l /etc/pve/local/pveproxy-ssl.pem`. If it exists, point nginx at it directly.
 
 ## configure_pvpn
 

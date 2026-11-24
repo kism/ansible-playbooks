@@ -26,13 +26,5 @@
       - containerd.io
       - docker-buildx-plugin
       - docker-compose-plugin
-      - python3-pip
-      - python3-packaging # ansible.builtin.pip needs it, not in the ol10 rootfs
     state: present
   notify: Restart docker service
-
-- name: Install docker pip packages
-  ansible.builtin.pip:
-    name:
-      - docker
-    state: present

@@ -1,0 +1,6 @@
+[Unit]
+Description=Reload nginx to pick up a renewed PVE ACME cert
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl reload nginx
