@@ -1,0 +1,165 @@
+# OPNsense filterlog (syslog TCP 5514) -> parse CSV + GeoIP on the source address -> victorialogs-firewall
+# Test with: docker exec vector vector test /etc/vector/vector.yaml
+# filterlog CSV layout (0-based):
+#   common: 0 rule, 1 subrule, 2 anchor, 3 rid (label hash), 4 interface, 5 reason, 6 action, 7 dir, 8 ipver
+#   IPv4:   16 protoname, 18 src, 19 dst, tcp/udp: 20 srcport, 21 dstport
+#   IPv6:   12 protoname, 15 src, 16 dst, tcp/udp: 17 srcport, 18 dstport
+
+enrichment_tables:
+  geoip:
+    type: geoip
+    # ponytail: loaded once at startup, geoipupdate refreshes the file every 72h but vector only sees it after a restart
+    path: /geoip/GeoLite2-City.mmdb
+
+sources:
+  opnsense:
+    type: syslog
+    mode: tcp
+    address: 0.0.0.0:5514
+
+transforms:
+  filterlog_parse:
+    type: remap
+    inputs: [opnsense]
+    source: |
+      # Same field names victorialogs' own syslog listener used, the dashboards rely on app_name/hostname
+      .app_name = del(.appname)
+      .proc_id = del(.procid)
+      del(.host)
+      del(.source_ip)
+      del(.source_type)
+      if .app_name == "filterlog" {
+        f = split(string!(.message), ",")
+        .rule = f[0]
+        .rid = f[3]
+        .iface = f[4]
+        .reason = f[5]
+        .action = f[6]
+        .dir = f[7]
+        .ipver = f[8]
+        if .ipver == "4" {
+          .proto = f[16]
+          .src_ip = f[18]
+          .dst_ip = f[19]
+          if includes(["tcp", "udp"], .proto) {
+            .src_port = f[20]
+            .dst_port = f[21]
+          }
+        } else if .ipver == "6" {
+          .proto = f[12]
+          .src_ip = f[15]
+          .dst_ip = f[16]
+          if includes(["tcp", "udp"], .proto) {
+            .src_port = f[17]
+            .dst_port = f[18]
+          }
+        }
+      }
+
+  geoip:
+    type: remap
+    inputs: [filterlog_parse]
+    source: |
+      # Private/RFC1918 addresses aren't in GeoLite2, err is set and the fields stay unset
+      if exists(.src_ip) {
+        geo, err = get_enrichment_table_record("geoip", {"ip": .src_ip})
+        if err == null {
+          .src_country = geo.country_code
+          .src_city = geo.city_name
+          .src_lat = geo.latitude
+          .src_lon = geo.longitude
+        }
+      }
+
+sinks:
+  victorialogs_firewall:
+    type: elasticsearch
+    inputs: [geoip]
+    endpoints: ["http://victorialogs-firewall:9428/insert/elasticsearch/"]
+    mode: bulk
+    api_version: v8
+    healthcheck:
+      enabled: false
+    query:
+      _msg_field: message # raw CSV kept, existing query-time parsing dashboards keep working
+      _time_field: timestamp
+      _stream_fields: hostname,app_name # never src_ip or other high cardinality fields
+
+tests:
+  - name: filterlog ipv4 udp
+    inputs:
+      - insert_at: filterlog_parse
+        type: log
+        log_fields:
+          appname: filterlog
+          message: "16,,,02f4bab031b57d1e30553ce08e0ec131,pppoe0,match,block,in,4,0x0,,37,12612,0,none,17,udp,48,179.167.48.189,121.200.36.37,53853,6881,28"
+    outputs:
+      - extract_from: filterlog_parse
+        conditions:
+          - type: vrl
+            source: |
+              assert_eq!(.app_name, "filterlog")
+              assert_eq!(.rule, "16")
+              assert_eq!(.rid, "02f4bab031b57d1e30553ce08e0ec131")
+              assert_eq!(.iface, "pppoe0")
+              assert_eq!(.action, "block")
+              assert_eq!(.dir, "in")
+              assert_eq!(.ipver, "4")
+              assert_eq!(.proto, "udp")
+              assert_eq!(.src_ip, "179.167.48.189")
+              assert_eq!(.dst_ip, "121.200.36.37")
+              assert_eq!(.src_port, "53853")
+              assert_eq!(.dst_port, "6881")
+
+  - name: filterlog ipv4 udp second sample
+    inputs:
+      - insert_at: filterlog_parse
+        type: log
+        log_fields:
+          appname: filterlog
+          message: "16,,,02f4bab031b57d1e30553ce08e0ec131,pppoe0,match,block,in,4,0x0,,50,29778,0,none,17,udp,132,212.8.252.150,121.200.36.37,15186,7218,112"
+    outputs:
+      - extract_from: filterlog_parse
+        conditions:
+          - type: vrl
+            source: |
+              assert_eq!(.src_ip, "212.8.252.150")
+              assert_eq!(.src_port, "15186")
+              assert_eq!(.dst_port, "7218")
+
+  - name: filterlog ipv6 tcp
+    inputs:
+      - insert_at: filterlog_parse
+        type: log
+        log_fields:
+          appname: filterlog
+          message: "17,,,02f4bab031b57d1e30553ce08e0ec131,pppoe0,match,block,in,6,0x00,0x00000,243,tcp,6,24,2604:a880:2:d1:0:1:d460:b001,2400:ec40:1136:3800:68eb:e4ff:fe3f:3fd5,54234,666,0,S,3549457162,,1025,,mss"
+    outputs:
+      - extract_from: filterlog_parse
+        conditions:
+          - type: vrl
+            source: |
+              assert_eq!(.rule, "17")
+              assert_eq!(.ipver, "6")
+              assert_eq!(.proto, "tcp")
+              assert_eq!(.src_ip, "2604:a880:2:d1:0:1:d460:b001")
+              assert_eq!(.dst_ip, "2400:ec40:1136:3800:68eb:e4ff:fe3f:3fd5")
+              assert_eq!(.src_port, "54234")
+              assert_eq!(.dst_port, "666")
+
+  - name: filterlog ipv4 icmp has no ports
+    inputs:
+      - insert_at: filterlog_parse
+        type: log
+        log_fields:
+          appname: filterlog
+          message: "16,,,02f4bab031b57d1e30553ce08e0ec131,pppoe0,match,block,in,4,0x0,,38,27721,0,none,1,icmp,160,176.179.185.104,121.200.36.37,datalength=140"
+    outputs:
+      - extract_from: filterlog_parse
+        conditions:
+          - type: vrl
+            source: |
+              assert_eq!(.proto, "icmp")
+              assert_eq!(.src_ip, "176.179.185.104")
+              assert!(!exists(.src_port))
+              assert!(!exists(.dst_port))

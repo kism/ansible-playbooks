@@ -1,9 +1,16 @@
+{# Paths: <vmauth>/metrics -> victoriametrics, /logs -> victorialogs (journald + OPNsense syslog), /firewall -> firewall logs #}
 {% macro url_map() %}
   url_map:
-    # Firewall logs instance, a second Grafana datasource at <vmauth>/firewall
+    - src_paths: ["/metrics/.*"]
+      url_prefix: "http://victoriametrics:8428"
+      drop_src_path_prefix_parts: 1
+    - src_paths: ["/logs/.*"]
+      url_prefix: "http://victorialogs:9428"
+      drop_src_path_prefix_parts: 1
     - src_paths: ["/firewall/.*"]
       url_prefix: "http://victorialogs-firewall:9428"
       drop_src_path_prefix_parts: 1
+    # ponytail: legacy unprefixed paths, remove once OPNsense and Home Assistant point at /metrics
     - src_paths: ["/insert/.*", "/select/.*"]
       url_prefix: "http://victorialogs:9428"
     - src_paths: ["/.*"]
@@ -14,6 +21,10 @@ users:
 - username: "journal"
   password: "{{ secret_victorialogs_journal_password }}"
   url_map:
+    - src_paths: ["/logs/insert/journald/.*"]
+      url_prefix: "http://victorialogs:9428"
+      drop_src_path_prefix_parts: 1
+    # ponytail: legacy, remove once every host has re-run configure_journal_upload (bigbilly is often offline)
     - src_paths: ["/insert/journald/.*"]
       url_prefix: "http://victorialogs:9428"
 {% for token in victoriametrics_bearer_tokens %}

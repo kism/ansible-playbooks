@@ -28,16 +28,35 @@ services:
   victorialogs-firewall:
     image: victoriametrics/victoria-logs:latest
     container_name: victorialogs-firewall
-    # OPNsense filterlog only, separate instance so ~1.5M lines/day can't push journald history out of the cap above
-    ports:
-      - 5514:514/tcp # Syslog from OPNsense, no auth on syslog so anything on the LAN can push here
+    # OPNsense filterlog only, separate instance so firewall volume can't push journald history out of the cap above
+    # No ports, vector writes to it over the compose network, reads go through vmauth /firewall
     command:
       - -storageDataPath=/victoria-logs-data
       - -retentionPeriod=30d
       - -retention.maxDiskSpaceUsageBytes=5GiB
-      - -syslog.listenAddr.tcp=:514
     volumes:
       - /var/lib/victorialogs-firewall:/victoria-logs-data
+    restart: always
+  vector:
+    image: timberio/vector:0.62.0-alpine # pinned, vector.yaml's VRL can break across releases, bump deliberately and run its tests
+    container_name: vector
+    # Parses OPNsense filterlog CSV + GeoIP on the source address, see vector.yaml
+    ports:
+      - 5514:5514/tcp # Syslog from OPNsense, no auth on syslog so anything on the LAN can push here
+    volumes:
+      - /opt/victoriametrics/vector.yaml:/etc/vector/vector.yaml:ro
+      - /var/lib/geoip:/geoip:ro
+    # ponytail: no depends_on, on first deploy vector crash-loops until geoipupdate has written the mmdb (a minute or so)
+    restart: always
+  geoipupdate:
+    image: ghcr.io/maxmind/geoipupdate:latest
+    container_name: geoipupdate
+    env_file: geoipupdate.env # account id + license key
+    environment:
+      - GEOIPUPDATE_EDITION_IDS=GeoLite2-City
+      - GEOIPUPDATE_FREQUENCY=72 # hours, keeps running and re-downloads
+    volumes:
+      - /var/lib/geoip:/usr/share/GeoIP
     restart: always
   vmauth:
     image: victoriametrics/vmauth:latest

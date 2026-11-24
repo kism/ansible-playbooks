@@ -30,7 +30,7 @@ services:
       # Must match headscale's mount path, headplane edits it in place
       - "./config.yaml:/etc/headscale/config.yaml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    # ponytail: the image's built-in healthcheck polls headscale /health every 30s and floods its INF log.
-    # Docker never acts on unhealthy anyway. Swap for an interval if something needs the status.
+    # The image's healthcheck polls headscale /health, each one is an INF line in headscale's log.
+    # Default 30s is ~2.9k lines/day, 5m keeps the status for telegraf's docker input without the flood.
     healthcheck:
-      disable: true
+      interval: 5m

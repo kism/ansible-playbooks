@@ -11,5 +11,3 @@ secret_cloudflare_api_dns_zone: "{{ lookup('bitwarden.secrets.lookup', 'ffba4513
 configure_fail2ban_allowlistapp: true
 
 # Bitwarden secrets
-secret_maxmind_id: "{{ lookup('bitwarden.secrets.lookup', '4e1a7c83-0626-47c9-8928-b3e60009ccff') }}"
-secret_maxmind_key: "{{ lookup('bitwarden.secrets.lookup', '8dd66e25-172d-409d-929b-b3e60009e73f') }}"

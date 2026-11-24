@@ -14,20 +14,20 @@ datasources:
   - name: victoriametrics
     uid: dfe6jilzg45c0f
     type: victoriametrics-metrics-datasource # was prometheus until 2026-11-24, same query format
-    url: {{ victoriametrics_url }}
+    url: {{ victoriametrics_url }}/metrics
     isDefault: true
 {{ vmauth() }}
   - name: victoriametrics-graphite
     uid: ffmftuegju0aod
     type: graphite
-    url: {{ victoriametrics_url }}
+    url: {{ victoriametrics_url }}/metrics
     jsonData:
       graphiteVersion: "1.1"
 {{ vmauth() }}
   - name: victoriametrics-logs-general
     uid: cg55c3agzx98gc
     type: victoriametrics-logs-datasource
-    url: {{ victoriametrics_url }}
+    url: {{ victoriametrics_url }}/logs
 {{ vmauth() }}
   - name: victoriametrics-logs-firewall
     uid: cg58cs4csm58gf

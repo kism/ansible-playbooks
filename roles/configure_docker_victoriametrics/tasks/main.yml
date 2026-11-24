@@ -31,6 +31,7 @@
     - /var/lib/victoriametrics
     - /var/lib/victorialogs
     - /var/lib/victorialogs-firewall
+    - /var/lib/geoip
 
 - name: Ensure docker-compose directory exists
   ansible.builtin.file:
@@ -43,6 +44,21 @@
     src: docker-compose.yml
     dest: /opt/victoriametrics/docker-compose.yml
     mode: "0644"
+  notify: Restart victoriametrics
+
+- name: Copy vector config
+  ansible.builtin.copy:
+    src: vector.yaml
+    dest: /opt/victoriametrics/vector.yaml
+    mode: "0644"
+  notify: Restart vector
+
+- name: Copy geoipupdate env file
+  ansible.builtin.template:
+    src: geoipupdate.env.j2
+    dest: /opt/victoriametrics/geoipupdate.env
+    mode: "0600"
+  diff: false # contains the maxmind license key
   notify: Restart victoriametrics
 
 - name: Copy auth.yml file

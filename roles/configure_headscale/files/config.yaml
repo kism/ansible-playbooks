@@ -282,7 +282,8 @@ log:
   level: info
 
   # Output formatting for logs: text or json
-  format: text
+  # json so grafana can read the real level, docker's journald driver marks all stderr as PRIORITY=3
+  format: json
 
 ## Policy
 # Headscale supports a wide range of Tailscale policy features such as ACLs and
