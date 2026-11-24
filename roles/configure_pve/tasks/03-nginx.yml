@@ -5,11 +5,20 @@
       - nginx
     state: present
 
-- name: Small change to nginx service
-  ansible.builtin.lineinfile:
-    path: /lib/systemd/system/nginx.service
-    regexp: "^After="
-    line: "After=network-online.target remote-fs.target nss-lookup.target pveproxy.service"
+- name: Create nginx drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/nginx.service.d
+    state: directory
+    mode: "0755"
+
+# The cert and key live in /etc/pve (pmxcfs), a drop-in survives nginx package upgrades unlike editing the vendor unit
+- name: Start nginx after the PVE cluster filesystem is mounted
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      After=pve-cluster.service
+    dest: /etc/systemd/system/nginx.service.d/after-pve-cluster.conf
+    mode: "0644"
 
 - name: Nginx enabled and running pve
   ansible.builtin.systemd_service:

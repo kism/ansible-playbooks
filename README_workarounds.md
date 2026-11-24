@@ -189,9 +189,6 @@ Things that work around someone else's bug or limitation. Check each one now and
 - **pve-nag-buster** (`roles/configure_pve/tasks/01-repos.yml:10`)
   - Why: removes Proxmox's subscription nag and switches repos. Could break silently on a new PVE major, e.g. if repos move to deb822 `.sources`.
   - Check: is upstream still maintained, and does the nag come back after `apt install --reinstall proxmox-widget-toolkit`?
-- **`lineinfile` into the vendor `nginx.service`** (`roles/configure_pve/tasks/03-nginx.yml:8`)
-  - Why (inferred): nginx needs `pveproxy.service` up first, because its TLS key lives in `/etc/pve` (pmxcfs). An nginx package upgrade undoes the edit; a drop-in in `/etc/systemd/system/nginx.service.d/` would survive.
-  - Check: `systemctl cat nginx | grep After=` after an nginx upgrade.
 
 ## configure_pvpn
 
