@@ -240,9 +240,6 @@ Things that work around someone else's bug or limitation. Check each one now and
 - **Fixed upstream Host header for qBittorrent** (`roles/configure_reverse_proxy/files/hosts/rproxy/sites-available/qbt.conf:9`, same in `myr.conf`)
   - Why (inferred): qBittorrent's Host-header validation rejects the public hostname.
   - Check: qBittorrent WebUI → server domains / Host header validation.
-- **allowlistapp proxied to `127.0.0.1`, not `localhost`** (`roles/configure_reverse_proxy/files/hosts/rproxy/sites-available/allowlistapp.conf:4`)
-  - Why: the app only listens on IPv4, and `localhost` tries `::1` first.
-  - Check: `ss -ltnp | grep :8080` for an IPv6 listener.
 
 ## configure_snapraid
 
