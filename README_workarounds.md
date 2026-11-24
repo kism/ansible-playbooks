@@ -71,7 +71,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: Docker's journald driver gaining per-line priority, or headscale logging to stdout.
 - **headplane healthcheck every 5m** (`roles/configure_headscale/files/docker-compose.yml:36`)
   - Why: the image's healthcheck polls headscale `/health`, and headscale logs every poll at INF (about 2.9k lines/day at the default 30s).
-  - Check: `docker inspect ghcr.io/tale/headplane:latest --format '{{json .Config.Healthcheck}}'`, or headscale no longer logging `/health`.
+  - Check: `docker inspect ghcr.io/tale/headplane:latest --format '{{json .Config.Healthcheck}}'`, or headscale no longer logging `/health`. Last checked 2026-11-24: image still defaults to 30s, and headscale v0.29.7 still logs each `/health` poll as an info `http request` line.
 
 ## configure_jumpbox
 
