@@ -1,6 +1,8 @@
 ---
 # Points OPNsense remote logging at VictoriaLogs on this host
-- name: Forward OPNsense syslog to victorialogs
+# OPNsense filters destinations by inclusion only, so excluding filterlog (local0) takes two destinations:
+# every facility but local0, plus the programs we do want from local0 (verified on the box 2026-11-24, kea-dhcp4 is the only one)
+- name: Forward OPNsense syslog to victorialogs # noqa: args[module] lint can't resolve the looped facility list against the choices
   delegate_to: localhost
   become: false
   run_once: true
@@ -12,8 +14,17 @@
     port: 514
     transport: tcp4
     rfc5424: true # 3164 has no timezone or year
-    # ponytail: firewall logs (filterlog) go to local0, so every facility but that, add local0 back when firewall logs are wanted
-    facility: [kern, user, mail, daemon, auth, syslog, lpr, news, uucp, cron, authpriv, ftp, ntp, security, console,
-               local1, local2, local3, local4, local5, local6, local7]
-    description: "Ansible: victorialogs"
+    facility: "{{ item.facility | default([]) }}"
+    program: "{{ item.program | default([]) }}"
+    description: "{{ item.description }}"
     match_fields: [description]
+    reload: true # defaults to false, without it the destination is saved but syslog-ng never sees it
+  loop:
+    # ponytail: add local0 here and drop the second entry when firewall logs are wanted
+    - description: "Ansible: victorialogs"
+      facility: [kern, user, mail, daemon, auth, syslog, lpr, news, uucp, cron, authpriv, ftp, ntp, security, console,
+                 local1, local2, local3, local4, local5, local6, local7]
+    - description: "Ansible: victorialogs local0"
+      program: [kea-dhcp4]
+  loop_control:
+    label: "{{ item.description }}"

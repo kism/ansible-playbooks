@@ -4,14 +4,22 @@
   become: false
   run_once: true
   block:
-    # env lookup instead of a command task, command is skipped in --check so the assert always failed
+    # A set but stale SSH_AUTH_SOCK makes ssh fall back to a password prompt, which shows up as a become timeout
+    - name: Check the SSH agent is reachable and has keys
+      ansible.builtin.command:
+        argv: [timeout, "5", ssh-add, -l] # a stale socket hangs ssh-add rather than failing
+      register: meta_pre_flight_checks_ssh_add
+      failed_when: false # asserted below with a useful message
+      changed_when: false # Just getting info
+      check_mode: false # read-only, needs to run in --check
+
     - name: Make ssh assertion before we start
       ansible.builtin.assert:
-        that: lookup('ansible.builtin.env', 'SSH_AUTH_SOCK') != ""
+        that: meta_pre_flight_checks_ssh_add.rc == 0
         fail_msg: |-
-          No SSH_AUTH_SOCK set!
-          if you are in vscode with agent forwarding, run:
-          export SSH_AUTH_SOCK=$(ls -t /tmp/ssh-**/* | head -1)
+          SSH agent {{ 'has no keys' if meta_pre_flight_checks_ssh_add.rc == 1 else 'is not reachable (SSH_AUTH_SOCK unset or stale)' }}!
+          if you are in vscode with agent forwarding, pick the first socket that has keys:
+          for s in $(/bin/ls -t /tmp/ssh-*/agent.*); do SSH_AUTH_SOCK=$s timeout 2 ssh-add -l >/dev/null 2>&1 && export SSH_AUTH_SOCK=$s && break; done
 
     - name: Assert that secret_proxmox_password is set
       ansible.builtin.assert:

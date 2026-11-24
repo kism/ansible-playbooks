@@ -60,3 +60,4 @@ Run without server onboarding block
 ## Todo
 
 - Separate role for certbot setup
+- Headscale, Headplane healthchecks being disabled since INFO ends up as ERROR on victorialogs/grafana

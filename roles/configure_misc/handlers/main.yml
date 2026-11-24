@@ -1,0 +1,6 @@
+---
+# Same as 99-quiet-ip6.conf, applied live so NM doesn't need a restart
+- name: Apply NetworkManager log level
+  ansible.builtin.command:
+    argv: [nmcli, general, logging, domains, "DEFAULT,IP6:ERR"]
+  changed_when: true # only runs when the conf file changed

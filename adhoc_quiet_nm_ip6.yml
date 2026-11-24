@@ -1,0 +1,29 @@
+---
+# One-off push of the configure_misc NetworkManager IPv6 log quieting, so hosts don't need a full onboard
+- name: Quiet NetworkManager IPv6 warnings
+  hosts: ansible_main
+  gather_facts: false
+  become: true
+  roles:
+    - meta_pre_flight_checks # catches a missing SSH agent, which otherwise shows up as a become timeout
+  tasks:
+    - name: Check if NetworkManager conf.d exists
+      ansible.builtin.stat:
+        path: /etc/NetworkManager/conf.d
+      register: adhoc_quiet_nm_ip6_conf_d_stat
+
+    - name: Quiet NetworkManager IPv6 warnings
+      ansible.builtin.copy:
+        dest: /etc/NetworkManager/conf.d/99-quiet-ip6.conf
+        content: |
+          [logging]
+          domains=DEFAULT,IP6:ERR
+        mode: "0644"
+      when: adhoc_quiet_nm_ip6_conf_d_stat.stat.exists and 'proxmoxhosts' not in group_names # PVE uses ifupdown2, never NM
+      notify: Apply NetworkManager log level
+
+  handlers:
+    - name: Apply NetworkManager log level
+      ansible.builtin.command:
+        argv: [nmcli, general, logging, domains, "DEFAULT,IP6:ERR"]
+      changed_when: true # only runs when the conf file changed

@@ -106,3 +106,15 @@
       ipv6.addr-gen-mode=eui64
     mode: "0644"
   when: configure_misc_nm_conf_d_stat.stat.exists
+
+# libndp sends router solicitations with sa_family unset, the PVE 7.0 kernel rejects that, so NM warns every ~60s.
+# Harmless, RAs still arrive unsolicited. Drop when libndp is fixed.
+- name: Quiet NetworkManager IPv6 warnings
+  ansible.builtin.copy:
+    dest: /etc/NetworkManager/conf.d/99-quiet-ip6.conf
+    content: |
+      [logging]
+      domains=DEFAULT,IP6:ERR
+    mode: "0644"
+  when: configure_misc_nm_conf_d_stat.stat.exists and 'proxmoxhosts' not in group_names # PVE uses ifupdown2, never NM
+  notify: Apply NetworkManager log level
