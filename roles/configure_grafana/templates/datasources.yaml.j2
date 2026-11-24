@@ -1,0 +1,36 @@
+# Managed by ansible (configure_grafana), edits in the UI are blocked for these.
+# uids match the ones originally made in the UI, dashboards and alert rules reference them.
+# Datasources not listed here (cloudwatch) stay UI-managed.
+apiVersion: 1
+
+{% macro vmauth() %}
+    access: proxy
+    basicAuth: true
+    basicAuthUser: grafana
+    secureJsonData:
+      basicAuthPassword: {{ secret_victoriametrics_grafana_password | to_json }}
+{% endmacro %}
+datasources:
+  - name: victoriametrics
+    uid: dfe6jilzg45c0f
+    type: victoriametrics-metrics-datasource # was prometheus until 2026-11-24, same query format
+    url: {{ victoriametrics_url }}
+    isDefault: true
+{{ vmauth() }}
+  - name: victoriametrics-graphite
+    uid: ffmftuegju0aod
+    type: graphite
+    url: {{ victoriametrics_url }}
+    jsonData:
+      graphiteVersion: "1.1"
+{{ vmauth() }}
+  - name: victoriametrics-logs-general
+    uid: cg55c3agzx98gc
+    type: victoriametrics-logs-datasource
+    url: {{ victoriametrics_url }}
+{{ vmauth() }}
+  - name: victoriametrics-logs-firewall
+    uid: cg58cs4csm58gf
+    type: victoriametrics-logs-datasource
+    url: {{ victoriametrics_url }}/firewall
+{{ vmauth() }}

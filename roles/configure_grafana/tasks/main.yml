@@ -15,6 +15,26 @@
     name: grafana
     state: present
 
+# Grafana installs (and auto-updates) these itself on start
+- name: Preinstall Grafana plugins
+  community.general.ini_file:
+    path: /etc/grafana/grafana.ini
+    section: plugins
+    option: preinstall
+    value: victoriametrics-metrics-datasource,victoriametrics-logs-datasource
+    mode: "0640"
+    group: grafana
+  notify: Restart grafana
+
+- name: Provision Grafana datasources
+  ansible.builtin.template:
+    src: datasources.yaml.j2
+    dest: /etc/grafana/provisioning/datasources/ansible.yaml
+    mode: "0640"
+    group: grafana
+  diff: false # contains the vmauth grafana password
+  notify: Restart grafana
+
 - name: Start and enable Grafana service
   ansible.builtin.systemd_service:
     name: grafana-server
