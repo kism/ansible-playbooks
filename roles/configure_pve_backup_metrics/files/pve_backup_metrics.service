@@ -1,0 +1,9 @@
+[Unit]
+Description=Push Proxmox backup health to VictoriaMetrics
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/pve_backup_metrics/pve_backup_metrics.env
+ExecStart=/usr/bin/python3 /opt/pve_backup_metrics/pve_backup_metrics.py

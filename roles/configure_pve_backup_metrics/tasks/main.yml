@@ -1,0 +1,40 @@
+---
+# Proxmox backup health -> VictoriaMetrics, see the script docstring for the metrics.
+# Runs as root, pvesh needs it.
+- name: Create /opt/pve_backup_metrics
+  ansible.builtin.file:
+    path: /opt/pve_backup_metrics
+    state: directory
+    mode: "0700"
+
+- name: Copy pve backup metrics script
+  ansible.builtin.copy:
+    src: pve_backup_metrics.py
+    dest: /opt/pve_backup_metrics/pve_backup_metrics.py
+    mode: "0755"
+
+- name: Copy pve backup metrics env file
+  ansible.builtin.template:
+    src: pve_backup_metrics.env.j2
+    dest: /opt/pve_backup_metrics/pve_backup_metrics.env
+    mode: "0600"
+  diff: false # contains the victoriametrics bearer token
+
+- name: Copy pve backup metrics systemd units
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ item }}
+    mode: "0644"
+  loop:
+    - pve_backup_metrics.service
+    - pve_backup_metrics.timer
+  notify: Reload systemd
+
+- name: Flush handlers so systemd sees the pve backup metrics units
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable pve backup metrics timer
+  ansible.builtin.systemd_service:
+    name: pve_backup_metrics.timer
+    enabled: true
+    state: started

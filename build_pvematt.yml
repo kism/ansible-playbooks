@@ -11,6 +11,7 @@
 
     # Purpose specific
     - configure_pve
+    - configure_pve_backup_metrics
     - configure_concept_baremetal
     - configure_postfix_gmail
     - configure_disks

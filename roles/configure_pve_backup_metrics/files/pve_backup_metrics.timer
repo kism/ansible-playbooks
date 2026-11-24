@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for Proxmox backup health metrics
+
+[Timer]
+Unit=pve_backup_metrics.service
+OnBootSec=2min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target
