@@ -30,9 +30,5 @@ services:
       # Must match headscale's mount path, headplane edits it in place
       - "./config.yaml:/etc/headscale/config.yaml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    healthcheck:
-      test: ["CMD", "/bin/hp_healthcheck"]
-      interval: 30s
-      timeout: 5s
-      start_period: 5s
-      retries: 3
+    # ponytail: no healthcheck, it polled headscale /health every 30s and flooded its INF log.
+    # Docker never acts on unhealthy anyway. Add back with a long interval if something needs the status.
