@@ -10,12 +10,6 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Why (inferred): trixie packages `wsdd2`. The firewalld service is still called `wsdd`, which works only because the role ships its own `files/firewalld/wsdd.xml`.
   - Check: `apt-cache policy wsdd` on a Debian 13 host.
 
-## configure_concept_baremetal
-
-- **hd-idle from the Debian repo, not the GitHub release** (`roles/configure_concept_baremetal/tasks/01b-hdidle.yml:3`)
-  - Why: the GitHub deb's version sorts lower than Debian's (`1.21` < `1.21+ds`), so apt refuses it.
-  - Check: compare `apt-cache policy hd-idle` with the latest GitHub release. Once upstream's version sorts higher, the release deb would install.
-
 ## configure_concept_sd_rootfs
 
 - **journald `SystemMaxUse=5M`** (`roles/configure_concept_sd_rootfs/tasks/main.yml:5`)
@@ -26,7 +20,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **duperemove built from source in Docker** (`roles/configure_disks/files/duperemove/Dockerfile:1`)
   - Why: Debian only packages 0.11. The build skips `make install` because that needs pandoc.
-  - Check: `apt-cache policy duperemove`. At 0.15 or later, drop the build.
+  - Check: `apt-cache policy duperemove`. At 0.15 or later, drop the build. Last checked 2026-11-24: trixie and trixie-backports have 0.11.2, sid has 0.15.2 (same as the build). Drop the build once it reaches trixie-backports, or with Debian 14.
 - **duperemove and lazydocker symlinked into `/usr/bin`** (`roles/configure_disks/tasks/02-duperemove.yml:44`, `roles/configure_docker/tasks/02-lazydocker.yml:26`)
   - Why: on Oracle Linux, sudo's `secure_path` and root's login PATH skip `/usr/local/bin`.
   - Check: `sudo grep secure_path /etc/sudoers` and `sudo -i sh -c 'echo $PATH'` on an OL host. Last checked 2026-11-24: still `/sbin:/bin:/usr/sbin:/usr/bin` on every OL host, and root's login PATH lacks `/usr/local/bin` on most.
@@ -35,7 +29,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **seerr config chowned to uid 1000** (`roles/configure_docker_arr/tasks/main.yml:24`)
   - Why: the seerr image runs as `node` (uid 1000) and ignores PUID/PGID, unlike the linuxserver images.
-  - Check: the seerr image docs for PUID support, or `docker exec seerr id`.
+  - Check: the seerr image docs for PUID support, or `docker exec seerr id`. Last checked 2026-11-24: still `USER node:node` with Node's stock `docker-entrypoint.sh`, no PUID handling. A compose `user:` could match the other arr containers instead, but that's a re-chown either way.
 
 ## configure_docker_qbittorrent
 
