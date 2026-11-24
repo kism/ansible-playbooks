@@ -8,6 +8,7 @@ services:
     command:
       - -retentionPeriod=1y # ~1.8GB/month, so ~22GB steady state, no size based retention in victoriametrics
       - -storage.minFreeDiskSpaceBytes=2GiB # stop ingesting rather than fill the root disk
+      - -inmemoryDataFlushInterval=60s # default 5s, each small flush costs ext4 journal + thin-LV metadata writes (~4.5x on vic). Crash loses up to 60s
     volumes:
       - /var/lib/victoriametrics:/victoria-metrics-data
     restart: always
@@ -20,6 +21,7 @@ services:
       - -storageDataPath=/victoria-logs-data
       - -retentionPeriod=10y # ponytail: effectively no time limit, the disk cap below decides what's kept
       - -retention.maxDiskSpaceUsageBytes=10GiB
+      - -inmemoryDataFlushInterval=60s # default 5s, each small flush costs ext4 journal + thin-LV metadata writes (~4.5x on vic). Crash loses up to 60s
       - -journald.streamFields=_HOSTNAME,_SYSTEMD_UNIT,CONTAINER_NAME # one stream per unit/container, _MACHINE_ID dropped since cloned CTs can share it
       - -syslog.listenAddr.tcp=:514
     volumes:
@@ -34,6 +36,7 @@ services:
       - -storageDataPath=/victoria-logs-data
       - -retentionPeriod=30d
       - -retention.maxDiskSpaceUsageBytes=5GiB
+      - -inmemoryDataFlushInterval=60s # default 5s, each small flush costs ext4 journal + thin-LV metadata writes (~4.5x on vic). Crash loses up to 60s
     volumes:
       - /var/lib/victorialogs-firewall:/victoria-logs-data
     restart: always
