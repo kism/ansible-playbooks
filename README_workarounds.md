@@ -113,7 +113,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: in one container, unmask them and `systemctl start sys-kernel-debug.mount`, then `systemctl --failed`. Last checked 2026-11-24 on code (OL, PVE 9): both still fail.
 - **`follow: true` on `/etc/vconsole.conf`** (`roles/configure_misc/tasks/main.yml:40`)
   - Why: Debian symlinks it to `/etc/default/keyboard`, which may not exist.
-  - Check: `readlink -f /etc/vconsole.conf` on Debian 13.
+  - Check: `readlink -f /etc/vconsole.conf` on Debian 13. Last checked 2026-11-24 (debian:13 container): still there. systemd's `/usr/lib/tmpfiles.d/debian.conf` creates `L+ /etc/vconsole.conf -> default/keyboard`, which dangles until `keyboard-configuration` is installed.
 
 ## configure_motd
 
@@ -165,12 +165,9 @@ Things that work around someone else's bug or limitation. Check each one now and
 - **makepkg `OPTIONS` rewritten with `!debug`** (`roles/configure_package_manager/tasks/01-archlinux-26.yml:27`)
   - Why (inferred): pacman 6.1+ enables `debug` and builds `-debug` packages. Rewriting the whole line also drops new upstream options; a `/etc/makepkg.conf.d/` drop-in would be cleaner.
   - Check: `diff /etc/makepkg.conf /etc/makepkg.conf.pacnew`.
-- **Duplicate OL9 appstream repo removed** (`roles/configure_package_manager/tasks/01-oraclelinux-9.yml:15`)
-  - Why (inferred): Oracle Linux images define appstream twice, so dnf warns.
-  - Check: `dnf repolist 2>&1 | grep -i duplicate` on a fresh OL9 image.
-- **ol10_appstream added on OL10** (`roles/configure_package_manager/tasks/01-oraclelinux-10.yml:12`)
+- **ol10_appstream added on OL10** (`roles/configure_package_manager/tasks/01-oraclelinux-10.yml:16`)
   - Why: the minimal OL10 LXC image only ships baseos.
-  - Check: `ls /etc/yum.repos.d/` on a fresh OL10 LXC template.
+  - Check: `ls /etc/yum.repos.d/` on a fresh OL10 LXC template. Last checked 2026-11-24 (linuxcontainers build 20261112): still only `base.repo` and `base_latest.repo`, both baseos.
 
 ## configure_packages
 

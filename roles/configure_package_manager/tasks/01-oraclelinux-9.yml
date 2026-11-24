@@ -12,11 +12,6 @@
 - name: Oracle Linux Block {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
   when: ansible_facts['distribution'] == "OracleLinux"
   block:
-    - name: Remove duplicate repo definition lol {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
-      ansible.builtin.file:
-        path: /etc/yum.repos.d/oracle-appstream-ol9.repo
-        state: absent
-
     - name: Enable EPEL and appstream {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
       community.general.dnf_config_manager:
         name: "{{ item }}"

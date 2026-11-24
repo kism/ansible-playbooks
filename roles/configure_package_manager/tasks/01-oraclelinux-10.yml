@@ -7,11 +7,6 @@
 - name: Oracle Linux Block {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
   when: ansible_facts['distribution'] == "OracleLinux"
   block:
-    - name: Remove duplicate repo definition {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
-      ansible.builtin.file:
-        path: /etc/yum.repos.d/oracle-appstream-ol9.repo
-        state: absent
-
     - name: Check for stock repo file {{ ansible_facts["distribution"] | lower + "-" + ansible_facts["distribution_major_version"] }}
       ansible.builtin.stat:
         path: /etc/yum.repos.d/oracle-linux-ol10.repo
