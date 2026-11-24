@@ -12,4 +12,4 @@
     - meta_onboard
 
     # End
-    # - configure_journal_upload
+    - configure_journal_upload

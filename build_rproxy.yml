@@ -23,5 +23,5 @@
     - configure_allowlistapp
 
     # End
-    # - configure_telegraf
-    # - configure_journal_upload
+    - configure_telegraf
+    - configure_journal_upload
