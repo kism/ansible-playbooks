@@ -20,7 +20,7 @@
   notify:
     - Reload firewalld
 
-- name: Create data directories for victoriametrics and victorialogs
+- name: Create data directories for victoriametrics and the victorialogs instances
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -30,6 +30,7 @@
   loop:
     - /var/lib/victoriametrics
     - /var/lib/victorialogs
+    - /var/lib/victorialogs-firewall
 
 - name: Ensure docker-compose directory exists
   ansible.builtin.file:

@@ -25,6 +25,20 @@ services:
     volumes:
       - /var/lib/victorialogs:/victoria-logs-data
     restart: always
+  victorialogs-firewall:
+    image: victoriametrics/victoria-logs:latest
+    container_name: victorialogs-firewall
+    # OPNsense filterlog only, separate instance so ~1.5M lines/day can't push journald history out of the cap above
+    ports:
+      - 5514:514/tcp # Syslog from OPNsense, no auth on syslog so anything on the LAN can push here
+    command:
+      - -storageDataPath=/victoria-logs-data
+      - -retentionPeriod=30d
+      - -retention.maxDiskSpaceUsageBytes=5GiB
+      - -syslog.listenAddr.tcp=:514
+    volumes:
+      - /var/lib/victorialogs-firewall:/victoria-logs-data
+    restart: always
   vmauth:
     image: victoriametrics/vmauth:latest
     container_name: vmauth

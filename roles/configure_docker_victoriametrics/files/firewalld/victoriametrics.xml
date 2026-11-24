@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <service>
   <short>VictoriaMetrics</short>
-  <description>WebUI for VictoriaMetrics, (vmauth proxy), and syslog into VictoriaLogs</description>
+  <description>WebUI for VictoriaMetrics, (vmauth proxy), and syslog into VictoriaLogs (5514 for firewall logs)</description>
   <port protocol="tcp" port="8427" />
   <port protocol="tcp" port="514" />
+  <port protocol="tcp" port="5514" />
 </service>
