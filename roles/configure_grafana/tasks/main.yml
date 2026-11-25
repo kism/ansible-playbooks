@@ -26,6 +26,17 @@
     group: grafana
   notify: Restart grafana
 
+# Grafana logs every plugin request at info, ~10k lines a day mostly from the alert scheduler
+- name: Only log warnings from the VictoriaMetrics plugins
+  community.general.ini_file:
+    path: /etc/grafana/grafana.ini
+    section: log
+    option: filters
+    value: plugin.victoriametrics-metrics-datasource:warn plugin.victoriametrics-logs-datasource:warn
+    mode: "0640"
+    group: grafana
+  notify: Restart grafana
+
 - name: Provision Grafana datasources
   ansible.builtin.template:
     src: datasources.yaml.j2
