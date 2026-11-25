@@ -31,6 +31,28 @@
     state: absent
     purge: true
 
+# rpi-swap (dphys-swapfile's replacement since trixie) defaults to zram with writeback to /var/swap on the card.
+# Keep the zram, drop the file. Takes effect on the next reboot, the generator reads it at boot
+- name: Create rpi-swap drop-in directory
+  ansible.builtin.file:
+    path: /etc/rpi/swap.conf.d
+    state: directory
+    mode: "0755"
+
+- name: Swap to zram only
+  ansible.builtin.copy:
+    content: |
+      [Main]
+      Mechanism=zram
+    dest: /etc/rpi/swap.conf.d/sd-rootfs.conf
+    mode: "0644"
+
+# A file backing an active loop device stays allocated until the reboot detaches it, deleting it early is safe
+- name: Remove the rpi-swap file
+  ansible.builtin.file:
+    path: /var/swap
+    state: absent
+
 # Ansible patches this host, so the apt timers only add writes, man-db rebuilds its index after every upgrade
 - name: Disable timers that write to the SD card
   ansible.builtin.systemd_service:
