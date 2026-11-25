@@ -101,7 +101,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: in one container, unmask them and `systemctl start sys-kernel-debug.mount`, then `systemctl --failed`. Last checked 2026-11-24 on code (OL, PVE 9): both still fail.
 - **`follow: true` on `/etc/vconsole.conf`** (`roles/configure_misc/tasks/main.yml:40`)
   - Why: Debian symlinks it to `/etc/default/keyboard`, which may not exist.
-  - Check: `readlink -f /etc/vconsole.conf` on Debian 13. Last checked 2026-11-24 (debian:13 container): still there. systemd's `/usr/lib/tmpfiles.d/debian.conf` creates `L+ /etc/vconsole.conf -> default/keyboard`, which dangles until `keyboard-configuration` is installed.
+  - Check: `readlink -f /etc/vconsole.conf` on Debian 13. Last checked 2026-11-24 (debian:13 container): still there. On musicass (2026-11-25) it resolves, Raspbian ships `/etc/default/keyboard`. systemd's `/usr/lib/tmpfiles.d/debian.conf` creates `L+ /etc/vconsole.conf -> default/keyboard`, which dangles until `keyboard-configuration` is installed.
 
 ## configure_motd
 
@@ -143,7 +143,7 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Check: whether the rescue ever fires (`-v` output).
 - **makepkg `!debug` drop-in** (`roles/configure_package_manager/tasks/01-archlinux-26.yml:28`)
   - Why: pacman 6.1+ ships `OPTIONS=(... debug ...)` and builds `-debug` packages for every AUR build. Since 2026-11-24 this is `/etc/makepkg.conf.d/no-debug.conf` with `OPTIONS+=(!debug)`, where it used to rewrite the whole vendor line. makepkg's `in_opt_array` takes the last match.
-  - Check: `grep ^OPTIONS /etc/makepkg.conf` on a fresh Arch. Last checked 2026-11-24 (pacman 7.1): stock still has `debug`.
+  - Check: `grep ^OPTIONS /etc/makepkg.conf` on a fresh Arch. Last checked 2026-11-24 (pacman 7.1): stock still has `debug`. Manjaro's (x230t, 2026-11-25) already has `!debug`, so this only matters on plain Arch.
 - **ol10_appstream added on OL10** (`roles/configure_package_manager/tasks/01-oraclelinux-10.yml:16`)
   - Why: the minimal OL10 LXC image only ships baseos.
   - Check: `ls /etc/yum.repos.d/` on a fresh OL10 LXC template. Last checked 2026-11-24 (linuxcontainers build 20261112): still only `base.repo` and `base_latest.repo`, both baseos.
@@ -152,7 +152,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **iotop → iotop-c migration** (`roles/configure_packages/tasks/01-all.yml:5`, marked TEMP)
   - Why: iotop-c only provides `iotop`, so the old package conflicts.
-  - Check: `rpm -q iotop` / `dpkg -l iotop` on every host. Once none have it, delete the tasks. Last checked 2026-11-24: gone from all 15 reachable hosts. x230t (Manjaro), musicass (Raspbian) and bigbilly (Debian) were unreachable and could still have it.
+  - Check: `rpm -q iotop` / `dpkg -l iotop` on every host. Once none have it, delete the tasks. Last checked 2026-11-25: gone from all 15 reachable hosts, musicass and x230t (only `iotop-c`, which pacman also answers to `iotop`). bigbilly (Debian) was unreachable and could still have it.
 - **neofetch fallback for fastfetch** (`roles/configure_packages/tasks/04-fastfetch.yml:2`)
   - Why (inferred): fastfetch isn't packaged on older distros.
   - Check: `dnf info fastfetch` / `apt-cache policy fastfetch` on each host.
@@ -203,7 +203,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **sshd restarted, not reloaded** (`roles/configure_sshd/handlers/main.yml:2`)
   - Why: on Debian 13 a SIGHUP'd sshd can't rebind while `ssh.socket` holds the port.
-  - Check: `systemctl is-enabled ssh.socket` on Debian 13 hosts. Last checked 2026-11-24: disabled on pvematt and pvewill. bigbilly (Debian) and musicass (Raspbian) were unreachable, and those are the hosts the restart is for.
+  - Check: `systemctl is-enabled ssh.socket` on Debian 13 hosts. Last checked 2026-11-25: disabled on pvematt, pvewill and musicass (Raspbian 13). Only bigbilly (Debian) is unchecked, it was unreachable.
 - **RedHat's `01-permitrootlogin.conf` deleted** (`roles/configure_sshd/tasks/01-nonpve.yml:27`)
   - Why (inferred): the EL/OL installer drops in `PermitRootLogin yes`, and sshd takes the first value it reads, so `01-` beats our `90-`.
   - Check: `ls /etc/ssh/sshd_config.d/; sshd -T | grep permitrootlogin` on a fresh OL image. Last checked 2026-11-24: not in the oraclelinux:9/10 images or the OL10 LXC rootfs. It's written by the Anaconda installer's "allow root SSH login" option, so it only matters for ISO installs like gsb (KVM). Keep it while any host is installed from an ISO.
@@ -212,7 +212,7 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 - **telegraf from the AUR on Arch** (`roles/configure_telegraf/tasks/01-pacman.yml:5`)
   - Why: it isn't in the official repos, and yay refuses to run as root.
-  - Check: `pacman -Si telegraf`. Last checked 2026-11-24: not in the official repos.
+  - Check: `pacman -Si telegraf`. Last checked 2026-11-25 on x230t: not in the official repos, 1.40.3 installed from the AUR.
 - **`skip_processors_after_aggregators = true`** (`roles/configure_telegraf/templates/telegraf.d/05-agent-common.conf:8`)
   - Why: silences the warning about the default changing in v1.41. There are no aggregators, so the value doesn't matter.
   - Check: once on v1.41+, delete the line and `journalctl -u telegraf | grep skip_processors` should be empty. Last checked 2026-11-24: latest release is v1.40.4, hosts on 1.40.3/1.40.4.
