@@ -35,12 +35,14 @@
 
     - name: Run uv sync
       ansible.builtin.command:
-        cmd: /usr/local/bin/uv sync --frozen
+        argv: "{{ ['/usr/local/bin/uv', 'sync', '--frozen'] + (['--dry-run'] if ansible_check_mode else []) }}"
         chdir: /opt/qbt-shaper
       environment: # The venv links to this interpreter, keep it in /opt/qbt-shaper since the hardened unit has ProtectHome
         UV_PYTHON_INSTALL_DIR: /opt/qbt-shaper/.python
+      check_mode: false # --dry-run in check mode, so scripts/plan shows package drift
+      register: configure_qbt_shaper_uv_sync
+      changed_when: configure_qbt_shaper_uv_sync.stderr is search('^ [-+~] ', multiline=True) # uv lists each package it (would) change
       notify: Restart qbt-shaper
-      changed_when: true # Safe assumption, no way to know
 
 - name: Copy systemd service qbt-shaper
   ansible.builtin.copy:

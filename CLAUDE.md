@@ -18,6 +18,7 @@ $(./scripts/loadcreds)                     # export BWS_ACCESS_TOKEN for bitward
 
 ansible-playbook build_<host>.yml -i inventory/main.yml
 ansible-playbook build_<host>.yml -i inventory/main.yml --extra-vars "skip_onboard=true"  # skip meta_onboard roles
+./scripts/plan [build_<host>.yml ...]     # drift check: --check --diff on the builds, changed=0 means converged
 ```
 
 There are no tests; ansible-lint (`strict: true`, see `.ansible-lint`) and ansible-taste are the checks. After changes, run ansible-taste on the whole repo and ansible-lint on only the new/changed roles and playbooks. Never run ansible-lint on the whole repo, it's slow and the user does that themselves. `*.tmp.yml` files are excluded from lint and are scratch.
@@ -28,6 +29,7 @@ CI (`.github/workflows/`) also runs these audit scripts, run the relevant one wh
 uv run scripts/compose_audit.py          # every compose stack is in some host's docker_compose_paths
 uv run scripts/nginx_logging_audit.py    # every nginx vhost logs to vhosts/<name>.access/.error (fail2ban reads them)
 uv run scripts/injected_facts_audit.py   # facts only via ansible_facts['x'] (inject_facts_as_vars = False)
+uv run scripts/check_mode_audit.py       # no task always reports changed (would be permanent drift in scripts/plan)
 ```
 
 Ad-hoc commands against hosts: any `{{ }}` in an `-a` argument gets templated by Ansible; wrap it in `{% raw %}…{% endraw %}`.
@@ -59,6 +61,10 @@ Prefix registered vars with the role name (e.g. `configure_firewall_pve_status`)
 - Don't add `become: true` on tasks when the play already has it; don't add `owner: root`/`group: root` redundantly with `become_user: root`.
 - `ansible.builtin.command`: use `argv` and `creates`/`removes`.
 - Mark deliberate shortcuts with a `# ponytail:` comment.
+- Roles must run cleanly in `--check` and report `changed=0` on a converged host, `scripts/plan` treats any change as drift:
+  - Read-only `command`/`shell` (version checks, lookups) gets `check_mode: false` + `changed_when: false`.
+  - Never `changed_when: true` on a task that runs every time; detect the real change (`creates`/`removes`, output match, version compare). For tools with a dry run, run it in check mode, e.g. `uv sync` with `--dry-run` when `ansible_check_mode` (see `roles/configure_qbt_shaper`).
+  - No `state: latest` outside `maintenance_*` roles, pending updates would show as drift.
 - When replacing something already deployed (a unit, hook, file), add a `# ponytail: one-off cleanup` task that removes the old thing, naming the hosts it must run on before it can be deleted.
 
 ## Tracking files

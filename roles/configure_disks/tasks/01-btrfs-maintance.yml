@@ -43,3 +43,18 @@
   ansible.builtin.command:
     cmd: /usr/share/btrfsmaintenance/btrfsmaintenance-refresh-cron.sh timer
     creates: /lib/systemd/system/btrfs-scrub.timer
+
+- name: Create btrfs-scrub drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/btrfs-scrub.service.d
+    state: directory
+    mode: "0755"
+
+# ponytail: replaces btrfsmaintenance's scrub loop, which stops at the first bad filesystem.
+# A filesystem mounted twice (subvol mounts) gets scrubbed twice, dedupe by UUID if that ever happens
+- name: Scrub every btrfs mount even after one has errors
+  ansible.builtin.copy:
+    src: files/btrfs-scrub-no-abort.conf
+    dest: /etc/systemd/system/btrfs-scrub.service.d/no-abort.conf
+    mode: "0644"
+  notify: Reload systemd

@@ -21,9 +21,11 @@
 
 - name: Sync packages
   ansible.builtin.command:
-    cmd: "/usr/local/bin/uv sync"
+    argv: "{{ ['/usr/local/bin/uv', 'sync'] + (['--dry-run'] if ansible_check_mode else []) }}"
     chdir: "/opt/maxmind_geoip_nginx"
-  changed_when: true # Don't want to program this
+  check_mode: false # --dry-run in check mode, so scripts/plan shows package drift
+  register: configure_nginx_maxmind_allowlist_uv_sync
+  changed_when: configure_nginx_maxmind_allowlist_uv_sync.stderr is search('^ [-+~] ', multiline=True) # uv lists each package it (would) change
 
 - name: Copy service and timer files
   ansible.builtin.copy:

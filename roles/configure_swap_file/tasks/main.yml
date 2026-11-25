@@ -26,7 +26,8 @@
   ansible.builtin.command:
     cmd: mkswap /swapfile
   register: configure_swap_file_mkswap_output
-  changed_when: true # Safe assumption
+  when: not configure_swap_file_stat.stat.exists # Only format a freshly allocated file
+  changed_when: true # Only runs right after fallocate created the file
   failed_when: configure_swap_file_mkswap_output.rc != 0 and "swapfile is mounted" not in configure_swap_file_mkswap_output.stderr
 
 - name: Check if swap is active

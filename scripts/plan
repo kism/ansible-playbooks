@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# terraform plan for the build playbooks: --check --diff, only changed/failed tasks are printed.
+# A converged host shows changed=0, anything else is drift (or a role that doesn't support check mode yet).
+#
+# Usage: $(./scripts/loadcreds); ./scripts/plan [build_<host>.yml ...]
+# Full output of each run lands in logs/plan/<playbook>.log
+
+set -uo pipefail
+cd "$(dirname "$0")/.." || exit 1
+
+if [ -z "${BWS_ACCESS_TOKEN:-}" ]; then
+    echo "BWS_ACCESS_TOKEN is unset, run: \$(./scripts/loadcreds)" >&2
+    exit 1
+fi
+
+if [ $# -gt 0 ]; then
+    playbooks=("$@")
+else
+    # build_manjaro_laptop targets localhost, run it on the laptop itself
+    playbooks=(build_*.yml)
+    playbooks=("${playbooks[@]/build_manjaro_laptop.yml/}")
+fi
+
+export ANSIBLE_DISPLAY_OK_HOSTS=false
+export ANSIBLE_DISPLAY_SKIPPED_HOSTS=false
+export ANSIBLE_DEPRECATION_WARNINGS=false
+mkdir -p logs/plan
+
+summary=()
+for playbook in "${playbooks[@]}"; do
+    [ -n "$playbook" ] || continue # the removed laptop entry
+    echo "=== $playbook"
+    .venv/bin/ansible-playbook "$playbook" -i inventory/main.yml --check --diff 2>&1 | tee "logs/plan/${playbook%.yml}.log"
+    # Recap lines look like: host : ok=1 changed=2 unreachable=0 failed=0 skipped=3 rescued=0 ignored=0
+    while read -r line; do
+        summary+=("$line")
+    done < <(sed -n '/PLAY RECAP/,$p' "logs/plan/${playbook%.yml}.log" | grep -E ' : ok=' | awk '{print $1, $4, $5, $6}')
+done
+
+echo
+echo "=== Plan summary (host changed unreachable failed)"
+drift=0
+for line in "${summary[@]}"; do
+    echo "$line"
+    [[ $line =~ changed=0\ unreachable=0\ failed=0 ]] || drift=1
+done
+exit $drift

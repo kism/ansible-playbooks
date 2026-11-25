@@ -39,12 +39,14 @@
   become: true
   become_user: nginx
   ansible.builtin.command:
-    cmd: /usr/local/bin/uv sync --frozen
+    argv: "{{ ['/usr/local/bin/uv', 'sync', '--frozen'] + (['--dry-run'] if ansible_check_mode else []) }}"
     chdir: /opt/allowlistapp
   environment: # App needs python 3.14, keep the uv-downloaded interpreter in /opt rather than nginx's home
     UV_PYTHON_INSTALL_DIR: /opt/allowlistapp/.python
+  check_mode: false # --dry-run in check mode, so scripts/plan shows package drift
+  register: configure_allowlistapp_uv_sync
+  changed_when: configure_allowlistapp_uv_sync.stderr is search('^ [-+~] ', multiline=True) # uv lists each package it (would) change
   notify: Restart allowlistapp
-  changed_when: true # Safe assumption, no way to know
 
 # v0.3 (FastAPI) reads config.json, convert the v0.2 config.toml once. Skipped on fresh installs, the app writes defaults.
 - name: Migrate allowlistapp config.toml to config.json

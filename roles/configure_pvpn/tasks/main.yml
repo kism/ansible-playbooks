@@ -105,11 +105,13 @@
 
 - name: Run uv sync for pvpn-select
   ansible.builtin.command:
-    cmd: /usr/local/bin/uv sync
+    argv: "{{ ['/usr/local/bin/uv', 'sync'] + (['--dry-run'] if ansible_check_mode else []) }}"
     chdir: /opt/pvpn-select
   environment: # Interpreter inside /opt so the venv doesn't point into /root
     UV_PYTHON_INSTALL_DIR: /opt/pvpn-select/.python
-  changed_when: true # Safe assumption, no way to know
+  check_mode: false # --dry-run in check mode, so scripts/plan shows package drift
+  register: configure_pvpn_uv_sync
+  changed_when: configure_pvpn_uv_sync.stderr is search('^ [-+~] ', multiline=True) # uv lists each package it (would) change
 
 - name: Symlink pvpn-select into /usr/local/bin
   ansible.builtin.file:

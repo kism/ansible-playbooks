@@ -83,8 +83,6 @@ SCRUB_AGE=10
 # Set the option to log SMART info. 1 to enable, any other values to disable
 SMART_LOG=1
 
-# this script will log its actions to a file at this location
-LOG_FILE="/var/log/snapRAID.log"
 # location of the snapraid binary
 SNAPRAID_BIN="/usr/bin/snapraid"
 # location of the mail program binary
@@ -106,9 +104,7 @@ SYNC_WARN_COUNT=""
 CONTENT_FILE=`cat /etc/snapraid.conf | grep snapraid.content | head -n 1 | cut -d " " -f2`
 PARITY_FILE=`cat /etc/snapraid.conf | grep snapraid.parity | head -n 1 | cut -d " " -f2`
 
-# redirect all stdout to log file (leave stderr alone thou)
-exec >> $LOG_FILE
-
+# stdout goes to the journal (snapraid_helper.service), journal-upload ships it to vic
 # timestamp the job
 echo "[`date`] SnapRAID Job started."
 echo "SnapRAID DIFF Job started on `date`" > $TMP_OUTPUT
@@ -287,6 +283,9 @@ if [ $EMAIL_ADDRESS ]; then
     $MAIL_BIN -s "$EMAIL_SUBJECT_PREFIX INFO - $JOBS_DONE Jobs COMPLETED" "$EMAIL_ADDRESS" < $TMP_OUTPUT
   fi
 fi
+
+# The full report (diff summary, sync/scrub results, SMART) into the journal too, same as the email
+cat $TMP_OUTPUT
 
 echo "[`date`] All jobs ended."
 

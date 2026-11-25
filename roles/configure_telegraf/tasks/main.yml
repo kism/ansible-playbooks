@@ -49,13 +49,20 @@
   when: configure_telegraf_configs['20-docker.conf']
   notify: Restart telegraf
 
-- name: Copy the telegraf sudoers rule for smartctl, nvme and lvm
+- name: Copy the telegraf sudoers rule for smartctl, nvme, lvm and btrfs stats
   ansible.builtin.copy:
     src: sudoers_telegraf_disk
     dest: /etc/sudoers.d/telegraf_disk
     mode: "0440"
     validate: visudo -cf %s
-  when: configure_telegraf_configs['20-disks.conf'] or configure_telegraf_configs['20-proxmox.conf']
+  when: configure_telegraf_configs['20-disks.conf'] or configure_telegraf_configs['20-proxmox.conf'] or configure_telegraf_configs['20-btrfs.conf']
+
+- name: Copy the btrfs device stats script
+  ansible.builtin.copy:
+    src: telegraf_btrfs_stats.sh
+    dest: /usr/local/bin/telegraf_btrfs_stats.sh
+    mode: "0755"
+  when: configure_telegraf_configs['20-btrfs.conf']
 
 # Configs
 - name: Empty out the default config file

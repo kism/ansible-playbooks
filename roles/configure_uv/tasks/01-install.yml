@@ -10,4 +10,6 @@
     cmd: "/tmp/uv_setup.sh"
   environment:
     XDG_BIN_HOME: "{{ configure_uv_path }}"
-  changed_when: true # True if we are here
+  register: configure_uv_install
+  # Only included when uv is missing or self update failed, and the installer always reinstalls
+  changed_when: "'installing to' in configure_uv_install.stdout" # installer prints this right before copying the binaries

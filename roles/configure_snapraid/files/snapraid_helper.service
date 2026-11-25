@@ -1,7 +1,7 @@
 [Unit]
-Description="Timer for snapraid helper service"
-Requires=snapraid_helper.timer
+Description=SnapRAID diff, sync and scrub
 
 [Service]
-Type=simple
+# oneshot has no start timeout, a sync or scrub can take hours
+Type=oneshot
 ExecStart=/opt/scripts/snapraid_helper.sh

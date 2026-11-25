@@ -29,14 +29,17 @@
         - /etc/apt/apt.conf.d/99-kglan-motd-cleanup
         - /usr/local/sbin/kglan-motd-cleanup.sh
 
-    - name: Copy motd update files
+    - name: Copy motd header
+      ansible.builtin.template:
+        src: 10-header.j2
+        dest: /etc/update-motd.d/10-header
+        mode: "0755"
+
+    - name: Copy motd sysinfo
       ansible.builtin.copy:
-        src: files/update-motd/{{ item }}
+        src: files/update-motd/50-sysinfo
         dest: /etc/update-motd.d/
         mode: "0755"
-      loop:
-        - 10-header
-        - 50-sysinfo
 
     - name: Disable motd-news
       when: ansible_facts['distribution'] == "Ubuntu"  # motd-news only ships on Ubuntu

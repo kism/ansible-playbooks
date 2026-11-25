@@ -30,6 +30,8 @@ Run without server onboarding block
 | `scripts/compose_audit.py` | List docker compose stacks that `maintenance_update.yml` won't pull or restart |
 | `scripts/unused_roles_audit.py` | List roles no playbook uses, and roles only used in commented out lines |
 | `scripts/nginx_logging_audit.py` | Check every nginx vhost logs to its own `vhosts/<name>.access` and `.error` file (fail2ban reads these) |
+| `scripts/check_mode_audit.py` | List tasks that always report changed, they'd show as permanent drift in `scripts/plan` |
+| `scripts/plan` | `terraform plan` for the build playbooks: `--check --diff`, only changed/failed tasks shown, exits non-zero on drift |
 
 ## Good style things to do
 

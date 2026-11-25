@@ -9,3 +9,7 @@ Defaults!NVME !logfile, !syslog, !pam_session
 Cmnd_Alias LVM = /usr/sbin/pvs *, /usr/sbin/vgs *, /usr/sbin/lvs *
 telegraf  ALL=(root) NOPASSWD: LVM
 Defaults!LVM !logfile, !syslog, !pam_session
+
+Cmnd_Alias BTRFS_STATS = /usr/bin/btrfs device stats *
+telegraf  ALL=(root) NOPASSWD: BTRFS_STATS
+Defaults!BTRFS_STATS !logfile, !syslog, !pam_session

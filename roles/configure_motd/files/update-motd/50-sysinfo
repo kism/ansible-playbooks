@@ -1,80 +1,36 @@
 #!/bin/sh
+# Hostname is left out, 10-header prints it
 
-printf "\n"
+. /etc/os-release
+printf "      OS: %s, up %s\n" "$PRETTY_NAME" \
+    "$(uptime -p | sed 's/^up //; s/ weeks\?/w/; s/ days\?/d/; s/ hours\?/h/; s/ minutes\?/m/; s/,//g')"
 
-# Host
-printf "    Host: "
-printf "%s\n" $(hostname --fqdn)
-
-# OS information
-printf "      OS: "
-if [ -r /etc/os-release ]; then
-    . /etc/os-release
-    printf "%s\n" "$PRETTY_NAME"
-fi
-
-# Uptime
-printf "  Uptime: "
-uptime -p | sed 's/up //g'
-
-# Updates
-stamp="/var/lib/update-notifier/updates-available"
+# Ubuntu only
+stamp=/var/lib/update-notifier/updates-available
 if [ -r "$stamp" ]; then
-    printf " Updates: "
-    mystr=$(cat /var/lib/update-notifier/updates-available)
-    mystr=$(echo "$mystr" | sed '/Expanded Security Maintenance for Applications is not enabled./d')
-    mystr=$(echo "$mystr" | sed '/To see these additional updates/d')
-    mystr=$(echo "$mystr" | sed '/additional security updates can be applied with ESM Apps/d')
-    mystr=$(echo "$mystr" | sed '/Learn more about enabling ESM Apps service at/d')
-    mystr=$(echo "$mystr" | sed '/^$/d')
-    n_updates=$(echo "$mystr" | grep 'updates can be applied immediately' | awk '{print $1}')
-    n_updates_sec=$(echo "$mystr" | grep 'of these updates are standard security updates.' | awk '{print $1}')
-    printf "%s updates available" $n_updates
-    if [ -n "$n_updates_sec" ]; then
-        printf ", %s are security updates" $n_updates_sec
+    n=$(awk '/updates can be applied immediately/ {print $1}' "$stamp")
+    sec=$(awk '/standard security updates/ {print $1}' "$stamp")
+    if [ "${n:-0}" != 0 ]; then
+        printf " Updates: %s%s\n" "$n" "${sec:+ ($sec security)}"
     fi
-    printf "\n"
 fi
 
-# CPU Count
-printf "    CPUs: %s, (%s load)\n" "$(nproc --all)" "$(cat /proc/loadavg | awk '{print $1}')"
+printf "    Load: %s on %s CPUs\n" "$(cut -d' ' -f1 /proc/loadavg)" "$(nproc --all)"
 
-# Memory Usage
-free_output=$(free -h --si)
-ram_space_free=$(echo "$free_output" | awk 'NR==2 {print $3}')
-ram_space_total=$(echo "$free_output" | awk 'NR==2 {print $2}')
+free -h --si | awk '
+    /^Mem/ {ram = $3 "/" $2}
+    /^Swap/ && $2 != "0B" {swap = ", " $3 "/" $2 " swap"}
+    END {printf "  Memory: %s RAM%s\n", ram, swap}'
 
-swap_space_free=$(echo "$free_output" | awk 'NR==3 {print $3}')
-swap_space_total=$(echo "$free_output" | awk 'NR==3 {print $2}')
-printf "  Memory: "
-printf "%s RAM (%s used)" $ram_space_total $ram_space_free
-if [ "$swap_space_total" != "0B" ]; then
-    printf ", %s swap (%s used) " $swap_space_total $swap_space_free
-fi
+printf "    Disk:"
+sep=""
+for m in / /mnt/scratch; do
+    mountpoint -q "$m" || continue
+    df -h "$m" | awk -v m="$m" -v s="$sep" 'NR==2 {printf "%s %s %s/%s (%s)", s, m, $3, $2, $5}'
+    sep=","
+done
 printf "\n"
 
-# Disk Usage
-get_disk_usage() {
-    mountpath=$(echo $1 | tr -d ' ')
-    if $(mount | grep "$mountpath" >/dev/null); then
-        if $2; then
-            printf ", "
-        fi
-        df_output=$(df -h "$mountpath")
-        total_space=$(echo "$df_output" | awk 'NR==2 {print $2}')
-        space_used=$(echo "$df_output" | awk 'NR==2 {print $3}')
-        space_free=$(echo "$df_output" | awk 'NR==2 {print $4}')
-        percent_free=$(echo "$df_output" | awk 'NR==2 {print $5}' | tr -d '%')
-        printf "$1 %s of %s (%s%%)" $space_used $total_space $percent_free
-    fi
-}
-printf "   Space: "
-get_disk_usage "/" false
-get_disk_usage "/mnt/scratch" true
-printf "\n"
-
-# tmux
-TMUX_RUNNING="$(pgrep tmux)"
-if [ ! -z "$TMUX_RUNNING" ]; then
-    printf "    tmux: At least one user has tmux running\n"
+if pgrep tmux >/dev/null; then
+    printf "    tmux: running\n"
 fi

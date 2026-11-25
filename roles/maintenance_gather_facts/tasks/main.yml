@@ -26,6 +26,7 @@
 - name: Debug block chuck vars into a file yaml
   become: false
   delegate_to: localhost
+  check_mode: false # Only writes to the local logs dir, scripts/plan still wants the dumps
   block:
     # Start outputting to a ansible_facts['distribution_file_variety']
     - name: Make temp var so we capture the ansible_facts key
@@ -53,15 +54,8 @@
     - name: Put facts in a nice yaml
       ansible.builtin.copy:
         dest: "{{ maintenance_gather_facts_facts_debug_file }}"
-        content: "{{ maintenance_gather_facts_debug_yaml | to_yaml(default_flow_style=False) }}"
+        content: "---\n{{ maintenance_gather_facts_debug_yaml | to_yaml(default_flow_style=False) }}"
         mode: "0660"
-      changed_when: false # Grabbing information to store locally
-
-    - name: Prepend to make valid yml file
-      ansible.builtin.lineinfile:
-        path: "{{ maintenance_gather_facts_facts_debug_file }}"
-        insertbefore: BOF
-        line: "---"
       changed_when: false # Grabbing information to store locally
 
     - name: Print the usual culperates
@@ -93,19 +87,13 @@
     - name: Put vars in a nice yaml
       ansible.builtin.copy:
         dest: "{{ maintenance_gather_facts_vars_debug_file }}"
-        content: "{{ maintenance_gather_facts_print_vars | to_yaml(default_flow_style=False) }}"
+        content: "---\n{{ maintenance_gather_facts_print_vars | to_yaml(default_flow_style=False) }}"
         mode: "0660"
-      changed_when: false # Grabbing information to store locally
-
-    - name: Prepend to make valid yml file
-      ansible.builtin.lineinfile:
-        path: "{{ maintenance_gather_facts_vars_debug_file }}"
-        insertbefore: BOF
-        line: "---"
       changed_when: false # Grabbing information to store locally
 
 - name: Run pacman audit for pacman
   when: ansible_facts["pkg_mgr"] == 'pacman'
+  check_mode: false # Read only on the host, writes to the local logs dir
   block:
     - name: Run fun audit command
       ansible.builtin.command:

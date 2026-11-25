@@ -31,3 +31,7 @@ jobs:
       - name: Check facts are only used via ansible_facts
         if: ${{ !cancelled() }} # Run even if an earlier check failed, they're independent checks
         run: uv run scripts/injected_facts_audit.py
+
+      - name: Check no task always reports changed (scripts/plan drift)
+        if: ${{ !cancelled() }} # Run even if an earlier check failed, they're independent checks
+        run: uv run scripts/check_mode_audit.py
