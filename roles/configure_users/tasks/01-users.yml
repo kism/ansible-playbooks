@@ -25,11 +25,16 @@
   with_items: "{{ configure_users_home_dirs.files }}"
   when: item.path != '/home'
 
+- name: Install zsh
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
 - name: Add user accounts
   ansible.builtin.user:
     name: "{{ item.key }}"
     uid: "{{ item.value.uid }}"
-    shell: "{{ item.value.shell }}" # These could be an issue depending on install location
+    shell: "{{ item.value.shell }}"
     create_home: false
     append: false
   with_dict: "{{ homelab_users }}"

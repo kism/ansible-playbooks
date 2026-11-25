@@ -1,0 +1,89 @@
+# Managed by ansible (configure_users), a cut down copy of the .zshrc in my dotfiles repo
+# Plain version: no zinit plugins, no starship, no startup message
+
+# region: non-interactive
+if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [[ ! -o interactive ]]; then
+    return
+fi
+# endregion
+
+# region: aliases
+alias ip='ip --color=auto'
+alias please='sudo $(fc -ln -1)'
+alias sudp='sudo'
+alias tmux='tmux -u'
+alias sl='ls'
+alias ls='ls --color=auto --group-directories-first -F'
+alias nano='vim'
+alias cgrep='grep --color=always -e "^" -e'
+alias whom=who
+# endregion
+
+# region: exports
+export EDITOR=vim
+export VISUAL=vim
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export SYSTEMD_COLORS=true
+export SYSTEMD_PAGER=
+# endregion
+
+# region: history
+export HISTFILE=~/.zsh_history
+export HISTSIZE=10000
+export SAVEHIST=10000
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data
+
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+# endregion
+
+# region: keybinds
+zmodload zsh/terminfo
+
+bindkey -r "^["                               # unbind vi-cmd-mode
+bindkey "${terminfo[khome]}" beginning-of-line
+bindkey "${terminfo[kend]}" end-of-line
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "\e[1;5C" forward-word                # ctrl+arrows
+bindkey "\e[1;5D" backward-word
+bindkey "^[f" forward-word                    # alt+arrows
+bindkey "^[b" backward-word
+bindkey -r "^E"                               # command+arrows
+bindkey -r "^A"
+bindkey "${terminfo[kdch1]}" delete-char
+bindkey "${terminfo[kbs]}" backward-delete-char
+bindkey "\e[3;5~" kill-word                   # ctrl+delete
+bindkey '^H' backward-kill-word               # ctrl+backspace
+bindkey "\e[3;6~" kill-line                   # ctrl+shift+delete
+bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
+# endregion
+
+# region: completion
+autoload -Uz compinit
+compinit -i
+zstyle ':completion:*' menu select
+
+command -v docker >/dev/null && source <(docker completion zsh)
+command -v uv >/dev/null && eval "$(uv generate-shell-completion zsh)"
+[[ "$TERM_PROGRAM" == "vscode" ]] && command -v code >/dev/null && source "$(code --locate-shell-integration-path zsh)"
+# endregion
+
+# region: prompt
+PS1="%{%F{39}%}%n%{%F{45}%}@%{%F{51}%}%m %{%F{195}%}%~
+%{%F{39}%}$%{%f%} "
+# endregion

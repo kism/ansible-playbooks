@@ -1,0 +1,3 @@
+---
+# .zshrc from files/ for homelab_my_username, skipped when my dotfiles already manage it
+configure_users_zshrc: zshrc

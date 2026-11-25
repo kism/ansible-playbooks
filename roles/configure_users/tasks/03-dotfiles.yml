@@ -76,6 +76,29 @@
     - kism
     - root
 
+# ponytail: "zinit" only appears in the dotfiles .zshrc (stow symlink or setup_simple.sh copy), change the marker if that stops being true
+- name: Check if my dotfiles manage .zshrc
+  ansible.builtin.command:
+    argv:
+      - grep
+      - --quiet
+      - --no-messages
+      - zinit
+      - "{{ ansible_facts['getent_passwd'][homelab_my_username][4] }}/.zshrc"
+  register: configure_users_zshrc_dotfiles
+  check_mode: false # read-only
+  changed_when: false # read-only
+  failed_when: false # rc 1 no match, rc 2 no file, both mean ansible manages it
+
+- name: Copy zshrc
+  become: true # partial-become lint wants it next to become_user
+  become_user: "{{ homelab_my_username }}"
+  ansible.builtin.copy:
+    src: "{{ configure_users_zshrc }}"
+    dest: "{{ ansible_facts['getent_passwd'][homelab_my_username][4] }}/.zshrc"
+    mode: "0660"
+  when: configure_users_zshrc_dotfiles.rc != 0
+
 - name: Ensure that root rm alias is set
   ansible.builtin.lineinfile:
     path: /root/.bash_aliases

@@ -15,7 +15,7 @@ homelab_admin_group: kgadmins
 homelab_users:
   kism:
     uid: 1089
-    shell: /usr/bin/bash
+    shell: /usr/bin/zsh # configure_users installs zsh and a basic .zshrc
     groups:
       - kgadmins
       - content_private

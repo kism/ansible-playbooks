@@ -1,6 +1,3 @@
 ---
-- name: Include zsh tasks for dev
-  ansible.builtin.include_tasks: 01-zsh.yml
-
 - name: Include tasks for installing dev packages
-  ansible.builtin.include_tasks: 02-dev-packages.yml
+  ansible.builtin.include_tasks: 01-dev-packages.yml

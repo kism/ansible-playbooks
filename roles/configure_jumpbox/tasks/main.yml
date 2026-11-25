@@ -1,6 +1,3 @@
 ---
 - name: Basic Setup
   ansible.builtin.include_tasks: "01-basic.yml"
-
-- name: Zsh Setup
-  ansible.builtin.include_tasks: "03-zsh.yml"
