@@ -1,8 +1,8 @@
 ---
-configure_packages_to_install:
-  - nvme-cli
-  - smartmontools
-  - pciutils
-  - usbutils
+# SD-card only hosts (the Pis) have no SMART capable disks, mmcblk doesn't speak SMART or NVMe
+configure_packages_smart_disks: "{{ ansible_facts['devices'] | select('match', '^(sd|nvme)') | list | length > 0 }}"
+configure_packages_smart: [nvme-cli, smartmontools]
 
-configure_packages_to_remove: []
+configure_packages_to_install: "{{ ['pciutils', 'usbutils'] + (configure_packages_smart if configure_packages_smart_disks else []) }}"
+
+configure_packages_to_remove: "{{ [] if configure_packages_smart_disks else configure_packages_smart }}"
