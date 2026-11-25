@@ -8,17 +8,21 @@
   delegate_to: localhost
   become: false
   run_once: true
+  check_mode: false # controller-side temp files only, the remote copy below needs them in check mode too
   block:
     - name: Set fact for dotfile download location
       ansible.builtin.set_fact:
         configure_users_dotfiles_temp_dir: /tmp/{{ lookup('ansible.builtin.env', 'USER') }}/ansible/dotfiles
       changed_when: false # This is not happening on the remote
 
-    - name: Remove configure_users_dotfiles_temp_dir folder if exists
+    - name: Remove configure_users_dotfiles_temp_dir folders if exists
       ansible.builtin.file:
-        path: "{{ configure_users_dotfiles_temp_dir }}"
+        path: "{{ item }}"
         state: absent
       changed_when: false # This is not happening on the remote
+      loop:
+        - "{{ configure_users_dotfiles_temp_dir }}"
+        - "{{ configure_users_dotfiles_temp_dir }}-root"
 
     - name: Create folder on local machine to download dotfiles to
       ansible.builtin.file:
@@ -43,24 +47,34 @@
       changed_when: false # This is not happening on the remote
       loop: "{{ configure_users_dotfiles }}"
 
+    # root gets its own copy with a red tmux, editing it on the host made the copy below flip-flop every run
+    - name: Copy dotfiles for root
+      ansible.builtin.copy:
+        src: "{{ configure_users_dotfiles_temp_dir }}/"
+        dest: "{{ configure_users_dotfiles_temp_dir }}-root/"
+        mode: "0600"
+        directory_mode: "0700"
+      changed_when: false # This is not happening on the remote
+
+    - name: Replace some values in tmux.conf for root
+      ansible.builtin.replace:
+        path: "{{ configure_users_dotfiles_temp_dir }}-root/.tmux.conf"
+        regexp: "{{ item['regexp'] }}"
+        replace: "{{ item['replace'] }}"
+      changed_when: false # This is not happening on the remote
+      loop: "{{ configure_users_dotfiles_tmux_regex }}"
+
 - name: Copy dotfiles to each user's home
   become: true # partial-become lint wants it next to become_user
   become_user: "{{ item }}"
   ansible.builtin.copy:
-    src: "{{ configure_users_dotfiles_temp_dir }}/"
+    src: "{{ configure_users_dotfiles_temp_dir }}{{ '-root' if item == 'root' else '' }}/"
     dest: "{{ ansible_facts['getent_passwd'][item][4] }}/"
     mode: "0660"
     directory_mode: "0700"
   loop:
     - kism
     - root
-
-- name: Replace some values in tmux.conf for root
-  ansible.builtin.replace:
-    path: "/root/.tmux.conf"
-    regexp: "{{ item['regexp'] }}"
-    replace: "{{ item['replace'] }}"
-  loop: "{{ configure_users_dotfiles_tmux_regex }}"
 
 - name: Ensure that root rm alias is set
   ansible.builtin.lineinfile:

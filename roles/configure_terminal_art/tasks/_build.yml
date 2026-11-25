@@ -18,13 +18,12 @@
             state: directory
             mode: "0755"
 
-        # force: true so upstream changes are caught every run, not just on first install
+        # No force: get_url always reports changed in check mode with it. The pinned checksum covers upstream changes.
         - name: Download source with pinned hash
           ansible.builtin.get_url:
             url: "{{ item.url }}"
             dest: "{{ configure_terminal_art_src }}/{{ item.url | basename }}"
             checksum: "sha256:{{ item.sha256 }}"
-            force: true
             mode: "0644"
           loop: "{{ configure_terminal_art_sources }}"
           register: configure_terminal_art_download

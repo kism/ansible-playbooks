@@ -3,6 +3,7 @@
   ansible.builtin.uri:
     url: https://api.github.com/repos/jesseduffield/lazydocker/releases/latest
   register: configure_docker_lazydocker_github
+  check_mode: false # read-only GET, uri is skipped in check mode otherwise
 
 - name: Create lazydocker directory
   ansible.builtin.file:

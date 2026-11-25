@@ -13,6 +13,7 @@
       ansible.builtin.uri:
         url: "https://api.github.com/repos/Seagate/openSeaChest/releases/latest"
       register: configure_concept_baremetal_openseachest_github
+      check_mode: false # read-only GET, uri is skipped in check mode otherwise
 
     - name: Set openSeaChest download url
       ansible.builtin.set_fact:

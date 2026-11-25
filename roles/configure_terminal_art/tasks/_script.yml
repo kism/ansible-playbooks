@@ -1,6 +1,6 @@
 ---
 # Expects: configure_terminal_art_name, configure_terminal_art_url, configure_terminal_art_sha256
-# force: true so upstream changes are caught every run, not just on first install
+# No force: get_url always reports changed in check mode with it. The pinned checksum covers upstream changes.
 - name: Install script to /opt and symlink it
   block:
     - name: Ensure install directory exists
@@ -14,7 +14,6 @@
         url: "{{ configure_terminal_art_url }}"
         dest: "{{ configure_terminal_art_dir }}/{{ configure_terminal_art_name }}/{{ configure_terminal_art_url | basename }}"
         checksum: "sha256:{{ configure_terminal_art_sha256 }}"
-        force: true
         mode: "0755"
 
     - name: Symlink script into /usr/local/bin

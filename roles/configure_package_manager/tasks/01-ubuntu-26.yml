@@ -2,3 +2,4 @@
 - name: Update APT cache {{ ansible_facts['distribution_release'] }}
   ansible.builtin.apt:
     update_cache: true
+  changed_when: false # a cache refresh isn't config drift, and always reports changed when the cache is stale

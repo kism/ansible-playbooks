@@ -7,12 +7,25 @@
       - podman-compose
     state: absent
 
+# ponytail: one-off cleanup, delete these two once code, hs, kismnas, myr, stream, vic, yoho have run them
+- name: Find old centos docker repo file
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d
+    patterns: docker-ce.repo
+    contains: ".*centos.*"
+  register: configure_docker_old_repo
+
+- name: Remove old centos docker repo file
+  ansible.builtin.file:
+    path: "{{ item['path'] }}"
+    state: absent
+  loop: "{{ configure_docker_old_repo['files'] }}"
+
 - name: Add Docker Repo
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/oracle/docker-ce.repo # Docker's own OL repo, same packages and gpg key as the centos one we used before
     dest: /etc/yum.repos.d/docker-ce.repo
     mode: "0644"
-    force: true # existing hosts still have the centos repo file, get_url never replaces an existing file without this
 
 - name: Update DNF Cache
   ansible.builtin.dnf:

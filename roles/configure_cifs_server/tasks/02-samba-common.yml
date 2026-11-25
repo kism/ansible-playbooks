@@ -4,6 +4,8 @@
     path: /etc/default/wsdd
     state: touch
     mode: "0644"
+    modification_time: preserve
+    access_time: preserve
 
 - name: Copy dfree script
   ansible.builtin.copy:
