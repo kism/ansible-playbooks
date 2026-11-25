@@ -1,0 +1,3 @@
+; OL's policy only lets systemd-journal-upload connect to unreserved ports with the nis_enabled boolean,
+; which opens them up for lots of other confined domains too. This allows it for the uploader only.
+(allow systemd_journal_upload_t unreserved_port_t (tcp_socket (name_connect)))

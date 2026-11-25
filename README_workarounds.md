@@ -64,6 +64,12 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Why: Cloudflare bot protection blocks Python-urllib's default User-Agent.
   - Check: run the same request without the header. A 403 or error 1010 means it's still needed. Last checked 2026-11-24: Python's default UA still gets 403 `error code: 1010`. It's your own zone, so a Cloudflare WAF skip rule for that API path would also fix it.
 
+## configure_journal_upload
+
+- **Local SELinux module for systemd-journal-upload** (`roles/configure_journal_upload/files/local_journal_upload.cil`)
+  - Why: OL 10's policy only lets `systemd_journal_upload_t` connect to unreserved ports (VictoriaLogs' 8427) when `nis_enabled` is on, which is far broader. Without it the uploader fails in 0 ms and crash-loops (only SELinux-enforcing VMs, e.g. gsb).
+  - Check: `grep journal_upload /var/log/audit/audit.log | grep denied` after `semodule -r local_journal_upload` and a restart. Last checked 2026-11-25 (selinux-policy 42.1.18-4.0.1.el10_2.4): still denied.
+
 ## configure_locale
 
 - **Ghostty terminfo compiled with `tic`** (`roles/configure_locale/tasks/main.yml:35`)

@@ -1,7 +1,17 @@
 ---
-- name: Install asciiquarium from pacman
+# ponytail: one-off cleanup, conflicts with the AUR package below. Remove once run on every arch host with this role (ent).
+- name: Remove repo asciiquarium (original 1.1)
   community.general.pacman:
     name: asciiquarium
+    state: absent
+  when: ansible_facts["pkg_mgr"] == "pacman"
+
+- name: Install asciiquarium from the AUR (nothub fork)
+  become: true # lint wants it beside become_user
+  become_user: "{{ homelab_my_username }}" # yay refuses to run as root
+  kewlfft.aur.aur:
+    name: asciiquarium-transparent-git
+    use: yay
     state: present
   when: ansible_facts["pkg_mgr"] == "pacman"
 
@@ -23,7 +33,8 @@
           - perl-Curses
           - perl-Carp
           - perl-Data-Dumper
-          - perl-Getopt-Std
+          - perl-Getopt-Long
+          - perl-Scalar-List-Utils
         state: present
       when: ansible_facts["pkg_mgr"] in ["dnf", "dnf5"]
 
@@ -31,8 +42,8 @@
       ansible.builtin.include_tasks: _script.yml
       vars:
         configure_terminal_art_name: asciiquarium
-        configure_terminal_art_url: https://raw.githubusercontent.com/cmatsuoka/asciiquarium/master/asciiquarium
-        configure_terminal_art_sha256: 34b2613e559618aece477071f89d4120b58692582d5fc9c0c89ab8de62935926
+        configure_terminal_art_url: https://raw.githubusercontent.com/nothub/asciiquarium/84c2f0d298f2f3a8bb436b1611f3464f7ff8311b/asciiquarium
+        configure_terminal_art_sha256: ecf658824ff263a1956622c76ce0545a0447ef015454ccf050a22d92b6fa53e1
         configure_terminal_art_link: false # Wrapper below instead, to add Term::Animation to perl's path
 
     - name: Ensure Term::Animation lib directory exists

@@ -12,6 +12,20 @@
     enabled: false
     state: stopped
 
+# So the uploader can reach the VictoriaLogs port, see README_workarounds.md
+- name: Copy SELinux policy module for systemd-journal-upload
+  ansible.builtin.copy:
+    src: local_journal_upload.cil
+    dest: /etc/selinux/local_journal_upload.cil
+    mode: "0644"
+  when: ansible_facts['selinux']['status'] | default('disabled') == 'enabled'
+  notify:
+    - Install SELinux module for systemd-journal-upload
+    - Restart systemd-journal-upload
+
+- name: Flush handlers so the SELinux module is loaded before the service starts
+  ansible.builtin.meta: flush_handlers
+
 - name: Configure systemd-journal-upload
   ansible.builtin.template:
     src: journal-upload.conf.j2

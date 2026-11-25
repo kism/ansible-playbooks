@@ -1,4 +1,10 @@
 ---
+# Before the restart, handlers run in the order they're listed here
+- name: Install SELinux module for systemd-journal-upload
+  ansible.builtin.command:
+    argv: [semodule, --install, /etc/selinux/local_journal_upload.cil]
+  changed_when: true # only runs when the .cil changed
+
 - name: Restart systemd-journal-upload
   ansible.builtin.systemd_service:
     name: systemd-journal-upload

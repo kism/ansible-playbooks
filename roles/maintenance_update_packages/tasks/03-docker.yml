@@ -2,14 +2,25 @@
 - name: Docker compose block
   when: docker_compose_paths is defined
   block:
-    - name: Run docker compose pull for all paths
-      ansible.builtin.command:
-        cmd: "docker compose -f {{ item }}/docker-compose.yml pull"
+    - name: Pull images for all compose paths
+      community.docker.docker_compose_v2_pull:
+        project_src: "{{ item }}"
       loop: "{{ docker_compose_paths }}"
-      changed_when: true # Safe assumption, no way to know
+      register: maintenance_update_packages_docker_pull
       throttle: 1
 
+    # Recreates only the containers whose image changed, before this they waited for a reboot (the units run compose up on start)
+    - name: Apply pulled images
+      community.docker.docker_compose_v2:
+        project_src: "{{ item['item'] }}"
+        state: present
+      loop: "{{ maintenance_update_packages_docker_pull['results'] | selectattr('changed') }}"
+      loop_control:
+        label: "{{ item['item'] }}"
+
+    # community.docker.docker_prune needs the Docker SDK for Python on the host, the CLI doesn't
     - name: Prune old docker images
       ansible.builtin.command:
-        cmd: "docker image prune -f"
-      changed_when: true # Safe assumption, no way to know
+        argv: [docker, image, prune, --force]
+      register: maintenance_update_packages_docker_prune
+      changed_when: "'Total reclaimed space: 0B' not in maintenance_update_packages_docker_prune.stdout" # prune prints 0B when nothing was removed

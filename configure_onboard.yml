@@ -1,0 +1,14 @@
+---
+# Re-apply the onboard roles (package manager, packages, users, misc, sshd, locale, firewall, motd) on every host
+# Run with --check --diff first, it touches sshd and the firewall
+- name: Onboard all hosts
+  hosts: ansible_main
+  gather_facts: false
+  become: true
+  roles:
+    # Preflight
+    - meta_pre_flight_checks
+    - maintenance_gather_facts
+
+    # Onboard
+    - meta_onboard

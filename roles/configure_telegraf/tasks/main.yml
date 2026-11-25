@@ -12,15 +12,14 @@
 - name: Populate service facts
   ansible.builtin.service_facts:
 
-- name: Get services that are not not found, init list
+# service_facts keeps not-found units after uninstall
+- name: Get services that are installed
   ansible.builtin.set_fact:
-    configure_telegraf_existing_services: []
-
-- name: Get services that are not not found, populate (Do not edit, transform is difficult)
-  ansible.builtin.set_fact:
-    configure_telegraf_existing_services: "{{ configure_telegraf_existing_services + [item.key] }}"
-  when: item.value.status is defined and item.value.status != "not-found" # service_facts keeps not-found units after uninstall
-  with_dict: "{{ ansible_facts.services }}"
+    configure_telegraf_existing_services: >-
+      {{ ansible_facts['services'] | dict2items
+         | selectattr('value.status', 'defined')
+         | rejectattr('value.status', 'eq', 'not-found')
+         | map(attribute='key') }}
 
 - name: Get list of services we want to monitor, that are on the host
   ansible.builtin.set_fact:
@@ -63,6 +62,16 @@
     dest: /usr/local/bin/telegraf_btrfs_stats.sh
     mode: "0755"
   when: configure_telegraf_configs['20-btrfs.conf']
+
+# ponytail: one-off cleanup, btrfs stats used to get applied to guests. Remove once run on myr.
+- name: Remove btrfs stats script and sudoers rule from guests
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/local/bin/telegraf_btrfs_stats.sh
+    - /etc/sudoers.d/telegraf_disk
+  when: ansible_facts['virtualization_role'] == 'guest'
 
 # Configs
 - name: Empty out the default config file
