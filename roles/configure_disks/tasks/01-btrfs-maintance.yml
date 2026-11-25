@@ -50,8 +50,13 @@
     state: directory
     mode: "0755"
 
-# ponytail: replaces btrfsmaintenance's scrub loop, which stops at the first bad filesystem.
-# A filesystem mounted twice (subvol mounts) gets scrubbed twice, dedupe by UUID if that ever happens
+- name: Copy btrfs scrub script
+  ansible.builtin.copy:
+    src: files/btrfs_scrub_all.sh
+    dest: /usr/local/sbin/btrfs_scrub_all.sh
+    mode: "0755"
+
+# btrfsmaintenance's scrub loop stops at the first bad filesystem, the drop-in runs btrfs_scrub_all.sh instead
 - name: Scrub every btrfs mount even after one has errors
   ansible.builtin.copy:
     src: files/btrfs-scrub-no-abort.conf

@@ -104,7 +104,9 @@ SYNC_WARN_COUNT=""
 CONTENT_FILE=`cat /etc/snapraid.conf | grep snapraid.content | head -n 1 | cut -d " " -f2`
 PARITY_FILE=`cat /etc/snapraid.conf | grep snapraid.parity | head -n 1 | cut -d " " -f2`
 
-# stdout goes to the journal (snapraid_helper.service), journal-upload ships it to vic
+# stdout goes to the journal (snapraid_helper.service), journal-upload ships it to vic.
+# A <3>/<4> line prefix sets the journal priority (systemd SyslogLevelPrefix), so ERROR/WARNING lines get a level
+exec > >(sed -u -e '/ERROR/s/^/<3>/' -e '/WARNING/s/^/<4>/') 2>&1
 # timestamp the job
 echo "[`date`] SnapRAID Job started."
 echo "SnapRAID DIFF Job started on `date`" > $TMP_OUTPUT
@@ -127,7 +129,7 @@ fi
 
 # run the snapraid DIFF command
 echo "[`date`] Running DIFF Command."
-$SNAPRAID_BIN diff >> $TMP_OUTPUT
+$SNAPRAID_BIN diff >> $TMP_OUTPUT 2>&1
 # wait for the above cmd to finish
 wait
 
@@ -205,7 +207,7 @@ fi
 if [ $DO_SYNC -eq 1 ]; then
   echo "SnapRAID SYNC Job started on `date`" >> $TMP_OUTPUT
   echo "----------------------------------------" >> $TMP_OUTPUT
-  $SNAPRAID_BIN sync | sed -e 's/\r/\n/g' >> $TMP_OUTPUT
+  $SNAPRAID_BIN sync 2>&1 | sed -e 's/\r/\n/g' >> $TMP_OUTPUT
   #wait for the job to finish
   wait
   echo "----------------------------------------" >> $TMP_OUTPUT
@@ -237,7 +239,7 @@ if [ $SCRUB_PERCENT -gt 0 ]; then
       echo "[`date`] Running SCRUB Command."
       echo "SnapRAID SCRUB Job started on `date`" >> $TMP_OUTPUT
       echo "----------------------------------------" >> $TMP_OUTPUT
-      $SNAPRAID_BIN scrub  -p $SCRUB_PERCENT -o $SCRUB_AGE | sed -e 's/\r/\n/g' >> $TMP_OUTPUT
+      $SNAPRAID_BIN scrub  -p $SCRUB_PERCENT -o $SCRUB_AGE 2>&1 | sed -e 's/\r/\n/g' >> $TMP_OUTPUT
       #wait for the job to finish
       wait
       echo "----------------------------------------" >> $TMP_OUTPUT
@@ -253,7 +255,7 @@ fi
 
 # Moving onto logging SMART info if enabled
 if [ $SMART_LOG -eq 1 ]; then
-  $SNAPRAID_BIN smart >> $TMP_OUTPUT
+  $SNAPRAID_BIN smart >> $TMP_OUTPUT 2>&1
   wait
 fi
 
@@ -284,8 +286,9 @@ if [ $EMAIL_ADDRESS ]; then
   fi
 fi
 
-# The full report (diff summary, sync/scrub results, SMART) into the journal too, same as the email
-cat $TMP_OUTPUT
+# Key lines of the report into the journal, deduplicated. The full report (every changed file, SMART) is only in
+# the email, a sync with files changing under it logged 266k warnings to the journal once
+grep -E 'SUMMARY of changes|SYNC_JOB--|SCRUB_JOB--|WARNING|ERROR' $TMP_OUTPUT | awk '!seen[$0]++'
 
 echo "[`date`] All jobs ended."
 
