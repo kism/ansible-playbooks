@@ -19,7 +19,7 @@
     state: directory
     owner: backup_svc
     group: backup_svc
-    mode: "0750"
+    mode: "0700" # same as every home, configure_users enforces it
 
 - name: Rsync Target - Create .ssh folder for backup_svc
   ansible.builtin.file:
