@@ -91,6 +91,7 @@ dependencies = [
     { name = "proxmoxer" },
     { name = "python-dateutil" },
     { name = "requests" },
+    { name = "rich" },
 ]
 
 [package.metadata]
@@ -104,6 +105,7 @@ requires-dist = [
     { name = "proxmoxer" },
     { name = "python-dateutil" },
     { name = "requests" },
+    { name = "rich", specifier = ">=15.0.0" },
 ]
 
 [[package]]

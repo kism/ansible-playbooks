@@ -12,6 +12,7 @@ dependencies = [
     "requests",
     "ansible-lint",
     "ansible-taste",
+    "rich>=15.0.0",
 ]
 
 [tool.uv.sources]

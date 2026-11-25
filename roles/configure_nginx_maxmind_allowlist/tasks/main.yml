@@ -6,18 +6,21 @@
     version: "main"
     force: true
     update: true
+  notify: Run maxmind_geoip_nginx
 
 - name: Generate .env file for maxmind nginx module
   ansible.builtin.template:
     src: "templates/maxmind_env.j2"
     dest: "/opt/maxmind_geoip_nginx/.env"
     mode: "0600"
+  notify: Run maxmind_geoip_nginx
 
 - name: Copy maxmind nginx config
   ansible.builtin.copy:
     src: "files/config.toml"
     dest: "/opt/maxmind_geoip_nginx/config.toml"
     mode: "0644"
+  notify: Run maxmind_geoip_nginx
 
 - name: Sync packages
   ansible.builtin.command:
@@ -42,8 +45,3 @@
     enabled: true
     state: started
     daemon_reload: true
-
-- name: Run the service adhoc to populate the databases first time
-  ansible.builtin.systemd:
-    name: "maxmind_geoip_nginx.service"
-    state: restarted

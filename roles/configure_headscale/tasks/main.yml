@@ -52,6 +52,7 @@
 - name: Pull images for docker-compose headscale
   community.docker.docker_compose_v2_pull:
     project_src: /opt/headscale
+    policy: missing # always shows every image as pulled in check mode, maintenance_update_packages does updates
 
 - name: Copy systemd service file for headscale
   ansible.builtin.copy:

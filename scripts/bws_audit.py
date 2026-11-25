@@ -14,6 +14,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+from rich.console import Console
+from rich.markup import escape
+
+# soft_wrap: long lines stay on one line for grep and CI logs, highlight: only the colours below
+console = Console(soft_wrap=True, highlight=False)
+
 REPO = Path(__file__).resolve().parent.parent
 SKIP_DIRS = {".venv", ".git", "collections"}
 VAR_RE = re.compile(r"^\s*-?\s*([A-Za-z0-9_]+):")
@@ -55,7 +61,7 @@ def var_name(lines: list[str], i: int) -> str:
 
 def main() -> int:
     if not os.environ.get("BWS_ACCESS_TOKEN"):
-        print("BWS_ACCESS_TOKEN not set, run: $(./scripts/loadcreds)", file=sys.stderr)
+        Console(stderr=True, highlight=False).print("[bold red]BWS_ACCESS_TOKEN not set[/], run: $(./scripts/loadcreds)")
         return 1
 
     # bws CLI over bitwarden_sdk: the sdk's list() needs an organisation id, bws doesn't
@@ -71,7 +77,7 @@ def main() -> int:
         sid, key = s["id"], s["key"]
         hits = [(p, i) for p, i, line in all_lines if sid in line]
         if not hits:
-            print(f"UNUSED    {sid}  {key}")
+            console.print(f"[bold yellow]UNUSED[/]    [dim]{sid}[/]  {escape(key)}")
             problems += 1
             continue
         refs = []
@@ -80,10 +86,13 @@ def main() -> int:
             refs.append((var_name(lines, i), f"{path.relative_to(REPO)}:{i + 1}"))
         # Same id can be used in several places, only a mismatch if none match
         if not any(matches(key, v, loc) for v, loc in refs):
-            print(f"MISMATCH  {sid}  bws={key}  repo=" + ", ".join(f"{v} ({loc})" for v, loc in refs))
+            console.print(
+                f"[bold red]MISMATCH[/]  [dim]{sid}[/]  bws={escape(key)}  repo="
+                + ", ".join(f"{escape(v)} [cyan]({loc})[/]" for v, loc in refs)
+            )
             problems += 1
     if not problems:
-        print(f"All good, {len(secrets)} secrets checked")
+        console.print(f"[green]All good[/], {len(secrets)} secrets checked")
     return 0
 
 

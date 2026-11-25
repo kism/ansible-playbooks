@@ -14,6 +14,11 @@ import re
 import sys
 from pathlib import Path
 
+from rich.console import Console
+
+# soft_wrap: long lines stay on one line for grep and CI logs, highlight: only the colours below
+console = Console(soft_wrap=True, highlight=False)
+
 REPO = Path(__file__).resolve().parent.parent
 ROLES = sorted(p.name for p in (REPO / "roles").iterdir() if p.is_dir())
 # \b treats _ as a word char, so configure_docker won't match configure_docker_arr
@@ -58,12 +63,12 @@ def main() -> int:
     unused = [r for r in ROLES if r not in commented]
     for role in ROLES:
         if role in unused:
-            print(f"UNUSED     {role}")
+            console.print(f"[bold red]UNUSED[/]     {role}")
         elif role not in active:
-            print(f"COMMENTED  {role}")
+            console.print(f"[yellow]COMMENTED[/]  [dim]{role}[/]")
 
     if not unused:
-        print("All good, every role is used by a playbook")
+        console.print("[green]All good[/], every role is used by a playbook")
     return 1 if unused else 0
 
 

@@ -35,6 +35,7 @@
     opts: bind
     state: ephemeral
   changed_when: false # This is in tmp
+  check_mode: false # without the mount the permission checks below look at an empty /tmp/mnt
 
 - name: For each mount, check if there are any files or subfolders
   ansible.builtin.find:
@@ -80,6 +81,7 @@
     path: /tmp/mnt
     state: unmounted
   changed_when: false # This is in tmp
+  check_mode: false # undo the check_mode: false bind mount above
 
 - name: Ensure /tmp/mnt is not in fstab
   ansible.posix.mount:

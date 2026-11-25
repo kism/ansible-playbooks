@@ -37,6 +37,7 @@
 - name: Pull images for docker-compose checkrr
   community.docker.docker_compose_v2_pull:
     project_src: /opt/checkrr
+    policy: missing # always shows every image as pulled in check mode, maintenance_update_packages does updates
 
 - name: Copy firewalld service files for checkrr
   ansible.builtin.copy:

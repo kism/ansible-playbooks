@@ -1,0 +1,6 @@
+---
+- name: Run maxmind_geoip_nginx
+  ansible.builtin.systemd:
+    name: maxmind_geoip_nginx.service
+    state: restarted
+    daemon_reload: true

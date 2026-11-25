@@ -15,6 +15,11 @@ import sys
 from pathlib import Path
 
 import yaml
+from rich.console import Console
+from rich.markup import escape
+
+# soft_wrap: long lines stay on one line for grep and CI logs, highlight: only the colours below
+console = Console(soft_wrap=True, highlight=False)
 
 REPO = Path(__file__).resolve().parent.parent
 JINJA_RE = re.compile(r"\{\{(.*?)\}\}|\{%(.*?)%\}", re.DOTALL)
@@ -36,6 +41,10 @@ ALLOWED_PREFIXES = ("ansible_become", "ansible_ssh", "ansible_play_", "ansible_l
 def fact_names(expr: str) -> set[str]:
     names = set(NAME_RE.findall(STRING_RE.sub("", expr)))
     return {n for n in names if n not in ALLOWED and not n.startswith(ALLOWED_PREFIXES)}
+
+
+def fact(name: str) -> str:
+    return f"ansible_facts['{name.removeprefix('ansible_')}']"
 
 
 def jinja_blocks(text: str) -> list[str]:
@@ -61,17 +70,17 @@ def main() -> int:
             continue  # scratch, excluded from lint too
         expressions = walk(yaml.safe_load(path.read_text()))
         for name in sorted({n for e in expressions for n in fact_names(e)}):
-            print(f"{path.relative_to(REPO)}: {name} -> ansible_facts['{name.removeprefix('ansible_')}']")
+            console.print(f"[cyan]{path.relative_to(REPO)}[/]: [red]{name}[/] [dim]->[/] [green]{escape(fact(name))}[/]")
             problems += 1
 
     for path in sorted((REPO / "roles").glob("*/templates/**/*")):
         if path.is_file():
             for name in sorted({n for e in jinja_blocks(path.read_text()) for n in fact_names(e)}):
-                print(f"{path.relative_to(REPO)}: {name} -> ansible_facts['{name.removeprefix('ansible_')}']")
+                console.print(f"[cyan]{path.relative_to(REPO)}[/]: [red]{name}[/] [dim]->[/] [green]{escape(fact(name))}[/]")
                 problems += 1
 
     if not problems:
-        print("All good, no facts used as top-level vars")
+        console.print("[green]All good[/], no facts used as top-level vars")
     return 1 if problems else 0
 
 

@@ -14,6 +14,12 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from rich.console import Console
+from rich.markup import escape
+
+# soft_wrap: long lines stay on one line for grep and CI logs, highlight: only the colours below
+console = Console(soft_wrap=True, highlight=False)
+
 REPO = Path(__file__).resolve().parent.parent
 # ponytail: only sites-available/*.conf, configure_pve's single templated vhost isn't checked
 SITE_GLOB = "roles/*/files/hosts/*/sites-available/*.conf"
@@ -55,7 +61,7 @@ def directive(body: str, name: str) -> str | None:
 def main() -> int:
     files = sorted(REPO.glob(SITE_GLOB))
     if not files:
-        print(f"No vhost files found matching {SITE_GLOB}")
+        console.print(f"[bold red]No vhost files found matching[/] {SITE_GLOB}")
         return 1
 
     problems = []
@@ -70,17 +76,17 @@ def main() -> int:
             for name, suffix in EXPECTED.items():
                 value = directive(body, name)
                 if value is None:
-                    problems.append(f"MISSING   {rel}: {server_name} has no {name}")
+                    problems.append(f"[bold red]MISSING[/]   [cyan]{rel}[/]: {escape(server_name)} has no {name}")
                 elif value == "off" or not (value.startswith(LOG_DIR) and value.endswith(suffix)):
-                    problems.append(f"WRONG     {rel}: {server_name} {name} {value}, want {LOG_DIR}<name>{suffix}")
+                    problems.append(f"[bold red]WRONG[/]     [cyan]{rel}[/]: {escape(server_name)} {name} {escape(value)}[dim], want {LOG_DIR}<name>{suffix}[/]")
                 else:
                     used_by[value].add(server_name)
 
     problems += [
-        f"SHARED    {log} is used by {', '.join(sorted(names))}" for log, names in sorted(used_by.items()) if len(names) > 1
+        f"[bold red]SHARED[/]    {escape(log)} is used by {', '.join(sorted(names))}" for log, names in sorted(used_by.items()) if len(names) > 1
     ]
 
-    print("\n".join(problems) if problems else f"All good, {len(files)} vhost files each log to their own files")
+    console.print("\n".join(problems) if problems else f"[green]All good[/], {len(files)} vhost files each log to their own files")
     return 1 if problems else 0
 
 

@@ -15,6 +15,11 @@ from pathlib import Path
 
 import jinja2
 import yaml
+from rich.console import Console
+from rich.markup import escape
+
+# soft_wrap: long lines stay on one line for grep and CI logs, highlight: only the colours below
+console = Console(soft_wrap=True, highlight=False)
 
 REPO = Path(__file__).resolve().parent.parent
 ROLES = REPO / "roles"
@@ -71,27 +76,27 @@ def main() -> int:
             variables["inventory_hostname"] = host
             dirs = compose_units(role_dir)
             if not dirs:
-                print(f"NO_UNIT     {host:10} {role}")
+                console.print(f"[bold red]NO_UNIT[/]     {host:10} {role}")
                 problems += 1
                 continue
             for d in dirs:
                 try:
                     d = norm(render(d, variables))
                 except jinja2.UndefinedError as e:
-                    print(f"UNRESOLVED  {host:10} {role}: {d} ({e.message})")
+                    console.print(f"[bold red]UNRESOLVED[/]  {host:10} {role}: {escape(d)} [dim]({escape(e.message)})[/]")
                     problems += 1
                     continue
                 expected.add(d)
                 if d not in compose_paths:
-                    print(f"NOT_PULLED  {host:10} {role}: add {d} to inventory/host_vars/{host}.yml docker_compose_paths")
+                    console.print(f"[bold red]NOT_PULLED[/]  {host:10} {role}: [dim]add[/] {d} [dim]to[/] [cyan]inventory/host_vars/{host}.yml[/] [dim]docker_compose_paths[/]")
                     problems += 1
 
         for path in sorted(compose_paths - expected):
-            print(f"STALE       {host:10} {path} in docker_compose_paths, no role on this host deploys it")
+            console.print(f"[bold yellow]STALE[/]       {host:10} {path} [dim]in docker_compose_paths, no role on this host deploys it[/]")
             problems += 1
 
     if not problems:
-        print("All good, every compose stack gets pulled and restarted")
+        console.print("[green]All good[/], every compose stack gets pulled and restarted")
     return 1 if problems else 0
 
 

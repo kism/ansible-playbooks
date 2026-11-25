@@ -60,6 +60,7 @@
 - name: Pull images for docker-compose arr
   community.docker.docker_compose_v2_pull:
     project_src: "{{ arr_settings_base_dir }}/arr/"
+    policy: missing # always shows every image as pulled in check mode, maintenance_update_packages does updates
 
 - name: Copy firewalld service files for arr
   ansible.builtin.copy:

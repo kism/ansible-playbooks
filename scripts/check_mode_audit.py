@@ -16,6 +16,11 @@ import sys
 from pathlib import Path
 
 import yaml
+from rich.console import Console
+from rich.markup import escape
+
+# soft_wrap: long lines stay on one line for grep and CI logs, highlight: only the colours below
+console = Console(soft_wrap=True, highlight=False)
 
 REPO = Path(__file__).resolve().parent.parent
 LATEST_ALLOWED = {"archlinux-keyring"}
@@ -50,7 +55,7 @@ def main() -> int:
             args = module_args(task)
             has_creates = any("creates" in a or "removes" in a for a in args)
             if task.get("changed_when") is True and not gated and not has_creates:
-                print(f"{path.relative_to(REPO)}: {name}: changed_when: true")
+                console.print(f"[cyan]{path.relative_to(REPO)}[/]: {escape(name)}: [red]changed_when: true[/]")
                 problems += 1
             latest = [
                 a
@@ -58,11 +63,11 @@ def main() -> int:
                 if a.get("state") == "latest" and a.get("name") not in LATEST_ALLOWED
             ]
             if not gated and latest:
-                print(f"{path.relative_to(REPO)}: {name}: state: latest")
+                console.print(f"[cyan]{path.relative_to(REPO)}[/]: {escape(name)}: [red]state: latest[/]")
                 problems += 1
 
     if not problems:
-        print("All good, no tasks that always report changed")
+        console.print("[green]All good[/], no tasks that always report changed")
     return 1 if problems else 0
 
 
