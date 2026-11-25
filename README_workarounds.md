@@ -4,11 +4,17 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 "(inferred)" means no comment in the code states the reason; it was worked out from what the code does. Line numbers are as of 2026-11-24.
 
+## configure_certbot
+
+- **certbot rate-limit errors ignored** (`roles/configure_certbot/tasks/main.yml:48`)
+  - Why: Let's Encrypt's "too many certificates" rate limit otherwise fails the run. It also hides that the cert wasn't renewed.
+  - Check: `grep -i "too many" /var/log/letsencrypt/letsencrypt.log*`. Last checked 2026-11-24: no hits in 67 logs, and the cert is valid until 2027-02-18 (`certbot_renew.timer` renews it). The Ansible run only issues a cert when `/etc/letsencrypt` is fresh, i.e. on a rebuild, which is when the 5-per-week duplicate limit hits, so it's worth keeping for rebuild loops.
+
 ## configure_concept_sd_rootfs
 
-- **journald `SystemMaxUse=5M`** (`roles/configure_concept_sd_rootfs/tasks/main.yml:5`)
-  - Why: the task says "20M seems to break". The cause isn't recorded; SD card or rootfs size is likely. It also edits the vendor `journald.conf` directly instead of using a `journald.conf.d` drop-in.
-  - Check: try 20M on a test SD host and watch `journalctl --disk-usage` and the boot logs.
+- **journald `SystemMaxUse=5M`** (`roles/configure_concept_sd_rootfs/tasks/main.yml:9`)
+  - Why: the task says "20M seems to break". The cause isn't recorded; SD card or rootfs size is likely.
+  - Check: try 20M on musicass and watch `journalctl --disk-usage` and the boot logs.
 
 ## configure_disks / configure_docker
 
@@ -183,12 +189,6 @@ Things that work around someone else's bug or limitation. Check each one now and
 
 ## configure_reverse_proxy
 
-- **certbot rate-limit errors ignored** (`roles/configure_reverse_proxy/tasks/03-configure-certbot.yml:31`)
-  - Why (inferred): Let's Encrypt's "too many certificates" rate limit otherwise fails the run. It also hides that the cert wasn't renewed.
-  - Check: `grep -i "too many" /var/log/letsencrypt/letsencrypt.log*`. Last checked 2026-11-24: no hits in 67 logs, and the cert is valid until 2027-02-18 (`certbot_renew.timer` renews it). The Ansible run only issues a cert when `/etc/letsencrypt` is fresh, i.e. on a rebuild, which is when the 5-per-week duplicate limit hits, so it's worth keeping for rebuild loops.
-- **Empty `options-ssl-nginx.conf` if the download fails** (`roles/configure_reverse_proxy/tasks/03-configure-certbot.yml:56`)
-  - Why (inferred): the distro certbot here has no nginx plugin, so the file isn't shipped and is pulled from certbot's GitHub `main`. **An empty file silently drops the TLS protocol and cipher settings from every vhost.**
-  - Check: `wc -c /etc/letsencrypt/options-ssl-nginx.conf` on rproxy, and whether the GitHub path still resolves. Last checked 2026-11-24: 775 bytes, fine.
 - **`proxy_set_header Host $host:443` for stream** (`roles/configure_reverse_proxy/files/hosts/rproxy/sites-available/stream.conf:10`)
   - Why (inferred): the upstream builds absolute URLs from the Host header and gets the port wrong without it.
   - Check: switch to `Host $host` and look at the URLs in `player_api.php` and m3u responses.

@@ -1,0 +1,8 @@
+---
+# Each cert lands in /etc/letsencrypt/live/<name>/, e.g.
+# - name: example.com
+#   domains: [example.com, "*.example.com"]
+configure_certbot_certs: []
+
+# Reloaded by the deploy hook after a renewal
+configure_certbot_reload_services: []

@@ -1,7 +1,0 @@
-[Unit]
-Description="Timer for certbot renew service"
-Requires=certbot_renew.timer
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/certbot renew

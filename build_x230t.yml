@@ -10,6 +10,9 @@
     # Onboard Server
     - meta_onboard
 
+    # Purpose specific
+    - configure_concept_laptop_server
+
     # End
     - configure_telegraf
     - configure_journal_upload

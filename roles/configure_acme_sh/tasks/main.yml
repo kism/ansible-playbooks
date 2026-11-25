@@ -1,6 +1,0 @@
----
-- name: Include tasks to install acme.sh
-  ansible.builtin.include_tasks: 01-install.yml
-
-- name: Include tasks to issue cert with acme.sh
-  ansible.builtin.include_tasks: 02-issue.yml

@@ -22,13 +22,24 @@ ansible-playbook build_<host>.yml -i inventory/main.yml --extra-vars "skip_onboa
 
 There are no tests; ansible-lint (`strict: true`, see `.ansible-lint`) and ansible-taste are the checks. After changes, run ansible-taste on the whole repo and ansible-lint on only the new/changed roles and playbooks. Never run ansible-lint on the whole repo, it's slow and the user does that themselves. `*.tmp.yml` files are excluded from lint and are scratch.
 
+CI (`.github/workflows/`) also runs these audit scripts, run the relevant one when touching that area:
+
+```bash
+uv run scripts/compose_audit.py          # every compose stack is in some host's docker_compose_paths
+uv run scripts/nginx_logging_audit.py    # every nginx vhost logs to vhosts/<name>.access/.error (fail2ban reads them)
+uv run scripts/injected_facts_audit.py   # facts only via ansible_facts['x'] (inject_facts_as_vars = False)
+```
+
+Ad-hoc commands against hosts: any `{{ }}` in an `-a` argument gets templated by Ansible; wrap it in `{% raw %}…{% endraw %}`.
+
 ## Architecture
 
 - **Playbooks are thin**: top-level `build_<host>.yml` targets one inventory host and just lists roles. All logic is in `roles/`. Commented-out roles in a build playbook are intentional toggles (e.g. `create_proxmox_ct`, `create_opnsense_entries` only needed on first build).
 - **Typical build order**: `maintenance_gather_facts` → `meta_onboard` (package manager, packages, users, misc, sshd, locale, firewall, motd) → purpose-specific `configure_*` roles → optionally `configure_telegraf`.
-- **Facts are not gathered by default** (`gather_facts = False` in `ansible.cfg`); roles that need facts rely on `maintenance_gather_facts` running first.
+- **Facts are not gathered by default** (`gather_facts = False` in `ansible.cfg`); roles that need facts rely on `maintenance_gather_facts` running first. Facts aren't injected as vars, always use `ansible_facts['x']`, never `ansible_x`.
 - **Multi-distro**: hosts are a mix of dnf, apt and pacman. Roles branch on package manager / virtualization role, e.g. `configure_packages/vars/{all,baremetal}-{apt,dnf,pacman,common}.yml`.
 - **Secrets**: all secrets are `secret_*` vars in `inventory/group_vars/all.yml`, resolved via `bitwarden.secrets.lookup` (needs `BWS_ACCESS_TOKEN`). Never hardcode secrets or domain names; use `homelab_domain_internal` / `homelab_domain_external`.
+- **TLS certs**: `configure_certbot` issues them (Cloudflare DNS-01) into `/etc/letsencrypt/live/<name>/`; a host lists `configure_certbot_certs` and the services to reload in `configure_certbot_reload_services`. PVE hosts use Proxmox's built-in ACME instead.
 - **Containers**: dockerised services (e.g. headscale) drop a `docker-compose.yml` into `/opt/<name>` and run it via a custom systemd unit in the role's `files/`.
   - The unit runs `docker compose up -d` on start, so a reboot picks up new images. Never rely on `restart: always` alone, containers would stay on their old image forever.
   - Add a `Restart <name>` handler and notify it from the compose file and any config file tasks.
@@ -48,6 +59,12 @@ Prefix registered vars with the role name (e.g. `configure_firewall_pve_status`)
 - Don't add `become: true` on tasks when the play already has it; don't add `owner: root`/`group: root` redundantly with `become_user: root`.
 - `ansible.builtin.command`: use `argv` and `creates`/`removes`.
 - Mark deliberate shortcuts with a `# ponytail:` comment.
+- When replacing something already deployed (a unit, hook, file), add a `# ponytail: one-off cleanup` task that removes the old thing, naming the hosts it must run on before it can be deleted.
+
+## Tracking files
+
+- `README_workarounds.md`: workarounds for someone else's bug or limitation, per role, each with `Why:`, `Check:` (how to tell it can go) and a `Last checked <date>` note when verified. Add an entry when adding a workaround; remove it with the workaround.
+- `README_todo.md`: known bugs and todos, as `path:line: problem` with a fix hint.
 
 ## Firewalld
 

@@ -1,6 +1,5 @@
 # Todo
 
-- Separate role for certbot setup
 - Figure out ssd biggest users
 
 ## Bugs found in the 2026-11-24 role audit

@@ -1,0 +1,24 @@
+---
+- name: Create pki directory if it does not exist
+  ansible.builtin.file:
+    path: /usr/share/nginx/html/pki
+    state: directory
+    mode: "0755"
+
+# The cert itself comes from configure_certbot, these are the nginx TLS settings every vhost includes
+- name: Generate dhparams
+  ansible.builtin.command:
+    cmd: openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
+    creates: /etc/letsencrypt/ssl-dhparams.pem
+
+- name: Set permissions on dhparams
+  ansible.builtin.file:
+    path: /etc/letsencrypt/ssl-dhparams.pem
+    mode: "0644" # This is the certbot default
+
+- name: Copy nginx ssl options
+  ansible.builtin.copy:
+    src: files/options-ssl-nginx.conf
+    dest: /etc/letsencrypt/options-ssl-nginx.conf
+    mode: "0644"
+  notify: Reload reverse proxy nginx

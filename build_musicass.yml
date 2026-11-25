@@ -12,6 +12,9 @@
     - meta_onboard
 
     # Purpose specific
+    - configure_concept_sd_rootfs
     - configure_audio_receiver
 
     # No telegraf, this thing will be struggling
+    # End
+    - configure_journal_upload # One small C daemon, and the 5M local journal makes vic the only real log history

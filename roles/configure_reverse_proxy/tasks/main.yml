@@ -1,9 +1,6 @@
 ---
-- name: Include install packages tasks
-  ansible.builtin.include_tasks: 01-install-packages.yml
-
 - name: Include configure nginx tasks
   ansible.builtin.include_tasks: 02-configure-nginx.yml
 
-- name: Include configure certbot tasks
-  ansible.builtin.include_tasks: 03-configure-certbot.yml
+- name: Include nginx TLS tasks
+  ansible.builtin.include_tasks: 03-nginx-tls.yml

@@ -12,11 +12,19 @@
   notify:
     - Restart systemd-logind
 
-- name: Set logind sleep settings, assuming laptop is plugged in
-  ansible.builtin.lineinfile:
-    path: /etc/systemd/logind.conf
-    regexp: ^.?HandleLidSwitchExternalPower
-    line: HandleLidSwitchExternalPower=ignore
-    state: present
+- name: Create logind drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    mode: "0755"
+
+# Drop-in, newer systemd doesn't ship /etc/systemd/logind.conf at all
+- name: Ignore the lid switch while plugged in
+  ansible.builtin.copy:
+    content: |
+      [Login]
+      HandleLidSwitchExternalPower=ignore
+    dest: /etc/systemd/logind.conf.d/laptop-server.conf
+    mode: "0644"
   notify:
     - Restart systemd-logind

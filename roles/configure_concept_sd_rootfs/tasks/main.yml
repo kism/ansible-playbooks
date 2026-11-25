@@ -1,6 +1,16 @@
 ---
-- name: Set Journal max size, 20M seems to break
-  ansible.builtin.lineinfile:
-    path: /etc/systemd/journald.conf
-    regexp: ^.?SystemMaxUse=
-    line: SystemMaxUse=5M
+- name: Create journald drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/journald.conf.d
+    state: directory
+    mode: "0755"
+
+# Keep SD card writes and space down. Drop-in, newer systemd doesn't ship /etc/systemd/journald.conf at all
+- name: Set journal max size, 20M seems to break
+  ansible.builtin.copy:
+    content: |
+      [Journal]
+      SystemMaxUse=5M
+    dest: /etc/systemd/journald.conf.d/sd-rootfs.conf
+    mode: "0644"
+  notify: Restart systemd-journald

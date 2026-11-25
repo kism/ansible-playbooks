@@ -1,0 +1,6 @@
+#!/bin/sh
+# {{ ansible_managed }}
+# certbot runs this after each successful renewal
+{% for service in configure_certbot_reload_services %}
+systemctl reload {{ service }}
+{% endfor %}

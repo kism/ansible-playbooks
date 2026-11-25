@@ -17,6 +17,7 @@
     # Purpose specific
     - configure_nginx
     - configure_fail2ban
+    - configure_certbot
     - configure_reverse_proxy
     - configure_cf_dyndns
     - configure_nginx_maxmind_allowlist

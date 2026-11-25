@@ -1,0 +1,7 @@
+[Unit]
+Description=Renew certbot certificates
+
+[Service]
+Type=oneshot
+# Reloads come from /etc/letsencrypt/renewal-hooks/deploy, which only runs when a cert was renewed
+ExecStart=/usr/bin/certbot renew --quiet
