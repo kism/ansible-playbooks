@@ -5,12 +5,48 @@
     state: directory
     mode: "0755"
 
-# Keep SD card writes and space down. Drop-in, newer systemd doesn't ship /etc/systemd/journald.conf at all
-- name: Set journal max size, 20M seems to break
+# ponytail: journal in RAM only to spare the SD card, configure_journal_upload ships it to vic.
+# Whatever hasn't been uploaded is lost on a crash or reboot, or once a vic outage outgrows RuntimeMaxUse
+- name: Keep the journal in RAM
   ansible.builtin.copy:
     content: |
       [Journal]
-      SystemMaxUse=5M
+      Storage=volatile
+      RuntimeMaxUse=16M
     dest: /etc/systemd/journald.conf.d/sd-rootfs.conf
     mode: "0644"
   notify: Restart systemd-journald
+
+- name: Remove the old on-disk journal
+  ansible.builtin.file:
+    path: /var/log/journal
+    state: absent
+
+# rsyslog would write everything to /var/log again, and dphys-swapfile swaps onto the card
+- name: Remove packages that write to the SD card
+  ansible.builtin.apt:
+    pkg:
+      - rsyslog
+      - dphys-swapfile
+    state: absent
+    purge: true
+
+# Ansible patches this host, so the apt timers only add writes, man-db rebuilds its index after every upgrade
+- name: Disable timers that write to the SD card
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop:
+    - apt-daily.timer
+    - apt-daily-upgrade.timer
+    - man-db.timer
+
+# fstab only, mounting over a live /tmp hides files running programs have open. Takes effect on the next reboot
+- name: Put /tmp in RAM
+  ansible.posix.mount:
+    path: /tmp
+    src: tmpfs
+    fstype: tmpfs
+    opts: size=64M,mode=1777,nosuid,nodev
+    state: present

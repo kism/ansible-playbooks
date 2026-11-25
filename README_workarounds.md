@@ -10,12 +10,6 @@ Things that work around someone else's bug or limitation. Check each one now and
   - Why: Let's Encrypt's "too many certificates" rate limit otherwise fails the run. It also hides that the cert wasn't renewed.
   - Check: `grep -i "too many" /var/log/letsencrypt/letsencrypt.log*`. Last checked 2026-11-24: no hits in 67 logs, and the cert is valid until 2027-02-18 (`certbot_renew.timer` renews it). The Ansible run only issues a cert when `/etc/letsencrypt` is fresh, i.e. on a rebuild, which is when the 5-per-week duplicate limit hits, so it's worth keeping for rebuild loops.
 
-## configure_concept_sd_rootfs
-
-- **journald `SystemMaxUse=5M`** (`roles/configure_concept_sd_rootfs/tasks/main.yml:9`)
-  - Why: the task says "20M seems to break". The cause isn't recorded; SD card or rootfs size is likely.
-  - Check: try 20M on musicass and watch `journalctl --disk-usage` and the boot logs.
-
 ## configure_disks / configure_docker
 
 - **duperemove built from source in Docker** (`roles/configure_disks/files/duperemove/Dockerfile:1`)
